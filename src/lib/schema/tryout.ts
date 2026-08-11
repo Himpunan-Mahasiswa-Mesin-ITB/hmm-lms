@@ -54,7 +54,7 @@ const questionRefinement = (
 };
 
 export const questionOptionSchema = z.object({
-  id: z.string().cuid().optional(),
+  id: z.string().optional(),
   text: z.string().min(1, 'Option text cannot be empty'),
   isCorrect: z.boolean(),
   explanation: z.string().nullable().optional(),
@@ -63,7 +63,7 @@ export const questionOptionSchema = z.object({
 
 export const questionSchema = z
   .object({
-    id: z.string().cuid().optional(), // Added ID for consistency with update schema
+    id: z.string().optional(),
     type: z.nativeEnum(QuestionType),
     question: z.string().min(1, 'Question text cannot be empty.'),
     points: z.number().min(1, 'Points must be at least 1.'),
@@ -87,7 +87,7 @@ export const createTryoutSchema = z.object({
 });
 
 export const updateTryoutSchema = z.object({
-  id: z.string().cuid(),
+  id: z.string(),
   title: z.string().min(3, 'Title must be at least 3 characters long.').optional(),
   description: z.string().optional(),
   duration: z.number().min(1, 'Duration must be at least 1 minute.').optional(),
@@ -101,12 +101,17 @@ export const updateTryoutSchema = z.object({
     .optional(),
 });
 
+export const reshuffleTryoutShcema = z.object({
+  id: z.string(),
+});
+
+
 export const tryoutIdSchema = z.object({
-  id: z.string().cuid(),
+  id: z.string(),
 });
 
 export const courseIdSchema = z.object({
-  courseId: z.string().cuid(),
+  courseId: z.string(),
 });
 
 // Export the inferred types

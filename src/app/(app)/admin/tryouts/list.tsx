@@ -81,7 +81,7 @@ export default function TryoutsList({ tryouts: initialTryouts }: TryoutsListProp
 
   const duplicateTryout = api.tryout.duplicate.useMutation({
     onSuccess: (data) => {
-      toast.success(`Tryout duplicated: ${data.title}`);
+      toast.success(`Tryout duplicated: ${data?.title}`);
       void utils.tryout.getAll.invalidate();
     },
     onError: (error) => {

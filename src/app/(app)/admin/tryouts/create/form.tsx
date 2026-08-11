@@ -108,51 +108,51 @@ export default function TryoutForm({ courses, initialData, isEdit = false }: Try
     resolver: zodResolver(createTryoutSchema),
     defaultValues: initialData
       ? {
-          ...initialData,
-          description: initialData.description ?? '',
-          duration: initialData.duration ?? 60,
-          questions: initialData.questions.map((q) => ({
-            ...q,
-            points: q.points ?? 1,
-            required: q.required ?? true,
-            images: q.images ?? [],
-            explanation: q.explanation ?? '',
-            explanationImages: q.explanationImages ?? [], // Add this
-            options:
-              q.options?.map((opt) => ({
-                ...opt,
-                explanation: opt.explanation ?? '',
-                images: opt.images ?? [],
-              })) ?? [],
-            shortAnswers: Array.isArray(q.shortAnswers)
-              ? q.shortAnswers.map((s) => (typeof s === 'string' ? { value: s } : s))
-              : [],
-          })),
-        }
+        ...initialData,
+        description: initialData.description ?? '',
+        duration: initialData.duration ?? 60,
+        questions: initialData.questions.map((q) => ({
+          ...q,
+          points: q.points ?? 1,
+          required: q.required ?? true,
+          images: q.images ?? [],
+          explanation: q.explanation ?? '',
+          explanationImages: q.explanationImages ?? [], // Add this
+          options:
+            q.options?.map((opt) => ({
+              ...opt,
+              explanation: opt.explanation ?? '',
+              images: opt.images ?? [],
+            })) ?? [],
+          shortAnswers: Array.isArray(q.shortAnswers)
+            ? q.shortAnswers.map((s) => (typeof s === 'string' ? { value: s } : s))
+            : [],
+        })),
+      }
       : {
-          title: '',
-          description: '',
-          duration: 60,
-          courseId: '',
-          allowMultipleAttempts: true,
-          allowViewCorrectAnswers: true,
-          questions: [
-            {
-              type: QuestionType.MULTIPLE_CHOICE_SINGLE,
-              question: '',
-              points: 1,
-              required: true,
-              images: [],
-              explanation: '',
-              explanationImages: [], // Add this
-              options: [
-                { text: '', isCorrect: false, explanation: '', images: [] },
-                { text: '', isCorrect: false, explanation: '', images: [] },
-              ],
-              shortAnswers: [],
-            },
-          ],
-        },
+        title: '',
+        description: '',
+        duration: 60,
+        courseId: '',
+        allowMultipleAttempts: true,
+        allowViewCorrectAnswers: true,
+        questions: [
+          {
+            type: QuestionType.MULTIPLE_CHOICE_SINGLE,
+            question: '',
+            points: 1,
+            required: true,
+            images: [],
+            explanation: '',
+            explanationImages: [], // Add this
+            options: [
+              { text: '', isCorrect: false, explanation: '', images: [] },
+              { text: '', isCorrect: false, explanation: '', images: [] },
+            ],
+            shortAnswers: [],
+          },
+        ],
+      },
   });
 
   useEffect(() => {
@@ -232,6 +232,16 @@ export default function TryoutForm({ courses, initialData, isEdit = false }: Try
       }
     }, 100);
   };
+
+  function reshuffleQuestions() {
+    const questions = form.getValues("questions")
+    const shuffledQuestions = [...questions];
+    for (let i = shuffledQuestions.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffledQuestions[i]!, shuffledQuestions[j]!] = [shuffledQuestions[j]!, shuffledQuestions[i]!];
+    }
+    form.setValue('questions', shuffledQuestions)
+  }
 
   return (
     <>
@@ -349,7 +359,56 @@ export default function TryoutForm({ courses, initialData, isEdit = false }: Try
               </div>
             </CardContent>
           </Card>
+          {/*<div className="space-y-4 rounded-lg border border-slate-200 bg-slate-50 p-4 dark:border-slate-800 dark:bg-slate-900/50">
+            <header className="flex flex-wrap gap-2 text-xs font-medium">
+              {form.formState.isValid ? (
+                <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2.5 py-0.5 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-400">
+                  <CheckCircle2 className="h-3.5 w-3.5" /> Form Valid
+                </span>
+              ) : (
+                <span className="inline-flex items-center gap-1 rounded-full bg-rose-50 px-2.5 py-0.5 text-rose-700 dark:bg-rose-950/50 dark:text-rose-400">
+                  <AlertCircle className="h-3.5 w-3.5" /> Form Invalid
+                </span>
+              )}
 
+              {form.formState.isDirty && (
+                <span className="inline-flex items-center gap-1 rounded-full bg-amber-50 px-2.5 py-0.5 text-amber-700 dark:bg-amber-950/50 dark:text-amber-400">
+                  <Info className="h-3.5 w-3.5" /> Unsaved Changes
+                </span>
+              )}
+
+              {form.formState.isSubmitting && (
+                <span className="inline-flex items-center gap-1 rounded-full bg-blue-50 px-2.5 py-0.5 text-blue-700 dark:bg-blue-950/50 dark:text-blue-400">
+                  <Loader2 className="h-3.5 w-3.5 animate-spin" /> Submitting...
+                </span>
+              )}
+
+              {form.formState.isSubmitSuccessful && (
+                <span className="inline-flex items-center gap-1 rounded-full bg-indigo-50 px-2.5 py-0.5 text-indigo-700 dark:bg-indigo-950/50 dark:text-indigo-400">
+                  <CheckCircle2 className="h-3.5 w-3.5" /> Sent Successfully
+                </span>
+              )}
+            </header>
+
+            {Object.keys(form.formState.errors).length > 0 && (
+              <div className="space-y-2 rounded-md bg-rose-50/50 p-3 dark:bg-rose-950/10">
+                <p className="text-xs font-semibold text-rose-800 dark:text-rose-400">
+                  Detected {Object.keys(form.formState.errors).length} error(s):
+                </p>
+                <ul className="space-y-1 text-sm text-rose-600 dark:text-rose-400">
+                  {Object.entries(form.formState.errors).map(([fieldName, error]) => {
+                    console.log("Error: ", error)
+                    return (
+                      <li key={fieldName} className="flex items-start gap-1.5 text-xs">
+                        <span className="font-medium capitalize">{fieldName}:</span>
+                        <span>{error?.message as string} | {error?.root?.message}</span>
+                      </li>
+                    )
+                  })}
+                </ul>
+              </div>
+            )}
+          </div>*/}
           <Card>
             <CardHeader>
               <CardTitle>Questions ({fields.length})</CardTitle>
@@ -387,6 +446,9 @@ export default function TryoutForm({ courses, initialData, isEdit = false }: Try
           <div className="flex justify-end gap-4">
             <Button type="button" variant="outline" onClick={() => router.back()}>
               Cancel
+            </Button>
+            <Button type="button" variant="outline" onClick={() => reshuffleQuestions()}>
+              Reshuffle
             </Button>
             <Button type="submit" disabled={isSubmitting}>
               {isSubmitting

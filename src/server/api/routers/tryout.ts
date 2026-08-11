@@ -1,3 +1,4 @@
+import { createId } from '@paralleldrive/cuid2';
 import { TRPCError } from '@trpc/server';
 import z from 'zod';
 
@@ -34,108 +35,69 @@ export const tryoutRouter = createTRPCRouter({
     return newTryout;
   }),
 
-  create: adminProcedure.input(createTryoutSchema).mutation(async ({ ctx, input }) => {
-    const { questions, ...tryoutData } = input;
+  create: adminProcedure
+    .input(createTryoutSchema)
+    .mutation(async ({ ctx, input }) => {
+      const { questions, ...tryoutData } = input;
 
-    // Wrap in explicit transaction with 30s timeout
-    const newTryout = await ctx.db.$transaction(
-      async (tx) => {
-        return await tx.tryout.create({
+      const newTryout = await ctx.db.$transaction(async (tx) => {
+        const tryoutId = createId();
+
+        await tx.tryout.create({
           data: {
+            id: tryoutId,
             ...tryoutData,
-            questions: {
-              create: questions.map((question, index) => ({
-                type: question.type,
-                question: question.question,
-                images: question.images,
-                points: question.points,
-                required: question.required,
-                order: index + 1,
-                explanation: question.explanation,
-                explanationImages: question.explanationImages ?? [],
-                shortAnswers: question.shortAnswers?.map((ans) => ans.value) ?? [],
-                options: question.options
-                  ? {
-                      create: question.options.map((option, optionIndex) => ({
-                        text: option.text,
-                        isCorrect: option.isCorrect,
-                        explanation: option.explanation,
-                        order: optionIndex + 1,
-                        images: option.images,
-                      })),
-                    }
-                  : undefined,
-              })),
-            },
-          },
-          include: {
-            questions: {
-              include: {
-                options: true,
-              },
-              orderBy: { order: 'asc' },
-            },
-            course: {
-              select: { title: true, classCode: true },
-            },
           },
         });
-      },
-      {
-        timeout: 30000, // 30 seconds
-      },
-    );
 
-    await NotificationTriggers.onTryoutCreated(newTryout.id);
-    return newTryout;
-  }),
+        if (questions && questions.length > 0) {
+          const questionData: any[] = [];
+          const optionData: any[] = [];
 
-  update: adminProcedure.input(updateTryoutSchema).mutation(async ({ ctx, input }) => {
-    const { id, questions, ...updateData } = input;
-    return ctx.db.$transaction(
-      async (tx) => {
-        await tx.tryout.update({
-          where: { id },
-          data: updateData,
-        });
+          questions.forEach((question, index) => {
+            const questionId = createId();
 
-        if (questions) {
-          await tx.question.deleteMany({
-            where: { tryoutId: id },
+            questionData.push({
+              id: questionId,
+              tryoutId: tryoutId,
+              type: question.type,
+              question: question.question,
+              images: question.images,
+              points: question.points,
+              required: question.required,
+              order: index + 1,
+              explanation: question.explanation,
+              explanationImages: question.explanationImages ?? [],
+              shortAnswers: question.shortAnswers?.map((ans) => ans.value) ?? [],
+            });
+
+            if (question.options && question.options.length > 0) {
+              question.options.forEach((option, optionIndex) => {
+                optionData.push({
+                  id: createId(),
+                  questionId: questionId,
+                  text: option.text,
+                  isCorrect: option.isCorrect,
+                  explanation: option.explanation,
+                  order: optionIndex + 1,
+                  images: option.images,
+                });
+              });
+            }
           });
 
-          for (let i = 0; i < questions.length; i++) {
-            const question = questions[i]!;
-            await tx.question.create({
-              data: {
-                tryoutId: id,
-                type: question.type,
-                question: question.question,
-                images: question.images,
-                points: question.points,
-                required: question.required,
-                order: i + 1,
-                explanation: question.explanation,
-                explanationImages: question.explanationImages ?? [],
-                shortAnswers: question.shortAnswers?.map((ans) => ans.value),
-                options: question.options
-                  ? {
-                      create: question.options.map((option, optionIndex) => ({
-                        text: option.text,
-                        isCorrect: option.isCorrect,
-                        explanation: option.explanation,
-                        order: optionIndex + 1,
-                        images: option.images,
-                      })),
-                    }
-                  : undefined,
-              },
-            });
+          // 3. Perform bulk inserts (2 fast queries instead of hundreds)
+          if (questionData.length > 0) {
+            await tx.question.createMany({ data: questionData });
+          }
+
+          if (optionData.length > 0) {
+            await tx.questionOption.createMany({ data: optionData }); // Adjust model name if different (e.g., tx.option)
           }
         }
 
         return tx.tryout.findUnique({
-          where: { id },
+          where: { id: tryoutId },
           include: {
             questions: {
               include: {
@@ -148,13 +110,91 @@ export const tryoutRouter = createTRPCRouter({
             },
           },
         });
-      },
-      {
-        timeout: 30000, // 30 seconds
-      },
-    );
-  }),
+      });
 
+      if (newTryout) await NotificationTriggers.onTryoutCreated(newTryout?.id);
+      return newTryout;
+    }),
+
+  update: adminProcedure
+    .input(updateTryoutSchema)
+    .mutation(async ({ ctx, input }) => {
+      const { id, questions, ...updateData } = input;
+
+      return ctx.db.$transaction(
+        async (tx) => {
+          await tx.tryout.update({
+            where: { id },
+            data: updateData,
+          });
+
+          if (questions) {
+            await tx.question.deleteMany({
+              where: { tryoutId: id },
+            });
+
+            const questionData: any[] = [];
+            const optionData: any[] = [];
+
+            questions.forEach((q, index) => {
+              const questionId = createId();
+
+              questionData.push({
+                id: questionId,
+                tryoutId: id,
+                type: q.type,
+                question: q.question,
+                images: q.images,
+                points: q.points,
+                required: q.required,
+                order: index + 1,
+                explanation: q.explanation,
+                explanationImages: q.explanationImages ?? [],
+                shortAnswers: q.shortAnswers?.map((ans) => ans.value),
+              });
+
+              if (q.options && q.options.length > 0) {
+                q.options.forEach((opt, optIndex) => {
+                  optionData.push({
+                    id: createId(),
+                    questionId: questionId,
+                    text: opt.text,
+                    isCorrect: opt.isCorrect,
+                    explanation: opt.explanation,
+                    order: optIndex + 1,
+                    images: opt.images,
+                  });
+                });
+              }
+            });
+
+            if (questionData.length > 0) {
+              await tx.question.createMany({ data: questionData });
+            }
+
+            if (optionData.length > 0) {
+              await tx.questionOption.createMany({ data: optionData });
+            }
+          }
+
+          return tx.tryout.findUnique({
+            where: { id },
+            include: {
+              questions: {
+                include: { options: true },
+                orderBy: { order: 'asc' },
+              },
+              course: {
+                select: { title: true, classCode: true },
+              },
+            },
+          });
+        },
+        {
+          timeout: 10000,
+        },
+      )
+    }),
   getMyTryouts: protectedProcedure.query(async ({ ctx }) => {
     const userId = ctx.session.user.id;
     const coursesWithTryouts = await ctx.db.course.findMany({
@@ -207,8 +247,8 @@ export const tryoutRouter = createTRPCRouter({
           },
         },
         OR: [
-              { scope: "MACHINING"},
-              { type: "MACHINING"},
+          { scope: "MACHINING" },
+          { type: "MACHINING" },
         ],
       },
       include: {
@@ -794,9 +834,9 @@ export const tryoutRouter = createTRPCRouter({
     const averageScore =
       completedAttempts.length > 0
         ? completedAttempts.reduce(
-            (sum, attempt) => sum + (attempt.score / attempt.maxScore) * 100,
-            0,
-          ) / completedAttempts.length
+          (sum, attempt) => sum + (attempt.score / attempt.maxScore) * 100,
+          0,
+        ) / completedAttempts.length
         : 0;
 
     const highestScore =
@@ -863,7 +903,6 @@ export const tryoutRouter = createTRPCRouter({
     });
 
 
-
     if (!originalTryout) {
       throw new TRPCError({
         code: 'NOT_FOUND',
@@ -874,50 +913,73 @@ export const tryoutRouter = createTRPCRouter({
 
     console.log("originalTryout: ", originalTryout)
 
-    return ctx.db.tryout.create({
-      data: {
-        title: `${originalTryout.title} (Copy)`,
-        description: originalTryout.description,
-        duration: originalTryout.duration,
-        courseId: originalTryout.courseId,
-        isActive: false,
-        questions: {
-          create: originalTryout.questions.map((question, index) => ({
-            type: question.type,
-            question: question.question,
-            points: question.points,
-            required: question.required,
-            order: index + 1,
-            explanation: question.explanation,
-            shortAnswers: question.shortAnswers,
-            images: question.images,
-            explanationImages: question.explanationImages,
-            options:
-              question.options.length > 0
-                ? {
-                    create: question.options.map((option, optionIndex) => ({
-                      text: option.text,
-                      isCorrect: option.isCorrect,
-                      explanation: option.explanation,
-                      order: optionIndex + 1,
-                      images: option.images,
-                    })),
-                  }
-                : undefined,
-          })),
+    return ctx.db.$transaction(async (tx) => {
+      const newTryoutId = createId();
+
+      await tx.tryout.create({
+        data: {
+          id: newTryoutId,
+          title: `${originalTryout.title} (Copy)`,
+          description: originalTryout.description,
+          duration: originalTryout.duration,
+          courseId: originalTryout.courseId,
+          isActive: false,
         },
-      },
-      include: {
-        questions: {
-          include: {
-            options: true,
+      });
+
+      const questionData: any[] = [];
+      const optionData: any[] = [];
+
+      originalTryout?.questions.forEach((q, index) => {
+        const newQuestionId = createId();
+        questionData.push({
+          id: newQuestionId,
+          tryoutId: newTryoutId,
+          type: q.type,
+          question: q.question,
+          points: q.points,
+          required: q.required,
+          order: index + 1,
+          explanation: q.explanation,
+          shortAnswers: q.shortAnswers,
+          images: q.images,
+          explanationImages: q.explanationImages,
+        });
+        if (q.options && q.options.length > 0) {
+          q.options.forEach((opt, optIndex) => {
+            optionData.push({
+              id: createId(),
+              questionId: newQuestionId,
+              text: opt.text,
+              isCorrect: opt.isCorrect,
+              explanation: opt.explanation,
+              order: optIndex + 1,
+              images: opt.images,
+            });
+          });
+        }
+      })
+
+      if (questionData.length > 0) {
+        await tx.question.createMany({ data: questionData })
+      }
+      if (optionData.length > 0) {
+        await tx.questionOption.createMany({ data: optionData });
+      }
+
+      return tx.tryout.findUnique({
+        where: { id: newTryoutId },
+        include: {
+          questions: {
+            include: { options: true },
+            orderBy: { order: 'asc' },
+          },
+          course: {
+            select: { title: true, classCode: true },
           },
         },
-        course: {
-          select: { title: true, classCode: true },
-        },
-      },
-    });
+      });
+    })
   }),
 
   getAttemptDetails: adminProcedure

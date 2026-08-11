@@ -1,4 +1,3 @@
-// ~/lib/types/tryout.ts
 import type { QuestionOption, QuestionType } from "@prisma/client";
 
 export interface Question {
