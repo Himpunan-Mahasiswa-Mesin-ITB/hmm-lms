@@ -924,6 +924,8 @@ export const tryoutRouter = createTRPCRouter({
           duration: originalTryout.duration,
           courseId: originalTryout.courseId,
           isActive: false,
+          allowMultipleAttempts: originalTryout.allowMultipleAttempts,
+          allowViewCorrectAnswers: originalTryout.allowViewCorrectAnswers,
         },
       });
 
