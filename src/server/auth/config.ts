@@ -91,13 +91,8 @@ export const authConfig = {
           });
         }
 
-        // 3. Optional: Verify ITB student email domain
         if (!user.email.endsWith('@mahasiswa.itb.ac.id')) {
-          // You can choose to allow non-ITB students or restrict here.
-          // For ITB students only:
           throw new Error('Only ITB student emails are allowed.');
-          // Or if you allow other emails but want to mark ITB students:
-          // user.isITBStudent = true; // This would require updating the user in DB or passing through token
         }
 
         const machining = await db.machining.findFirst();

@@ -11,16 +11,21 @@ export const authRouter = createTRPCRouter({
   signUp: publicProcedure.input(signUpSchema).mutation(async ({ input }) => {
     const { name, email, password, nim } = input;
 
-    // Check if email already exists
     const existingUser = await db.user.findUnique({
       where: { email: email.toLowerCase() },
     });
 
     if (existingUser) {
-      // Throw a specific tRPC error for existing email
       throw new TRPCError({
         code: 'CONFLICT',
         message: 'Email already registered.',
+      });
+    }
+
+    if (!email.endsWith('@mahasiswa.itb.ac.id')) {
+      throw new TRPCError({
+        code: "BAD_REQUEST",
+        message: 'Only ITB student emails are allowed.',
       });
     }
 
@@ -80,7 +85,6 @@ export const authRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      // Optional: ensure only admins can use this
       if (ctx.session.user.role !== 'SUPERADMIN') {
         throw new TRPCError({ code: 'FORBIDDEN', message: 'Not allowed' });
       }
