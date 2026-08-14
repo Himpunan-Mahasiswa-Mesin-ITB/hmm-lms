@@ -310,7 +310,10 @@ export default function EventForm({ event, mode }: EventFormProps) {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Scope</FormLabel>
-                  <Select onValueChange={field.onChange} value={field.value}>
+                  <Select onValueChange={(value) => {
+                    if (value === "machining") form.setValue("hideEventTime", true)
+                    field.onChange(value)
+                  }} value={field.value}>
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="Select scope" />

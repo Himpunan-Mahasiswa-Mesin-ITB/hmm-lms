@@ -35,6 +35,7 @@ export const eventRouter = createTRPCRouter({
         allDay: false,
         createdById: ctx.session.user.id,
         eventMode: EventMode.BASIC,
+        hideEventTime: false,
       },
     });
 
