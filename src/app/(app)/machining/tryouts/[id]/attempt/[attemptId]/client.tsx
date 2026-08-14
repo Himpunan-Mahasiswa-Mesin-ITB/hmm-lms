@@ -10,6 +10,7 @@ import {
   Flag,
   CircleDot,
 } from 'lucide-react';
+import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useState, useEffect, useCallback } from 'react';
 import { toast } from 'sonner';
@@ -44,11 +45,13 @@ interface TryoutAttemptClientProps {
 
 export function TryoutAttemptClient({ attempt, tryout, tryoutId }: TryoutAttemptClientProps) {
   const router = useRouter();
+  const { data: session } = useSession();
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [timeLeft, setTimeLeft] = useState<number | null>(null);
   const [showSubmitDialog, setShowSubmitDialog] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isAutoFilling, setIsAutoFilling] = useState(false);
 
   const submitAnswerMutation = api.tryout.submitAnswer.useMutation();
   // const submitAnswersBatchMutation = api.tryout.submitAnswersBatch.useMutation();
@@ -197,6 +200,76 @@ export function TryoutAttemptClient({ attempt, tryout, tryoutId }: TryoutAttempt
     } catch {
       toast.error('Failed to submit tryout');
       setIsSubmitting(false);
+    }
+  };
+
+  const handleAutoFillCorrectAnswers = async () => {
+    if (session?.user?.role !== 'SUPERADMIN') {
+      toast.error('You do not have permission to use this feature');
+      return;
+    }
+
+    setIsAutoFilling(true);
+    const toastId = toast.loading('Auto-filling correct answers...');
+
+    try {
+      const correctAnswers: Record<string, string> = {};
+
+      for (const question of tryout.questions) {
+        switch (question.type) {
+          case 'MULTIPLE_CHOICE_SINGLE': {
+            const correctOption = question.options.find((opt) => opt.isCorrect);
+            if (correctOption) {
+              correctAnswers[question.id] = correctOption.id;
+            }
+            break;
+          }
+          case 'MULTIPLE_CHOICE_MULTIPLE': {
+            const correctOptions = question.options.filter((opt) => opt.isCorrect);
+            if (correctOptions.length > 0) {
+              correctAnswers[question.id] = JSON.stringify(correctOptions.map((opt) => opt.id));
+            }
+            break;
+          }
+          case 'SHORT_ANSWER':
+          case 'LONG_ANSWER': {
+            if (question.shortAnswers && question.shortAnswers.length > 0) {
+              const firstAnswer = question.shortAnswers[0];
+              if (firstAnswer) {
+                correctAnswers[question.id] =
+                  typeof firstAnswer === 'string' ? firstAnswer : firstAnswer.value;
+              }
+            }
+            break;
+          }
+        }
+      }
+
+      setAnswers(correctAnswers);
+
+      const promises = Object.entries(correctAnswers).map(async ([questionId, answer]) => {
+        try {
+          return await submitAnswerMutation.mutateAsync({
+            attemptId: attempt.id,
+            questionId,
+            answer,
+          });
+        } catch (error) {
+          console.error(`Failed to submit answer for question ${questionId}:`, error);
+          throw error;
+        }
+      });
+
+      await Promise.all(promises);
+
+      toast.dismiss(toastId);
+      toast.success('All correct answers filled successfully!');
+    } catch (error) {
+      toast.dismiss(toastId);
+      toast.error('Failed to auto-fill answers');
+      console.error(error);
+    } finally {
+      setIsAutoFilling(false);
     }
   };
 
@@ -352,6 +425,17 @@ export function TryoutAttemptClient({ attempt, tryout, tryoutId }: TryoutAttempt
                 <Clock className="mr-1 h-3.5 w-3.5" />
                 {formatTime(timeLeft)}
               </Badge>
+            )}
+            {session?.user?.role === 'SUPERADMIN' && (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleAutoFillCorrectAnswers}
+                disabled={isAutoFilling}
+                className="text-xs"
+              >
+                {isAutoFilling ? 'Filling...' : 'Auto-fill Answers'}
+              </Button>
             )}
           </div>
         </div>

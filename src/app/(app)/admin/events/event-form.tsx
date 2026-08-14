@@ -38,6 +38,7 @@ import { useState } from 'react';
 import { eventInputSchema, type timelineItemSchema } from '~/lib/schema/event';
 import type { JsonArray } from '@prisma/client/runtime/library';
 import { TIMEZONE } from '~/constants/constants';
+import { Switch } from '~/components/ui/switch';
 
 type EventDetail = NonNullable<RouterOutputs['event']['getEventById']>;
 
@@ -86,6 +87,7 @@ export default function EventForm({ event, mode }: EventFormProps) {
         description: event.description ?? '',
         start: new Date(event.start),
         end: new Date(event.end),
+        hideEventTime: event.hideEventTime,
         allDay: event.allDay ?? false,
         location: event.location ?? '',
         hasTimeline: Boolean(event.timeline && (event.timeline as JsonArray).length > 0),
@@ -102,6 +104,7 @@ export default function EventForm({ event, mode }: EventFormProps) {
         description: '',
         start: undefined as unknown as Date, // will be required
         end: undefined as unknown as Date,   // will be required
+        hideEventTime: false,
         allDay: false,
         location: '',
         hasTimeline: false,
@@ -229,7 +232,6 @@ export default function EventForm({ event, mode }: EventFormProps) {
                 </FormItem>
               )}
             />
-
             <div className="grid gap-4 md:grid-cols-2">
               <FormField
                 control={form.control}
@@ -267,7 +269,20 @@ export default function EventForm({ event, mode }: EventFormProps) {
                 )}
               />
             </div>
-
+            <FormField
+              control={form.control}
+              name="hideEventTime"
+              render={({ field }) => (
+                <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
+                  <div className="space-y-0.5">
+                    <FormLabel>Hide Event Time</FormLabel>
+                  </div>
+                  <FormControl>
+                    <Switch checked={field.value} onCheckedChange={field.onChange} />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
             <FormField
               control={form.control}
               name="allDay"

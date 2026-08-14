@@ -281,11 +281,15 @@ export function DashboardContent() {
                         <span>
                           {formatInTimeZone(eventStart, TIMEZONE, "dd MMMM yyyy")}
                         </span>
-                        <span aria-hidden>•</span>
-                        <span>
-                          {formatInTimeZone(eventStart, TIMEZONE, "HH:mm")} -{" "}
-                          {formatInTimeZone(eventEnd, TIMEZONE, "HH:mm")}
-                        </span>
+                        {!event.hideEventTime && (
+                          <>
+                            <span aria-hidden>•</span>
+                            <span>
+                              {formatInTimeZone(eventStart, TIMEZONE, "HH:mm")} -{" "}
+                              {formatInTimeZone(eventEnd, TIMEZONE, "HH:mm")}
+                            </span>
+                          </>
+                        )}
                         {event.location && (
                           <>
                             <span aria-hidden>•</span>

@@ -46,81 +46,86 @@ const sidebarTabs: {
     tag?: string;
   }[];
 }[] = [
-  {
-    group: 'Machining',
-    items: [
-      {
-        label: 'Dashboard',
-        href: '/machining',
-        icon: Home,
-        tooltip: 'Dashboard',
-      },
-      {
-        label: 'Courses',
-        href: '/machining/courses',
-        icon: GraduationCap,
-        tooltip: 'Courses',
-      },
-      {
-        label: 'Events',
-        href: '/machining/events',
-        icon: Footprints,
-        tooltip: 'Events',
-        dev: false,
-      },
-      {
-        label: 'Assignments',
-        href: '/machining/assignments',
-        icon: ListChecks,
-        tooltip: 'Assignments',
-        dev: false,
-      },
-      {
-        label: 'Announcements',
-        href: '/machining/announcements',
-        icon: Megaphone,
-        tooltip: 'Announcements',
-        dev: false,
-      },
-      {
-        label: 'Tryouts',
-        href: '/machining/tryouts',
-        icon: BookOpen,
-        tooltip: 'Tryouts',
-        dev: false,
-      },
-    ],
-  },
-  {
-    group: 'Preferences',
-    items: [
-      {
-        label: 'Settings',
-        href: '/machining/settings',
-        icon: Settings,
-        tooltip: 'Settings',
-        dev: false,
-      },
-    ],
-  },
-  {
-    group: 'Admin',
-    items: [
-      {
-        label: 'Admin Panel',
-        href: '/admin',
-        icon: Home,
-        tooltip: 'Admin Panel',
-      },
-      {
-        label: 'Back to App',
-        href: '/dashboard',
-        icon: BookOpen,
-        tooltip: 'Back to Main App',
-      },
-    ],
-  },
-];
+    {
+      group: 'Machining',
+      items: [
+        {
+          label: 'Dashboard',
+          href: '/machining',
+          icon: Home,
+          tooltip: 'Dashboard',
+        },
+        {
+          label: 'Courses',
+          href: '/machining/courses',
+          icon: GraduationCap,
+          tooltip: 'Courses',
+        },
+        {
+          label: 'Assignments',
+          href: '/machining/assignments',
+          icon: ListChecks,
+          tooltip: 'Assignments',
+          dev: false,
+        },
+        {
+          label: 'Announcements',
+          href: '/machining/announcements',
+          icon: Megaphone,
+          tooltip: 'Announcements',
+          dev: false,
+        },
+        {
+          label: 'Tryouts',
+          href: '/machining/tryouts',
+          icon: BookOpen,
+          tooltip: 'Tryouts',
+          dev: false,
+        },
+      ],
+    },
+    {
+      group: 'Schedules',
+      items: [
+        {
+          label: 'Events',
+          href: '/machining/events',
+          icon: Footprints,
+          tooltip: 'Events',
+          dev: false,
+        },
+      ],
+    },
+    {
+      group: 'Preferences',
+      items: [
+        {
+          label: 'Settings',
+          href: '/machining/settings',
+          icon: Settings,
+          tooltip: 'Settings',
+          dev: false,
+        },
+      ],
+    },
+    {
+      group: 'Admin',
+      items: [
+        {
+          label: 'Admin Panel',
+          href: '/admin',
+          icon: Home,
+          tooltip: 'Admin Panel',
+        },
+        {
+          label: 'Back to App',
+          href: '/dashboard',
+          icon: BookOpen,
+          tooltip: 'Back to Main App',
+        },
+      ],
+    },
+  ];
 
 export default async function MachiningNavbar({
   children,

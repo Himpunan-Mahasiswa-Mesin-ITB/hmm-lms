@@ -221,6 +221,7 @@ model Event {
   description              String?
   start                    DateTime
   end                      DateTime
+  hideEventTime            Boolean    @default(false)
   allDay                   Boolean    @default(false)
   location                 String?
   color                    EventColor @default(SKY)

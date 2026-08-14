@@ -60,7 +60,7 @@ export default function EventItem({ event, href }: EventItemProps) {
               {formatInTimeZone(startDate, TIMEZONE, 'MMM d, yyyy')}
             </span>
           </div>
-          {!event.allDay && (
+          {!event.allDay && !event.hideEventTime && (
             <div className="flex items-center gap-2">
               <Clock className="h-4 w-4 text-muted-foreground flex-shrink-0" />
               <span>{formatInTimeZone(startDate, TIMEZONE, 'HH:mm')} - {formatInTimeZone(endDate, TIMEZONE, 'HH:mm')}</span>

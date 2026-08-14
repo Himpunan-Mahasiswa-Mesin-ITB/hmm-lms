@@ -35,74 +35,149 @@ export const tryoutRouter = createTRPCRouter({
     return newTryout;
   }),
 
-  create: adminProcedure
-    .input(createTryoutSchema)
-    .mutation(async ({ ctx, input }) => {
-      const { questions, ...tryoutData } = input;
+  create: adminProcedure.input(createTryoutSchema).mutation(async ({ ctx, input }) => {
+    const { questions, ...tryoutData } = input;
 
-      const newTryout = await ctx.db.$transaction(async (tx) => {
-        const tryoutId = createId();
+    const newTryout = await ctx.db.$transaction(async (tx) => {
+      const tryoutId = createId();
 
-        await tx.tryout.create({
-          data: {
-            id: tryoutId,
-            ...tryoutData,
-          },
+      await tx.tryout.create({
+        data: {
+          id: tryoutId,
+          ...tryoutData,
+        },
+      });
+
+      if (questions && questions.length > 0) {
+        const questionData: any[] = [];
+        const optionData: any[] = [];
+
+        questions.forEach((question, index) => {
+          const questionId = createId();
+
+          questionData.push({
+            id: questionId,
+            tryoutId: tryoutId,
+            type: question.type,
+            question: question.question,
+            images: question.images,
+            points: question.points,
+            required: question.required,
+            order: index + 1,
+            explanation: question.explanation,
+            explanationImages: question.explanationImages ?? [],
+            shortAnswers: question.shortAnswers?.map((ans) => ans.value) ?? [],
+          });
+
+          if (question.options && question.options.length > 0) {
+            question.options.forEach((option, optionIndex) => {
+              optionData.push({
+                id: createId(),
+                questionId: questionId,
+                text: option.text,
+                isCorrect: option.isCorrect,
+                explanation: option.explanation,
+                order: optionIndex + 1,
+                images: option.images,
+              });
+            });
+          }
         });
 
-        if (questions && questions.length > 0) {
+        // 3. Perform bulk inserts (2 fast queries instead of hundreds)
+        if (questionData.length > 0) {
+          await tx.question.createMany({ data: questionData });
+        }
+
+        if (optionData.length > 0) {
+          await tx.questionOption.createMany({ data: optionData }); // Adjust model name if different (e.g., tx.option)
+        }
+      }
+
+      return tx.tryout.findUnique({
+        where: { id: tryoutId },
+        include: {
+          questions: {
+            include: {
+              options: true,
+            },
+            orderBy: { order: 'asc' },
+          },
+          course: {
+            select: { title: true, classCode: true },
+          },
+        },
+      });
+    });
+
+    if (newTryout) await NotificationTriggers.onTryoutCreated(newTryout?.id);
+    return newTryout;
+  }),
+
+  update: adminProcedure.input(updateTryoutSchema).mutation(async ({ ctx, input }) => {
+    const { id, questions, ...updateData } = input;
+
+    return ctx.db.$transaction(
+      async (tx) => {
+        await tx.tryout.update({
+          where: { id },
+          data: updateData,
+        });
+
+        if (questions) {
+          await tx.question.deleteMany({
+            where: { tryoutId: id },
+          });
+
           const questionData: any[] = [];
           const optionData: any[] = [];
 
-          questions.forEach((question, index) => {
+          questions.forEach((q, index) => {
             const questionId = createId();
 
             questionData.push({
               id: questionId,
-              tryoutId: tryoutId,
-              type: question.type,
-              question: question.question,
-              images: question.images,
-              points: question.points,
-              required: question.required,
+              tryoutId: id,
+              type: q.type,
+              question: q.question,
+              images: q.images,
+              points: q.points,
+              required: q.required,
               order: index + 1,
-              explanation: question.explanation,
-              explanationImages: question.explanationImages ?? [],
-              shortAnswers: question.shortAnswers?.map((ans) => ans.value) ?? [],
+              explanation: q.explanation,
+              explanationImages: q.explanationImages ?? [],
+              shortAnswers: q.shortAnswers?.map((ans) => ans.value),
             });
 
-            if (question.options && question.options.length > 0) {
-              question.options.forEach((option, optionIndex) => {
+            if (q.options && q.options.length > 0) {
+              q.options.forEach((opt, optIndex) => {
                 optionData.push({
                   id: createId(),
                   questionId: questionId,
-                  text: option.text,
-                  isCorrect: option.isCorrect,
-                  explanation: option.explanation,
-                  order: optionIndex + 1,
-                  images: option.images,
+                  text: opt.text,
+                  isCorrect: opt.isCorrect,
+                  explanation: opt.explanation,
+                  order: optIndex + 1,
+                  images: opt.images,
                 });
               });
             }
           });
 
-          // 3. Perform bulk inserts (2 fast queries instead of hundreds)
           if (questionData.length > 0) {
             await tx.question.createMany({ data: questionData });
           }
 
           if (optionData.length > 0) {
-            await tx.questionOption.createMany({ data: optionData }); // Adjust model name if different (e.g., tx.option)
+            await tx.questionOption.createMany({ data: optionData });
           }
         }
 
         return tx.tryout.findUnique({
-          where: { id: tryoutId },
+          where: { id },
           include: {
             questions: {
-              include: {
-                options: true,
-              },
+              include: { options: true },
               orderBy: { order: 'asc' },
             },
             course: {
@@ -110,91 +185,12 @@ export const tryoutRouter = createTRPCRouter({
             },
           },
         });
-      });
-
-      if (newTryout) await NotificationTriggers.onTryoutCreated(newTryout?.id);
-      return newTryout;
-    }),
-
-  update: adminProcedure
-    .input(updateTryoutSchema)
-    .mutation(async ({ ctx, input }) => {
-      const { id, questions, ...updateData } = input;
-
-      return ctx.db.$transaction(
-        async (tx) => {
-          await tx.tryout.update({
-            where: { id },
-            data: updateData,
-          });
-
-          if (questions) {
-            await tx.question.deleteMany({
-              where: { tryoutId: id },
-            });
-
-            const questionData: any[] = [];
-            const optionData: any[] = [];
-
-            questions.forEach((q, index) => {
-              const questionId = createId();
-
-              questionData.push({
-                id: questionId,
-                tryoutId: id,
-                type: q.type,
-                question: q.question,
-                images: q.images,
-                points: q.points,
-                required: q.required,
-                order: index + 1,
-                explanation: q.explanation,
-                explanationImages: q.explanationImages ?? [],
-                shortAnswers: q.shortAnswers?.map((ans) => ans.value),
-              });
-
-              if (q.options && q.options.length > 0) {
-                q.options.forEach((opt, optIndex) => {
-                  optionData.push({
-                    id: createId(),
-                    questionId: questionId,
-                    text: opt.text,
-                    isCorrect: opt.isCorrect,
-                    explanation: opt.explanation,
-                    order: optIndex + 1,
-                    images: opt.images,
-                  });
-                });
-              }
-            });
-
-            if (questionData.length > 0) {
-              await tx.question.createMany({ data: questionData });
-            }
-
-            if (optionData.length > 0) {
-              await tx.questionOption.createMany({ data: optionData });
-            }
-          }
-
-          return tx.tryout.findUnique({
-            where: { id },
-            include: {
-              questions: {
-                include: { options: true },
-                orderBy: { order: 'asc' },
-              },
-              course: {
-                select: { title: true, classCode: true },
-              },
-            },
-          });
-        },
-        {
-          timeout: 10000,
-        },
-      )
-    }),
+      },
+      {
+        timeout: 10000,
+      },
+    );
+  }),
   getMyTryouts: protectedProcedure.query(async ({ ctx }) => {
     const userId = ctx.session.user.id;
     const coursesWithTryouts = await ctx.db.course.findMany({
@@ -246,10 +242,7 @@ export const tryoutRouter = createTRPCRouter({
             id: userId,
           },
         },
-        OR: [
-          { scope: "MACHINING" },
-          { type: "MACHINING" },
-        ],
+        OR: [{ scope: 'MACHINING' }, { type: 'MACHINING' }],
       },
       include: {
         tryout: {
@@ -421,8 +414,8 @@ export const tryoutRouter = createTRPCRouter({
   submitAnswer: protectedProcedure
     .input(
       z.object({
-        attemptId: z.string().cuid(),
-        questionId: z.string().cuid(),
+        attemptId: z.string(),
+        questionId: z.string(),
         answer: z.string(),
       }),
     )
@@ -515,10 +508,10 @@ export const tryoutRouter = createTRPCRouter({
   submitAnswersBatch: protectedProcedure
     .input(
       z.object({
-        attemptId: z.string().cuid(),
+        attemptId: z.string(),
         answers: z.array(
           z.object({
-            questionId: z.string().cuid(),
+            questionId: z.string(),
             answer: z.string(),
           }),
         ),
@@ -610,7 +603,7 @@ export const tryoutRouter = createTRPCRouter({
       });
     }),
   completeAttempt: protectedProcedure
-    .input(z.object({ attemptId: z.string().cuid() }))
+    .input(z.object({ attemptId: z.string() }))
     .mutation(async ({ ctx, input }) => {
       const attempt = await ctx.db.userAttempt.findUnique({
         where: {
@@ -658,7 +651,7 @@ export const tryoutRouter = createTRPCRouter({
   }),
 
   getAttemptResults: protectedProcedure
-    .input(z.object({ attemptId: z.string().cuid() }))
+    .input(z.object({ attemptId: z.string() }))
     .query(async ({ ctx, input }) => {
       const attempt = await ctx.db.userAttempt.findUnique({
         where: {
@@ -834,9 +827,9 @@ export const tryoutRouter = createTRPCRouter({
     const averageScore =
       completedAttempts.length > 0
         ? completedAttempts.reduce(
-          (sum, attempt) => sum + (attempt.score / attempt.maxScore) * 100,
-          0,
-        ) / completedAttempts.length
+            (sum, attempt) => sum + (attempt.score / attempt.maxScore) * 100,
+            0,
+          ) / completedAttempts.length
         : 0;
 
     const highestScore =
@@ -902,7 +895,6 @@ export const tryoutRouter = createTRPCRouter({
       },
     });
 
-
     if (!originalTryout) {
       throw new TRPCError({
         code: 'NOT_FOUND',
@@ -910,8 +902,7 @@ export const tryoutRouter = createTRPCRouter({
       });
     }
 
-
-    console.log("originalTryout: ", originalTryout)
+    console.log('originalTryout: ', originalTryout);
 
     return ctx.db.$transaction(async (tx) => {
       const newTryoutId = createId();
@@ -960,10 +951,10 @@ export const tryoutRouter = createTRPCRouter({
             });
           });
         }
-      })
+      });
 
       if (questionData.length > 0) {
-        await tx.question.createMany({ data: questionData })
+        await tx.question.createMany({ data: questionData });
       }
       if (optionData.length > 0) {
         await tx.questionOption.createMany({ data: optionData });
@@ -981,11 +972,11 @@ export const tryoutRouter = createTRPCRouter({
           },
         },
       });
-    })
+    });
   }),
 
   getAttemptDetails: adminProcedure
-    .input(z.object({ attemptId: z.string().cuid() }))
+    .input(z.object({ attemptId: z.string() }))
     .query(async ({ ctx, input }) => {
       const attempt = await ctx.db.userAttempt.findUnique({
         where: { id: input.attemptId },

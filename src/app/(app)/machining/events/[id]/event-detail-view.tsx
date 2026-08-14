@@ -99,19 +99,25 @@ export default function EventDetailView({ event }: EventDetailViewProps) {
                 <div>
                   <p className="font-medium text-foreground">Date & Time</p>
                   <p className="text-muted-foreground flex flex-col gap-2">
-                    <span>
-                      {formatInTimeZone(startDate, TIMEZONE, 'EEEE, MMM d, yyyy, HH:mm')} (start)
-                    </span>
-                    <span>
-                      {formatInTimeZone(endDate, TIMEZONE, 'EEEE, MMM d, yyyy, HH:mm')} (end)
-                    </span>
-                    {/*{!event.allDay && (
+                    {event.hideEventTime ? (
                       <>
-                        <br />
-                        {formatInTimeZone(startDate, TIMEZONE, 'p')} -{' '}
-                        {formatInTimeZone(endDate, TIMEZONE, 'p')}
+                        <span>
+                          {formatInTimeZone(startDate, TIMEZONE, 'EEEE, MMM d, yyyy')} (start)
+                        </span>
+                        <span>
+                          {formatInTimeZone(endDate, TIMEZONE, 'EEEE, MMM d, yyyy')} (end)
+                        </span>
                       </>
-                    )}*/}
+                    ) : (
+                      <>
+                        <span>
+                          {formatInTimeZone(startDate, TIMEZONE, 'EEEE, MMM d, yyyy, HH:mm')} (start)
+                        </span>
+                        <span>
+                          {formatInTimeZone(endDate, TIMEZONE, 'EEEE, MMM d, yyyy, HH:mm')} (end)
+                        </span>
+                      </>
+                    )}
                   </p>
                 </div>
               </div>

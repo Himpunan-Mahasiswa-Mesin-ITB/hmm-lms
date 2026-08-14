@@ -9,6 +9,9 @@ export interface Question {
   required: boolean;
   options: QuestionOption[];
   images: string[]; // Array of image URLs
+  shortAnswers?: Array<{
+    value: string;
+  }> | string[];
 }
 
 export interface Course {

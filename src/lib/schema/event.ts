@@ -13,6 +13,7 @@ export const eventInputSchema = z.object({
   description: z.string().optional(),
   start: z.date(),
   end: z.date(),
+  hideEventTime: z.boolean().default(false),
   allDay: z.boolean().default(false),
   location: z.string().optional(),
   hasTimeline: z.boolean().default(false),

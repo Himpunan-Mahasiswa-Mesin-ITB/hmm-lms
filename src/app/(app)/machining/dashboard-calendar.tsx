@@ -210,10 +210,12 @@ export function DashboardCalendar() {
                             <p className="truncate text-sm leading-5 font-semibold">
                               {event.title}
                             </p>
-                            <p className="text-muted-foreground text-[11px]">
-                              {formatInTimeZone(eventStart, TIMEZONE, 'HH:mm')} -{' '}
-                              {formatInTimeZone(eventEnd, TIMEZONE, 'HH:mm')}
-                            </p>
+                            {!event.hideEventTime && (
+                              <p className="text-muted-foreground text-[11px]">
+                                {formatInTimeZone(eventStart, TIMEZONE, 'HH:mm')} -{' '}
+                                {formatInTimeZone(eventEnd, TIMEZONE, 'HH:mm')}
+                              </p>
+                            )}
                           </div>
                           {event.userRsvp && (
                             <Badge
@@ -254,14 +256,18 @@ export function DashboardCalendar() {
                           <div className="flex items-center gap-2">
                             <CalendarIcon className="text-muted-foreground h-4 w-4" />
                             <span>
-                              {formatInTimeZone(eventStart, TIMEZONE, 'MMMM d yyyy,  HH:mm')}{' '}
+                              {event.hideEventTime
+                                ? formatInTimeZone(eventStart, TIMEZONE, 'MMMM d yyyy')
+                                : formatInTimeZone(eventStart, TIMEZONE, 'MMMM d yyyy,  HH:mm')}{' '}
                               (Start)
                             </span>
                           </div>
                           <div className="flex items-center gap-2">
                             <CalendarOff className="text-muted-foreground h-4 w-4" />
                             <span>
-                              {formatInTimeZone(eventEnd, TIMEZONE, 'MMMM d yyyy,  HH:mm')} (End)
+                              {event.hideEventTime
+                                ? formatInTimeZone(eventEnd, TIMEZONE, 'MMMM d yyyy')
+                                : formatInTimeZone(eventEnd, TIMEZONE, 'MMMM d yyyy,  HH:mm')} (End)
                             </span>
                           </div>
                           {event.location && (
