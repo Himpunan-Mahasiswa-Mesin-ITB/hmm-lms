@@ -43,7 +43,7 @@
     "@hookform/resolvers": "^5.2.2",
     "@paralleldrive/cuid2": "^3.3.0",
     "@payloadcms/db-postgres": "^3.87.0",
-    "@payloadcms/live-preview-react": "^3.87.1",
+    "@payloadcms/live-preview-react": "^3.87.0",
     "@payloadcms/next": "^3.87.0",
     "@payloadcms/richtext-lexical": "^3.87.0",
     "@payloadcms/storage-s3": "^3.87.0",

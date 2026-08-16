@@ -393,6 +393,65 @@ export const eventRouter = createTRPCRouter({
         },
       });
     }),
+  respondToRsvpMachining: protectedProcedure
+    .input(
+      z.object({
+        eventId: z.string(),
+        status: rsvpStatusSchema,
+        notes: z.string().optional(),
+        idLine: z.string().optional(),
+        reason: z.string().optional(),
+        proofUrl: z.string().optional(),
+        leavingTime: z.date().optional(),
+        catchingUpTime: z.date().optional(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const event = await ctx.db.event.findUnique({
+        where: { id: input.eventId },
+      });
+
+      if (!event) throw new TRPCError({ code: 'NOT_FOUND' });
+
+      if (event.rsvpDeadline && new Date() > event.rsvpDeadline) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'RSVP deadline has passed',
+        });
+      }
+
+      return ctx.db.eventRSVPResponse.upsert({
+        where: {
+          eventId_userId: {
+            eventId: input.eventId,
+            userId: ctx.session.user.id,
+          },
+        },
+        update: {
+          status: input.status,
+          respondedAt: new Date(),
+          approvalStatus: input.status === 'YES' ? 'APPROVED' : 'PENDING',
+          notes: input.notes,
+          idLine: input.idLine,
+          reason: input.reason,
+          proofUrl: input.proofUrl,
+          leavingTime: input.leavingTime,
+          catchingUpTime: input.catchingUpTime,
+        },
+        create: {
+          eventId: input.eventId,
+          userId: ctx.session.user.id,
+          status: input.status,
+          approvalStatus: input.status === 'YES' ? 'APPROVED' : 'PENDING',
+          notes: input.notes,
+          idLine: input.idLine,
+          reason: input.reason,
+          proofUrl: input.proofUrl,
+          leavingTime: input.leavingTime,
+          catchingUpTime: input.catchingUpTime,
+        },
+      });
+    }),
 
   // Replace recordPresence mutation
   recordPresence: protectedProcedure
@@ -461,8 +520,6 @@ export const eventRouter = createTRPCRouter({
         where: { id: input.responseId },
         data: {
           status: input.status,
-          approvedBy: ctx.session.user.id,
-          approvedAt: new Date(),
         },
       });
     }),

@@ -289,6 +289,11 @@ model EventRSVPResponse {
   guestPhone     String?
   responses      Json?
   notes          String?
+  idLine         String?
+  reason         String?
+  proofUrl       String?
+  leavingTime    DateTime?
+  catchingUpTime    DateTime?
   plusOnes       Int            @default(0)
   approvalStatus ApprovalStatus @default(PENDING)
   approvedBy     String?

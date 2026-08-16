@@ -3,7 +3,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { PresenceStatus, RSVPStatus } from '@prisma/client';
 import { formatInTimeZone } from 'date-fns-tz';
-import { Download, Users, CheckCircle, XCircle, Clock, FileText } from 'lucide-react';
+import { Download, Users, CheckCircle, XCircle, Clock, FileText, TimerIcon } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
@@ -140,6 +140,15 @@ export default function EventAdminDashboard({ eventId }: { eventId: string }) {
       onError: (err) => toast.error(err.message),
     });
 
+  const { mutate: updateRsvpApproval, isPending: isUpdatingApproval } =
+    api.event.updateRsvpApproval.useMutation({
+      onSuccess: async () => {
+        toast.success('RSVP approval status updated');
+        await refetch();
+      },
+      onError: (err) => toast.error(err.message),
+    });
+
   const { mutate: updatePresenceNote, isPending: isUpdatingNote } =
     api.event.updatePresenceNote.useMutation({
       onSuccess: async () => {
@@ -170,7 +179,7 @@ export default function EventAdminDashboard({ eventId }: { eventId: string }) {
     if (!data) return;
 
     const worksheetData = [
-      ['Name', 'NIM', 'Status', 'Responded At', 'Email', 'Notes'],
+      ['Name', 'NIM', 'Status', 'Approval Status', 'Responded At', 'Email', 'ID Line', 'Reason', 'Proof URL', 'Leaving Time', 'Follow-up Time', 'Notes'],
       ...data.rsvpResponses.map((r) => [
         r.user?.name ?? 'N/A',
         r.user?.nim ?? 'N/A',
@@ -183,8 +192,14 @@ export default function EventAdminDashboard({ eventId }: { eventId: string }) {
               : r.status === 'MAYBE'
                 ? 'Mungkin Hadir'
                 : 'No RSVP response',
-        formatInTimeZone(r.respondedAt, TIMEZONE ,'yyyy-MM-dd HH:mm'),
+        r.approvalStatus,
+        formatInTimeZone(r.respondedAt, TIMEZONE, 'yyyy-MM-dd HH:mm'),
         r.user?.email ?? 'N/A',
+        r.idLine ?? '',
+        r.reason ?? '',
+        r.proofUrl ?? '',
+        r.leavingTime ? formatInTimeZone(r.leavingTime, TIMEZONE, 'yyyy-MM-dd HH:mm') : '',
+        r.catchingUpTime ? formatInTimeZone(r.catchingUpTime, TIMEZONE, 'yyyy-MM-dd HH:mm') : '',
         r.notes ?? '',
       ]),
     ];
@@ -467,6 +482,12 @@ export default function EventAdminDashboard({ eventId }: { eventId: string }) {
                       <TableHead>NIM</TableHead>
                       <TableHead>Email</TableHead>
                       <TableHead>Response</TableHead>
+                      <TableHead>Approval Status</TableHead>
+                      <TableHead>ID Line</TableHead>
+                      <TableHead>Reason</TableHead>
+                      <TableHead>Proof URL</TableHead>
+                      <TableHead>Leaving Time</TableHead>
+                      <TableHead>Follow-up Time</TableHead>
                       <TableHead>Notes</TableHead>
                       <TableHead>Responded At</TableHead>
                       <TableHead>Actions</TableHead>
@@ -517,6 +538,53 @@ export default function EventAdminDashboard({ eventId }: { eventId: string }) {
                           </Badge>
                         </TableCell>
                         <TableCell>
+                          <Badge
+                            variant={
+                              r.approvalStatus === 'APPROVED'
+                                ? 'default'
+                                : r.approvalStatus === 'REJECTED'
+                                  ? 'destructive'
+                                  : 'secondary'
+                            }
+                          >
+                            {r.approvalStatus === 'APPROVED' ? (
+                              <>
+                                <CheckCircle className="h-3 w-3 mr-1" /> Approved
+                              </>
+                            ) : r.approvalStatus === 'REJECTED' ? (
+                              <>
+                                <XCircle className="h-3 w-3 mr-1" /> Rejected
+                              </>
+                            ) : (
+                              <>
+                                <Clock className="h-3 w-3 mr-1" /> Pending
+                              </>
+                            )}
+                          </Badge>
+                        </TableCell>
+                        <TableCell className="text-sm">{r.idLine || '-'}</TableCell>
+                        <TableCell className="text-sm">{r.reason || '-'}</TableCell>
+                        <TableCell className="text-sm">
+                          {r.proofUrl ? (
+                            <a
+                              href={r.proofUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-blue-600 hover:underline"
+                            >
+                              View Proof
+                            </a>
+                          ) : (
+                            '-'
+                          )}
+                        </TableCell>
+                        <TableCell className="text-sm">
+                          {r.leavingTime ? formatInTimeZone(r.leavingTime, TIMEZONE, 'MMM d, HH:mm') : '-'}
+                        </TableCell>
+                        <TableCell className="text-sm">
+                          {r.catchingUpTime ? formatInTimeZone(r.catchingUpTime, TIMEZONE, 'MMM d, HH:mm') : '-'}
+                        </TableCell>
+                        <TableCell>
                           <UpdateNoteDialog
                             presenceId={r.id}
                             currentNotes={r.notes}
@@ -529,28 +597,60 @@ export default function EventAdminDashboard({ eventId }: { eventId: string }) {
                           {formatInTimeZone(r.respondedAt, TIMEZONE, 'MMM d, yyyy • HH:mm')}
                         </TableCell>
                         <TableCell>
-                          <Select
-                            onValueChange={(val) =>
-                              updateRSVPStatus({
-                                responseId: r.id,
-                                status: val as RSVPStatus,
-                              })
-                            }
-                            defaultValue={r.status}
-                            disabled={isUpdatingRSVP}
-                          >
-                            <SelectTrigger className="w-[140px]">
-                              <SelectValue />
-                            </SelectTrigger>
-                            <SelectContent>
-                              {Object.values(RSVPStatus)
-                                .map((s) => (
-                                  <SelectItem key={s} value={s}>
-                                    {s === "YES" ? "WILL ATTEND" : s === "NO" ? `WON'T ATTEND` : s === "PERMIT" ? "ATTEND WITH NOTICE" : s.replace(/_/g, ' ')}
-                                  </SelectItem>
-                                ))}
-                            </SelectContent>
-                          </Select>
+                          <div className="flex gap-2">
+                            <Select
+                              onValueChange={(val) =>
+                                updateRSVPStatus({
+                                  responseId: r.id,
+                                  status: val as RSVPStatus,
+                                })
+                              }
+                              defaultValue={r.status}
+                              disabled={isUpdatingRSVP}
+                            >
+                              <SelectTrigger className="w-[140px]">
+                                <SelectValue />
+                              </SelectTrigger>
+                              <SelectContent>
+                                {Object.values(RSVPStatus)
+                                  .map((s) => (
+                                    <SelectItem key={s} value={s}>
+                                      {s === "YES" ? "WILL ATTEND" : s === "NO" ? `WON'T ATTEND` : s === "PERMIT" ? "ATTEND WITH NOTICE" : s.replace(/_/g, ' ')}
+                                    </SelectItem>
+                                  ))}
+                              </SelectContent>
+                            </Select>
+                            <Select
+                              onValueChange={(val) =>
+                                updateRsvpApproval({ responseId: r.id, status: val as 'APPROVED' | "PENDING" | 'REJECTED' })
+                              }
+                              disabled={isUpdatingApproval}
+                            >
+                              <SelectTrigger className="w-[140px]">
+                                <SelectValue defaultValue={r.approvalStatus} placeholder="Approve/Reject/Pending" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="APPROVED">
+                                  <div className="flex items-center gap-2">
+                                    <CheckCircle className="h-4 w-4 text-green-600" />
+                                    Approve
+                                  </div>
+                                </SelectItem>
+                                <SelectItem value="REJECTED">
+                                  <div className="flex items-center gap-2">
+                                    <XCircle className="h-4 w-4 text-red-600" />
+                                    Reject
+                                  </div>
+                                </SelectItem>
+                                <SelectItem value="PENDING">
+                                  <div className="flex items-center gap-2">
+                                    <TimerIcon className="h-4 w-4 text-yellow-600" />
+                                    Pending
+                                  </div>
+                                </SelectItem>
+                              </SelectContent>
+                            </Select>
+                          </div>
                         </TableCell>
                       </TableRow>
                     ))}

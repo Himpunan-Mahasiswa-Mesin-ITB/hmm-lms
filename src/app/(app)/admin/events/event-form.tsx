@@ -3,7 +3,6 @@
 
 'use client';
 
-import { toZonedTime, fromZonedTime } from 'date-fns-tz';
 
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
@@ -37,8 +36,8 @@ import { Loader2, Plus, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 import { eventInputSchema, type timelineItemSchema } from '~/lib/schema/event';
 import type { JsonArray } from '@prisma/client/runtime/library';
-import { TIMEZONE } from '~/constants/constants';
 import { Switch } from '~/components/ui/switch';
+import { fromDateTimeLocalValue, toDateTimeLocalValue } from '~/lib/utils';
 
 type EventDetail = NonNullable<RouterOutputs['event']['getEventById']>;
 
@@ -47,28 +46,6 @@ type EventFormValues = z.infer<typeof eventInputSchema>;
 interface EventFormProps {
   event?: EventDetail;
   mode: 'create' | 'edit';
-}
-
-// helper: format Date to 'YYYY-MM-DDTHH:mm' for datetime-local
-function toDateTimeLocalValue(d?: Date | null) {
-  if (!d) return '';
-  // Convert UTC date to target timezone
-  const zonedDate = toZonedTime(d, TIMEZONE);
-
-  const year = zonedDate.getFullYear();
-  const month = String(zonedDate.getMonth() + 1).padStart(2, '0');
-  const day = String(zonedDate.getDate()).padStart(2, '0');
-  const hours = String(zonedDate.getHours()).padStart(2, '0');
-  const minutes = String(zonedDate.getMinutes()).padStart(2, '0');
-  return `${year}-${month}-${day}T${hours}:${minutes}`;
-}
-
-// helper: parse input value from datetime-local back to Date
-function fromDateTimeLocalValue(v: string): Date {
-  if (!v) return new Date();
-  // v is "YYYY-MM-DDTHH:mm"
-  // Interpret this string as being in the target timezone, then convert to UTC
-  return fromZonedTime(v, TIMEZONE);
 }
 
 export default function EventForm({ event, mode }: EventFormProps) {

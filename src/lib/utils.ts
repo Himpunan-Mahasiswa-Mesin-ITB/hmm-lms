@@ -1,4 +1,6 @@
 import bcrypt from "bcryptjs";
+import { fromZonedTime, toZonedTime } from "date-fns-tz";
+import { TIMEZONE } from "~/constants/constants";
 import { env } from '~/env';
 
 const SALT_ROUNDS = 10; // The cost factor. Higher is more secure but slower. 10-12 is generally good.
@@ -39,3 +41,26 @@ export const getCdnUrl = (key: string) => {
   }
   return `${cdnEndpoint}/${key}`;
 };
+
+
+// helper: format Date to 'YYYY-MM-DDTHH:mm' for datetime-local
+export function toDateTimeLocalValue(d?: Date | null) {
+  if (!d) return '';
+  // Convert UTC date to target timezone
+  const zonedDate = toZonedTime(d, TIMEZONE);
+
+  const year = zonedDate.getFullYear();
+  const month = String(zonedDate.getMonth() + 1).padStart(2, '0');
+  const day = String(zonedDate.getDate()).padStart(2, '0');
+  const hours = String(zonedDate.getHours()).padStart(2, '0');
+  const minutes = String(zonedDate.getMinutes()).padStart(2, '0');
+  return `${year}-${month}-${day}T${hours}:${minutes}`;
+}
+
+// helper: parse input value from datetime-local back to Date
+export function fromDateTimeLocalValue(v: string): Date {
+  if (!v) return new Date();
+  // v is "YYYY-MM-DDTHH:mm"
+  // Interpret this string as being in the target timezone, then convert to UTC
+  return fromZonedTime(v, TIMEZONE);
+}

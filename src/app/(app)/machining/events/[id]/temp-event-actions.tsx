@@ -14,6 +14,9 @@ import {
   Clock,
   User,
   CheckCircle,
+  CheckCircle2,
+  AlertCircle,
+  Info,
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
@@ -21,12 +24,13 @@ import { toast } from 'sonner';
 
 import { Button } from '~/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card';
-import { DateTimePicker } from '~/components/ui/date-time-picker';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form';
 import { Input } from '~/components/ui/input';
 import { Textarea } from '~/components/ui/textarea';
 import { TIMEZONE } from '~/constants/constants';
 import { eventRSVPResponseMachiningSchema, type EventRSVPResponseMachining } from '~/lib/schema/event';
+import { fromDateTimeLocalValue } from '~/lib/utils';
+import { toDateTimeLocalValue } from '~/lib/utils';
 import { api, type RouterOutputs } from '~/trpc/react';
 
 type EventDetail = NonNullable<RouterOutputs['event']['getEventById']>;
@@ -145,6 +149,56 @@ export default function EventActions({ event }: { event: EventDetail }) {
 
   return (
     <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-6 pb-6">
+      <div className="space-y-4 rounded-lg border border-slate-200 bg-slate-50 p-4 dark:border-slate-800 dark:bg-slate-900/50">
+        <header className="flex flex-wrap gap-2 text-xs font-medium">
+          {form.formState.isValid ? (
+            <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2.5 py-0.5 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-400">
+              <CheckCircle2 className="h-3.5 w-3.5" /> Form Valid
+            </span>
+          ) : (
+            <span className="inline-flex items-center gap-1 rounded-full bg-rose-50 px-2.5 py-0.5 text-rose-700 dark:bg-rose-950/50 dark:text-rose-400">
+              <AlertCircle className="h-3.5 w-3.5" /> Form Invalid
+            </span>
+          )}
+
+          {form.formState.isDirty && (
+            <span className="inline-flex items-center gap-1 rounded-full bg-amber-50 px-2.5 py-0.5 text-amber-700 dark:bg-amber-950/50 dark:text-amber-400">
+              <Info className="h-3.5 w-3.5" /> Unsaved Changes
+            </span>
+          )}
+
+          {form.formState.isSubmitting && (
+            <span className="inline-flex items-center gap-1 rounded-full bg-blue-50 px-2.5 py-0.5 text-blue-700 dark:bg-blue-950/50 dark:text-blue-400">
+              <Loader2 className="h-3.5 w-3.5 animate-spin" /> Submitting...
+            </span>
+          )}
+
+          {form.formState.isSubmitSuccessful && (
+            <span className="inline-flex items-center gap-1 rounded-full bg-indigo-50 px-2.5 py-0.5 text-indigo-700 dark:bg-indigo-950/50 dark:text-indigo-400">
+              <CheckCircle2 className="h-3.5 w-3.5" /> Sent Successfully
+            </span>
+          )}
+        </header>
+
+        {Object.keys(form.formState.errors).length > 0 && (
+          <div className="space-y-2 rounded-md bg-rose-50/50 p-3 dark:bg-rose-950/10">
+            <p className="text-xs font-semibold text-rose-800 dark:text-rose-400">
+              Detected {Object.keys(form.formState.errors).length} error(s):
+            </p>
+            <ul className="space-y-1 text-sm text-rose-600 dark:text-rose-400">
+              {Object.entries(form.formState.errors).map(([fieldName, error]) => {
+                console.log("Error: ", error)
+                return (
+                  <li key={fieldName} className="flex items-start gap-1.5 text-xs">
+                    <span className="font-medium capitalize">{fieldName}:</span>
+                    <span>{error?.message as string} | {error?.root?.message}</span>
+                  </li>
+                )
+              })}
+            </ul>
+          </div>
+        )}
+      </div>
       {showRsvp && (
         <Card>
           <CardHeader>
@@ -197,11 +251,6 @@ export default function EventActions({ event }: { event: EventDetail }) {
                       <div>
                         <span className="font-medium">Jam Menyusul:</span>{' '}
                         {formatInTimeZone(event.userRsvp.catchingUpTime, TIMEZONE, 'HH:mm')}
-                      </div>
-                    )}
-                    {event.userRsvp.notes && (
-                      <div>
-                        <span className="font-medium">Catatan:</span> {event.userRsvp.notes}
                       </div>
                     )}
                   </div>
@@ -301,7 +350,7 @@ export default function EventActions({ event }: { event: EventDetail }) {
                         name="proofUrl"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Link Bukti</FormLabel>
+                            <FormLabel>URL Bukti</FormLabel>
                             <FormControl>
                               <Input
                                 placeholder="https://..."
@@ -315,7 +364,7 @@ export default function EventActions({ event }: { event: EventDetail }) {
                       />
 
                       {rsvpStatus === 'PERMIT' && (
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div className="grid grid-cols-2 gap-4">
                           <FormField
                             control={form.control}
                             name="leavingTime"
@@ -323,13 +372,11 @@ export default function EventActions({ event }: { event: EventDetail }) {
                               <FormItem>
                                 <FormLabel>Jam Meninggalkan</FormLabel>
                                 <FormControl>
-                                  <DateTimePicker
-                                    value={field.value}
-                                    onChange={(date) => {
-                                      field.onChange(date)
-                                      form.trigger()
-                                    }}
-                                    placeholder="Select date & time"
+                                  <Input
+                                    type="datetime-local"
+                                    value={toDateTimeLocalValue(field.value as unknown as Date)}
+                                    onChange={(e) => field.onChange(fromDateTimeLocalValue(e.target.value))}
+                                    disabled={isResponding || !isRsvpAvailable}
                                   />
                                 </FormControl>
                                 <FormMessage />
@@ -343,13 +390,11 @@ export default function EventActions({ event }: { event: EventDetail }) {
                               <FormItem>
                                 <FormLabel>Jam Menyusul</FormLabel>
                                 <FormControl>
-                                  <DateTimePicker
-                                    value={field.value}
-                                    onChange={(date) => {
-                                      field.onChange(date)
-                                      form.trigger()
-                                    }}
-                                    placeholder="Select date & time"
+                                  <Input
+                                    type="datetime-local"
+                                    value={toDateTimeLocalValue(field.value as unknown as Date)}
+                                    onChange={(e) => field.onChange(fromDateTimeLocalValue(e.target.value))}
+                                    disabled={isResponding || !isRsvpAvailable}
                                   />
                                 </FormControl>
                                 <FormMessage />
