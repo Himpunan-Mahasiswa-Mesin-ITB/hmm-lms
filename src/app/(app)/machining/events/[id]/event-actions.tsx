@@ -161,6 +161,7 @@ export default function EventActions({ event }: { event: EventDetail }) {
                   {event.userRsvp.approvalStatus === ApprovalStatus.PENDING &&
                     ' (Pending Approval)'}
                   {event.userRsvp.approvalStatus === ApprovalStatus.REJECTED && ' (Not Approved)'}
+                  {(event.userRsvp.status === 'PERMIT' || event.userRsvp.status === 'NO') && event.userRsvp.approvalStatus === ApprovalStatus.APPROVED && ' (Approved)'}
                 </div>
                 {(event.userRsvp.status === 'PERMIT' || event.userRsvp.status === 'NO') && (
                   <div className="p-3 bg-muted rounded-md text-sm space-y-2">
