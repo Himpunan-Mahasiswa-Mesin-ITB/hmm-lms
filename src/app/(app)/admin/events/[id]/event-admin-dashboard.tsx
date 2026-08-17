@@ -158,6 +158,24 @@ export default function EventAdminDashboard({ eventId }: { eventId: string }) {
       onError: (err) => toast.error(err.message),
     });
 
+  const { mutate: approveAllRsvps, isPending: isApprovingAll } =
+    api.event.approveAllRsvps.useMutation({
+      onSuccess: async () => {
+        toast.success('All pending RSVPs approved successfully');
+        await refetch();
+      },
+      onError: (err) => toast.error(err.message),
+    });
+
+  const { mutate: approveAllAttendances, isPending: isApprovingAllAttendances } =
+    api.event.approveAllAttendances.useMutation({
+      onSuccess: async () => {
+        toast.success('All pending attendances approved successfully');
+        await refetch();
+      },
+      onError: (err) => toast.error(err.message),
+    });
+
   // Calculate statistics
   const stats = useMemo(() => {
     if (!data) return { totalRsvps: 0, yesRsvps: 0, totalPresence: 0, presentCount: 0 };
@@ -179,7 +197,20 @@ export default function EventAdminDashboard({ eventId }: { eventId: string }) {
     if (!data) return;
 
     const worksheetData = [
-      ['Name', 'NIM', 'Status', 'Approval Status', 'Responded At', 'Email', 'ID Line', 'Reason', 'Proof URL', 'Leaving Time', 'Follow-up Time', 'Notes'],
+      [
+        'Name',
+        'NIM',
+        'Status',
+        'Approval Status',
+        'Responded At',
+        'Email',
+        'ID Line',
+        'Reason',
+        'Proof URL',
+        'Leaving Time',
+        'Follow-up Time',
+        'Notes',
+      ],
       ...data.rsvpResponses.map((r) => [
         r.user?.name ?? 'N/A',
         r.user?.nim ?? 'N/A',
@@ -353,6 +384,15 @@ export default function EventAdminDashboard({ eventId }: { eventId: string }) {
             <TabsContent value="attendance" className="space-y-4">
               <div className="flex max-sm:flex-col gap-2 justify-end">
                 <Button
+                  variant="default"
+                  size="sm"
+                  onClick={() => approveAllAttendances({ eventId })}
+                  disabled={isApprovingAllAttendances || !data?.presenceRecords.some((p) => p.status === 'PENDING_APPROVAL')}
+                >
+                  <CheckCircle className="h-4 w-4 mr-2" />
+                  Approve All Pending
+                </Button>
+                <Button
                   variant="outline"
                   size="sm"
                   onClick={handleExportAttendance}
@@ -461,6 +501,18 @@ export default function EventAdminDashboard({ eventId }: { eventId: string }) {
             {/* RSVPs Tab */}
             <TabsContent value="rsvps" className="space-y-4">
               <div className="flex max-sm:flex-col gap-2 justify-end">
+                <Button
+                  variant="default"
+                  size="sm"
+                  onClick={() => approveAllRsvps({ eventId })}
+                  disabled={
+                    isApprovingAll ||
+                    !data?.rsvpResponses.some((r) => r.approvalStatus === 'PENDING')
+                  }
+                >
+                  <CheckCircle className="h-4 w-4 mr-2" />
+                  Approve All Pending
+                </Button>
                 <Button
                   variant="outline"
                   size="sm"
@@ -579,10 +631,14 @@ export default function EventAdminDashboard({ eventId }: { eventId: string }) {
                           )}
                         </TableCell>
                         <TableCell className="text-sm">
-                          {r.leavingTime ? formatInTimeZone(r.leavingTime, TIMEZONE, 'MMM d, HH:mm') : '-'}
+                          {r.leavingTime
+                            ? formatInTimeZone(r.leavingTime, TIMEZONE, 'MMM d, HH:mm')
+                            : '-'}
                         </TableCell>
                         <TableCell className="text-sm">
-                          {r.catchingUpTime ? formatInTimeZone(r.catchingUpTime, TIMEZONE, 'MMM d, HH:mm') : '-'}
+                          {r.catchingUpTime
+                            ? formatInTimeZone(r.catchingUpTime, TIMEZONE, 'MMM d, HH:mm')
+                            : '-'}
                         </TableCell>
                         <TableCell>
                           <UpdateNoteDialog
@@ -612,22 +668,33 @@ export default function EventAdminDashboard({ eventId }: { eventId: string }) {
                                 <SelectValue />
                               </SelectTrigger>
                               <SelectContent>
-                                {Object.values(RSVPStatus)
-                                  .map((s) => (
-                                    <SelectItem key={s} value={s}>
-                                      {s === "YES" ? "WILL ATTEND" : s === "NO" ? `WON'T ATTEND` : s === "PERMIT" ? "ATTEND WITH NOTICE" : s.replace(/_/g, ' ')}
-                                    </SelectItem>
-                                  ))}
+                                {Object.values(RSVPStatus).map((s) => (
+                                  <SelectItem key={s} value={s}>
+                                    {s === 'YES'
+                                      ? 'WILL ATTEND'
+                                      : s === 'NO'
+                                        ? `WON'T ATTEND`
+                                        : s === 'PERMIT'
+                                          ? 'ATTEND WITH NOTICE'
+                                          : s.replace(/_/g, ' ')}
+                                  </SelectItem>
+                                ))}
                               </SelectContent>
                             </Select>
                             <Select
                               onValueChange={(val) =>
-                                updateRsvpApproval({ responseId: r.id, status: val as 'APPROVED' | "PENDING" | 'REJECTED' })
+                                updateRsvpApproval({
+                                  responseId: r.id,
+                                  status: val as 'APPROVED' | 'PENDING' | 'REJECTED',
+                                })
                               }
                               disabled={isUpdatingApproval}
                             >
                               <SelectTrigger className="w-[140px]">
-                                <SelectValue defaultValue={r.approvalStatus} placeholder="Approve/Reject/Pending" />
+                                <SelectValue
+                                  defaultValue={r.approvalStatus}
+                                  placeholder="Approve/Reject/Pending"
+                                />
                               </SelectTrigger>
                               <SelectContent>
                                 <SelectItem value="APPROVED">
