@@ -145,6 +145,9 @@ HMM-LMS is a modern web application built to serve the academic and community ne
 
 - **[Tailwind CSS](https://tailwindcss.com/)** - Utility-first CSS framework
 - **[shadcn/ui](https://ui.shadcn.com/)** - Re-usable component library
+- **[Lucide React](https://lucide.dev/)** - Beautiful SVG icons
+- **[Framer Motion](https://www.framer.com/motion/)** - Animation library
+- **[TanStack Table](https://tanstack.com/table/latest)** - Data table component
 - **[TipTap](https://tiptap.dev/)** - Rich text editor
 
 ### **Form \& Validation**
