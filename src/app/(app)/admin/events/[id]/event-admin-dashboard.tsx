@@ -2,6 +2,7 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { PresenceStatus, RSVPStatus } from '@prisma/client';
+import { type ColumnDef } from '@tanstack/react-table';
 import { formatInTimeZone } from 'date-fns-tz';
 import { Download, Users, CheckCircle, XCircle, Clock, FileText, TimerIcon } from 'lucide-react';
 import { useMemo, useState } from 'react';
@@ -9,6 +10,9 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import * as XLSX from 'xlsx';
 
+import { DataTable } from '~/components/data-table';
+import { DataTableColumnHeader } from '~/components/data-table-column-header';
+import { type DataTableFeatures } from '~/components/data-table-features';
 import { Avatar, AvatarFallback } from '~/components/ui/avatar';
 import { Badge } from '~/components/ui/badge';
 import { Button } from '~/components/ui/button';
@@ -37,19 +41,43 @@ import {
   SelectTrigger,
   SelectValue,
 } from '~/components/ui/select';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '~/components/ui/table';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '~/components/ui/tabs';
 import { Textarea } from '~/components/ui/textarea';
 import { TIMEZONE } from '~/constants/constants';
 import { updateNoteSchema, type UpdateNoteForm } from '~/lib/schema/event';
 import { api } from '~/trpc/react';
+
+type AttendanceRecord = {
+  id: string;
+  user: {
+    name: string;
+    nim: string;
+    email: string;
+  };
+  checkedInAt: Date | null;
+  status: PresenceStatus;
+  notes: string | null;
+};
+
+type RSVPResponse = {
+  id: string;
+  user: {
+    name: string;
+    id: string;
+    email: string;
+    nim: string;
+    image: string | null;
+  } | null;
+  status: RSVPStatus;
+  approvalStatus: string;
+  respondedAt: Date;
+  idLine: string | null;
+  reason: string | null;
+  proofUrl: string | null;
+  leavingTime: Date | null;
+  catchingUpTime: Date | null;
+  notes: string | null;
+};
 
 function UpdateNoteDialog({
   presenceId,
@@ -98,7 +126,7 @@ function UpdateNoteDialog({
                 <FormItem>
                   <FormLabel>Notes</FormLabel>
                   <FormControl>
-                    <Textarea placeholder="Enter notes..." className="min-h-[100px]" {...field} />
+                    <Textarea placeholder="Enter notes..." className="min-h-25" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -175,6 +203,348 @@ export default function EventAdminDashboard({ eventId }: { eventId: string }) {
       },
       onError: (err) => toast.error(err.message),
     });
+
+  const attendanceColumns: ColumnDef<DataTableFeatures, AttendanceRecord>[] = useMemo(() => {
+    return [
+      {
+        accessorKey: 'user.name',
+        header: ({ column }) => <DataTableColumnHeader column={column} title="User Name" />,
+        cell: ({ row }) => (
+          <div className="flex items-center gap-3">
+            <Avatar className="h-8 w-8">
+              <AvatarFallback>{row.original.user.name?.charAt(0)}</AvatarFallback>
+            </Avatar>
+            <span className="font-medium">{row.original.user.name}</span>
+          </div>
+        ),
+      },
+      {
+        accessorKey: 'user.nim',
+        header: ({ column }) => <DataTableColumnHeader column={column} title="NIM" />,
+        cell: ({ row }) => <span className="text-muted-foreground">{row.original.user.nim}</span>,
+      },
+      {
+        accessorKey: 'user.email',
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Email" />,
+        cell: ({ row }) => <span className="text-muted-foreground">{row.original.user.email}</span>,
+      },
+      {
+        accessorKey: 'checkedInAt',
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Check-in Time" />,
+        cell: ({ row }) => (
+          <span className="text-sm">
+            {row.original.checkedInAt
+              ? formatInTimeZone(row.original.checkedInAt, TIMEZONE, 'MMM d, HH:mm')
+              : 'Not checked in'}
+          </span>
+        ),
+      },
+      {
+        accessorKey: 'status',
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Status" />,
+        cell: ({ row }) => (
+          <Badge
+            variant={
+              row.original.status === PresenceStatus.PRESENT
+                ? 'default'
+                : row.original.status === PresenceStatus.LATE
+                  ? 'secondary'
+                  : 'outline'
+            }
+          >
+            {row.original.status.replace(/_/g, ' ')}
+          </Badge>
+        ),
+      },
+      {
+        accessorKey: 'notes',
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Notes" />,
+        cell: ({ row }) => (
+          <UpdateNoteDialog
+            presenceId={row.original.id}
+            currentNotes={row.original.notes}
+            onUpdate={(data) => updatePresenceNote(data)}
+            isPending={isUpdatingNote}
+            type="attendance"
+          />
+        ),
+      },
+      {
+        id: 'actions',
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Actions" />,
+        cell: ({ row }) => (
+          <Select
+            onValueChange={(val) =>
+              updatePresence({
+                presenceId: row.original.id,
+                status: val as PresenceStatus,
+              })
+            }
+            defaultValue={row.original.status}
+            disabled={isUpdatingPresence}
+          >
+            <SelectTrigger className="w-35">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {Object.values(PresenceStatus)
+                .filter((s) => s !== 'PENDING_APPROVAL' && s !== 'REJECTED')
+                .map((s) => (
+                  <SelectItem key={s} value={s}>
+                    {s.replace(/_/g, ' ')}
+                  </SelectItem>
+                ))}
+            </SelectContent>
+          </Select>
+        ),
+      },
+    ];
+  }, [updatePresence, isUpdatingPresence, updatePresenceNote, isUpdatingNote]);
+
+  const rsvpColumns: ColumnDef<DataTableFeatures, RSVPResponse>[] = useMemo(() => {
+    return [
+      {
+        accessorKey: 'user.name',
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Participant" />,
+        cell: ({ row }) => (
+          <div className="flex items-center gap-3">
+            <Avatar className="h-8 w-8">
+              <AvatarFallback>{row.original.user?.name?.charAt(0)}</AvatarFallback>
+            </Avatar>
+            <span className="font-medium">{row.original.user?.name}</span>
+          </div>
+        ),
+      },
+      {
+        accessorKey: 'user.nim',
+        header: ({ column }) => <DataTableColumnHeader column={column} title="NIM" />,
+        cell: ({ row }) => <span className="text-muted-foreground">{row.original.user?.nim}</span>,
+      },
+      {
+        accessorKey: 'user.email',
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Email" />,
+        cell: ({ row }) => (
+          <span className="text-muted-foreground">{row.original.user?.email}</span>
+        ),
+      },
+      {
+        accessorKey: 'status',
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Response" />,
+        cell: ({ row }) => (
+          <Badge
+            variant={
+              row.original.status === 'YES'
+                ? 'default'
+                : row.original.status === 'MAYBE'
+                  ? 'secondary'
+                  : row.original.status === 'PERMIT'
+                    ? 'secondary'
+                    : 'outline'
+            }
+          >
+            {row.original.status === 'YES' ? (
+              <>
+                <CheckCircle className="h-3 w-3 mr-1" /> Will Attend
+              </>
+            ) : row.original.status === 'MAYBE' ? (
+              <>
+                <Clock className="h-3 w-3 mr-1" /> Maybe
+              </>
+            ) : row.original.status === 'PERMIT' ? (
+              <>
+                <Clock className="h-3 w-3 mr-1" /> Attending with Notice
+              </>
+            ) : (
+              <>
+                <XCircle className="h-3 w-3 mr-1" /> Won&apos;t Attend
+              </>
+            )}
+          </Badge>
+        ),
+      },
+      {
+        accessorKey: 'approvalStatus',
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Approval Status" />,
+        cell: ({ row }) => (
+          <Badge
+            variant={
+              row.original.approvalStatus === 'APPROVED'
+                ? 'default'
+                : row.original.approvalStatus === 'REJECTED'
+                  ? 'destructive'
+                  : 'secondary'
+            }
+          >
+            {row.original.approvalStatus === 'APPROVED' ? (
+              <>
+                <CheckCircle className="h-3 w-3 mr-1" /> Approved
+              </>
+            ) : row.original.approvalStatus === 'REJECTED' ? (
+              <>
+                <XCircle className="h-3 w-3 mr-1" /> Rejected
+              </>
+            ) : (
+              <>
+                <Clock className="h-3 w-3 mr-1" /> Pending
+              </>
+            )}
+          </Badge>
+        ),
+      },
+      {
+        accessorKey: 'idLine',
+        header: ({ column }) => <DataTableColumnHeader column={column} title="ID Line" />,
+        cell: ({ row }) => <span className="text-sm">{row.original.idLine || '-'}</span>,
+      },
+      {
+        accessorKey: 'reason',
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Reason" />,
+        cell: ({ row }) => <span className="text-sm">{row.original.reason || '-'}</span>,
+      },
+      {
+        accessorKey: 'proofUrl',
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Proof URL" />,
+        cell: ({ row }) => (
+          <span className="text-sm">
+            {row.original.proofUrl ? (
+              <a
+                href={row.original.proofUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-600 hover:underline"
+              >
+                View Proof
+              </a>
+            ) : (
+              '-'
+            )}
+          </span>
+        ),
+      },
+      {
+        accessorKey: 'leavingTime',
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Leaving Time" />,
+        cell: ({ row }) => (
+          <span className="text-sm">
+            {row.original.leavingTime
+              ? formatInTimeZone(row.original.leavingTime, TIMEZONE, 'MMM d, HH:mm')
+              : '-'}
+          </span>
+        ),
+      },
+      {
+        accessorKey: 'catchingUpTime',
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Follow-up Time" />,
+        cell: ({ row }) => (
+          <span className="text-sm">
+            {row.original.catchingUpTime
+              ? formatInTimeZone(row.original.catchingUpTime, TIMEZONE, 'MMM d, HH:mm')
+              : '-'}
+          </span>
+        ),
+      },
+      {
+        accessorKey: 'notes',
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Notes" />,
+        cell: ({ row }) => (
+          <UpdateNoteDialog
+            presenceId={row.original.id}
+            currentNotes={row.original.notes}
+            onUpdate={(data) => updatePresenceNote(data)}
+            isPending={isUpdatingNote}
+            type="rsvp"
+          />
+        ),
+      },
+      {
+        accessorKey: 'respondedAt',
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Responded At" />,
+        cell: ({ row }) => (
+          <span className="text-sm text-muted-foreground">
+            {formatInTimeZone(row.original.respondedAt, TIMEZONE, 'MMM d, yyyy • HH:mm')}
+          </span>
+        ),
+      },
+      {
+        id: 'actions',
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Actions" />,
+        cell: ({ row }) => (
+          <div className="flex gap-2">
+            <Select
+              onValueChange={(val) =>
+                updateRSVPStatus({
+                  responseId: row.original.id,
+                  status: val as RSVPStatus,
+                })
+              }
+              defaultValue={row.original.status}
+              disabled={isUpdatingRSVP}
+            >
+              <SelectTrigger className="w-35">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {Object.values(RSVPStatus).map((s) => (
+                  <SelectItem key={s} value={s}>
+                    {s === 'YES'
+                      ? 'WILL ATTEND'
+                      : s === 'NO'
+                        ? `WON'T ATTEND`
+                        : s === 'PERMIT'
+                          ? 'ATTEND WITH NOTICE'
+                          : s.replace(/_/g, ' ')}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <Select
+              onValueChange={(val) =>
+                updateRsvpApproval({
+                  responseId: row.original.id,
+                  status: val as 'APPROVED' | 'PENDING' | 'REJECTED',
+                })
+              }
+              disabled={isUpdatingApproval}
+            >
+              <SelectTrigger className="w-35">
+                <SelectValue
+                  defaultValue={row.original.approvalStatus}
+                  placeholder="Approve/Reject/Pending"
+                />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="APPROVED">
+                  <div className="flex items-center gap-2">
+                    <CheckCircle className="h-4 w-4 text-green-600" />
+                    Approve
+                  </div>
+                </SelectItem>
+                <SelectItem value="REJECTED">
+                  <div className="flex items-center gap-2">
+                    <XCircle className="h-4 w-4 text-red-600" />
+                    Reject
+                  </div>
+                </SelectItem>
+                <SelectItem value="PENDING">
+                  <div className="flex items-center gap-2">
+                    <TimerIcon className="h-4 w-4 text-yellow-600" />
+                    Pending
+                  </div>
+                </SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        ),
+      },
+    ];
+  }, [
+    updateRSVPStatus,
+    isUpdatingRSVP,
+    updateRsvpApproval,
+    isUpdatingApproval,
+    updatePresenceNote,
+    isUpdatingNote,
+  ]);
 
   // Calculate statistics
   const stats = useMemo(() => {
@@ -382,12 +752,15 @@ export default function EventAdminDashboard({ eventId }: { eventId: string }) {
 
             {/* Attendance Tab */}
             <TabsContent value="attendance" className="space-y-4">
-              <div className="flex max-sm:flex-col gap-2 justify-end">
+              <div className="flex max-sm:flex-col gap-2 justify-end px-2">
                 <Button
                   variant="default"
                   size="sm"
                   onClick={() => approveAllAttendances({ eventId })}
-                  disabled={isApprovingAllAttendances || !data?.presenceRecords.some((p) => p.status === 'PENDING_APPROVAL')}
+                  disabled={
+                    isApprovingAllAttendances ||
+                    !data?.presenceRecords.some((p) => p.status === 'PENDING_APPROVAL')
+                  }
                 >
                   <CheckCircle className="h-4 w-4 mr-2" />
                   Approve All Pending
@@ -408,93 +781,7 @@ export default function EventAdminDashboard({ eventId }: { eventId: string }) {
                   No attendance records yet.
                 </div>
               ) : (
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Participant</TableHead>
-                      <TableHead>NIM</TableHead>
-                      <TableHead>Email</TableHead>
-                      <TableHead>Check-in Time</TableHead>
-                      <TableHead>Status</TableHead>
-                      <TableHead>Notes</TableHead>
-                      <TableHead>Actions</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {data?.presenceRecords.map((p) => (
-                      <TableRow key={p.id}>
-                        <TableCell>
-                          <div className="flex items-center gap-3">
-                            <Avatar className="h-8 w-8">
-                              <AvatarFallback>{p.user.name?.charAt(0)}</AvatarFallback>
-                            </Avatar>
-                            <span className="font-medium">{p.user.name}</span>
-                          </div>
-                        </TableCell>
-                        <TableCell className="text-muted-foreground">{p.user.nim}</TableCell>
-                        <TableCell className="text-muted-foreground">{p.user.email}</TableCell>
-                        <TableCell className="text-sm">
-                          {p.checkedInAt
-                            ? formatInTimeZone(p.checkedInAt, TIMEZONE, 'MMM d, HH:mm')
-                            : 'Not checked in'}
-                        </TableCell>
-                        <TableCell>
-                          <Badge
-                            variant={
-                              p.status === PresenceStatus.PRESENT
-                                ? 'default'
-                                : p.status === PresenceStatus.LATE
-                                  ? 'secondary'
-                                  : 'outline'
-                            }
-                          >
-                            {p.status.replace(/_/g, ' ')}
-                          </Badge>
-                        </TableCell>
-                        <TableCell>
-                          <UpdateNoteDialog
-                            presenceId={p.id}
-                            currentNotes={p.notes}
-                            onUpdate={updatePresenceNote}
-                            // onUpdate={(data) =>
-                            //   updatePresenceNote({
-                            //     presenceId: data.presenceId,
-                            //     notes: data.notes,
-                            //   })
-                            // }
-                            isPending={isUpdatingNote}
-                            type="attendance"
-                          />
-                        </TableCell>
-                        <TableCell className="text-right">
-                          <Select
-                            onValueChange={(val) =>
-                              updatePresence({
-                                presenceId: p.id,
-                                status: val as PresenceStatus,
-                              })
-                            }
-                            defaultValue={p.status}
-                            disabled={isUpdatingPresence}
-                          >
-                            <SelectTrigger className="w-[140px]">
-                              <SelectValue />
-                            </SelectTrigger>
-                            <SelectContent>
-                              {Object.values(PresenceStatus)
-                                .filter((s) => s !== 'PENDING_APPROVAL' && s !== 'REJECTED')
-                                .map((s) => (
-                                  <SelectItem key={s} value={s}>
-                                    {s.replace(/_/g, ' ')}
-                                  </SelectItem>
-                                ))}
-                            </SelectContent>
-                          </Select>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
+                <DataTable columns={attendanceColumns} data={data?.presenceRecords || []} />
               )}
             </TabsContent>
 
@@ -527,202 +814,7 @@ export default function EventAdminDashboard({ eventId }: { eventId: string }) {
               {data?.rsvpResponses.length === 0 ? (
                 <div className="text-center py-8 text-muted-foreground">No RSVP responses yet.</div>
               ) : (
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Participant</TableHead>
-                      <TableHead>NIM</TableHead>
-                      <TableHead>Email</TableHead>
-                      <TableHead>Response</TableHead>
-                      <TableHead>Approval Status</TableHead>
-                      <TableHead>ID Line</TableHead>
-                      <TableHead>Reason</TableHead>
-                      <TableHead>Proof URL</TableHead>
-                      <TableHead>Leaving Time</TableHead>
-                      <TableHead>Follow-up Time</TableHead>
-                      <TableHead>Notes</TableHead>
-                      <TableHead>Responded At</TableHead>
-                      <TableHead>Actions</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {data?.rsvpResponses.map((r) => (
-                      <TableRow key={r.id}>
-                        <TableCell>
-                          <div className="flex items-center gap-3">
-                            <Avatar className="h-8 w-8">
-                              <AvatarFallback>{r.user?.name?.charAt(0)}</AvatarFallback>
-                            </Avatar>
-                            <span className="font-medium">{r.user?.name}</span>
-                          </div>
-                        </TableCell>
-                        <TableCell className="text-muted-foreground">{r.user?.nim}</TableCell>
-                        <TableCell className="text-muted-foreground">{r.user?.email}</TableCell>
-                        <TableCell>
-                          <Badge
-                            variant={
-                              r.status === 'YES'
-                                ? 'default'
-                                : r.status === 'MAYBE'
-                                  ? 'secondary'
-                                  : r.status === 'PERMIT'
-                                    ? 'secondary'
-                                    : 'outline'
-                            }
-                          >
-                            {r.status === 'YES' ? (
-                              <>
-                                <CheckCircle className="h-3 w-3 mr-1" /> Will Attend
-                              </>
-                            ) : r.status === 'MAYBE' ? (
-                              <>
-                                <Clock className="h-3 w-3 mr-1" /> Maybe
-                              </>
-                            ) : r.status === 'PERMIT' ? (
-                              <>
-                                <Clock className="h-3 w-3 mr-1" /> Attending with Notice
-                              </>
-                            ) : (
-                              <>
-                                <XCircle className="h-3 w-3 mr-1" /> Won&apos;t Attend
-                              </>
-                            )}
-                          </Badge>
-                        </TableCell>
-                        <TableCell>
-                          <Badge
-                            variant={
-                              r.approvalStatus === 'APPROVED'
-                                ? 'default'
-                                : r.approvalStatus === 'REJECTED'
-                                  ? 'destructive'
-                                  : 'secondary'
-                            }
-                          >
-                            {r.approvalStatus === 'APPROVED' ? (
-                              <>
-                                <CheckCircle className="h-3 w-3 mr-1" /> Approved
-                              </>
-                            ) : r.approvalStatus === 'REJECTED' ? (
-                              <>
-                                <XCircle className="h-3 w-3 mr-1" /> Rejected
-                              </>
-                            ) : (
-                              <>
-                                <Clock className="h-3 w-3 mr-1" /> Pending
-                              </>
-                            )}
-                          </Badge>
-                        </TableCell>
-                        <TableCell className="text-sm">{r.idLine || '-'}</TableCell>
-                        <TableCell className="text-sm">{r.reason || '-'}</TableCell>
-                        <TableCell className="text-sm">
-                          {r.proofUrl ? (
-                            <a
-                              href={r.proofUrl}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="text-blue-600 hover:underline"
-                            >
-                              View Proof
-                            </a>
-                          ) : (
-                            '-'
-                          )}
-                        </TableCell>
-                        <TableCell className="text-sm">
-                          {r.leavingTime
-                            ? formatInTimeZone(r.leavingTime, TIMEZONE, 'MMM d, HH:mm')
-                            : '-'}
-                        </TableCell>
-                        <TableCell className="text-sm">
-                          {r.catchingUpTime
-                            ? formatInTimeZone(r.catchingUpTime, TIMEZONE, 'MMM d, HH:mm')
-                            : '-'}
-                        </TableCell>
-                        <TableCell>
-                          <UpdateNoteDialog
-                            presenceId={r.id}
-                            currentNotes={r.notes}
-                            onUpdate={updatePresenceNote}
-                            isPending={isUpdatingNote}
-                            type="rsvp"
-                          />
-                        </TableCell>
-                        <TableCell className="text-sm text-muted-foreground">
-                          {formatInTimeZone(r.respondedAt, TIMEZONE, 'MMM d, yyyy • HH:mm')}
-                        </TableCell>
-                        <TableCell>
-                          <div className="flex gap-2">
-                            <Select
-                              onValueChange={(val) =>
-                                updateRSVPStatus({
-                                  responseId: r.id,
-                                  status: val as RSVPStatus,
-                                })
-                              }
-                              defaultValue={r.status}
-                              disabled={isUpdatingRSVP}
-                            >
-                              <SelectTrigger className="w-[140px]">
-                                <SelectValue />
-                              </SelectTrigger>
-                              <SelectContent>
-                                {Object.values(RSVPStatus).map((s) => (
-                                  <SelectItem key={s} value={s}>
-                                    {s === 'YES'
-                                      ? 'WILL ATTEND'
-                                      : s === 'NO'
-                                        ? `WON'T ATTEND`
-                                        : s === 'PERMIT'
-                                          ? 'ATTEND WITH NOTICE'
-                                          : s.replace(/_/g, ' ')}
-                                  </SelectItem>
-                                ))}
-                              </SelectContent>
-                            </Select>
-                            <Select
-                              onValueChange={(val) =>
-                                updateRsvpApproval({
-                                  responseId: r.id,
-                                  status: val as 'APPROVED' | 'PENDING' | 'REJECTED',
-                                })
-                              }
-                              disabled={isUpdatingApproval}
-                            >
-                              <SelectTrigger className="w-[140px]">
-                                <SelectValue
-                                  defaultValue={r.approvalStatus}
-                                  placeholder="Approve/Reject/Pending"
-                                />
-                              </SelectTrigger>
-                              <SelectContent>
-                                <SelectItem value="APPROVED">
-                                  <div className="flex items-center gap-2">
-                                    <CheckCircle className="h-4 w-4 text-green-600" />
-                                    Approve
-                                  </div>
-                                </SelectItem>
-                                <SelectItem value="REJECTED">
-                                  <div className="flex items-center gap-2">
-                                    <XCircle className="h-4 w-4 text-red-600" />
-                                    Reject
-                                  </div>
-                                </SelectItem>
-                                <SelectItem value="PENDING">
-                                  <div className="flex items-center gap-2">
-                                    <TimerIcon className="h-4 w-4 text-yellow-600" />
-                                    Pending
-                                  </div>
-                                </SelectItem>
-                              </SelectContent>
-                            </Select>
-                          </div>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
+                <DataTable columns={rsvpColumns} data={data?.rsvpResponses || []} />
               )}
             </TabsContent>
           </Tabs>

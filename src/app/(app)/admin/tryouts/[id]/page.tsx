@@ -1,21 +1,16 @@
-// ~/app/admin/tryouts/[id]/page.tsx
-import { auth } from "~/server/auth";
-import { redirect } from "next/navigation";
-import { Role } from "@prisma/client";
-import { api } from "~/trpc/server";
-import { Button } from "~/components/ui/button";
-import { Badge } from "~/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
-import Link from "next/link";
-import {
-  Edit,
-  Users,
-  Clock,
-  BookOpen,
-  BarChart3
-} from "lucide-react";
+import { Role } from '@prisma/client';
+import { Edit, Users, Clock, BookOpen, BarChart3 } from 'lucide-react';
+import Link from 'next/link';
+import { redirect } from 'next/navigation';
+
+import { Badge } from '~/components/ui/badge';
+import { Button } from '~/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card';
+import { auth } from '~/server/auth';
+import { api } from '~/trpc/server';
+
 import TryoutStatistics from './analytics';
-import TryoutAttempts from './attemp'; 
+import TryoutAttempts from './attemp';
 import TryoutQuestions from './question';
 
 interface TryoutDetailsPageProps {
@@ -28,7 +23,7 @@ export default async function TryoutDetailsPage({ params }: TryoutDetailsPagePro
   const session = await auth();
 
   if (!session || (session.user.role !== Role.ADMIN && session.user.role !== Role.SUPERADMIN)) {
-    redirect("/");
+    redirect('/');
   }
   const { id } = await params;
 
@@ -47,8 +42,8 @@ export default async function TryoutDetailsPage({ params }: TryoutDetailsPagePro
           </div>
         </div>
         <div className="flex items-center gap-2">
-          <Badge variant={tryout.isActive ? "default" : "secondary"}>
-            {tryout.isActive ? "Active" : "Inactive"}
+          <Badge variant={tryout.isActive ? 'default' : 'secondary'}>
+            {tryout.isActive ? 'Active' : 'Inactive'}
           </Badge>
           <Button variant="outline" size="sm" asChild>
             <Link href={`/admin/tryouts/${tryout.id}/edit`}>
@@ -95,7 +90,7 @@ export default async function TryoutDetailsPage({ params }: TryoutDetailsPagePro
           <CardContent>
             <div className="text-2xl font-bold">{tryout.statistics.averageScore}%</div>
             <p className="text-xs text-muted-foreground">
-              {tryout.statistics.completedAttempts > 0 ? "From completed attempts" : "No data"}
+              {tryout.statistics.completedAttempts > 0 ? 'From completed attempts' : 'No data'}
             </p>
           </CardContent>
         </Card>
@@ -107,11 +102,9 @@ export default async function TryoutDetailsPage({ params }: TryoutDetailsPagePro
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              {tryout.duration ? `${tryout.duration}m` : "No limit"}
+              {tryout.duration ? `${tryout.duration}m` : 'No limit'}
             </div>
-            <p className="text-xs text-muted-foreground">
-              Time allowed
-            </p>
+            <p className="text-xs text-muted-foreground">Time allowed</p>
           </CardContent>
         </Card>
       </div>
@@ -141,6 +134,6 @@ export default async function TryoutDetailsPage({ params }: TryoutDetailsPagePro
 }
 
 export const metadata = {
-  title: "Tryout Details",
-  description: "View details of a specific tryout",
+  title: 'Tryout Details',
+  description: 'View details of a specific tryout',
 };

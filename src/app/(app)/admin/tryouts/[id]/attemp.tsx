@@ -1,25 +1,19 @@
-// ~/app/admin/tryouts/_components/tryout-attempts.tsx
 'use client';
 
+import { type ColumnDef } from '@tanstack/react-table';
 import { format, formatDistanceToNow } from 'date-fns';
-import { Eye, Clock, CheckCircle, XCircle, Download } from 'lucide-react';
-import Link from 'next/link';
-import { useState } from 'react';
+import { Clock, CheckCircle, XCircle, Download } from 'lucide-react';
+import { useMemo } from 'react';
 import { toast } from 'sonner';
 import * as XLSX from 'xlsx';
 
+import { DataTable } from '~/components/data-table';
+import { DataTableColumnHeader } from '~/components/data-table-column-header';
+import { type DataTableFeatures } from '~/components/data-table-features';
 import { Avatar, AvatarFallback } from '~/components/ui/avatar';
 import { Badge } from '~/components/ui/badge';
 import { Button } from '~/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '~/components/ui/table';
 import type { RouterOutputs } from '~/trpc/react';
 type Attempt = RouterOutputs['tryout']['getDetailedById']['attempts'][number];
 
@@ -28,8 +22,89 @@ interface TryoutAttemptsProps {
 }
 
 export default function TryoutAttempts({ attempts }: TryoutAttemptsProps) {
-  const [showAll, setShowAll] = useState(false);
-  const displayedAttempts = showAll ? attempts : attempts.slice(0, 10);
+  const columns: ColumnDef<DataTableFeatures, Attempt>[] = useMemo(() => {
+    return [
+      {
+        accessorKey: 'user.name',
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Student" />,
+        cell: ({ row }) => (
+          <div className="flex items-center gap-3">
+            <Avatar className="h-8 w-8">
+              <AvatarFallback>{row.original.user.name?.charAt(0) || 'U'}</AvatarFallback>
+            </Avatar>
+            <div>
+              <div className="font-medium">{row.original.user.name}</div>
+              <div className="text-sm text-muted-foreground">{row.original.user.nim}</div>
+            </div>
+          </div>
+        ),
+      },
+      {
+        accessorKey: 'isCompleted',
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Status" />,
+        cell: ({ row }) => (
+          <Badge
+            variant={row.original.isCompleted ? 'default' : 'secondary'}
+            className="flex items-center gap-1 w-fit"
+          >
+            {row.original.isCompleted ? (
+              <CheckCircle className="w-3 h-3" />
+            ) : (
+              <XCircle className="w-3 h-3" />
+            )}
+            {row.original.isCompleted ? 'Completed' : 'In Progress'}
+          </Badge>
+        ),
+      },
+      {
+        accessorKey: 'score',
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Score" />,
+        cell: ({ row }) => {
+          const scorePercentage =
+            row.original.maxScore > 0
+              ? Math.round((row.original.score / row.original.maxScore) * 100)
+              : 0;
+          return row.original.isCompleted ? (
+            <div className="flex items-center gap-2">
+              <span className="font-medium">{scorePercentage}%</span>
+              <span className="text-sm text-muted-foreground">
+                ({row.original.score}/{row.original.maxScore})
+              </span>
+            </div>
+          ) : (
+            <span className="text-muted-foreground">-</span>
+          );
+        },
+      },
+      {
+        accessorKey: 'startedAt',
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Started" />,
+        cell: ({ row }) => (
+          <div className="text-sm">
+            {formatDistanceToNow(new Date(row.original.startedAt), { addSuffix: true })}
+          </div>
+        ),
+      },
+      {
+        accessorKey: 'duration',
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Duration" />,
+        cell: ({ row }) => {
+          const duration = row.original.endedAt
+            ? Math.round(
+                (new Date(row.original.endedAt).getTime() -
+                  new Date(row.original.startedAt).getTime()) /
+                  (1000 * 60),
+              )
+            : null;
+          return duration ? (
+            <span className="text-sm">{duration}m</span>
+          ) : (
+            <span className="text-muted-foreground">-</span>
+          );
+        },
+      },
+    ];
+  }, []);
 
   const handleExportAttempts = () => {
     if (!attempts) return;
@@ -95,90 +170,9 @@ export default function TryoutAttempts({ attempts }: TryoutAttemptsProps) {
           <Download className="h-4 w-4 mr-2" />
           Export Attempts
         </Button>
-        {attempts.length > 10 && (
-          <Button variant="outline" size="sm" onClick={() => setShowAll(!showAll)}>
-            {showAll ? 'Show Less' : 'Show All'}
-          </Button>
-        )}
       </CardHeader>
       <CardContent>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Student</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Score</TableHead>
-              <TableHead>Started</TableHead>
-              <TableHead>Duration</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {displayedAttempts.map((attempt) => {
-              const duration = attempt.endedAt
-                ? Math.round(
-                    (new Date(attempt.endedAt).getTime() - new Date(attempt.startedAt).getTime()) /
-                      (1000 * 60),
-                  )
-                : null;
-
-              const scorePercentage =
-                attempt.maxScore > 0 ? Math.round((attempt.score / attempt.maxScore) * 100) : 0;
-
-              return (
-                <TableRow key={attempt.id}>
-                  <TableCell>
-                    <div className="flex items-center gap-3">
-                      <Avatar className="h-8 w-8">
-                        <AvatarFallback>{attempt.user.name?.charAt(0) || 'U'}</AvatarFallback>
-                      </Avatar>
-                      <div>
-                        <div className="font-medium">{attempt.user.name}</div>
-                        <div className="text-sm text-muted-foreground">{attempt.user.nim}</div>
-                      </div>
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <Badge
-                      variant={attempt.isCompleted ? 'default' : 'secondary'}
-                      className="flex items-center gap-1 w-fit"
-                    >
-                      {attempt.isCompleted ? (
-                        <CheckCircle className="w-3 h-3" />
-                      ) : (
-                        <XCircle className="w-3 h-3" />
-                      )}
-                      {attempt.isCompleted ? 'Completed' : 'In Progress'}
-                    </Badge>
-                  </TableCell>
-                  <TableCell>
-                    {attempt.isCompleted ? (
-                      <div className="flex items-center gap-2">
-                        <span className="font-medium">{scorePercentage}%</span>
-                        <span className="text-sm text-muted-foreground">
-                          ({attempt.score}/{attempt.maxScore})
-                        </span>
-                      </div>
-                    ) : (
-                      <span className="text-muted-foreground">-</span>
-                    )}
-                  </TableCell>
-                  <TableCell>
-                    <div className="text-sm">
-                      {formatDistanceToNow(new Date(attempt.startedAt), { addSuffix: true })}
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    {duration ? (
-                      <span className="text-sm">{duration}m</span>
-                    ) : (
-                      <span className="text-muted-foreground">-</span>
-                    )}
-                  </TableCell>
-                </TableRow>
-              );
-            })}
-          </TableBody>
-        </Table>
+        <DataTable columns={columns} data={attempts} defaultFilterColumn="user.name" />
       </CardContent>
     </Card>
   );
