@@ -1,5 +1,6 @@
 'use client';
 
+import { type ColumnDef } from '@tanstack/react-table';
 import { formatInTimeZone } from 'date-fns-tz';
 import { ChevronLeft, ChevronRight, User, MessageSquare, Download } from 'lucide-react';
 import React, { useState, useMemo } from 'react';
@@ -16,6 +17,9 @@ import {
 import { toast } from 'sonner';
 import * as XLSX from 'xlsx';
 
+import { DataTable } from '~/components/data-table';
+import { DataTableColumnHeader } from '~/components/data-table-column-header';
+import { type DataTableFeatures } from '~/components/data-table-features';
 import { Avatar, AvatarFallback } from '~/components/ui/avatar';
 import { Button } from '~/components/ui/button';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '~/components/ui/card';
@@ -28,14 +32,6 @@ import {
   SelectValue,
 } from '~/components/ui/select';
 import { Separator } from '~/components/ui/separator';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '~/components/ui/table';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '~/components/ui/tabs';
 import { TIMEZONE } from '~/constants/constants';
 import type { RouterOutputs } from '~/trpc/react';
@@ -48,10 +44,94 @@ interface ResponsesClientProps {
   submissions: Submission[];
 }
 
+const createResponseColumns = (
+  form: FormWithQuestions,
+): ColumnDef<DataTableFeatures, Submission>[] => {
+  const baseColumns: ColumnDef<DataTableFeatures, Submission>[] = [
+    {
+      accessorKey: 'submitter.name',
+      header: ({ column }) => <DataTableColumnHeader column={column} title="Respondent" />,
+      cell: ({ row }) => (
+        <div className="flex items-center gap-3">
+          <Avatar className="h-8 w-8">
+            <AvatarFallback>{row.original.submitter?.name?.charAt(0)}</AvatarFallback>
+          </Avatar>
+          <span className="font-medium">{row.original.submitter?.name}</span>
+        </div>
+      ),
+    },
+    {
+      accessorKey: 'submitter.email',
+      header: ({ column }) => <DataTableColumnHeader column={column} title="Email" />,
+      cell: ({ row }) => (
+        <span className="text-muted-foreground">{row.original.submitter?.email}</span>
+      ),
+    },
+    {
+      accessorKey: 'submitter.nim',
+      header: ({ column }) => <DataTableColumnHeader column={column} title="NIM" />,
+      cell: ({ row }) => (
+        <span className="text-muted-foreground">{row.original.submitter?.nim}</span>
+      ),
+    },
+    {
+      accessorKey: 'submittedAt',
+      header: ({ column }) => <DataTableColumnHeader column={column} title="Responded At" />,
+      cell: ({ row }) => (
+        <span className="text-sm text-muted-foreground">
+          {formatInTimeZone(new Date(row.original.submittedAt), TIMEZONE, 'MMM d, yyyy • HH:mm')}
+        </span>
+      ),
+    },
+  ];
+
+  const questionColumns: ColumnDef<DataTableFeatures, Submission>[] = form.questions.map(
+    (question) => ({
+      id: `question-${question.id}`,
+      header: ({ column }) => <DataTableColumnHeader column={column} title={question.title} />,
+      cell: ({ row }) => {
+        const answer = row.original.answers.find((a) => a.questionId === question.id);
+        let jsonValuesArray: string[] = [];
+        if (answer?.jsonValue && Array.isArray(answer.jsonValue)) {
+          jsonValuesArray = answer.jsonValue as string[];
+        }
+        return (
+          <span className="text-sm">
+            {answer?.textValue ? (
+              answer.textValue
+            ) : answer?.numberValue !== null && answer?.numberValue !== undefined ? (
+              answer.numberValue.toString()
+            ) : answer?.jsonValue && Array.isArray(answer.jsonValue) ? (
+              jsonValuesArray.map((value) => value).join(', ')
+            ) : answer?.dateValue ? (
+              formatInTimeZone(new Date(answer.dateValue), TIMEZONE, 'PPP')
+            ) : answer?.fileUrl ? (
+              <a
+                href={answer.fileUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-primary hover:underline"
+              >
+                View
+              </a>
+            ) : (
+              '-'
+            )}
+          </span>
+        );
+      },
+    }),
+  );
+
+  return [...baseColumns, ...questionColumns];
+};
+
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8', '#82ca9d'];
 
 export function ResponsesClient({ form, submissions }: ResponsesClientProps) {
   const [activeTab, setActiveTab] = useState('summary');
+
+  const responseColumns = useMemo(() => createResponseColumns(form), [form]);
   const handleExportResponses = () => {
     if (!submissions) return;
 
@@ -188,7 +268,7 @@ export function ResponsesClient({ form, submissions }: ResponsesClientProps) {
   return (
     <div className="space-y-6">
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-4 lg:w-[400px]">
+        <TabsList className="grid w-full grid-cols-4 lg:w-100">
           <TabsTrigger value="summary">Summary</TabsTrigger>
           <TabsTrigger value="question">Question</TabsTrigger>
           <TabsTrigger value="individual">Individual</TabsTrigger>
@@ -218,7 +298,7 @@ export function ResponsesClient({ form, submissions }: ResponsesClientProps) {
               </CardHeader>
               <CardContent className="pt-6">
                 {item.chartData.length > 0 ? (
-                  <div className="h-[300px] w-full">
+                  <div className="h-75 w-full">
                     <ResponsiveContainer width="100%" height="100%">
                       <BarChart
                         data={item.chartData}
@@ -245,7 +325,7 @@ export function ResponsesClient({ form, submissions }: ResponsesClientProps) {
                     </ResponsiveContainer>
                   </div>
                 ) : (
-                  <ScrollArea className="h-[200px] w-full rounded-md border p-4">
+                  <ScrollArea className="h-50 w-full rounded-md border p-4">
                     <div className="space-y-2">
                       {item.textAnswers.map((ans, i) => (
                         <div key={i} className="p-2 bg-muted/50 rounded text-sm">
@@ -266,7 +346,7 @@ export function ResponsesClient({ form, submissions }: ResponsesClientProps) {
         <TabsContent value="question" className="space-y-6 mt-6">
           <div className="flex items-center gap-4">
             <Select value={selectedQuestionId} onValueChange={setSelectedQuestionId}>
-              <SelectTrigger className="w-full md:w-[400px]">
+              <SelectTrigger className="w-full md:w-100">
                 <SelectValue placeholder="Select a question" />
               </SelectTrigger>
               <SelectContent>
@@ -293,7 +373,7 @@ export function ResponsesClient({ form, submissions }: ResponsesClientProps) {
                 )}
               </CardHeader>
               <CardContent className="space-y-4">
-                <ScrollArea className="h-[350px] w-full rounded-md border p-4">
+                <ScrollArea className="h-87.5 w-full rounded-md border p-4">
                   {selectedQuestionAnswers.map((item, i) => {
                     const val = item.answer
                       ? (item.answer.textValue ??
@@ -438,86 +518,11 @@ export function ResponsesClient({ form, submissions }: ResponsesClientProps) {
             {submissions.length === 0 ? (
               <div className="text-center py-8 text-muted-foreground">No responses yet.</div>
             ) : (
-              <div className="h-[600px] w-full rounded-md border overflow-auto">
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Respondent</TableHead>
-                      <TableHead>Email</TableHead>
-                      <TableHead>NIM</TableHead>
-                      <TableHead>Responded At</TableHead>
-                      {submissions.slice(0, 1).map((row) => {
-                        return row.answers?.map((answer) => {
-                          return (
-                            <TableHead key={answer.question?.id}>
-                              {answer.question?.title}
-                            </TableHead>
-                          );
-                        });
-                      })}
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {submissions.map((row) => (
-                      <TableRow key={row.id}>
-                        <TableCell>
-                          <div className="flex items-center gap-3">
-                            <Avatar className="h-8 w-8">
-                              <AvatarFallback>{row.submitter?.name?.charAt(0)}</AvatarFallback>
-                            </Avatar>
-                            <span className="font-medium">{row.submitter?.name}</span>
-                          </div>
-                        </TableCell>
-                        <TableCell className="text-muted-foreground">
-                          {row.submitter?.email}
-                        </TableCell>
-                        <TableCell className="text-muted-foreground">
-                          {row.submitter?.nim}
-                        </TableCell>
-                        <TableCell className="text-sm text-muted-foreground">
-                          {formatInTimeZone(
-                            new Date(row.submittedAt),
-                            TIMEZONE,
-                            'MMM d, yyyy • HH:mm',
-                          )}
-                        </TableCell>
-                        {row.answers?.map((answer) => {
-                          let jsonValuesArray: string[] = [];
-                          if (answer.jsonValue && Array.isArray(answer.jsonValue)) {
-                            jsonValuesArray = answer.jsonValue as string[];
-                          }
-                          return (
-                            <TableCell key={answer.question?.id}>
-                              {answer.textValue ? (
-                                answer.textValue
-                              ) : answer.numberValue &&
-                                answer.numberValue !== null &&
-                                answer.numberValue !== undefined ? (
-                                answer.numberValue.toString()
-                              ) : answer.jsonValue && Array.isArray(answer.jsonValue) ? (
-                                jsonValuesArray.map((value) => value).join(', ')
-                              ) : answer.dateValue ? (
-                                formatInTimeZone(new Date(answer.dateValue), TIMEZONE, 'PPP')
-                              ) : answer.fileUrl ? (
-                                <a
-                                  href={answer.fileUrl}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="text-primary hover:underline"
-                                >
-                                  View
-                                </a>
-                              ) : (
-                                '-'
-                              )}
-                            </TableCell>
-                          );
-                        })}
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </div>
+              <DataTable
+                columns={responseColumns}
+                data={submissions}
+                defaultFilterColumn="submitter.name"
+              />
             )}
           </div>
         </TabsContent>
