@@ -137,7 +137,7 @@ export function DashboardContent() {
 
       <div className="grid gap-6 lg:grid-cols-2">
         {/* Pending Actions Card */}
-        <Card>
+        <Card className="w-fit">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <AlertCircle className="h-5 w-5" />
@@ -187,11 +187,11 @@ export function DashboardContent() {
             </CardTitle>
             <CardDescription>Events scheduled for the next 7 days</CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent >
             <div className="space-y-4">
               {upcomingEvents?.map((event) => (
                 <div key={event.id} className="flex items-start gap-3 p-3 border rounded-lg">
-                  <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center">
+                  <div className="shrink-0 w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center">
                     <Calendar className="h-5 w-5 text-primary" />
                   </div>
                   <div className="flex-1 min-w-0">

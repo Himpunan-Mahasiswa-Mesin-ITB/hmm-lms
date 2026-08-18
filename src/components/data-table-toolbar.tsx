@@ -58,11 +58,11 @@ export function DataTableToolbar<TData extends RowData>({
   };
 
   return (
-    <div className="flex items-center justify-between gap-2 py-4">
-      <div className="flex flex-1 items-center space-x-2">
+    <div className="flex max-sm:flex-col items-center sm:justify-between gap-2 py-4">
+      <div className="flex flex-1 max-sm:flex-col max-sm:gap-2 items-center space-x-2">
         {filterableColumns.length > 1 && (
           <Select value={selectedColumnId} onValueChange={handleColumnChange}>
-            <SelectTrigger className="w-35">
+            <SelectTrigger className="max-w-sm sm:w-35 ">
               <SelectValue placeholder="Select column" />
             </SelectTrigger>
             <SelectContent>
