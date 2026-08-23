@@ -152,12 +152,12 @@ const adminSidebarTabs: {
     {
       group: 'Quick Access',
       items: [
-        {
-          label: 'Admin Guidebook',
-          href: '/docs/admin',
-          icon: BookOpen,
-          tooltip: 'Admin Guidebook',
-        },
+        // {
+        //   label: 'Admin Guidebook',
+        //   href: '/docs/admin',
+        //   icon: BookOpen,
+        //   tooltip: 'Admin Guidebook',
+        // },
         { label: 'Back to App', href: '/dashboard', icon: BookOpen, tooltip: 'Back to Main App' },
         {
           label: 'Back to Machining',
