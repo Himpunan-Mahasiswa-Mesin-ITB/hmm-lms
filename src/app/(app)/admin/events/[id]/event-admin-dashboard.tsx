@@ -548,18 +548,48 @@ export default function EventAdminDashboard({ eventId }: { eventId: string }) {
 
   // Calculate statistics
   const stats = useMemo(() => {
-    if (!data) return { totalRsvps: 0, yesRsvps: 0, totalPresence: 0, presentCount: 0 };
+    if (!data)
+      return {
+        totalRsvps: 0,
+        yesRsvps: 0,
+        totalPresence: 0,
+        presentCount: 0,
+        attendWithNoticeCount: 0,
+        noRsvps: 0,
+        permitRsvps: 0,
+        approvedNoPermit: 0,
+        rejectedNoPermit: 0,
+        pendingNoPermit: 0,
+      };
 
     const yesRsvps = data.rsvpResponses.filter((r) => r.status === 'YES').length;
+    const noRsvps = data.rsvpResponses.filter((r) => r.status === 'NO').length;
+    const permitRsvps = data.rsvpResponses.filter((r) => r.status === 'PERMIT').length;
     const presentCount = data.presenceRecords.filter(
       (p) => p.status === PresenceStatus.PRESENT || p.status === PresenceStatus.LATE,
     ).length;
+
+    const noPermitResponses = data.rsvpResponses.filter(
+      (r) => r.status === 'NO' || r.status === 'PERMIT',
+    );
+    const approvedNoPermit = noPermitResponses.filter(
+      (r) => r.approvalStatus === 'APPROVED',
+    ).length;
+    const rejectedNoPermit = noPermitResponses.filter(
+      (r) => r.approvalStatus === 'REJECTED',
+    ).length;
+    const pendingNoPermit = noPermitResponses.filter((r) => r.approvalStatus === 'PENDING').length;
 
     return {
       totalRsvps: data.rsvpResponses.length,
       yesRsvps,
       totalPresence: data.presenceRecords.length,
       presentCount,
+      noRsvps,
+      permitRsvps,
+      approvedNoPermit,
+      rejectedNoPermit,
+      pendingNoPermit,
     };
   }, [data]);
 
@@ -685,7 +715,7 @@ export default function EventAdminDashboard({ eventId }: { eventId: string }) {
   return (
     <>
       {/* Statistics Cards */}
-      <div className="grid gap-4 md:grid-cols-4">
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total RSVPs</CardTitle>
@@ -731,6 +761,65 @@ export default function EventAdminDashboard({ eventId }: { eventId: string }) {
                 ? `${Math.round((stats.presentCount / stats.yesRsvps) * 100)}%`
                 : '0%'}{' '}
               of confirmed
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Won&apos;t Attend</CardTitle>
+            <XCircle className="h-4 w-4 text-red-600" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{stats.noRsvps}</div>
+            <p className="text-xs text-muted-foreground">Cannot attend request</p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Attending with Notice</CardTitle>
+            <Clock className="h-4 w-4 text-yellow-600" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{stats.permitRsvps}</div>
+            <p className="text-xs text-muted-foreground">Permit requests</p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Approved</CardTitle>
+            <CheckCircle className="h-4 w-4 text-green-600" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{stats.approvedNoPermit}</div>
+            <p className="text-xs text-muted-foreground">request approved</p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Rejected</CardTitle>
+            <XCircle className="h-4 w-4 text-red-600" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{stats.rejectedNoPermit}</div>
+            <p className="text-xs text-muted-foreground">request rejected</p>
+          </CardContent>
+        </Card>
+
+        <Card className="md:col-span-2 lg:col-span-4">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Pending Approvals</CardTitle>
+            <TimerIcon className="h-4 w-4 text-yellow-600" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{stats.pendingNoPermit}</div>
+            <p className="text-xs text-muted-foreground">
+              {stats.pendingNoPermit > 0
+                ? 'NO/PERMIT requests awaiting approval'
+                : 'No pending approvals'}
             </p>
           </CardContent>
         </Card>

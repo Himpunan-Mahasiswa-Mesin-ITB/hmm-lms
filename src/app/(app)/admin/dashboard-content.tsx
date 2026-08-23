@@ -137,7 +137,7 @@ export function DashboardContent() {
 
       <div className="grid gap-6 lg:grid-cols-2">
         {/* Pending Actions Card */}
-        <Card className="w-fit">
+        <Card className="max-sm:w-fit">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <AlertCircle className="h-5 w-5" />
