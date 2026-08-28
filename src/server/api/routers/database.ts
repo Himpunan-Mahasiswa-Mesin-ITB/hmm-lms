@@ -1,30 +1,28 @@
+import type { PrismaClient } from '@prisma/client';
+import { TRPCError } from '@trpc/server';
 // src/server/api/routers/admin/database.ts
-import { z } from "zod";
-import {
-  createTRPCRouter,
-  adminProcedure,
-  superAdminProcedure,
-} from "~/server/api/trpc";
-import { TRPCError } from "@trpc/server";
-import type { PrismaClient } from "@prisma/client";
+import { z } from 'zod';
+
+import { createTRPCRouter, adminProcedure, superAdminProcedure } from '~/server/api/trpc';
 
 // Define model names as const for type safety
 const MODEL_NAMES = [
-  "user",
-  "courseTestimonial",
-  "session",
-  "course",
-  "learningSession",
-  "tryout",
-  "question",
-  "questionOption",
-  "userAttempt",
-  "userAnswer",
-  "event",
-  "announcement",
-  "scholarship",
-  "jobVacancy",
-  "pushSubscription",
+  'user',
+  'courseTestimonial',
+  'session',
+  'course',
+  'learningSession',
+  'tryout',
+  'question',
+  'questionOption',
+  'userAttempt',
+  'userAnswer',
+  'event',
+  'announcement',
+  'scholarship',
+  'jobVacancy',
+  'pushSubscription',
+  'eventRSVPResponse',
 ] as const;
 
 type ModelName = (typeof MODEL_NAMES)[number];
@@ -33,10 +31,7 @@ type GenericModelDelegate = {
   findMany: (args?: Record<string, unknown>) => Promise<unknown[]>;
   count: (args?: Record<string, unknown>) => Promise<number>;
   create: (args: { data: Record<string, unknown> }) => Promise<unknown>;
-  update: (args: {
-    where: { id: string };
-    data: Record<string, unknown>;
-  }) => Promise<unknown>;
+  update: (args: { where: { id: string }; data: Record<string, unknown> }) => Promise<unknown>;
   delete: (args: { where: { id: string } }) => Promise<unknown>;
   createMany: (args: {
     data: Record<string, unknown>[];
@@ -65,8 +60,9 @@ const paginationSchema = z.object({
   page: z.number().min(1).default(1),
   limit: z.number().min(1).max(50).default(15),
   search: z.string().optional(),
+  searchColumn: z.string().optional(),
   sortBy: z.string().optional(),
-  sortOrder: z.enum(["asc", "desc"]).default("desc"),
+  sortOrder: z.enum(['asc', 'desc']).default('desc'),
   filters: z.record(flexibleData).optional(),
 });
 
@@ -105,54 +101,53 @@ function getModelDelegate(db: PrismaClient, model: ModelName): GenericModelDeleg
     scholarship: db.scholarship,
     jobVacancy: db.jobVacancy,
     pushSubscription: db.pushSubscription,
+    eventRSVPResponse: db.eventRSVPResponse,
   };
   return delegates[model] as unknown as GenericModelDelegate;
 }
 
 // CORRECTED: A comprehensive map of default sort orders for ALL models.
-const DEFAULT_SORT_ORDERS: Record<
-  ModelName,
-  { field: string; order: "asc" | "desc" }
-> = {
-  user: { field: "createdAt", order: "desc" },
-  courseTestimonial: { field: "createdAt", order: "desc" },
-  session: { field: "expires", order: "desc" },
-  course: { field: "createdAt", order: "desc" },
-  learningSession: { field: "createdAt", order: "desc" },
-  tryout: { field: "createdAt", order: "desc" },
-  question: { field: "order", order: "asc" }, // Sort by question order
-  questionOption: { field: "order", order: "asc" }, // Sort by option order
-  userAttempt: { field: "startedAt", order: "desc" },
-  userAnswer: { field: "createdAt", order: "desc" },
-  event: { field: "createdAt", order: "desc" },
-  announcement: { field: "createdAt", order: "desc" },
-  scholarship: { field: "createdAt", order: "desc" },
-  jobVacancy: { field: "createdAt", order: "desc" },
-  pushSubscription: { field: "createdAt", order: "desc" },
+const DEFAULT_SORT_ORDERS: Record<ModelName, { field: string; order: 'asc' | 'desc' }> = {
+  user: { field: 'createdAt', order: 'desc' },
+  courseTestimonial: { field: 'createdAt', order: 'desc' },
+  session: { field: 'expires', order: 'desc' },
+  course: { field: 'createdAt', order: 'desc' },
+  learningSession: { field: 'createdAt', order: 'desc' },
+  tryout: { field: 'createdAt', order: 'desc' },
+  question: { field: 'order', order: 'asc' }, // Sort by question order
+  questionOption: { field: 'order', order: 'asc' }, // Sort by option order
+  userAttempt: { field: 'startedAt', order: 'desc' },
+  userAnswer: { field: 'createdAt', order: 'desc' },
+  event: { field: 'createdAt', order: 'desc' },
+  announcement: { field: 'createdAt', order: 'desc' },
+  scholarship: { field: 'createdAt', order: 'desc' },
+  jobVacancy: { field: 'createdAt', order: 'desc' },
+  pushSubscription: { field: 'createdAt', order: 'desc' },
+  eventRSVPResponse: { field: 'respondedAt', order: 'desc' },
 };
 
 // Helper function to build search conditions (no changes)
 function buildSearchConditions(model: ModelName, search: string) {
   const searchConditions: Record<ModelName, Record<string, unknown>[]> = {
     user: [
-      { name: { contains: search, mode: "insensitive" } },
-      { email: { contains: search, mode: "insensitive" } },
-      { nim: { contains: search, mode: "insensitive" } },
+      { name: { contains: search, mode: 'insensitive' } },
+      { email: { contains: search, mode: 'insensitive' } },
+      { nim: { contains: search, mode: 'insensitive' } },
     ],
     course: [
-      { title: { contains: search, mode: "insensitive" } },
-      { classCode: { contains: search, mode: "insensitive" } },
+      { title: { contains: search, mode: 'insensitive' } },
+      { classCode: { contains: search, mode: 'insensitive' } },
     ],
-    tryout: [{ title: { contains: search, mode: "insensitive" } }],
-    event: [{ title: { contains: search, mode: "insensitive" } }],
-    announcement: [{ title: { contains: search, mode: "insensitive" } }],
+    tryout: [{ title: { contains: search, mode: 'insensitive' } }],
+    event: [{ title: { contains: search, mode: 'insensitive' } }],
+    announcement: [{ title: { contains: search, mode: 'insensitive' } }],
     scholarship: [
-      { title: { contains: search, mode: "insensitive" } },
-      { provider: { contains: search, mode: "insensitive" } },
+      { title: { contains: search, mode: 'insensitive' } },
+      { provider: { contains: search, mode: 'insensitive' } },
     ],
     jobVacancy: [
-      { title: { contains: search, mode: "insensitive" } },
-      { company: { contains: search, mode: "insensitive" } },
+      { title: { contains: search, mode: 'insensitive' } },
+      { company: { contains: search, mode: 'insensitive' } },
     ],
     learningSession: [],
     session: [],
@@ -162,8 +157,13 @@ function buildSearchConditions(model: ModelName, search: string) {
     userAnswer: [],
     pushSubscription: [],
     courseTestimonial: [
-      { comment: { contains: search, mode: "insensitive" } },
+      { comment: { contains: search, mode: 'insensitive' } },
       { rating: isNaN(Number(search)) ? undefined : Number(search) },
+    ],
+    eventRSVPResponse: [
+      { guestName: { contains: search, mode: 'insensitive' } },
+      { guestEmail: { contains: search, mode: 'insensitive' } },
+      { guestPhone: { contains: search, mode: 'insensitive' } },
     ],
   };
   return searchConditions[model] ?? [];
@@ -206,6 +206,11 @@ function getModelIncludes(model: ModelName) {
       user: { select: { name: true, email: true } },
       course: { select: { title: true, classCode: true } },
     },
+    eventRSVPResponse: {
+      event: { select: { title: true, start: true, end: true } },
+      user: { select: { name: true, email: true, nim: true } },
+      approver: { select: { name: true, email: true } },
+    },
   };
   return includes[model] ?? {};
 }
@@ -214,14 +219,17 @@ export const databaseRouter = createTRPCRouter({
   getModels: adminProcedure.query(async () => {
     return MODEL_NAMES.map((name) => ({
       name,
-      displayName: name.charAt(0).toUpperCase() + name.slice(1),
+      displayName:
+        name === 'eventRSVPResponse'
+          ? 'Event RSVP Responses'
+          : name.charAt(0).toUpperCase() + name.slice(1),
     })).sort((a, b) => a.displayName.localeCompare(b.displayName));
   }),
 
   getData: adminProcedure
     .input(z.object({ model: z.enum(MODEL_NAMES), ...paginationSchema.shape }))
     .query(async ({ ctx, input }) => {
-      const { model, page, limit, search, sortBy, sortOrder, filters } = input;
+      const { model, page, limit, search, searchColumn, sortBy, sortOrder, filters } = input;
       const skip = (page - 1) * limit;
 
       try {
@@ -229,8 +237,14 @@ export const databaseRouter = createTRPCRouter({
         let where: Record<string, unknown> = {};
 
         if (search?.trim()) {
-          const searchConditions = buildSearchConditions(model, search);
-          if (searchConditions.length > 0) where.OR = searchConditions;
+          if (searchColumn && searchColumn !== 'all') {
+            // Column-specific search
+            where[searchColumn] = { contains: search, mode: 'insensitive' };
+          } else {
+            // Multi-column search
+            const searchConditions = buildSearchConditions(model, search);
+            if (searchConditions.length > 0) where.OR = searchConditions;
+          }
         }
 
         if (filters) {
@@ -272,7 +286,7 @@ export const databaseRouter = createTRPCRouter({
       } catch (error) {
         console.error(`Error fetching ${model} data:`, error);
         throw new TRPCError({
-          code: "INTERNAL_SERVER_ERROR",
+          code: 'INTERNAL_SERVER_ERROR',
           message: `Failed to fetch ${model} data.`,
           cause: error,
         });
@@ -299,7 +313,7 @@ export const databaseRouter = createTRPCRouter({
       } catch (error) {
         console.error(`Error exporting ${model} data:`, error);
         throw new TRPCError({
-          code: "INTERNAL_SERVER_ERROR",
+          code: 'INTERNAL_SERVER_ERROR',
           message: `Failed to export ${model} data`,
         });
       }
@@ -323,7 +337,7 @@ export const databaseRouter = createTRPCRouter({
       } catch (error) {
         console.error(`Error creating ${model}:`, error);
         throw new TRPCError({
-          code: "BAD_REQUEST", // More specific error
+          code: 'BAD_REQUEST', // More specific error
           message: `Failed to create ${model}. Check data format.`,
           cause: error,
         });
@@ -347,7 +361,7 @@ export const databaseRouter = createTRPCRouter({
       } catch (error) {
         console.error(`Error updating ${model}:`, error);
         throw new TRPCError({
-          code: "BAD_REQUEST",
+          code: 'BAD_REQUEST',
           message: `Failed to update ${model} with id ${id}.`,
           cause: error,
         });
@@ -365,69 +379,63 @@ export const databaseRouter = createTRPCRouter({
       } catch (error) {
         console.error(`Error deleting ${model}:`, error);
         throw new TRPCError({
-          code: "INTERNAL_SERVER_ERROR",
+          code: 'INTERNAL_SERVER_ERROR',
           message: `Failed to delete ${model}`,
         });
       }
     }),
 
-  bulkCreate: superAdminProcedure
-    .input(bulkCreateSchema)
-    .mutation(async ({ ctx, input }) => {
-      const { model, data } = input;
-      try {
-        const modelDelegate = getModelDelegate(ctx.db, model);
-        const result = await modelDelegate.createMany({
-          data,
-          skipDuplicates: true,
-        });
-        return result;
-      } catch (error) {
-        console.error(`Error bulk creating ${model}:`, error);
-        throw new TRPCError({
-          code: "BAD_REQUEST",
-          message: `Failed to bulk create ${model}. Check data format.`,
-          cause: error,
-        });
-      }
-    }),
+  bulkCreate: superAdminProcedure.input(bulkCreateSchema).mutation(async ({ ctx, input }) => {
+    const { model, data } = input;
+    try {
+      const modelDelegate = getModelDelegate(ctx.db, model);
+      const result = await modelDelegate.createMany({
+        data,
+        skipDuplicates: true,
+      });
+      return result;
+    } catch (error) {
+      console.error(`Error bulk creating ${model}:`, error);
+      throw new TRPCError({
+        code: 'BAD_REQUEST',
+        message: `Failed to bulk create ${model}. Check data format.`,
+        cause: error,
+      });
+    }
+  }),
 
-  bulkUpdate: superAdminProcedure
-    .input(bulkUpdateSchema)
-    .mutation(async ({ ctx, input }) => {
-      const { model, ids, data } = input;
-      try {
-        const modelDelegate = getModelDelegate(ctx.db, model);
-        const result = await modelDelegate.updateMany({
-          where: { id: { in: ids } },
-          data,
-        });
-        return result;
-      } catch (error) {
-        console.error(`Error bulk updating ${model}:`, error);
-        throw new TRPCError({
-          code: "INTERNAL_SERVER_ERROR",
-          message: `Failed to bulk update ${model}`,
-        });
-      }
-    }),
+  bulkUpdate: superAdminProcedure.input(bulkUpdateSchema).mutation(async ({ ctx, input }) => {
+    const { model, ids, data } = input;
+    try {
+      const modelDelegate = getModelDelegate(ctx.db, model);
+      const result = await modelDelegate.updateMany({
+        where: { id: { in: ids } },
+        data,
+      });
+      return result;
+    } catch (error) {
+      console.error(`Error bulk updating ${model}:`, error);
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: `Failed to bulk update ${model}`,
+      });
+    }
+  }),
 
-  bulkDelete: superAdminProcedure
-    .input(bulkDeleteSchema)
-    .mutation(async ({ ctx, input }) => {
-      const { model, ids } = input;
-      try {
-        const modelDelegate = getModelDelegate(ctx.db, model);
-        const result = await modelDelegate.deleteMany({
-          where: { id: { in: ids } },
-        });
-        return result;
-      } catch (error) {
-        console.error(`Error bulk deleting ${model}:`, error);
-        throw new TRPCError({
-          code: "INTERNAL_SERVER_ERROR",
-          message: `Failed to bulk delete ${model}`,
-        });
-      }
-    }),
+  bulkDelete: superAdminProcedure.input(bulkDeleteSchema).mutation(async ({ ctx, input }) => {
+    const { model, ids } = input;
+    try {
+      const modelDelegate = getModelDelegate(ctx.db, model);
+      const result = await modelDelegate.deleteMany({
+        where: { id: { in: ids } },
+      });
+      return result;
+    } catch (error) {
+      console.error(`Error bulk deleting ${model}:`, error);
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: `Failed to bulk delete ${model}`,
+      });
+    }
+  }),
 });

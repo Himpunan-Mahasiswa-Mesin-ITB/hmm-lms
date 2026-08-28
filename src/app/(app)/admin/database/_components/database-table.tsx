@@ -1,30 +1,8 @@
 // src/app/admin/database/_components/database-table.tsx
 /* eslint-disable */
 // @ts-nocheck
-"use client";
+'use client';
 
-import { useState, useMemo, useCallback, useEffect } from "react";
-import { api } from "~/trpc/react";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "~/components/ui/table";
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "~/components/ui/dropdown-menu";
-import { Button } from "~/components/ui/button";
-import { Input } from "~/components/ui/input";
-// import { Badge } from "~/components/ui/badge";
-import { Checkbox } from "~/components/ui/checkbox";
-// import { LoadingSpinner } from "~/components/ui/loading-spinner";
-import { Alert, AlertDescription } from "~/components/ui/alert";
 import {
   ChevronDown,
   Search,
@@ -34,39 +12,72 @@ import {
   Trash2,
   Edit,
   AlertCircle,
-} from "lucide-react";
-import { TablePagination } from './table-pagination';
-import { BulkActions } from "./bulk-actions";
-import { ExportDialog } from './export-dialog';
-import { CreateRecordDialog } from "./create-record-dialog";
-import { EditRecordDialog } from "./edit-record-dialog";
-import { DeleteRecordDialog } from "./delete-record-dialog";
-import { CellRenderer } from "./cell-renderer";
-import { AutoRefresh } from './auto-refresh';
-import { TableLoading } from "./loading-states";
-import { cn } from "~/lib/utils";
+  Filter,
+} from 'lucide-react';
+import { useState, useMemo, useCallback, useEffect } from 'react';
+
+// import { LoadingSpinner } from "~/components/ui/loading-spinner";
+import { Alert, AlertDescription } from '~/components/ui/alert';
+import { Button } from '~/components/ui/button';
+// import { Badge } from "~/components/ui/badge";
+import { Checkbox } from '~/components/ui/checkbox';
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from '~/components/ui/dropdown-menu';
+import { Input } from '~/components/ui/input';
 import { ScrollArea, ScrollBar } from '~/components/ui/scroll-area';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '~/components/ui/table';
+import { cn } from '~/lib/utils';
+import { api } from '~/trpc/react';
+
+import { AutoRefresh } from './auto-refresh';
+import { BulkActions } from './bulk-actions';
+import { CellRenderer } from './cell-renderer';
+import { CreateRecordDialog } from './create-record-dialog';
+import { DeleteRecordDialog } from './delete-record-dialog';
+import { EditRecordDialog } from './edit-record-dialog';
+import { ExportDialog } from './export-dialog';
+import { TableLoading } from './loading-states';
+import { TablePagination } from './table-pagination';
 
 interface DatabaseTableProps {
   modelName: string;
   displayName: string;
-  userRole: "ADMIN" | "SUPERADMIN" | "STUDENT" | "MACHINING";
+  userRole: 'ADMIN' | 'SUPERADMIN' | 'STUDENT' | 'MACHINING';
   onDataChange: () => void;
 }
 
-const SENSITIVE_FIELDS = ["password", "auth", "p256dh", "refresh_token", "access_token", "id_token"];
-const LONG_TEXT_FIELDS = ["description", "content", "overview", "timeline"];
+const SENSITIVE_FIELDS = [
+  'password',
+  'auth',
+  'p256dh',
+  'refresh_token',
+  'access_token',
+  'id_token',
+];
+const LONG_TEXT_FIELDS = ['description', 'content', 'overview', 'timeline'];
 
 export function DatabaseTable({
   modelName,
   displayName,
   userRole,
-  onDataChange
+  onDataChange,
 }: DatabaseTableProps) {
   const [page, setPage] = useState(1);
-  const [search, setSearch] = useState("");
-  const [sortBy, setSortBy] = useState<string>("");
-  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
+  const [search, setSearch] = useState('');
+  const [searchColumn, setSearchColumn] = useState<string>('all');
+  const [sortBy, setSortBy] = useState<string>('');
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
   const [selectedRows, setSelectedRows] = useState<string[]>([]);
   const [visibleColumns, setVisibleColumns] = useState<string[]>([]);
   const [showExportDialog, setShowExportDialog] = useState(false);
@@ -77,16 +88,12 @@ export function DatabaseTable({
 
   const limit = 15;
 
-  const {
-    data,
-    isLoading,
-    error,
-    refetch
-  } = api.database.getData.useQuery({
+  const { data, isLoading, error, refetch } = api.database.getData.useQuery({
     model: modelName as never,
     page,
     limit,
     search: search || undefined,
+    searchColumn: searchColumn === 'all' ? undefined : searchColumn,
     sortBy: sortBy || undefined,
     sortOrder,
   });
@@ -98,45 +105,59 @@ export function DatabaseTable({
     const firstRow = data.data[0];
     if (!firstRow) return [];
 
-    return Object.keys(firstRow).filter(key => key !== "id");
+    return Object.keys(firstRow);
   }, [data?.data]);
 
   // Initialize visible columns
   useEffect(() => {
     if (allColumns.length > 0 && visibleColumns.length === 0) {
-      // Show first 6 columns by default
-      setVisibleColumns(allColumns.slice(0, 6));
+      // Always include id column, then show next 5 columns by default
+      const idColumn = allColumns.find((col) => col === 'id');
+      const otherColumns = allColumns.filter((col) => col !== 'id');
+      const columnsToShow = idColumn
+        ? [idColumn, ...otherColumns.slice(0, 5)]
+        : otherColumns.slice(0, 6);
+      setVisibleColumns(columnsToShow);
     }
   }, [allColumns, visibleColumns.length]);
 
-  const handleSort = useCallback((column: string) => {
-    if (sortBy === column) {
-      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
-    } else {
-      setSortBy(column);
-      setSortOrder("asc");
-    }
-  }, [sortBy, sortOrder]);
+  const handleSort = useCallback(
+    (column: string) => {
+      if (sortBy === column) {
+        setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+      } else {
+        setSortBy(column);
+        setSortOrder('asc');
+      }
+    },
+    [sortBy, sortOrder],
+  );
 
-  const handleSelectAll = useCallback((checked: boolean) => {
-    if (checked && data?.data) {
-      setSelectedRows(data.data.map(row => row.id as string));
-    } else {
-      setSelectedRows([]);
-    }
-  }, [data?.data]);
+  const handleSelectAll = useCallback(
+    (checked: boolean) => {
+      if (checked && data?.data) {
+        setSelectedRows(data.data.map((row) => row.id as string));
+      } else {
+        setSelectedRows([]);
+      }
+    },
+    [data?.data],
+  );
 
   const handleSelectRow = useCallback((id: string, checked: boolean) => {
     if (checked) {
-      setSelectedRows(prev => [...prev, id]);
+      setSelectedRows((prev) => [...prev, id]);
     } else {
-      setSelectedRows(prev => prev.filter(rowId => rowId !== id));
+      setSelectedRows((prev) => prev.filter((rowId) => rowId !== id));
     }
   }, []);
 
-  const formatCellValue = useCallback((key: string, value: unknown) => {
-    return <CellRenderer fieldKey={key} value={value} userRole={userRole} />;
-  }, [userRole]);
+  const formatCellValue = useCallback(
+    (key: string, value: unknown) => {
+      return <CellRenderer fieldKey={key} value={value} userRole={userRole} />;
+    },
+    [userRole],
+  );
 
   const handleDataChange = useCallback(() => {
     void refetch();
@@ -156,19 +177,57 @@ export function DatabaseTable({
 
   return (
     <div className="space-y-4 w-full">
-      {/* Header Actions */}
       <ScrollArea className="w-full">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2">
             <div className="relative">
               <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
               <Input
-                placeholder={`Search ${displayName.toLowerCase()}...`}
+                placeholder={
+                  searchColumn === 'all'
+                    ? `Search ${displayName.toLowerCase()}...`
+                    : `Search by ${searchColumn}...`
+                }
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 className="pl-8 w-64"
               />
             </div>
+
+            {/* column search selector */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" size="sm">
+                  <Filter className="h-4 w-4 mr-2" />
+                  {searchColumn === 'all' ? 'All Columns' : searchColumn}
+                  <ChevronDown className="h-4 w-4 ml-2" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-48">
+                <DropdownMenuCheckboxItem
+                  key="all"
+                  checked={searchColumn === 'all'}
+                  onCheckedChange={() => {
+                    setSearch('');
+                    setSearchColumn('all');
+                  }}
+                >
+                  All Columns
+                </DropdownMenuCheckboxItem>
+                {allColumns.map((column) => (
+                  <DropdownMenuCheckboxItem
+                    key={column}
+                    checked={searchColumn === column}
+                    onCheckedChange={() => {
+                      setSearch('');
+                      setSearchColumn(column);
+                    }}
+                  >
+                    {column}
+                  </DropdownMenuCheckboxItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
 
             {/* Column Visibility */}
             <DropdownMenu>
@@ -186,9 +245,9 @@ export function DatabaseTable({
                     checked={visibleColumns.includes(column)}
                     onCheckedChange={(checked) => {
                       if (checked) {
-                        setVisibleColumns(prev => [...prev, column]);
+                        setVisibleColumns((prev) => [...prev, column]);
                       } else {
-                        setVisibleColumns(prev => prev.filter(col => col !== column));
+                        setVisibleColumns((prev) => prev.filter((col) => col !== column));
                       }
                     }}
                   >
@@ -202,18 +261,12 @@ export function DatabaseTable({
           </div>
 
           <div className="flex items-center space-x-2">
-            {/* Export Button */}
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setShowExportDialog(true)}
-            >
+            <Button variant="outline" size="sm" onClick={() => setShowExportDialog(true)}>
               <Download className="h-4 w-4 mr-2" />
               Export
             </Button>
 
-            {/* SuperAdmin Actions */}
-            {userRole === "SUPERADMIN" && (
+            {userRole === 'SUPERADMIN' && (
               <Button size="sm" onClick={() => setShowCreateDialog(true)}>
                 <Plus className="h-4 w-4 mr-2" />
                 Add {displayName}
@@ -224,8 +277,7 @@ export function DatabaseTable({
         <ScrollBar orientation="horizontal" />
       </ScrollArea>
 
-      {/* Bulk Actions */}
-      {selectedRows.length > 0 && userRole === "SUPERADMIN" && (
+      {selectedRows.length > 0 && userRole === 'SUPERADMIN' && (
         <BulkActions
           selectedCount={selectedRows.length}
           modelName={modelName}
@@ -237,8 +289,7 @@ export function DatabaseTable({
         />
       )}
 
-      {/* Table */}
-
+      {/* table */}
       <div className="rounded-md border">
         <Table>
           <TableHeader>
@@ -264,15 +315,15 @@ export function DatabaseTable({
                     {sortBy === column && (
                       <ChevronDown
                         className={cn(
-                          "h-4 w-4 transition-transform",
-                          sortOrder === "asc" && "rotate-180"
+                          'h-4 w-4 transition-transform',
+                          sortOrder === 'asc' && 'rotate-180',
                         )}
                       />
                     )}
                   </div>
                 </TableHead>
               ))}
-              {userRole === "SUPERADMIN" && !isLoading && (
+              {userRole === 'SUPERADMIN' && !isLoading && (
                 <TableHead className="w-24">Actions</TableHead>
               )}
             </TableRow>
@@ -296,7 +347,7 @@ export function DatabaseTable({
                       {formatCellValue(column, row[column as keyof typeof row])}
                     </TableCell>
                   ))}
-                  {userRole === "SUPERADMIN" && (
+                  {userRole === 'SUPERADMIN' && (
                     <TableCell>
                       <div className="flex items-center space-x-1">
                         <Button
@@ -327,7 +378,7 @@ export function DatabaseTable({
             ) : (
               <TableRow>
                 <TableCell
-                  colSpan={visibleColumns.length + (userRole === "SUPERADMIN" ? 2 : 1)}
+                  colSpan={visibleColumns.length + (userRole === 'SUPERADMIN' ? 2 : 1)}
                   className="text-center py-12 text-muted-foreground"
                 >
                   No {displayName.toLowerCase()} found
@@ -339,12 +390,7 @@ export function DatabaseTable({
       </div>
 
       {/* Pagination */}
-      {data?.pagination && (
-        <TablePagination
-          pagination={data.pagination}
-          onPageChange={setPage}
-        />
-      )}
+      {data?.pagination && <TablePagination pagination={data.pagination} onPageChange={setPage} />}
 
       {/* Export Dialog */}
       <ExportDialog

@@ -1,10 +1,12 @@
 /* eslint-disable @typescript-eslint/no-base-to-string */
 // src/app/admin/database/_components/cell-renderer.tsx
-"use client";
+'use client';
 
-import { useState } from "react";
-import { Badge } from "~/components/ui/badge";
-import { Button } from "~/components/ui/button";
+import { Eye, EyeOff, Expand } from 'lucide-react';
+import { useState } from 'react';
+
+import { Badge } from '~/components/ui/badge';
+import { Button } from '~/components/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -12,35 +14,34 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "~/components/ui/dialog";
-import { ScrollArea } from "~/components/ui/scroll-area";
-import { Eye, EyeOff, Expand } from "lucide-react";
-import { cn } from "~/lib/utils";
+} from '~/components/ui/dialog';
+import { ScrollArea } from '~/components/ui/scroll-area';
+import { cn } from '~/lib/utils';
 
 interface CellRendererProps {
   fieldKey: string;
   value: unknown;
-  userRole: "ADMIN" | "SUPERADMIN";
+  userRole: 'ADMIN' | 'SUPERADMIN';
 }
 
 const SENSITIVE_FIELDS = [
-  "password",
-  "auth",
-  "p256dh",
-  "refresh_token",
-  "access_token",
-  "id_token",
-  "session_state",
-  "scope"
+  'password',
+  'auth',
+  'p256dh',
+  'refresh_token',
+  'access_token',
+  'id_token',
+  'session_state',
+  'scope',
 ];
 
 const LONG_TEXT_FIELDS = [
-  "description",
-  "content",
-  "overview",
-  "timeline",
-  "eligibility",
-  "explanation"
+  'description',
+  'content',
+  'overview',
+  'timeline',
+  'eligibility',
+  'explanation',
 ];
 
 const PREVIEW_LENGTH = 50;
@@ -52,13 +53,24 @@ export function CellRenderer({ fieldKey, value, userRole }: CellRendererProps) {
     return <span className="text-muted-foreground italic">null</span>;
   }
 
+  // Handle ID field - make it prominent and copyable
+  if (fieldKey === 'id' && typeof value === 'string') {
+    return (
+      <div className="flex items-center space-x-2">
+        <span className="font-mono text-xs bg-primary/10 text-primary px-2 py-1 rounded border border-primary/20">
+          {value}
+        </span>
+      </div>
+    );
+  }
+
   // Handle sensitive fields
   if (SENSITIVE_FIELDS.includes(fieldKey)) {
     if (!showSensitive) {
       return (
         <div className="flex items-center space-x-2">
           <span className="text-muted-foreground font-mono">••••••••</span>
-          {userRole === "SUPERADMIN" && (
+          {userRole === 'SUPERADMIN' && (
             <Button
               variant="ghost"
               size="sm"
@@ -74,8 +86,8 @@ export function CellRenderer({ fieldKey, value, userRole }: CellRendererProps) {
 
     return (
       <div className="flex items-center space-x-2">
-        <span className="font-mono text-xs bg-muted px-2 py-1 rounded max-w-32 truncate">
-          {typeof value === "object" ? JSON.stringify(value) : String(value)}
+        <span className="text-xs">
+          {typeof value === 'object' ? JSON.stringify(value) : String(value)}
         </span>
         <Button
           variant="ghost"
@@ -90,7 +102,7 @@ export function CellRenderer({ fieldKey, value, userRole }: CellRendererProps) {
   }
 
   // Handle long text fields
-  if (LONG_TEXT_FIELDS.includes(fieldKey) && typeof value === "string") {
+  if (LONG_TEXT_FIELDS.includes(fieldKey) && typeof value === 'string') {
     const isLong = value.length > PREVIEW_LENGTH;
     const preview = isLong ? `${value.slice(0, PREVIEW_LENGTH)}...` : value;
 
@@ -103,25 +115,17 @@ export function CellRenderer({ fieldKey, value, userRole }: CellRendererProps) {
         <span className="text-sm">{preview}</span>
         <Dialog>
           <DialogTrigger asChild>
-            <Button
-              variant="ghost"
-              size="sm"
-              className="h-6 w-6 p-0"
-            >
+            <Button variant="ghost" size="sm" className="h-6 w-6 p-0">
               <Expand className="h-3 w-3" />
             </Button>
           </DialogTrigger>
           <DialogContent className="max-w-2xl">
             <DialogHeader>
               <DialogTitle className="capitalize">{fieldKey}</DialogTitle>
-              <DialogDescription>
-                Full content for {fieldKey} field
-              </DialogDescription>
+              <DialogDescription>Full content for {fieldKey} field</DialogDescription>
             </DialogHeader>
             <ScrollArea className="max-h-96 w-full rounded-md border p-4">
-              <div className="whitespace-pre-wrap text-sm">
-                {value}
-              </div>
+              <div className="whitespace-pre-wrap text-sm">{value}</div>
             </ScrollArea>
           </DialogContent>
         </Dialog>
@@ -151,7 +155,9 @@ export function CellRenderer({ fieldKey, value, userRole }: CellRendererProps) {
             </DialogTrigger>
             <DialogContent>
               <DialogHeader>
-                <DialogTitle className="capitalize">{fieldKey} ({value.length} items)</DialogTitle>
+                <DialogTitle className="capitalize">
+                  {fieldKey} ({value.length} items)
+                </DialogTitle>
               </DialogHeader>
               <ScrollArea className="max-h-64 w-full">
                 <div className="flex flex-wrap gap-1 p-2">
@@ -169,8 +175,55 @@ export function CellRenderer({ fieldKey, value, userRole }: CellRendererProps) {
     );
   }
 
+  // Handle dates - improved detection (must come before object check)
+  const isDate =
+    value instanceof Date ||
+    (typeof value === 'string' && !isNaN(Date.parse(value))) ||
+    (typeof value === 'object' && value !== null && 'toISOString' in value);
+
+  if (isDate) {
+    let date: Date;
+    if (value instanceof Date) {
+      date = value;
+    } else if (typeof value === 'string') {
+      date = new Date(value);
+    } else if (typeof value === 'object' && 'toISOString' in value) {
+      date = new Date((value as { toISOString: () => string }).toISOString());
+    } else {
+      date = new Date(value as string);
+    }
+
+    // Check if date is valid
+    if (isNaN(date.getTime())) {
+      return <span className="text-muted-foreground italic">Invalid Date</span>;
+    }
+
+    const now = new Date();
+    const diffInHours = (now.getTime() - date.getTime()) / (1000 * 60 * 60);
+
+    let timeAgo = '';
+    if (diffInHours < 1) {
+      timeAgo = 'Just now';
+    } else if (diffInHours < 24) {
+      timeAgo = `${Math.floor(diffInHours)}h ago`;
+    } else if (diffInHours < 24 * 7) {
+      timeAgo = `${Math.floor(diffInHours / 24)}d ago`;
+    } else {
+      timeAgo = date.toLocaleDateString();
+    }
+
+    return (
+      <div className="text-sm">
+        <div className="font-medium">{date.toLocaleDateString()}</div>
+        <div className="text-xs text-muted-foreground">
+          {date.toLocaleTimeString()} • {timeAgo}
+        </div>
+      </div>
+    );
+  }
+
   // Handle objects (like _count, relations)
-  if (typeof value === "object" && value !== null) {
+  if (typeof value === 'object' && value !== null) {
     const entries = Object.entries(value);
 
     if (entries.length === 0) {
@@ -215,49 +268,19 @@ export function CellRenderer({ fieldKey, value, userRole }: CellRendererProps) {
   }
 
   // Handle booleans
-  if (typeof value === "boolean") {
+  if (typeof value === 'boolean') {
     return (
       <Badge
-        variant={value ? "default" : "secondary"}
-        className={cn(
-          "text-xs",
-          value ? "bg-success/10 text-success border-success/20" : ""
-        )}
+        variant={value ? 'default' : 'secondary'}
+        className={cn('text-xs', value ? 'bg-success/10 text-success border-success/20' : '')}
       >
-        {value ? "Yes" : "No"}
+        {value ? 'Yes' : 'No'}
       </Badge>
     );
   }
 
-  // Handle dates
-  if (value instanceof Date || (typeof value === "string" && !isNaN(Date.parse(value)))) {
-    const date = new Date(value);
-    const now = new Date();
-    const diffInHours = (now.getTime() - date.getTime()) / (1000 * 60 * 60);
-
-    let timeAgo = "";
-    if (diffInHours < 1) {
-      timeAgo = "Just now";
-    } else if (diffInHours < 24) {
-      timeAgo = `${Math.floor(diffInHours)}h ago`;
-    } else if (diffInHours < 24 * 7) {
-      timeAgo = `${Math.floor(diffInHours / 24)}d ago`;
-    } else {
-      timeAgo = date.toLocaleDateString();
-    }
-
-    return (
-      <div className="text-sm">
-        <div className="font-medium">{date.toLocaleDateString()}</div>
-        <div className="text-xs text-muted-foreground">
-          {date.toLocaleTimeString()} • {timeAgo}
-        </div>
-      </div>
-    );
-  }
-
   // Handle numbers
-  if (typeof value === "number") {
+  if (typeof value === 'number') {
     // Format large numbers
     if (value > 1000000) {
       return <span className="font-mono text-sm">{(value / 1000000).toFixed(1)}M</span>;
@@ -268,21 +291,18 @@ export function CellRenderer({ fieldKey, value, userRole }: CellRendererProps) {
   }
 
   // Handle enums and special string values
-  if (typeof value === "string") {
+  if (typeof value === 'string') {
     // Handle email addresses
-    if (fieldKey === "email" || value.includes("@")) {
+    if (fieldKey === 'email' || value.includes('@')) {
       return (
-        <a
-          href={`mailto:${value}`}
-          className="text-primary hover:underline text-sm"
-        >
+        <a href={`mailto:${value}`} className="text-primary hover:underline text-sm">
           {value}
         </a>
       );
     }
 
     // Handle URLs
-    if (fieldKey.includes("link") || fieldKey.includes("url") || value.startsWith("http")) {
+    if (fieldKey.includes('link') || fieldKey.includes('url') || value.startsWith('http')) {
       return (
         <a
           href={value}
@@ -297,30 +317,21 @@ export function CellRenderer({ fieldKey, value, userRole }: CellRendererProps) {
 
     // Handle enum values with colors
     const enumColors: Record<string, string> = {
-      ADMIN: "bg-primary/10 text-primary border-primary/20",
-      SUPERADMIN: "bg-destructive/10 text-destructive border-destructive/20",
-      STUDENT: "bg-muted text-muted-foreground",
-      ACTIVE: "bg-success/10 text-success border-success/20",
-      INACTIVE: "bg-muted text-muted-foreground",
-      GLOBAL: "bg-info/10 text-info border-info/20",
-      COURSE: "bg-warning/10 text-warning border-warning/20",
+      ADMIN: 'bg-primary/10 text-primary border-primary/20',
+      SUPERADMIN: 'bg-destructive/10 text-destructive border-destructive/20',
+      STUDENT: 'bg-muted text-muted-foreground',
+      ACTIVE: 'bg-success/10 text-success border-success/20',
+      INACTIVE: 'bg-muted text-muted-foreground',
+      GLOBAL: 'bg-info/10 text-info border-info/20',
+      COURSE: 'bg-warning/10 text-warning border-warning/20',
     };
 
     if (enumColors[value]) {
-      return (
-        <Badge className={cn("text-xs", enumColors[value])}>
-          {value}
-        </Badge>
-      );
+      return <Badge className={cn('text-xs', enumColors[value])}>{value}</Badge>;
     }
 
-    // Handle IDs (show shortened version)
-    if (fieldKey.endsWith("Id") && value.length > 10) {
-      return (
-        <span className="font-mono text-xs bg-muted px-2 py-1 rounded">
-          {value.slice(0, 8)}...
-        </span>
-      );
+    if (fieldKey.endsWith('Id') && fieldKey !== 'id' && value.length > 10) {
+      return <span className="font-mono text-xs bg-muted px-2 py-1 rounded">{value}</span>;
     }
 
     // Default string handling
