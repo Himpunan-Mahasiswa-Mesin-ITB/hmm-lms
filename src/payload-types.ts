@@ -194,6 +194,21 @@ export interface User {
 export interface Media {
   id: number;
   alt: string;
+  caption?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -287,10 +302,22 @@ export interface Category {
 export interface Event {
   id: number;
   title: string;
-  /**
-   * URL identifier (e.g., hmm-company-visit)
-   */
-  slug: string;
+  featuredImage?: (number | null) | Media;
+  content: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
   eventDate: string;
   eventEndDate?: string | null;
   category: string;
@@ -308,6 +335,39 @@ export interface Event {
         id?: string | null;
       }[]
     | null;
+  meta?: {
+    title?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+    description?: string | null;
+  };
+  publishedAt?: string | null;
+  authors?: (number | User)[] | null;
+  populatedAuthors?:
+    | {
+        id?: string | null;
+        name?: string | null;
+      }[]
+    | null;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "achievements".
+ */
+export interface Achievement {
+  id: number;
+  title: string;
+  featuredImage?: (number | null) | Media;
   content: {
     root: {
       type: string;
@@ -323,33 +383,6 @@ export interface Event {
     };
     [k: string]: unknown;
   };
-  featuredImage?: (number | null) | Media;
-  status?: ('draft' | 'published') | null;
-  publishedAt: string;
-  authors: (number | User)[];
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "achievements".
- */
-export interface Achievement {
-  id: number;
-  title: string;
-  /**
-   * URL identifier (e.g., hmm-wins-hackaton)
-   */
-  slug: string;
-  /**
-   * Add custom keywords or categories for this achievements
-   */
-  tags?:
-    | {
-        tag: string;
-        id?: string | null;
-      }[]
-    | null;
   competitionName: string;
   awardLevel:
     'juara_1' | 'juara_2' | 'juara_3' | 'honorable_mention' | 'finalist' | 'special_award' | 'otherAwardLevel';
@@ -365,6 +398,48 @@ export interface Achievement {
         id?: string | null;
       }[]
     | null;
+  /**
+   * Add custom keywords or categories for this achievement
+   */
+  tags?:
+    | {
+        tag: string;
+        id?: string | null;
+      }[]
+    | null;
+  meta?: {
+    title?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+    description?: string | null;
+  };
+  publishedAt?: string | null;
+  authors?: (number | User)[] | null;
+  populatedAuthors?:
+    | {
+        id?: string | null;
+        name?: string | null;
+      }[]
+    | null;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "news".
+ */
+export interface News {
+  id: number;
+  title: string;
+  featuredImage?: (number | null) | Media;
   content: {
     root: {
       type: string;
@@ -380,24 +455,10 @@ export interface Achievement {
     };
     [k: string]: unknown;
   };
-  featuredImage?: (number | null) | Media;
-  authors: (number | User)[];
-  publishedAt: string;
-  status?: ('draft' | 'published') | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "news".
- */
-export interface News {
-  id: number;
-  title: string;
   /**
-   * URL identifier (e.g., hmm-goes-to-ugm)
+   * Short snippet used for social previews and card teasers
    */
-  slug: string;
+  summary: string;
   /**
    * Add custom keywords or categories for this news
    */
@@ -407,31 +468,30 @@ export interface News {
         id?: string | null;
       }[]
     | null;
-  /**
-   * Short snippet used for social previews and card teasers
-   */
-  summary: string;
-  content: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
+  meta?: {
+    title?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+    description?: string | null;
   };
-  featuredImage?: (number | null) | Media;
-  authors: (number | User)[];
-  publishedAt: string;
-  status?: ('draft' | 'published') | null;
+  publishedAt?: string | null;
+  authors?: (number | User)[] | null;
+  populatedAuthors?:
+    | {
+        id?: string | null;
+        name?: string | null;
+      }[]
+    | null;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
   updatedAt: string;
   createdAt: string;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1148,6 +1208,7 @@ export interface UsersSelect<T extends boolean = true> {
  */
 export interface MediaSelect<T extends boolean = true> {
   alt?: T;
+  caption?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;
@@ -1197,7 +1258,8 @@ export interface PostsSelect<T extends boolean = true> {
  */
 export interface EventsSelect<T extends boolean = true> {
   title?: T;
-  slug?: T;
+  featuredImage?: T;
+  content?: T;
   eventDate?: T;
   eventEndDate?: T;
   category?: T;
@@ -1209,13 +1271,26 @@ export interface EventsSelect<T extends boolean = true> {
         tag?: T;
         id?: T;
       };
-  content?: T;
-  featuredImage?: T;
-  status?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        image?: T;
+        description?: T;
+      };
   publishedAt?: T;
   authors?: T;
+  populatedAuthors?:
+    | T
+    | {
+        id?: T;
+        name?: T;
+      };
+  generateSlug?: T;
+  slug?: T;
   updatedAt?: T;
   createdAt?: T;
+  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1223,13 +1298,8 @@ export interface EventsSelect<T extends boolean = true> {
  */
 export interface AchievementsSelect<T extends boolean = true> {
   title?: T;
-  slug?: T;
-  tags?:
-    | T
-    | {
-        tag?: T;
-        id?: T;
-      };
+  featuredImage?: T;
+  content?: T;
   competitionName?: T;
   awardLevel?: T;
   customAwardLevel?: T;
@@ -1241,13 +1311,32 @@ export interface AchievementsSelect<T extends boolean = true> {
         nim?: T;
         id?: T;
       };
-  content?: T;
-  featuredImage?: T;
-  authors?: T;
+  tags?:
+    | T
+    | {
+        tag?: T;
+        id?: T;
+      };
+  meta?:
+    | T
+    | {
+        title?: T;
+        image?: T;
+        description?: T;
+      };
   publishedAt?: T;
-  status?: T;
+  authors?: T;
+  populatedAuthors?:
+    | T
+    | {
+        id?: T;
+        name?: T;
+      };
+  generateSlug?: T;
+  slug?: T;
   updatedAt?: T;
   createdAt?: T;
+  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1255,21 +1344,35 @@ export interface AchievementsSelect<T extends boolean = true> {
  */
 export interface NewsSelect<T extends boolean = true> {
   title?: T;
-  slug?: T;
+  featuredImage?: T;
+  content?: T;
+  summary?: T;
   tags?:
     | T
     | {
         tag?: T;
         id?: T;
       };
-  summary?: T;
-  content?: T;
-  featuredImage?: T;
-  authors?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        image?: T;
+        description?: T;
+      };
   publishedAt?: T;
-  status?: T;
+  authors?: T;
+  populatedAuthors?:
+    | T
+    | {
+        id?: T;
+        name?: T;
+      };
+  generateSlug?: T;
+  slug?: T;
   updatedAt?: T;
   createdAt?: T;
+  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1815,6 +1918,18 @@ export interface TaskSchedulePublish {
       | ({
           relationTo: 'posts';
           value: number | Post;
+        } | null)
+      | ({
+          relationTo: 'events';
+          value: number | Event;
+        } | null)
+      | ({
+          relationTo: 'achievements';
+          value: number | Achievement;
+        } | null)
+      | ({
+          relationTo: 'news';
+          value: number | News;
         } | null)
       | ({
           relationTo: 'pages';

@@ -1,14 +1,15 @@
-import React from 'react'
+import React from 'react';
 
-import { Card, CardPostData } from '@/components/Card'
-import { cn } from '@/utilities/ui'
+import { Card, type CardData } from '~/components/Card';
+import { cn } from '~/utilities/ui';
 
 export type Props = {
-  posts: CardPostData[]
-}
+  posts: CardData[];
+  relationTo?: 'posts' | 'event' | 'achievements' | 'news';
+};
 
 export const CollectionArchive: React.FC<Props> = (props) => {
-  const { posts } = props
+  const { posts, relationTo = 'posts' } = props;
 
   return (
     <div className={cn('container')}>
@@ -18,15 +19,15 @@ export const CollectionArchive: React.FC<Props> = (props) => {
             if (typeof result === 'object' && result !== null) {
               return (
                 <div className="col-span-4" key={index}>
-                  <Card className="h-full" doc={result} relationTo="posts" showCategories />
+                  <Card className="h-full" doc={result} relationTo={relationTo} showCategories />
                 </div>
-              )
+              );
             }
 
-            return null
+            return null;
           })}
         </div>
       </div>
     </div>
-  )
-}
+  );
+};

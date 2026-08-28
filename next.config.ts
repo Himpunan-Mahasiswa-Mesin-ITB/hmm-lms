@@ -1,17 +1,24 @@
-import { withPayload } from "@payloadcms/next/withPayload";
 import withPWA from '@ducanh2912/next-pwa';
+import { withPayload } from '@payloadcms/next/withPayload';
 import { createMDX } from 'fumadocs-mdx/next';
+import type { NextConfig } from 'next';
 
-/** @type {import('next').NextConfig} */
-const nextConfig = {
+const nextConfig: NextConfig = {
   // Next 16 defaults to Turbopack; keep an explicit config
   // so custom webpack settings don't hard-fail `next build`.
   reactStrictMode: true,
   transpilePackages: ['fumadocs-ui'],
   turbopack: {},
   images: {
-    domains: ['hmm-lms.sgp1.digitaloceanspaces.com', 'hmm-lms.sgp1.cdn.digitaloceanspaces.com'],
     remotePatterns: [
+      ...[process.env.NEXT_PUBLIC_APP_URL /* 'https://example.com' */].map((item) => {
+        const url = new URL(item);
+
+        return {
+          hostname: url.hostname,
+          protocol: url.protocol.replace(':', '') as 'http' | 'https',
+        };
+      }),
       {
         protocol: 'https',
         hostname: 'hmm-lms.sgp1.digitaloceanspaces.com',
@@ -24,7 +31,19 @@ const nextConfig = {
         port: '',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'raw.githubusercontent.com',
+        port: '',
+        pathname: '/**',
+      },
     ],
+    localPatterns: [
+      {
+        pathname: '/**',
+      },
+    ],
+    qualities: [100],
   },
   experimental: {
     serverActions: {

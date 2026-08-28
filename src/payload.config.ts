@@ -52,20 +52,6 @@ export default buildConfig({
       ],
     },
     livePreview: {
-      url: ({ data, collectionConfig }) => {
-        const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
-        if (collectionConfig?.slug === 'posts') {
-          return `${baseUrl}/blog/${data.slug}`;
-        } else if (collectionConfig?.slug === 'events') {
-          return `${baseUrl}/event/${data.slug}`;
-        } else if (collectionConfig?.slug === 'achievements') {
-          return `${baseUrl}/achievements/${data.slug}`;
-        } else if (collectionConfig?.slug === 'news') {
-          return `${baseUrl}/news/${data.slug}`;
-        }
-
-        return baseUrl;
-      },
       breakpoints: [
         {
           label: 'Mobile',
@@ -99,8 +85,8 @@ export default buildConfig({
       connectionString: env.DATABASE_URL || '',
     },
     schemaName: 'payload_cms',
-    push: env.NODE_ENV === 'development' ? true : false,
-    // push: false,
+    // push: env.NODE_ENV === 'development' ? true : false,
+    push: false,
   }),
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer],

@@ -2,7 +2,7 @@
 
 import React, { createContext, useCallback, use, useEffect, useState } from 'react'
 
-import canUseDOM from '@/utilities/canUseDOM'
+import canUseDOM from '~/utilities/canUseDOM'
 
 import { defaultTheme, getImplicitPreference, themeLocalStorageKey } from './shared'
 import type { Theme, ThemeContextType } from './types'

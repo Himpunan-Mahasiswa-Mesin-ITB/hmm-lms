@@ -6,11 +6,11 @@ import { useSelectedLayoutSegments } from 'next/navigation'
 import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
 
-import { getClientSideURL } from '@/utilities/getURL'
+import { getClientSideURL } from '~/utilities/getURL'
 
 import './index.scss'
 
-import { cn } from '@/utilities/ui'
+import { cn } from '~/utilities/ui'
 
 const baseClass = 'admin-bar'
 
