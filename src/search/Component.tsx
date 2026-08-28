@@ -1,26 +1,26 @@
-'use client'
-import { useRouter } from 'next/navigation'
-import React, { useState, useEffect } from 'react'
+'use client';
+import { useRouter } from 'next/navigation';
+import React, { useState, useEffect } from 'react';
 
-import { Input } from '~/components/ui/input'
-import { Label } from '~/components/ui/label'
-import { useDebounce } from '~/utilities/useDebounce'
+import { Input } from '~/components/ui/input';
+import { Label } from '~/components/ui/label';
+import { useDebounce } from '~/utilities/useDebounce';
 
 export const Search: React.FC = () => {
-  const [value, setValue] = useState('')
-  const router = useRouter()
+  const [value, setValue] = useState('');
+  const router = useRouter();
 
-  const debouncedValue = useDebounce(value)
+  const debouncedValue = useDebounce(value);
 
   useEffect(() => {
-    router.push(`/search${debouncedValue ? `?q=${debouncedValue}` : ''}`)
-  }, [debouncedValue, router])
+    router.push(`/search${debouncedValue ? `?q=${debouncedValue}` : ''}`);
+  }, [debouncedValue, router]);
 
   return (
     <div>
       <form
         onSubmit={(e) => {
-          e.preventDefault()
+          e.preventDefault();
         }}
       >
         <Label htmlFor="search" className="sr-only">
@@ -29,7 +29,7 @@ export const Search: React.FC = () => {
         <Input
           id="search"
           onChange={(event) => {
-            setValue(event.target.value)
+            setValue(event.target.value);
           }}
           placeholder="Search"
         />
@@ -38,5 +38,5 @@ export const Search: React.FC = () => {
         </button>
       </form>
     </div>
-  )
-}
+  );
+};

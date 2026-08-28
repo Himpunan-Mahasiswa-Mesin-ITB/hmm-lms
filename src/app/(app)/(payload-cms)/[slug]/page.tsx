@@ -2,7 +2,7 @@ import configPromise from '@payload-config';
 import type { Metadata } from 'next';
 import { draftMode } from 'next/headers';
 import { getPayload, type RequiredDataFromCollectionSlug } from 'payload';
-import React, { cache } from 'react';
+import { cache } from 'react';
 
 import { RenderBlocks } from '~/blocks/RenderBlocks';
 import { LivePreviewListener } from '~/components/LivePreviewListener';

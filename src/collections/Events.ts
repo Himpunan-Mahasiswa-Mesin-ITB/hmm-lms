@@ -237,6 +237,19 @@ export const Events: CollectionConfig<'events'> = {
       label: 'Organizer / Posted By',
     },
     {
+      name: 'status',
+      type: 'select',
+      label: 'Publishing Status',
+      defaultValue: 'draft',
+      options: [
+        { label: 'Draft', value: 'draft' },
+        { label: 'Published', value: 'published' },
+      ],
+      admin: {
+        position: 'sidebar',
+      },
+    },
+    {
       name: 'populatedAuthors',
       type: 'array',
       access: {

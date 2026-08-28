@@ -256,6 +256,7 @@ export interface Post {
   };
   publishedAt?: string | null;
   authors?: (number | User)[] | null;
+  status?: ('draft' | 'published') | null;
   populatedAuthors?:
     | {
         id?: string | null;
@@ -345,6 +346,7 @@ export interface Event {
   };
   publishedAt?: string | null;
   authors?: (number | User)[] | null;
+  status?: ('draft' | 'published') | null;
   populatedAuthors?:
     | {
         id?: string | null;
@@ -417,6 +419,7 @@ export interface Achievement {
   };
   publishedAt?: string | null;
   authors?: (number | User)[] | null;
+  status?: ('draft' | 'published') | null;
   populatedAuthors?:
     | {
         id?: string | null;
@@ -478,6 +481,7 @@ export interface News {
   };
   publishedAt?: string | null;
   authors?: (number | User)[] | null;
+  status?: ('draft' | 'published') | null;
   populatedAuthors?:
     | {
         id?: string | null;
@@ -1240,6 +1244,7 @@ export interface PostsSelect<T extends boolean = true> {
       };
   publishedAt?: T;
   authors?: T;
+  status?: T;
   populatedAuthors?:
     | T
     | {
@@ -1280,6 +1285,7 @@ export interface EventsSelect<T extends boolean = true> {
       };
   publishedAt?: T;
   authors?: T;
+  status?: T;
   populatedAuthors?:
     | T
     | {
@@ -1326,6 +1332,7 @@ export interface AchievementsSelect<T extends boolean = true> {
       };
   publishedAt?: T;
   authors?: T;
+  status?: T;
   populatedAuthors?:
     | T
     | {
@@ -1362,6 +1369,7 @@ export interface NewsSelect<T extends boolean = true> {
       };
   publishedAt?: T;
   authors?: T;
+  status?: T;
   populatedAuthors?:
     | T
     | {
