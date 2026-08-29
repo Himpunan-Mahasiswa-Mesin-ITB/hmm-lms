@@ -52,12 +52,12 @@ export default async function Page() {
           {events.map((event) => {
             const authors = Array.isArray(event.authors)
               ? event.authors
-                  .map((a) => (typeof a === 'object' ? a : null))
-                  .filter((a): a is NonNullable<typeof a> => a !== null)
+                .map((a) => (typeof a === 'object' ? a : null))
+                .filter((a): a is NonNullable<typeof a> => a !== null)
               : [];
 
             return (
-              <Link key={event.id} href={`/events/${event.slug}`}>
+              <Link key={event.id} href={`/event/${event.slug}`}>
                 <Card className="h-full hover:shadow-lg transition-shadow cursor-pointer pt-0">
                   {event.featuredImage &&
                     typeof event.featuredImage === 'object' &&
