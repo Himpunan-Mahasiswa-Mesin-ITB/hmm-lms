@@ -1,6 +1,6 @@
 import configPromise from '@payload-config';
 import { format } from 'date-fns';
-import { ArrowLeft, Tag } from 'lucide-react';
+import { ArrowLeft, Calendar, Tag } from 'lucide-react';
 import type { Metadata } from 'next';
 import { draftMode } from 'next/headers';
 import Link from 'next/link';
@@ -16,7 +16,6 @@ import {
 } from '~/components/ui/avatar';
 import { Badge } from '~/components/ui/badge';
 import { Button } from '~/components/ui/button';
-import { Calendar } from '~/components/ui/calendar';
 import { Tooltip, TooltipContent, TooltipTrigger } from '~/components/ui/tooltip';
 import { LivePreviewListener } from '~/payload/components/LivePreviewListener';
 import { PayloadRedirects } from '~/payload/components/PayloadRedirects';
@@ -63,8 +62,8 @@ export default async function News({ params: paramsPromise }: Args) {
 
   const authors = Array.isArray(newsItem.authors)
     ? newsItem.authors
-        .map((a) => (typeof a === 'object' ? a : null))
-        .filter((a): a is NonNullable<typeof a> => a !== null)
+      .map((a) => (typeof a === 'object' ? a : null))
+      .filter((a): a is NonNullable<typeof a> => a !== null)
     : [];
 
   const featuredImageUrl =
