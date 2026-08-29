@@ -30,11 +30,7 @@ export async function generateStaticParams() {
     collection: 'events',
     draft: false,
     limit: 1000,
-    overrideAccess: false,
     pagination: false,
-    select: {
-      slug: true,
-    },
   });
 
   const params = events.docs.map(({ slug }) => {
@@ -256,7 +252,6 @@ const queryEventBySlug = cache(async ({ slug }: { slug: string }) => {
     collection: 'events',
     draft,
     limit: 1,
-    overrideAccess: draft,
     pagination: false,
     where: {
       slug: {

@@ -30,11 +30,7 @@ export async function generateStaticParams() {
     collection: 'achievements',
     draft: false,
     limit: 1000,
-    overrideAccess: false,
     pagination: false,
-    select: {
-      slug: true,
-    },
   });
 
   const params = achievements.docs.map(({ slug }) => {
@@ -71,8 +67,8 @@ export default async function Achievement({ params: paramsPromise }: Args) {
 
   const authors = Array.isArray(achievement.authors)
     ? achievement.authors
-        .map((a) => (typeof a === 'object' ? a : null))
-        .filter((a): a is NonNullable<typeof a> => a !== null)
+      .map((a) => (typeof a === 'object' ? a : null))
+      .filter((a): a is NonNullable<typeof a> => a !== null)
     : [];
 
   const awardLabel =
@@ -285,7 +281,6 @@ const queryAchievementBySlug = cache(async ({ slug }: { slug: string }) => {
     collection: 'achievements',
     draft,
     limit: 1,
-    overrideAccess: draft,
     pagination: false,
     where: {
       slug: {

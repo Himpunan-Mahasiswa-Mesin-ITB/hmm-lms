@@ -30,11 +30,7 @@ export async function generateStaticParams() {
     collection: 'news',
     draft: false,
     limit: 1000,
-    overrideAccess: false,
     pagination: false,
-    select: {
-      slug: true,
-    },
   });
 
   const params = news.docs.map(({ slug }) => {
@@ -238,7 +234,6 @@ const queryNewsBySlug = cache(async ({ slug }: { slug: string }) => {
     collection: 'news',
     draft,
     limit: 1,
-    overrideAccess: draft,
     pagination: false,
     where: {
       slug: {

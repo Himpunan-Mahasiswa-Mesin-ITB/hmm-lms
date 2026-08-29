@@ -32,11 +32,7 @@ export async function generateStaticParams() {
     collection: 'posts',
     draft: false,
     limit: 1000,
-    overrideAccess: false,
     pagination: false,
-    select: {
-      slug: true,
-    },
   });
 
   const params = posts.docs.map(({ slug }) => {
@@ -63,8 +59,8 @@ export default async function Post({ params: paramsPromise }: Args) {
   if (!post) return <PayloadRedirects url={url} />;
   const authors = Array.isArray(post.authors)
     ? post.authors
-        .map((a) => (typeof a === 'object' ? a : null))
-        .filter((a): a is NonNullable<typeof a> => a !== null)
+      .map((author) => (typeof author === 'object' ? author : null))
+      .filter((a): a is NonNullable<typeof a> => a !== null)
     : [];
   const featuredImageUrl =
     typeof post.heroImage === 'object' && post.heroImage?.url ? post.heroImage.url : null;
@@ -83,7 +79,7 @@ export default async function Post({ params: paramsPromise }: Args) {
       <Link href="/">
         <Button variant="ghost" className="mb-6">
           <ArrowLeft className="w-4 h-4 mr-2" />
-          Back to Blog
+          Back to Posts
         </Button>
       </Link>
 
@@ -239,7 +235,6 @@ const queryPostBySlug = cache(async ({ slug }: { slug: string }) => {
     collection: 'posts',
     draft,
     limit: 1,
-    overrideAccess: draft,
     pagination: false,
     where: {
       slug: {

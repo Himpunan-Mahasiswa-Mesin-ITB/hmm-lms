@@ -61,8 +61,8 @@ export default async function Page() {
           {achievements.map((achievement) => {
             const authors = Array.isArray(achievement.authors)
               ? achievement.authors
-                  .map((a) => (typeof a === 'object' ? a : null))
-                  .filter((a): a is NonNullable<typeof a> => a !== null)
+                .map((a) => (typeof a === 'object' ? a : null))
+                .filter((a): a is NonNullable<typeof a> => a !== null)
               : [];
 
             const awardLabel =
@@ -152,12 +152,12 @@ export default async function Page() {
                       <div className="flex items-center gap-2 flex-wrap">
                         <Tag className="w-4 h-4 text-muted-foreground" />
                         {achievement.tags.slice(0, 3).map((tag, index) => (
-                          <Badge key={index} variant="outline" className="text-xs">
+                          <Badge key={index} variant="outline" className="text-xs capitalize">
                             {tag.tag}
                           </Badge>
                         ))}
                         {achievement.tags.length > 3 && (
-                          <Badge variant="outline" className="text-xs capitalize">
+                          <Badge variant="outline" className="text-xs">
                             +{achievement.tags.length - 3}
                           </Badge>
                         )}
