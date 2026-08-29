@@ -1,6 +1,7 @@
 import { format } from 'date-fns';
-import { Calendar, Trophy, Tag } from 'lucide-react';
+import { Calendar, Tag, Trophy } from 'lucide-react';
 import Link from 'next/link';
+import type { Metadata } from 'next/types';
 
 import {
   Avatar,
@@ -12,6 +13,11 @@ import {
 import { Badge } from '~/components/ui/badge';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card';
 import { api } from '~/trpc/server';
+
+import PageClient from './page.client';
+
+export const dynamic = 'force-static';
+export const revalidate = 600;
 
 async function getAchievements() {
   try {
@@ -33,11 +39,12 @@ const awardLevelLabels: Record<string, string> = {
   special_award: 'Special Award',
 };
 
-export default async function AchievementsPage() {
+export default async function Page() {
   const achievements = await getAchievements();
 
   return (
     <div className="container mx-auto px-4 py-12 max-w-6xl">
+      <PageClient />
       <div className="mb-12">
         <h1 className="text-4xl font-bold mb-4">Achievements</h1>
         <p className="text-muted-foreground text-lg">
@@ -150,7 +157,7 @@ export default async function AchievementsPage() {
                           </Badge>
                         ))}
                         {achievement.tags.length > 3 && (
-                          <Badge variant="outline" className="text-xs">
+                          <Badge variant="outline" className="text-xs capitalize">
                             +{achievement.tags.length - 3}
                           </Badge>
                         )}
@@ -165,4 +172,10 @@ export default async function AchievementsPage() {
       )}
     </div>
   );
+}
+
+export function generateMetadata(): Metadata {
+  return {
+    title: `Achievements`,
+  };
 }

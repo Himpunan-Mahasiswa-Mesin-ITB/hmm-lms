@@ -1,5 +1,6 @@
 import { format } from 'date-fns';
 import { Calendar, Tag } from 'lucide-react';
+import type { Metadata } from 'next';
 import Link from 'next/link';
 
 import {
@@ -120,7 +121,7 @@ export default async function NewsPage() {
                       <div className="flex items-center gap-2 flex-wrap">
                         <Tag className="w-4 h-4 text-muted-foreground" />
                         {newsItem.tags.slice(0, 3).map((tag, index) => (
-                          <Badge key={index} variant="outline" className="text-xs">
+                          <Badge key={index} variant="outline" className="text-xs capitalize">
                             {tag.tag}
                           </Badge>
                         ))}
@@ -140,4 +141,10 @@ export default async function NewsPage() {
       )}
     </div>
   );
+}
+
+export function generateMetadata(): Metadata {
+  return {
+    title: `News`,
+  };
 }

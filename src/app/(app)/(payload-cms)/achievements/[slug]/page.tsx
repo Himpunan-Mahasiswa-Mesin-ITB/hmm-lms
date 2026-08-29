@@ -1,10 +1,11 @@
-import { RichText } from '@payloadcms/richtext-lexical/react';
+import configPromise from '@payload-config';
 import { format } from 'date-fns';
 import { Calendar, ArrowLeft, Tag, Trophy, Users } from 'lucide-react';
 import type { Metadata } from 'next';
+import { draftMode } from 'next/headers';
 import Link from 'next/link';
-import { notFound } from 'next/navigation';
-import { RefreshRouteOnSave } from '~/components/payload/RefreshRouteOnSave';
+import { getPayload } from 'payload';
+import { cache } from 'react';
 
 import {
   Avatar,
@@ -16,17 +17,31 @@ import {
 import { Badge } from '~/components/ui/badge';
 import { Button } from '~/components/ui/button';
 import { Tooltip, TooltipContent, TooltipTrigger } from '~/components/ui/tooltip';
-import { api } from '~/trpc/server';
+import { LivePreviewListener } from '~/payload/components/LivePreviewListener';
+import { PayloadRedirects } from '~/payload/components/PayloadRedirects';
+import RichText from '~/payload/components/RichText';
+import { generateMeta } from '~/payload/utilities/generateMeta';
 
-async function getAchievement(slug: string) {
-  try {
-    const data = await api.payload.getAchievement({ slug });
+import PageClient from './page.client';
 
-    return data;
-  } catch (error) {
-    console.error('Error fetching achievement:', error);
-    return null;
-  }
+export async function generateStaticParams() {
+  const payload = await getPayload({ config: configPromise });
+  const achievements = await payload.find({
+    collection: 'achievements',
+    draft: false,
+    limit: 1000,
+    overrideAccess: false,
+    pagination: false,
+    select: {
+      slug: true,
+    },
+  });
+
+  const params = achievements.docs.map(({ slug }) => {
+    return { slug };
+  });
+
+  return params;
 }
 
 const awardLevelLabels: Record<string, string> = {
@@ -38,33 +53,21 @@ const awardLevelLabels: Record<string, string> = {
   special_award: 'Special Award',
 };
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}): Promise<Metadata> {
-  const { slug } = await params;
-  const achievement = await getAchievement(slug);
+type Args = {
+  params: Promise<{
+    slug?: string;
+  }>;
+};
 
-  if (!achievement) {
-    return {
-      title: 'Achievement Not Found',
-    };
-  }
+export default async function Achievement({ params: paramsPromise }: Args) {
+  const { isEnabled: draft } = await draftMode();
+  const { slug = '' } = await paramsPromise;
+  // Decode to support slugs with special characters
+  const decodedSlug = decodeURIComponent(slug);
+  const url = '/achievements/' + decodedSlug;
+  const achievement = await queryAchievementBySlug({ slug: decodedSlug });
 
-  return {
-    title: achievement.title,
-    description: achievement.competitionName,
-  };
-}
-
-export default async function AchievementPage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params;
-  const achievement = await getAchievement(slug);
-
-  if (!achievement) {
-    notFound();
-  }
+  if (!achievement) return <PayloadRedirects url={url} />;
 
   const authors = Array.isArray(achievement.authors)
     ? achievement.authors
@@ -83,8 +86,14 @@ export default async function AchievementPage({ params }: { params: Promise<{ sl
       : null;
 
   return (
-    <div className="container mx-auto px-4 py-12 max-w-4xl">
-      <RefreshRouteOnSave />
+    <article className="container mx-auto px-4 py-12 max-w-4xl">
+      <PageClient />
+
+      {/* Allows redirects for valid pages too */}
+      <PayloadRedirects disableNotFound url={url} />
+
+      {draft && <LivePreviewListener />}
+
       <Link href="/achievements">
         <Button variant="ghost" className="mb-6">
           <ArrowLeft className="w-4 h-4 mr-2" />
@@ -222,7 +231,7 @@ export default async function AchievementPage({ params }: { params: Promise<{ sl
           <div className="flex items-center gap-2 flex-wrap mb-8">
             <Tag className="w-4 h-4 text-muted-foreground" />
             {achievement.tags.map((tag, index) => (
-              <Badge key={index} variant="outline">
+              <Badge key={index} variant="outline" className="capitalize">
                 {tag.tag}
               </Badge>
             ))}
@@ -254,6 +263,36 @@ export default async function AchievementPage({ params }: { params: Promise<{ sl
           <RichText data={achievement.content} />
         </div>
       </article>
-    </div>
+    </article>
   );
 }
+
+export async function generateMetadata({ params: paramsPromise }: Args): Promise<Metadata> {
+  const { slug = '' } = await paramsPromise;
+  // Decode to support slugs with special characters
+  const decodedSlug = decodeURIComponent(slug);
+  const achievement = await queryAchievementBySlug({ slug: decodedSlug });
+
+  return generateMeta({ doc: achievement });
+}
+
+const queryAchievementBySlug = cache(async ({ slug }: { slug: string }) => {
+  const { isEnabled: draft } = await draftMode();
+
+  const payload = await getPayload({ config: configPromise });
+
+  const result = await payload.find({
+    collection: 'achievements',
+    draft,
+    limit: 1,
+    overrideAccess: draft,
+    pagination: false,
+    where: {
+      slug: {
+        equals: slug,
+      },
+    },
+  });
+
+  return result.docs?.[0] || null;
+});

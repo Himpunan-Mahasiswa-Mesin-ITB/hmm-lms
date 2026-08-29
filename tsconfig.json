@@ -14,12 +14,7 @@
     "noUncheckedIndexedAccess": true,
     "checkJs": true,
     /* Bundled projects */
-    "lib": [
-      "DOM",
-      "DOM.Iterable",
-      "ES2022",
-      "ESNext"
-    ],
+    "lib": ["DOM", "DOM.Iterable", "ES2022", "ESNext"],
     "noEmit": true,
     "module": "esnext",
     "moduleResolution": "bundler",
@@ -32,12 +27,8 @@
     "incremental": true,
     /* Path Aliases */
     "paths": {
-      "~/*": [
-        "./src/*"
-      ],
-      "@payload-config": [
-        "./src/payload.config.ts"
-      ]
+      "~/*": ["./src/*"],
+      "@payload-config": ["./src/payload.config.ts"]
     }
   },
   "include": [
@@ -46,7 +37,7 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "types/next-auth.d.ts",
-    "next.config.mjs",
+    "next.config.ts",
     "prisma/seeds/main.ts",
     ".next/dev/types/**/*.ts",
     ".next/dev/dev/types/**/*.ts"

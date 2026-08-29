@@ -1,10 +1,11 @@
-import { RichText } from '@payloadcms/richtext-lexical/react';
+import configPromise from '@payload-config';
 import { format } from 'date-fns';
-import { Calendar, ArrowLeft, Tag } from 'lucide-react';
+import { ArrowLeft, Tag } from 'lucide-react';
 import type { Metadata } from 'next';
+import { draftMode } from 'next/headers';
 import Link from 'next/link';
-import { notFound } from 'next/navigation';
-import { RefreshRouteOnSave } from '~/components/payload/RefreshRouteOnSave';
+import { getPayload } from 'payload';
+import { cache } from 'react';
 
 import {
   Avatar,
@@ -15,47 +16,50 @@ import {
 } from '~/components/ui/avatar';
 import { Badge } from '~/components/ui/badge';
 import { Button } from '~/components/ui/button';
+import { Calendar } from '~/components/ui/calendar';
 import { Tooltip, TooltipContent, TooltipTrigger } from '~/components/ui/tooltip';
-import { api } from '~/trpc/server';
+import { LivePreviewListener } from '~/payload/components/LivePreviewListener';
+import { PayloadRedirects } from '~/payload/components/PayloadRedirects';
+import RichText from '~/payload/components/RichText';
+import { generateMeta } from '~/payload/utilities/generateMeta';
 
-async function getNewsItem(slug: string) {
-  try {
-    const data = await api.payload.getNewsItem({ slug });
+import PageClient from './page.client';
 
-    return data;
-  } catch (error) {
-    console.error('Error fetching news:', error);
-    return null;
-  }
+export async function generateStaticParams() {
+  const payload = await getPayload({ config: configPromise });
+  const news = await payload.find({
+    collection: 'news',
+    draft: false,
+    limit: 1000,
+    overrideAccess: false,
+    pagination: false,
+    select: {
+      slug: true,
+    },
+  });
+
+  const params = news.docs.map(({ slug }) => {
+    return { slug };
+  });
+
+  return params;
 }
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}): Promise<Metadata> {
-  const { slug } = await params;
-  const newsItem = await getNewsItem(slug);
+type Args = {
+  params: Promise<{
+    slug?: string;
+  }>;
+};
 
-  if (!newsItem) {
-    return {
-      title: 'News Not Found',
-    };
-  }
+export default async function News({ params: paramsPromise }: Args) {
+  const { isEnabled: draft } = await draftMode();
+  const { slug = '' } = await paramsPromise;
+  // Decode to support slugs with special characters
+  const decodedSlug = decodeURIComponent(slug);
+  const url = '/news/' + decodedSlug;
+  const newsItem = await queryNewsBySlug({ slug: decodedSlug });
 
-  return {
-    title: newsItem.title,
-    description: newsItem.summary,
-  };
-}
-
-export default async function NewsPage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params;
-  const newsItem = await getNewsItem(slug);
-
-  if (!newsItem) {
-    notFound();
-  }
+  if (!newsItem) return <PayloadRedirects url={url} />;
 
   const authors = Array.isArray(newsItem.authors)
     ? newsItem.authors
@@ -69,16 +73,19 @@ export default async function NewsPage({ params }: { params: Promise<{ slug: str
       : null;
 
   return (
-    <div className="container mx-auto px-4 py-12 max-w-4xl">
-      <RefreshRouteOnSave />
+    <article className="container mx-auto px-4 py-12 max-w-4xl">
+      <PageClient />
+
+      <PayloadRedirects disableNotFound url={url} />
+
+      {draft && <LivePreviewListener />}
       <Link href="/news">
         <Button variant="ghost" className="mb-6">
           <ArrowLeft className="w-4 h-4 mr-2" />
           Back to News
         </Button>
       </Link>
-
-      <article>
+      <main>
         {featuredImageUrl && (
           <div className="aspect-video w-full overflow-hidden rounded-lg mb-8">
             <img
@@ -195,7 +202,7 @@ export default async function NewsPage({ params }: { params: Promise<{ slug: str
           <div className="flex items-center gap-2 flex-wrap mb-8">
             <Tag className="w-4 h-4 text-muted-foreground" />
             {newsItem.tags.map((tag, index) => (
-              <Badge key={index} variant="outline">
+              <Badge key={index} variant="outline" className="capitalize">
                 {tag.tag}
               </Badge>
             ))}
@@ -206,10 +213,40 @@ export default async function NewsPage({ params }: { params: Promise<{ slug: str
           <p className="text-xl text-muted-foreground mb-8 leading-relaxed">{newsItem.summary}</p>
         )}
 
-        <div className="prose dark:prose-invert max-w-none">
+        <div className="prose dark:prose-invert max-w-3xl mx-auto">
           <RichText data={newsItem.content} />
         </div>
-      </article>
-    </div>
+      </main>
+    </article>
   );
 }
+
+export async function generateMetadata({ params: paramsPromise }: Args): Promise<Metadata> {
+  const { slug = '' } = await paramsPromise;
+  // Decode to support slugs with special characters
+  const decodedSlug = decodeURIComponent(slug);
+  const newsItem = await queryNewsBySlug({ slug: decodedSlug });
+
+  return generateMeta({ doc: newsItem });
+}
+
+const queryNewsBySlug = cache(async ({ slug }: { slug: string }) => {
+  const { isEnabled: draft } = await draftMode();
+
+  const payload = await getPayload({ config: configPromise });
+
+  const result = await payload.find({
+    collection: 'news',
+    draft,
+    limit: 1,
+    overrideAccess: draft,
+    pagination: false,
+    where: {
+      slug: {
+        equals: slug,
+      },
+    },
+  });
+
+  return result.docs?.[0] || null;
+});

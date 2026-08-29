@@ -1,6 +1,7 @@
 import { format } from 'date-fns';
 import { Calendar, MapPin, Tag, Clock } from 'lucide-react';
 import Link from 'next/link';
+import type { Metadata } from 'next/types';
 
 import {
   Avatar,
@@ -13,6 +14,11 @@ import { Badge } from '~/components/ui/badge';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card';
 import { api } from '~/trpc/server';
 
+import PageClient from './page.client';
+
+export const dynamic = 'force-static';
+export const revalidate = 600;
+
 async function getEvents() {
   try {
     const data = await api.payload.getEvents();
@@ -24,11 +30,12 @@ async function getEvents() {
   }
 }
 
-export default async function EventsPage() {
+export default async function Page() {
   const events = await getEvents();
 
   return (
     <div className="container mx-auto px-4 py-12 max-w-6xl">
+      <PageClient />
       <div className="mb-12">
         <h1 className="text-4xl font-bold mb-4">Events</h1>
         <p className="text-muted-foreground text-lg">
@@ -139,7 +146,7 @@ export default async function EventsPage() {
                       <div className="flex items-center gap-2 flex-wrap">
                         <Tag className="w-4 h-4 text-muted-foreground" />
                         {event.tags.slice(0, 3).map((tag, index) => (
-                          <Badge key={index} variant="outline" className="text-xs">
+                          <Badge key={index} variant="outline" className="text-xs capitalize">
                             {tag.tag}
                           </Badge>
                         ))}
@@ -159,4 +166,10 @@ export default async function EventsPage() {
       )}
     </div>
   );
+}
+
+export function generateMetadata(): Metadata {
+  return {
+    title: `Events`,
+  };
 }

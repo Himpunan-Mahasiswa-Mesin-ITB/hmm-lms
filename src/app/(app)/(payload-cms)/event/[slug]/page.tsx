@@ -1,11 +1,12 @@
-import { RichText } from '@payloadcms/richtext-lexical/react';
+import configPromise from '@payload-config';
 import { format } from 'date-fns';
-import { Calendar, ArrowLeft, Tag, Clock, MapPin } from 'lucide-react';
+import { ArrowLeft, Clock, MapPin, Tag } from 'lucide-react';
 import type { Metadata } from 'next';
+import { draftMode } from 'next/headers';
 import Link from 'next/link';
-import { notFound } from 'next/navigation';
+import { getPayload } from 'payload';
+import { cache } from 'react';
 
-import { RefreshRouteOnSave } from '~/components/payload/RefreshRouteOnSave';
 import {
   Avatar,
   AvatarFallback,
@@ -15,47 +16,50 @@ import {
 } from '~/components/ui/avatar';
 import { Badge } from '~/components/ui/badge';
 import { Button } from '~/components/ui/button';
+import { Calendar } from '~/components/ui/calendar';
 import { Tooltip, TooltipContent, TooltipTrigger } from '~/components/ui/tooltip';
-import { api } from '~/trpc/server';
+import { LivePreviewListener } from '~/payload/components/LivePreviewListener';
+import { PayloadRedirects } from '~/payload/components/PayloadRedirects';
+import RichText from '~/payload/components/RichText';
+import { generateMeta } from '~/payload/utilities/generateMeta';
 
-async function getEvent(slug: string) {
-  try {
-    const data = await api.payload.getEvent({ slug });
+import PageClient from './page.client';
 
-    return data;
-  } catch (error) {
-    console.error('Error fetching event:', error);
-    return null;
-  }
+export async function generateStaticParams() {
+  const payload = await getPayload({ config: configPromise });
+  const events = await payload.find({
+    collection: 'events',
+    draft: false,
+    limit: 1000,
+    overrideAccess: false,
+    pagination: false,
+    select: {
+      slug: true,
+    },
+  });
+
+  const params = events.docs.map(({ slug }) => {
+    return { slug };
+  });
+
+  return params;
 }
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}): Promise<Metadata> {
-  const { slug } = await params;
-  const event = await getEvent(slug);
+type Args = {
+  params: Promise<{
+    slug?: string;
+  }>;
+};
 
-  if (!event) {
-    return {
-      title: 'Event Not Found',
-    };
-  }
+export default async function Event({ params: paramsPromise }: Args) {
+  const { isEnabled: draft } = await draftMode();
+  const { slug = '' } = await paramsPromise;
+  // Decode to support slugs with special characters
+  const decodedSlug = decodeURIComponent(slug);
+  const url = '/event/' + decodedSlug;
+  const event = await queryEventBySlug({ slug: decodedSlug });
 
-  return {
-    title: event.title,
-    description: event.excerpt,
-  };
-}
-
-export default async function EventPage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params;
-  const event = await getEvent(slug);
-
-  if (!event) {
-    notFound();
-  }
+  if (!event) return <PayloadRedirects url={url} />;
 
   const authors = Array.isArray(event.authors)
     ? event.authors
@@ -69,16 +73,22 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
       : null;
 
   return (
-    <div className="container mx-auto px-4 py-12 max-w-4xl">
-      <RefreshRouteOnSave />
-      <Link href="/events">
+    <article className="container mx-auto px-4 py-12 max-w-4xl">
+      <PageClient />
+
+      {/* Allows redirects for valid pages too */}
+      <PayloadRedirects disableNotFound url={url} />
+
+      {draft && <LivePreviewListener />}
+
+      <Link href="/event">
         <Button variant="ghost" className="mb-6">
           <ArrowLeft className="w-4 h-4 mr-2" />
           Back to Events
         </Button>
       </Link>
 
-      <article>
+      <main>
         {featuredImageUrl && (
           <div className="aspect-video w-full overflow-hidden rounded-lg mb-8">
             <img
@@ -93,7 +103,7 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
 
         <div className="mb-6">
           {event.category && (
-            <Badge variant="secondary" className="mb-4">
+            <Badge variant="secondary" className="mb-4 capitalize">
               {event.category}
             </Badge>
           )}
@@ -224,7 +234,37 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
         <div className="prose dark:prose-invert max-w-none">
           <RichText data={event.content} />
         </div>
-      </article>
-    </div>
+      </main>
+    </article>
   );
 }
+
+export async function generateMetadata({ params: paramsPromise }: Args): Promise<Metadata> {
+  const { slug = '' } = await paramsPromise;
+  // Decode to support slugs with special characters
+  const decodedSlug = decodeURIComponent(slug);
+  const eventItem = await queryEventBySlug({ slug: decodedSlug });
+
+  return generateMeta({ doc: eventItem });
+}
+
+const queryEventBySlug = cache(async ({ slug }: { slug: string }) => {
+  const { isEnabled: draft } = await draftMode();
+
+  const payload = await getPayload({ config: configPromise });
+
+  const result = await payload.find({
+    collection: 'events',
+    draft,
+    limit: 1,
+    overrideAccess: draft,
+    pagination: false,
+    where: {
+      slug: {
+        equals: slug,
+      },
+    },
+  });
+
+  return result.docs?.[0] || null;
+});

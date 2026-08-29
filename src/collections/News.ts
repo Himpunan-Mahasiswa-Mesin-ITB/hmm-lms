@@ -1,17 +1,29 @@
-import type { CollectionConfig } from 'payload'
+import {
+  MetaDescriptionField,
+  MetaImageField,
+  MetaTitleField,
+  OverviewField,
+  PreviewField,
+} from '@payloadcms/plugin-seo/fields';
+import {
+  BlocksFeature,
+  FixedToolbarFeature,
+  HeadingFeature,
+  HorizontalRuleFeature,
+  InlineToolbarFeature,
+  lexicalEditor,
+} from '@payloadcms/richtext-lexical';
+import type { CollectionConfig } from 'payload';
+import { slugField } from 'payload';
 
-export const News: CollectionConfig = {
+import { Banner } from '../payload/blocks/Banner/config';
+import { Code } from '../payload/blocks/Code/config';
+import { MediaBlock } from '../payload/blocks/MediaBlock/config';
+import { generatePreviewPath } from '../payload/utilities/generatePreviewPath';
+import { populateAuthors } from './Posts/hooks/populateAuthors';
+
+export const News: CollectionConfig<'news'> = {
   slug: 'news',
-  admin: {
-    useAsTitle: 'title',
-    defaultColumns: ['title', 'slug', 'publishedAt', 'status'],
-    livePreview: {
-      url: ({ data }) => {
-        const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
-        return `${baseUrl}/news/${data.slug}`
-      },
-    },
-  },
   access: {
     read: () => true,
     create: ({ req }) => {
@@ -33,86 +45,151 @@ export const News: CollectionConfig = {
       return false;
     },
   },
+  defaultPopulate: {
+    title: true,
+    slug: true,
+  },
+  admin: {
+    defaultColumns: ['title', 'slug', 'publishedAt', 'status'],
+    livePreview: {
+      url: ({ data, req }) =>
+        generatePreviewPath({
+          slug: data?.slug,
+          collection: 'news',
+          req,
+        }),
+    },
+    preview: (data, { req }) =>
+      generatePreviewPath({
+        slug: data?.slug as string,
+        collection: 'news',
+        req,
+      }),
+    useAsTitle: 'title',
+  },
   fields: [
     {
       name: 'title',
       type: 'text',
+      required: true,
       label: 'News Title',
-      required: true,
     },
     {
-      name: 'slug',
-      type: 'text',
-      label: 'URL Slug',
-      required: true,
-      unique: true,
-      admin: {
-        position: 'sidebar',
-        description: 'URL identifier (e.g., hmm-goes-to-ugm)',
-      },
-    },
-    {
-      name: 'tags',
-      type: 'array',
-      label: 'Tags',
-      admin: {
-        description: 'Add custom keywords or categories for this news',
-      },
-      fields: [
+      type: 'tabs',
+      tabs: [
         {
-          name: 'tag',
-          type: 'text',
-          required: true,
-          label: 'Tag Name',
+          fields: [
+            {
+              name: 'featuredImage',
+              type: 'upload',
+              relationTo: 'media',
+              label: 'Cover Image',
+            },
+            {
+              name: 'content',
+              type: 'richText',
+              editor: lexicalEditor({
+                features: ({ rootFeatures }) => {
+                  return [
+                    ...rootFeatures,
+                    HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
+                    BlocksFeature({ blocks: [Banner, Code, MediaBlock] }),
+                    FixedToolbarFeature(),
+                    InlineToolbarFeature(),
+                    HorizontalRuleFeature(),
+                  ];
+                },
+              }),
+              label: 'Full Article Body',
+              required: true,
+            },
+          ],
+          label: 'Content',
+        },
+        {
+          fields: [
+            {
+              name: 'summary',
+              type: 'textarea',
+              label: 'Executive Summary',
+              required: true,
+              admin: {
+                description: 'Short snippet used for social previews and card teasers',
+              },
+            },
+            {
+              name: 'tags',
+              type: 'array',
+              label: 'Tags',
+              admin: {
+                description: 'Add custom keywords or categories for this news',
+              },
+              fields: [
+                {
+                  name: 'tag',
+                  type: 'text',
+                  required: true,
+                  label: 'Tag Name',
+                },
+              ],
+            },
+          ],
+          label: 'News Details',
+        },
+        {
+          name: 'meta',
+          label: 'SEO',
+          fields: [
+            OverviewField({
+              titlePath: 'meta.title',
+              descriptionPath: 'meta.description',
+              imagePath: 'meta.image',
+            }),
+            MetaTitleField({
+              hasGenerateFn: true,
+            }),
+            MetaImageField({
+              relationTo: 'media',
+            }),
+            MetaDescriptionField({}),
+            PreviewField({
+              hasGenerateFn: true,
+              titlePath: 'meta.title',
+              descriptionPath: 'meta.description',
+            }),
+          ],
         },
       ],
     },
     {
-      name: 'summary',
-      type: 'textarea',
-      label: 'Executive Summary',
-      required: true,
+      name: 'publishedAt',
+      type: 'date',
       admin: {
-        description: 'Short snippet used for social previews and card teasers',
-      },
-    },
-    {
-      name: 'content',
-      type: 'richText',
-      label: 'Full Article Body',
-      required: true,
-    },
-    {
-      name: 'featuredImage',
-      type: 'upload',
-      relationTo: 'media',
-      label: 'Cover Image',
-      admin: {
+        date: {
+          pickerAppearance: 'dayAndTime',
+        },
         position: 'sidebar',
+      },
+      hooks: {
+        beforeChange: [
+          ({ siblingData, value }) => {
+            if (siblingData._status === 'published' && !value) {
+              return new Date();
+            }
+            return value;
+          },
+        ],
       },
     },
     {
       name: 'authors',
       type: 'relationship',
+      admin: {
+        position: 'sidebar',
+      },
+      hasMany: true,
       relationTo: 'users',
       label: 'Authors',
-      required: true,
-      hasMany: true,
-      admin: {
-        position: 'sidebar',
-      },
-    },
-    {
-      name: 'publishedAt',
-      type: 'date',
-      label: 'Published Date',
-      required: true,
-      admin: {
-        position: 'sidebar',
-        date: {
-          pickerAppearance: 'dayAndTime',
-        },
-      },
     },
     {
       name: 'status',
@@ -127,5 +204,39 @@ export const News: CollectionConfig = {
         position: 'sidebar',
       },
     },
+    {
+      name: 'populatedAuthors',
+      type: 'array',
+      access: {
+        update: () => false,
+      },
+      admin: {
+        disabled: true,
+        readOnly: true,
+      },
+      fields: [
+        {
+          name: 'id',
+          type: 'text',
+        },
+        {
+          name: 'name',
+          type: 'text',
+        },
+      ],
+    },
+    slugField(),
   ],
-}
+  hooks: {
+    afterRead: [populateAuthors],
+  },
+  versions: {
+    drafts: {
+      autosave: {
+        interval: 100,
+      },
+      schedulePublish: true,
+    },
+    maxPerDoc: 50,
+  },
+};

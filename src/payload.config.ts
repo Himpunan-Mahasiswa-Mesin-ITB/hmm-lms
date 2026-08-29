@@ -3,17 +3,22 @@ import { fileURLToPath } from 'url';
 
 import { postgresAdapter } from '@payloadcms/db-postgres';
 import { lexicalEditor } from '@payloadcms/richtext-lexical';
-import { s3Storage } from '@payloadcms/storage-s3';
 import { buildConfig } from 'payload';
 import sharp from 'sharp';
 
+import { Achievements } from './collections/Achievements';
+import { Categories } from './collections/Categories';
+import { Events } from './collections/Events';
 import { Media } from './collections/Media';
+import { News } from './collections/News';
+import { Pages } from './collections/Pages';
 import { Posts } from './collections/Posts';
 import { Users } from './collections/Users';
 import { env } from './env';
-import { Events } from './collections/Events';
-import { Achievements } from './collections/Achievements';
-import { News } from './collections/News';
+import { Footer } from './payload/Footer/config';
+import { Header } from './payload/Header/config';
+import { getServerSideURL } from './payload/utilities/getURL';
+import { plugins } from './plugins';
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -27,6 +32,14 @@ export default buildConfig({
     importMap: {
       baseDir: path.resolve(dirname),
     },
+    components: {
+      // The `BeforeLogin` component renders a message that you see while logging into your admin panel.
+      // Feel free to delete this at any time. Simply remove the line below.
+      beforeLogin: ['~/payload/components/BeforeLogin'],
+      // The `BeforeDashboard` component renders the 'welcome' block that you see after logging into your admin panel.
+      // Feel free to delete this at any time. Simply remove the line below.
+      beforeDashboard: ['~/payload/components/BeforeDashboard'],
+    },
     meta: {
       title: 'Admin Payload CMS',
       titleSuffix: ' | HMM ITB',
@@ -39,23 +52,6 @@ export default buildConfig({
       ],
     },
     livePreview: {
-      url: ({ data, collectionConfig }) => {
-        const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
-        if (collectionConfig?.slug === 'posts') {
-          return `${baseUrl}/blog/${data.slug}`;
-        }
-        else if (collectionConfig?.slug === 'events') {
-          return `${baseUrl}/event/${data.slug}`
-        }
-        else if (collectionConfig?.slug === 'achievements') {
-          return `${baseUrl}/achievements/${data.slug}`
-        }
-        else if (collectionConfig?.slug === 'news') {
-          return `${baseUrl}/news/${data.slug}`
-        }
-
-        return baseUrl;
-      },
       breakpoints: [
         {
           label: 'Mobile',
@@ -78,7 +74,7 @@ export default buildConfig({
       ],
     },
   },
-  collections: [Users, Media, Posts, Events, Achievements, News],
+  collections: [Users, Media, Posts, Events, Achievements, News, Categories, Pages],
   editor: lexicalEditor(),
   secret: env.PAYLOAD_SECRET || '',
   typescript: {
@@ -89,24 +85,11 @@ export default buildConfig({
       connectionString: env.DATABASE_URL || '',
     },
     schemaName: 'payload_cms',
-    push: env.NODE_ENV === 'development' ? true : false,
+    // push: env.NODE_ENV === 'development' ? true : false,
+    push: false,
   }),
+  cors: [getServerSideURL()].filter(Boolean),
+  globals: [Header, Footer],
   sharp,
-  plugins: [
-    s3Storage({
-      collections: {
-        media: true,
-      },
-      enabled: true,
-      bucket: env.DO_SPACES_BUCKET,
-      config: {
-        region: env.DO_SPACES_REGION,
-        credentials: {
-          accessKeyId: env.DO_SPACES_KEY,
-          secretAccessKey: env.DO_SPACES_SECRET,
-        },
-        endpoint: env.DO_SPACES_ENDPOINT,
-      },
-    }),
-  ],
+  plugins,
 });
