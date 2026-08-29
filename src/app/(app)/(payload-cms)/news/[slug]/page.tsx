@@ -7,9 +7,6 @@ import Link from 'next/link';
 import { getPayload } from 'payload';
 import { cache } from 'react';
 
-import { LivePreviewListener } from '~/components/LivePreviewListener';
-import { PayloadRedirects } from '~/components/PayloadRedirects';
-import RichText from '~/components/RichText';
 import {
   Avatar,
   AvatarFallback,
@@ -21,7 +18,10 @@ import { Badge } from '~/components/ui/badge';
 import { Button } from '~/components/ui/button';
 import { Calendar } from '~/components/ui/calendar';
 import { Tooltip, TooltipContent, TooltipTrigger } from '~/components/ui/tooltip';
-import { generateMeta } from '~/utilities/generateMeta';
+import { LivePreviewListener } from '~/payload/components/LivePreviewListener';
+import { PayloadRedirects } from '~/payload/components/PayloadRedirects';
+import RichText from '~/payload/components/RichText';
+import { generateMeta } from '~/payload/utilities/generateMeta';
 
 import PageClient from './page.client';
 

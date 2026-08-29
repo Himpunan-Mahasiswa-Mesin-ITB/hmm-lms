@@ -11,12 +11,12 @@ import type { Plugin } from 'payload';
 import { env } from '~/env';
 import { revalidateRedirects } from '~/hooks/revalidateRedirects';
 import type { Page, Post } from '~/payload-types';
-import { beforeSyncWithSearch } from '~/search/beforeSync';
-import { searchFields } from '~/search/fieldOverrides';
-import { getServerSideURL } from '~/utilities/getURL';
+import { beforeSyncWithSearch } from '~/payload/search/beforeSync';
+import { searchFields } from '~/payload/search/fieldOverrides';
+import { getServerSideURL } from '~/payload/utilities/getURL';
 
 const generateTitle: GenerateTitle<Post | Page> = ({ doc }) =>
-  doc?.title ? `${doc.title} | Payload Website Template` : 'Payload Website Template';
+  doc?.title ? `${doc.title} | HMM ITB Website` : 'HMM ITB Website';
 
 const generateURL: GenerateURL<Post | Page> = ({ doc }) => {
   const url = getServerSideURL();

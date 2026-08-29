@@ -2,11 +2,10 @@ import configPromise from '@payload-config';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next/types';
 import { getPayload } from 'payload';
-import React from 'react';
 
-import { CollectionArchive } from '~/components/CollectionArchive';
-import { PageRange } from '~/components/PageRange';
-import { Pagination } from '~/components/Pagination';
+import { CollectionArchive } from '~/payload/components/CollectionArchive';
+import { PageRange } from '~/payload/components/PageRange';
+import { Pagination } from '~/payload/components/Pagination';
 
 import PageClient from './page.client';
 

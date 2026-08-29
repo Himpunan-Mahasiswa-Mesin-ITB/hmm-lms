@@ -12,13 +12,13 @@ import { Events } from './collections/Events';
 import { Media } from './collections/Media';
 import { News } from './collections/News';
 import { Pages } from './collections/Pages';
+import { Posts } from './collections/Posts';
 import { Users } from './collections/Users';
 import { env } from './env';
-import { Footer } from './Footer/config';
-import { Header } from './Header/config';
+import { Footer } from './payload/Footer/config';
+import { Header } from './payload/Header/config';
+import { getServerSideURL } from './payload/utilities/getURL';
 import { plugins } from './plugins';
-import { getServerSideURL } from './utilities/getURL';
-import { Posts } from './collections/Posts';
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -35,10 +35,10 @@ export default buildConfig({
     components: {
       // The `BeforeLogin` component renders a message that you see while logging into your admin panel.
       // Feel free to delete this at any time. Simply remove the line below.
-      beforeLogin: ['~/components/BeforeLogin'],
+      beforeLogin: ['~/payload/components/BeforeLogin'],
       // The `BeforeDashboard` component renders the 'welcome' block that you see after logging into your admin panel.
       // Feel free to delete this at any time. Simply remove the line below.
-      beforeDashboard: ['~/components/BeforeDashboard'],
+      beforeDashboard: ['~/payload/components/BeforeDashboard'],
     },
     meta: {
       title: 'Admin Payload CMS',
@@ -85,8 +85,8 @@ export default buildConfig({
       connectionString: env.DATABASE_URL || '',
     },
     schemaName: 'payload_cms',
-    push: env.NODE_ENV === 'development' ? true : false,
-    // push: false,
+    // push: env.NODE_ENV === 'development' ? true : false,
+    push: false,
   }),
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer],

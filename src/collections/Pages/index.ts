@@ -8,17 +8,17 @@ import {
 import type { CollectionConfig } from 'payload';
 import { slugField } from 'payload';
 
-import { hero } from '~/heros/config';
+import { hero } from '~/payload/heros/config';
 
 import { authenticated } from '../../access/authenticated';
 import { authenticatedOrPublished } from '../../access/authenticatedOrPublished';
-import { Archive } from '../../blocks/ArchiveBlock/config';
-import { CallToAction } from '../../blocks/CallToAction/config';
-import { Content } from '../../blocks/Content/config';
-import { FormBlock } from '../../blocks/Form/config';
-import { MediaBlock } from '../../blocks/MediaBlock/config';
+import { Archive } from '../../payload/blocks/ArchiveBlock/config';
+import { CallToAction } from '../../payload/blocks/CallToAction/config';
+import { Content } from '../../payload/blocks/Content/config';
+import { FormBlock } from '../../payload/blocks/Form/config';
+import { MediaBlock } from '../../payload/blocks/MediaBlock/config';
 import { populatePublishedAt } from '../../hooks/populatePublishedAt';
-import { generatePreviewPath } from '../../utilities/generatePreviewPath';
+import { generatePreviewPath } from '../../payload/utilities/generatePreviewPath';
 import { revalidateDelete, revalidatePage } from './hooks/revalidatePage';
 
 export const Pages: CollectionConfig<'pages'> = {

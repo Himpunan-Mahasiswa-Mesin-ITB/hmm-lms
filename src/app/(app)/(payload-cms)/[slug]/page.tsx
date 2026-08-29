@@ -4,12 +4,12 @@ import { draftMode } from 'next/headers';
 import { getPayload, type RequiredDataFromCollectionSlug } from 'payload';
 import { cache } from 'react';
 
-import { RenderBlocks } from '~/blocks/RenderBlocks';
-import { LivePreviewListener } from '~/components/LivePreviewListener';
-import { PayloadRedirects } from '~/components/PayloadRedirects';
 import { homeStatic } from '~/endpoints/seed/home-static';
-import { RenderHero } from '~/heros/RenderHero';
-import { generateMeta } from '~/utilities/generateMeta';
+import { RenderBlocks } from '~/payload/blocks/RenderBlocks';
+import { LivePreviewListener } from '~/payload/components/LivePreviewListener';
+import { PayloadRedirects } from '~/payload/components/PayloadRedirects';
+import { RenderHero } from '~/payload/heros/RenderHero';
+import { generateMeta } from '~/payload/utilities/generateMeta';
 
 import PageClient from './page.client';
 

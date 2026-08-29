@@ -16,10 +16,10 @@ import {
 import type { CollectionConfig } from 'payload';
 import { slugField } from 'payload';
 
-import { Banner } from '../blocks/Banner/config';
-import { Code } from '../blocks/Code/config';
-import { MediaBlock } from '../blocks/MediaBlock/config';
-import { generatePreviewPath } from '../utilities/generatePreviewPath';
+import { Banner } from '../payload/blocks/Banner/config';
+import { Code } from '../payload/blocks/Code/config';
+import { MediaBlock } from '../payload/blocks/MediaBlock/config';
+import { generatePreviewPath } from '../payload/utilities/generatePreviewPath';
 import { populateAuthors } from './Posts/hooks/populateAuthors';
 
 export const Achievements: CollectionConfig<'achievements'> = {
