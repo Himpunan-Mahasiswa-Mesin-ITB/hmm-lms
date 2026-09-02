@@ -176,7 +176,7 @@ export const formSchema = z.object({
   id: z.string(),
   title: z.string().min(1, 'Title is required'),
   description: z.string().optional(),
-  type: z.enum(['NORMAL', 'HOTLINE', 'MACHINING']).default('NORMAL'),
+  type: z.enum(['NORMAL', 'HOTLINE', 'MACHINING', 'COMPETITION']).default('NORMAL'),
   isPublished: z.boolean().default(false),
   isActive: z.boolean().default(true),
   allowMultipleSubmissions: z.boolean().default(false),
@@ -221,10 +221,18 @@ export const submitFormSchema = z.object({
 
 export const formBuilderSchema = formSchema.extend({
   questions: z.array(QuestionSchema),
-  creator: z.object({
-    id: z.string(),
-    name: z.string(),
-    email: z.string(),
-  }).optional(),
+  creator: z
+    .object({
+      id: z.string(),
+      name: z.string(),
+      email: z.string(),
+    })
+    .optional(),
 });
 export type FormBuilderSchema = z.infer<typeof formBuilderSchema>;
+
+export const updateFormNoteSchema = z.object({
+  notes: z.string(),
+});
+
+export type UpdateFormNoteForm = z.infer<typeof updateFormNoteSchema>;

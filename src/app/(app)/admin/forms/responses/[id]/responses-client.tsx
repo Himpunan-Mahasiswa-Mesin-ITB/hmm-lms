@@ -1,9 +1,12 @@
 'use client';
 
+import { zodResolver } from '@hookform/resolvers/zod';
 import { type ColumnDef } from '@tanstack/react-table';
 import { formatInTimeZone } from 'date-fns-tz';
-import { ChevronLeft, ChevronRight, User, MessageSquare, Download } from 'lucide-react';
+import { ChevronLeft, ChevronRight, User, MessageSquare, Download, FileText } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import React, { useState, useMemo } from 'react';
+import { useForm } from 'react-hook-form';
 import {
   BarChart,
   Bar,
@@ -23,6 +26,23 @@ import { type DataTableFeatures } from '~/components/data-table-features';
 import { Avatar, AvatarFallback } from '~/components/ui/avatar';
 import { Button } from '~/components/ui/button';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '~/components/ui/card';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '~/components/ui/dialog';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '~/components/ui/form';
 import { ScrollArea } from '~/components/ui/scroll-area';
 import {
   Select,
@@ -33,7 +53,10 @@ import {
 } from '~/components/ui/select';
 import { Separator } from '~/components/ui/separator';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '~/components/ui/tabs';
+import { Textarea } from '~/components/ui/textarea';
 import { TIMEZONE } from '~/constants/constants';
+import { updateFormNoteSchema, type UpdateFormNoteForm } from '~/lib/types/forms';
+import { api } from '~/trpc/react';
 import type { RouterOutputs } from '~/trpc/react';
 
 type FormWithQuestions = RouterOutputs['form']['getById'];
@@ -44,8 +67,76 @@ interface ResponsesClientProps {
   submissions: Submission[];
 }
 
+function UpdateNoteDialog({
+  submissionId,
+  currentNotes,
+  onUpdate,
+  isPending,
+}: {
+  submissionId: string;
+  currentNotes: string | null;
+  onUpdate: (data: { submissionId: string; notes: string }) => void;
+  isPending: boolean;
+}) {
+  const [open, setOpen] = useState(false);
+  const form = useForm<UpdateFormNoteForm>({
+    resolver: zodResolver(updateFormNoteSchema),
+    defaultValues: {
+      notes: currentNotes || '',
+    },
+  });
+
+  const handleSubmit = (values: UpdateFormNoteForm) => {
+    onUpdate({ submissionId, notes: values.notes });
+    setOpen(false);
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+          <FileText className="h-4 w-4" />
+        </Button>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Update Notes</DialogTitle>
+          <DialogDescription>Add or update notes for this form submission.</DialogDescription>
+        </DialogHeader>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
+            <FormField
+              control={form.control}
+              name="notes"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Notes</FormLabel>
+                  <FormControl>
+                    <Textarea placeholder="Enter notes..." className="min-h-25" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <DialogFooter>
+              <Button type="button" variant="outline" onClick={() => setOpen(false)}>
+                Cancel
+              </Button>
+              <Button type="submit" disabled={isPending}>
+                {isPending ? 'Saving...' : 'Save Notes'}
+              </Button>
+            </DialogFooter>
+          </form>
+        </Form>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
 const createResponseColumns = (
   form: FormWithQuestions,
+  updateSubmissionNote: (data: { submissionId: string; notes: string }) => void,
+  isUpdatingNote: boolean,
 ): ColumnDef<DataTableFeatures, Submission>[] => {
   const baseColumns: ColumnDef<DataTableFeatures, Submission>[] = [
     {
@@ -80,6 +171,23 @@ const createResponseColumns = (
       cell: ({ row }) => (
         <span className="text-sm text-muted-foreground">
           {formatInTimeZone(new Date(row.original.submittedAt), TIMEZONE, 'MMM d, yyyy • HH:mm')}
+        </span>
+      ),
+    },
+    {
+      accessorKey: 'notes',
+      header: ({ column }) => <DataTableColumnHeader column={column} title="Notes" />,
+      cell: ({ row }) => (
+        <span className="flex items-center">
+          <UpdateNoteDialog
+            submissionId={row.original.id}
+            currentNotes={row.original.notes}
+            onUpdate={updateSubmissionNote}
+            isPending={isUpdatingNote}
+          />
+          {row.original.notes && (
+            <span className="ml-2 text-xs text-muted-foreground">{row.original.notes}</span>
+          )}
         </span>
       ),
     },
@@ -130,38 +238,58 @@ const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8', '#82ca9d'
 
 export function ResponsesClient({ form, submissions }: ResponsesClientProps) {
   const [activeTab, setActiveTab] = useState('summary');
+  const router = useRouter();
 
-  const responseColumns = useMemo(() => createResponseColumns(form), [form]);
+  const { mutate: updateSubmissionNote, isPending: isUpdatingNote } =
+    api.form.updateSubmissionNote.useMutation({
+      onMutate: () => {
+        toast.info('Updating note...');
+      },
+      onSuccess: async () => {
+        toast.success('Note updated successfully');
+        router.refresh();
+      },
+      onError: (err) => toast.error(err.message),
+    });
+
+  const responseColumns = useMemo(
+    () => createResponseColumns(form, updateSubmissionNote, isUpdatingNote),
+    [form, updateSubmissionNote, isUpdatingNote],
+  );
   const handleExportResponses = () => {
     if (!submissions) return;
 
     const questions = form.questions.map((q) => q.title);
 
     const worksheetData = [
-      ['Name', 'NIM', 'Email', 'Submitted At', ...questions],
+      ['Name', 'NIM', 'Email', 'Submitted At', 'Notes', ...questions],
       ...submissions.map((s) => [
         s.submitter?.name ?? 'N/A',
         s.submitter?.email ?? 'N/A',
         s.submitter?.nim ?? 'N/A',
         formatInTimeZone(new Date(s.submittedAt), TIMEZONE, 'yyyy-MM-dd HH:mm'),
+        s.notes ?? '',
         ...form.questions.map((question) => {
           const answers = s.answers.filter((a) => a.questionId === question.id);
 
-          let textAnswers: string[] = [];
+          if (answers.length === 0) return 'No answer';
 
-          textAnswers = answers.map((a) => {
-            let jsonValuesArray: string[] = [];
-            if (a.textValue) return a.textValue;
-            else if (a.dateValue) return formatInTimeZone(new Date(a.dateValue), TIMEZONE, 'PPP');
-            else if (a.numberValue !== null && a.numberValue !== undefined)
-              return a.numberValue.toString();
-            else if (a.jsonValue && Array.isArray(a.jsonValue)) {
-              jsonValuesArray = a.jsonValue as string[];
-              return jsonValuesArray.join(', ');
-            }
-            return 'No answer';
-          });
-          return textAnswers;
+          const textAnswer = answers
+            .map((a) => {
+              let jsonValuesArray: string[] = [];
+              if (a.textValue) return a.textValue;
+              else if (a.dateValue) return formatInTimeZone(new Date(a.dateValue), TIMEZONE, 'PPP');
+              else if (a.numberValue !== null && a.numberValue !== undefined)
+                return a.numberValue.toString();
+              else if (a.jsonValue && Array.isArray(a.jsonValue)) {
+                jsonValuesArray = a.jsonValue as string[];
+                return jsonValuesArray.join(', ');
+              }
+              return 'No answer';
+            })
+            .join(', ');
+
+          return textAnswer;
         }),
       ]),
     ];

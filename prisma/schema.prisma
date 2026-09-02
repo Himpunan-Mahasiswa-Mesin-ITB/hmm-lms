@@ -143,6 +143,7 @@ enum FormQuestionType {
 
 enum FormType {
   NORMAL
+  COMPETITION
   HOTLINE
   MACHINING
 }
@@ -672,6 +673,7 @@ model FormSubmission {
   id     String @id @default(cuid())
   formId String
   form   Form   @relation(fields: [formId], references: [id], onDelete: Cascade)
+  notes  String?
 
   submittedBy String? // Nullable for anonymous submissions
   submitter   User?   @relation(fields: [submittedBy], references: [id])

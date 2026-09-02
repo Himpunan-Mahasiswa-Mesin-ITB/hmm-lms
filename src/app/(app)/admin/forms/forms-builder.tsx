@@ -507,6 +507,7 @@ export function FormsBuilder({ mode, initialData }: FormsBuilderProps) {
                             <SelectItem value="NORMAL">Normal</SelectItem>
                             <SelectItem value="HOTLINE">Hotline</SelectItem>
                             <SelectItem value="MACHINING">Machining</SelectItem>
+                            <SelectItem value="COMPETITION">Competition</SelectItem>
                           </SelectContent>
                         </Select>
                         <FormDescription>

@@ -6,6 +6,7 @@ import {
   createQuestionSchema,
   updateQuestionSchema,
   submitFormSchema,
+  updateFormNoteSchema,
 } from '~/lib/types/forms';
 
 import { adminProcedure, createTRPCRouter, protectedProcedure, publicProcedure } from '../trpc';
@@ -336,6 +337,11 @@ export const formRouter = createTRPCRouter({
     const form = await ctx.db.form.findUnique({
       where: { id: input.id },
       include: {
+        submissions: {
+          select: {
+            notes: true,
+          },
+        },
         creator: {
           select: {
             id: true,
@@ -509,7 +515,46 @@ export const formRouter = createTRPCRouter({
         nextCursor,
       };
     }),
+  getCompetitionForms: protectedProcedure
+    .input(
+      z.object({
+        limit: z.number().min(1).max(100).default(20),
+        cursor: z.string().optional(),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const { limit, cursor } = input;
 
+      const forms = await ctx.db.form.findMany({
+        where: {
+          type: 'COMPETITION',
+          isActive: true,
+          isPublished: true,
+        },
+        take: limit + 1,
+        cursor: cursor ? { id: cursor } : undefined,
+        orderBy: { updatedAt: 'desc' },
+        include: {
+          _count: {
+            select: {
+              questions: true,
+              submissions: true,
+            },
+          },
+        },
+      });
+
+      let nextCursor: string | undefined = undefined;
+      if (forms.length > limit) {
+        const nextItem = forms.pop();
+        nextCursor = nextItem?.id;
+      }
+
+      return {
+        forms,
+        nextCursor,
+      };
+    }),
   // Question management
   createQuestion: protectedProcedure
     .input(createQuestionSchema)
@@ -748,7 +793,14 @@ export const formRouter = createTRPCRouter({
         take: limit + 1,
         cursor: cursor ? { id: cursor } : undefined,
         orderBy: { submittedAt: 'desc' },
-        include: {
+        select: {
+          id: true,
+          formId: true,
+          submittedBy: true,
+          submittedAt: true,
+          ipAddress: true,
+          userAgent: true,
+          notes: true,
           submitter: {
             select: {
               id: true,
@@ -958,5 +1010,53 @@ export const formRouter = createTRPCRouter({
       });
 
       return newForm;
+    }),
+
+  updateSubmissionNote: protectedProcedure
+    .input(
+      z.object({
+        submissionId: z.string(),
+        ...updateFormNoteSchema.shape,
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const submission = await ctx.db.formSubmission.findUnique({
+        where: { id: input.submissionId },
+        include: {
+          form: {
+            select: {
+              createdBy: true,
+              managers: {
+                select: {
+                  id: true,
+                },
+              },
+            },
+          },
+        },
+      });
+
+      if (!submission) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Submission not found',
+        });
+      }
+
+      const isOwner = submission.form.createdBy === ctx.session.user.id;
+      const isManager = submission.form.managers.some((m) => m.id === ctx.session.user.id);
+      const isSuperAdmin = ctx.session.user.role === 'SUPERADMIN';
+
+      if (!isOwner && !isManager && !isSuperAdmin) {
+        throw new TRPCError({
+          code: 'FORBIDDEN',
+          message: 'You can only update notes for your own forms or forms you manage',
+        });
+      }
+
+      return ctx.db.formSubmission.update({
+        where: { id: input.submissionId },
+        data: { notes: input.notes },
+      });
     }),
 });

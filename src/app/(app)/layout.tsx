@@ -156,17 +156,17 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       <Script
         async
         strategy="afterInteractive"
-        src="https://www.googletagmanager.com/gtag/js?id=G-ETWTWVST67"
+        src="https://www.googletagmanager.com/gtag/js?id=G-08R8EDXS9T"
       />
       <Script
         id="google-analytics"
         strategy="afterInteractive"
         dangerouslySetInnerHTML={{
           __html: `
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-ETWTWVST67');
+           window.dataLayer = window.dataLayer || [];
+           function gtag(){dataLayer.push(arguments);}
+           gtag('js', new Date());
+           gtag('config', 'G-08R8EDXS9T');
           `,
         }}
       />
