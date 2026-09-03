@@ -332,11 +332,8 @@ export function DashboardContent() {
             <div className="space-y-2">
               <div className="flex items-center justify-between">
                 <span className="text-sm font-medium">System Uptime</span>
-                <span className="text-sm text-muted-foreground">
-                  {dashboardStats?.systemUptime ?? 0}%
-                </span>
+                <iframe src="https://status.hmmitb.com/badge?theme=dark" width="250" height="30" style={{ colorScheme: "normal" }} ></iframe>
               </div>
-              <Progress value={dashboardStats?.systemUptime ?? 0} className="h-2" />
             </div>
           </div>
         </CardContent>

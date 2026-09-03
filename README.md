@@ -130,6 +130,11 @@ HMM-LMS is a modern web application built to serve the academic and community ne
 - **[Payload CMS](https://payloadcms.com/)** - Headless CMS for content management
 - **[Fumadocs](https://fumadocs.dev/)** - Documentation framework
 
+### **Monitoring & Tracking**
+
+- **[Better Stack](https://betterstack.com)** - System Uptime monitoring
+- **[Sentry](https://sentry.io/welcome/)** - Error Monitoring and Tracking
+
 ### **Database \& ORM**
 
 - **[Prisma](https://www.prisma.io/)** - Next-generation ORM

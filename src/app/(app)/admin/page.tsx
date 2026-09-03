@@ -1,4 +1,3 @@
-// ~/app/(admin)/admin/dashboard/page.tsx
 import { DashboardContent } from './dashboard-content';
 
 export default function AdminDashboardPage() {
