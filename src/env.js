@@ -19,6 +19,7 @@ export const env = createEnv({
     VAPID_PRIVATE_KEY: z.string(),
     VAPID_SUBJECT: z.string().url().or(z.string().email()),
     RESEND_API_KEY: z.string(),
+    SENTRY_AUTH_TOKEN: z.string(),
   },
 
   /**
@@ -52,6 +53,7 @@ export const env = createEnv({
     VAPID_SUBJECT: process.env.VAPID_SUBJECT,
     NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
     RESEND_API_KEY: process.env.RESEND_API_KEY,
+    SENTRY_AUTH_TOKEN: process.env.SENTRY_AUTH_TOKEN,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially

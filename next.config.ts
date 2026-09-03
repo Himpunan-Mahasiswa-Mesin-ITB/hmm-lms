@@ -3,6 +3,7 @@ import withPWA from '@ducanh2912/next-pwa';
 import { withPayload } from '@payloadcms/next/withPayload';
 import { createMDX } from 'fumadocs-mdx/next';
 import type { NextConfig } from 'next';
+import { env } from '~/env';
 
 const nextConfig: NextConfig = {
   // Next 16 defaults to Turbopack; keep an explicit config
@@ -167,6 +168,7 @@ export default withSentryConfig(withPayload(pwaConfig(withMDX(nextConfig))), {
 
   project: "javascript-nextjs",
 
+  authToken: env.SENTRY_AUTH_TOKEN,
   // Only print logs for uploading source maps in CI
   silent: !process.env.CI,
 
