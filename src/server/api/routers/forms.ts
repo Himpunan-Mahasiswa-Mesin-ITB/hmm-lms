@@ -389,6 +389,11 @@ export const formRouter = createTRPCRouter({
       const form = await ctx.db.form.findUnique({
         where: { id: input.id },
         include: {
+          submissions: {
+            select: {
+              notes: true,
+            },
+          },
           creator: {
             select: {
               id: true,
