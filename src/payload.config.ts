@@ -9,6 +9,17 @@ import sharp from 'sharp';
 import { Achievements } from './collections/Achievements';
 import { Categories } from './collections/Categories';
 import { Events } from './collections/Events';
+import { ExternalAbout } from './collections/ExternalAbout';
+import { ExternalContact } from './collections/ExternalContact';
+import { ExternalEditorialSpot } from './collections/ExternalEditorialSpot';
+import { ExternalHeritageTimeline } from './collections/ExternalHeritageTimeline';
+import { ExternalImage } from './collections/ExternalImage';
+import { ExternalLogoMeaning } from './collections/ExternalLogoMeaning';
+import { ExternalManifesto } from './collections/ExternalManifesto';
+import { ExternalMisi } from './collections/ExternalMisi';
+import { ExternalOrganogram } from './collections/ExternalOrganogram';
+import { ExternalPillar } from './collections/ExternalPillar';
+import { ExternalVisi } from './collections/ExternalVisi';
 import { Media } from './collections/Media';
 import { News } from './collections/News';
 import { Pages } from './collections/Pages';
@@ -74,7 +85,27 @@ export default buildConfig({
       ],
     },
   },
-  collections: [Users, Media, Posts, Events, Achievements, News, Categories, Pages],
+  collections: [
+    Users,
+    Media,
+    Posts,
+    Events,
+    Achievements,
+    News,
+    Categories,
+    Pages,
+    ExternalManifesto,
+    ExternalAbout,
+    ExternalVisi,
+    ExternalEditorialSpot,
+    ExternalMisi,
+    ExternalOrganogram,
+    ExternalHeritageTimeline,
+    ExternalPillar,
+    ExternalContact,
+    ExternalImage,
+    ExternalLogoMeaning,
+  ],
   editor: lexicalEditor(),
   secret: env.PAYLOAD_SECRET || '',
   typescript: {
@@ -85,8 +116,8 @@ export default buildConfig({
       connectionString: env.DATABASE_URL || '',
     },
     schemaName: 'payload_cms',
-    // push: env.NODE_ENV === 'development' ? true : false,
-    push: false,
+    push: env.NODE_ENV === 'development' ? true : false,
+    // push: false,
   }),
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer],

@@ -75,6 +75,17 @@ export interface Config {
     news: News;
     categories: Category;
     pages: Page;
+    'external-manifesto': ExternalManifesto;
+    'external-about': ExternalAbout;
+    'external-visi': ExternalVisi;
+    'external-editorial-spot': ExternalEditorialSpot;
+    'external-misi': ExternalMisi;
+    'external-organogram': ExternalOrganogram;
+    'external-heritage-timeline': ExternalHeritageTimeline;
+    'external-pillar': ExternalPillar;
+    'external-contact': ExternalContact;
+    'external-image': ExternalImage;
+    'external-logo-meaning': ExternalLogoMeaning;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -95,6 +106,17 @@ export interface Config {
     news: NewsSelect<false> | NewsSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     pages: PagesSelect<false> | PagesSelect<true>;
+    'external-manifesto': ExternalManifestoSelect<false> | ExternalManifestoSelect<true>;
+    'external-about': ExternalAboutSelect<false> | ExternalAboutSelect<true>;
+    'external-visi': ExternalVisiSelect<false> | ExternalVisiSelect<true>;
+    'external-editorial-spot': ExternalEditorialSpotSelect<false> | ExternalEditorialSpotSelect<true>;
+    'external-misi': ExternalMisiSelect<false> | ExternalMisiSelect<true>;
+    'external-organogram': ExternalOrganogramSelect<false> | ExternalOrganogramSelect<true>;
+    'external-heritage-timeline': ExternalHeritageTimelineSelect<false> | ExternalHeritageTimelineSelect<true>;
+    'external-pillar': ExternalPillarSelect<false> | ExternalPillarSelect<true>;
+    'external-contact': ExternalContactSelect<false> | ExternalContactSelect<true>;
+    'external-image': ExternalImageSelect<false> | ExternalImageSelect<true>;
+    'external-logo-meaning': ExternalLogoMeaningSelect<false> | ExternalLogoMeaningSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -901,6 +923,355 @@ export interface Form {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "external-manifesto".
+ */
+export interface ExternalManifesto {
+  id: number;
+  /**
+   * Three-beat punch line (IG-style)
+   */
+  punch: string;
+  /**
+   * Supporting text for the manifesto
+   */
+  support: string;
+  /**
+   * Full-bleed manifesto/hero image
+   */
+  heroImage?: (number | null) | Media;
+  kabinetName: string;
+  /**
+   * Only one manifesto should be active at a time
+   */
+  isActive?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "external-about".
+ */
+export interface ExternalAbout {
+  id: number;
+  kabinetName: string;
+  /**
+   * First clause styled bold italic in the hero
+   */
+  headingPrefix: string;
+  headingSuffix: string;
+  /**
+   * Short hero line below the title
+   */
+  lead: string;
+  /**
+   * About hero wallpaper
+   */
+  heroImage?: (number | null) | Media;
+  /**
+   * Only one about section should be active at a time
+   */
+  isActive?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "external-visi".
+ */
+export interface ExternalVisi {
+  id: number;
+  heading: string;
+  lead: string;
+  /**
+   * Short summary of the vision
+   */
+  tldr: string;
+  inkubatorKarya: {
+    title: string;
+    karya: {
+      subtitle: string;
+      lead: string;
+      /**
+       * Detailed description of the karya incubator
+       */
+      body: string;
+    };
+    keprofesian: {
+      subtitle: string;
+      lead: string;
+      /**
+       * Detailed description of the professional incubator
+       */
+      body: string;
+    };
+  };
+  /**
+   * Visi/inkubator dark chapter image (optional)
+   */
+  heroImage?: (number | null) | Media;
+  /**
+   * Only one vision section should be active at a time
+   */
+  isActive?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "external-editorial-spot".
+ */
+export interface ExternalEditorialSpot {
+  /**
+   * Unique identifier for the editorial spot
+   */
+  id: string;
+  image: number | Media;
+  tag: 'Study' | 'Society' | 'Solidarity';
+  caption: string;
+  /**
+   * Optional link for the editorial spot
+   */
+  href?: string | null;
+  bento: 'feature' | 'default';
+  /**
+   * Only active spots will be displayed
+   */
+  isActive?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "external-misi".
+ */
+export interface ExternalMisi {
+  id: number;
+  cardTitle: string;
+  /**
+   * Short one-line description
+   */
+  oneLiner: string;
+  summary: string;
+  /**
+   * Detailed description of the mission
+   */
+  body: string;
+  /**
+   * Only active missions will be displayed
+   */
+  isActive?: boolean | null;
+  /**
+   * Lower numbers appear first
+   */
+  order?: number | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "external-organogram".
+ */
+export interface ExternalOrganogram {
+  id: number;
+  /**
+   * Department/Bureau/Division name
+   */
+  title: string;
+  image: number | Media;
+  /**
+   * Mark as the current Prince of the cabinet/organization (will always appear first)
+   */
+  isPrince?: boolean | null;
+  detailType: 'featured' | 'roster';
+  featuredDetail?: {
+    tagline?: string | null;
+    paragraphs?:
+      | {
+          paragraph: string;
+          id?: string | null;
+        }[]
+      | null;
+    people?:
+      | {
+          role: string;
+          name: string;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  rosterDetail?: {
+    rows?:
+      | {
+          role: string;
+          name: string;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  /**
+   * Only active organogram items will be displayed
+   */
+  isActive?: boolean | null;
+  /**
+   * Lower numbers appear first
+   */
+  order?: number | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "external-heritage-timeline".
+ */
+export interface ExternalHeritageTimeline {
+  id: number;
+  /**
+   * Year or time period
+   */
+  year: string;
+  title: string;
+  /**
+   * Detailed description of the event
+   */
+  text: string;
+  /**
+   * Only active timeline items will be displayed
+   */
+  isActive?: boolean | null;
+  /**
+   * Lower numbers appear first
+   */
+  order?: number | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "external-pillar".
+ */
+export interface ExternalPillar {
+  id: number;
+  /**
+   * Unique key for the pillar (e.g., study, society, solidarity)
+   */
+  key: string;
+  title: string;
+  /**
+   * Short descriptor or subtitle
+   */
+  kicker: string;
+  /**
+   * Detailed description of the pillar
+   */
+  description: string;
+  variant: 'split' | 'society' | 'solidarity';
+  image: number | Media;
+  /**
+   * Only active pillars will be displayed
+   */
+  isActive?: boolean | null;
+  /**
+   * Lower numbers appear first
+   */
+  order?: number | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "external-contact".
+ */
+export interface ExternalContact {
+  id: number;
+  /**
+   * Contact email address
+   */
+  email: string;
+  /**
+   * Official Instagram URL
+   */
+  instagramUrl?: string | null;
+  /**
+   * Official TikTok URL
+   */
+  tiktokUrl?: string | null;
+  /**
+   * Official LINE URL
+   */
+  lineUrl?: string | null;
+  /**
+   * Only active contact info will be used
+   */
+  isActive?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "external-image".
+ */
+export interface ExternalImage {
+  id: number;
+  /**
+   * Unique key to reference this image (e.g., hero, pillarStudy, heritage)
+   */
+  key: string;
+  image: number | Media;
+  /**
+   * Admin description for this image
+   */
+  description?: string | null;
+  /**
+   * Only active images will be used
+   */
+  isActive?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "external-logo-meaning".
+ */
+export interface ExternalLogoMeaning {
+  id: number;
+  /**
+   * Unique identifier for the logo element (e.g., p, b, star, pawns)
+   */
+  key: string;
+  title: string;
+  image: number | Media;
+  /**
+   * Alt text for accessibility
+   */
+  alt: string;
+  /**
+   * Description of the logo meaning (supports basic HTML)
+   */
+  body: string;
+  /**
+   * Only active logo meanings will be displayed
+   */
+  isActive?: boolean | null;
+  /**
+   * Lower numbers appear first
+   */
+  order?: number | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -1120,6 +1491,50 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'pages';
         value: number | Page;
+      } | null)
+    | ({
+        relationTo: 'external-manifesto';
+        value: number | ExternalManifesto;
+      } | null)
+    | ({
+        relationTo: 'external-about';
+        value: number | ExternalAbout;
+      } | null)
+    | ({
+        relationTo: 'external-visi';
+        value: number | ExternalVisi;
+      } | null)
+    | ({
+        relationTo: 'external-editorial-spot';
+        value: string | ExternalEditorialSpot;
+      } | null)
+    | ({
+        relationTo: 'external-misi';
+        value: number | ExternalMisi;
+      } | null)
+    | ({
+        relationTo: 'external-organogram';
+        value: number | ExternalOrganogram;
+      } | null)
+    | ({
+        relationTo: 'external-heritage-timeline';
+        value: number | ExternalHeritageTimeline;
+      } | null)
+    | ({
+        relationTo: 'external-pillar';
+        value: number | ExternalPillar;
+      } | null)
+    | ({
+        relationTo: 'external-contact';
+        value: number | ExternalContact;
+      } | null)
+    | ({
+        relationTo: 'external-image';
+        value: number | ExternalImage;
+      } | null)
+    | ({
+        relationTo: 'external-logo-meaning';
+        value: number | ExternalLogoMeaning;
       } | null)
     | ({
         relationTo: 'redirects';
@@ -1539,6 +1954,217 @@ export interface FormBlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "external-manifesto_select".
+ */
+export interface ExternalManifestoSelect<T extends boolean = true> {
+  punch?: T;
+  support?: T;
+  heroImage?: T;
+  kabinetName?: T;
+  isActive?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "external-about_select".
+ */
+export interface ExternalAboutSelect<T extends boolean = true> {
+  kabinetName?: T;
+  headingPrefix?: T;
+  headingSuffix?: T;
+  lead?: T;
+  heroImage?: T;
+  isActive?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "external-visi_select".
+ */
+export interface ExternalVisiSelect<T extends boolean = true> {
+  heading?: T;
+  lead?: T;
+  tldr?: T;
+  inkubatorKarya?:
+    | T
+    | {
+        title?: T;
+        karya?:
+          | T
+          | {
+              subtitle?: T;
+              lead?: T;
+              body?: T;
+            };
+        keprofesian?:
+          | T
+          | {
+              subtitle?: T;
+              lead?: T;
+              body?: T;
+            };
+      };
+  heroImage?: T;
+  isActive?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "external-editorial-spot_select".
+ */
+export interface ExternalEditorialSpotSelect<T extends boolean = true> {
+  id?: T;
+  image?: T;
+  tag?: T;
+  caption?: T;
+  href?: T;
+  bento?: T;
+  isActive?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "external-misi_select".
+ */
+export interface ExternalMisiSelect<T extends boolean = true> {
+  cardTitle?: T;
+  oneLiner?: T;
+  summary?: T;
+  body?: T;
+  isActive?: T;
+  order?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "external-organogram_select".
+ */
+export interface ExternalOrganogramSelect<T extends boolean = true> {
+  title?: T;
+  image?: T;
+  isPrince?: T;
+  detailType?: T;
+  featuredDetail?:
+    | T
+    | {
+        tagline?: T;
+        paragraphs?:
+          | T
+          | {
+              paragraph?: T;
+              id?: T;
+            };
+        people?:
+          | T
+          | {
+              role?: T;
+              name?: T;
+              id?: T;
+            };
+      };
+  rosterDetail?:
+    | T
+    | {
+        rows?:
+          | T
+          | {
+              role?: T;
+              name?: T;
+              id?: T;
+            };
+      };
+  isActive?: T;
+  order?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "external-heritage-timeline_select".
+ */
+export interface ExternalHeritageTimelineSelect<T extends boolean = true> {
+  year?: T;
+  title?: T;
+  text?: T;
+  isActive?: T;
+  order?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "external-pillar_select".
+ */
+export interface ExternalPillarSelect<T extends boolean = true> {
+  key?: T;
+  title?: T;
+  kicker?: T;
+  description?: T;
+  variant?: T;
+  image?: T;
+  isActive?: T;
+  order?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "external-contact_select".
+ */
+export interface ExternalContactSelect<T extends boolean = true> {
+  email?: T;
+  instagramUrl?: T;
+  tiktokUrl?: T;
+  lineUrl?: T;
+  isActive?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "external-image_select".
+ */
+export interface ExternalImageSelect<T extends boolean = true> {
+  key?: T;
+  image?: T;
+  description?: T;
+  isActive?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "external-logo-meaning_select".
+ */
+export interface ExternalLogoMeaningSelect<T extends boolean = true> {
+  key?: T;
+  title?: T;
+  image?: T;
+  alt?: T;
+  body?: T;
+  isActive?: T;
+  order?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects_select".
  */
 export interface RedirectsSelect<T extends boolean = true> {
@@ -1942,6 +2568,50 @@ export interface TaskSchedulePublish {
       | ({
           relationTo: 'pages';
           value: number | Page;
+        } | null)
+      | ({
+          relationTo: 'external-manifesto';
+          value: number | ExternalManifesto;
+        } | null)
+      | ({
+          relationTo: 'external-about';
+          value: number | ExternalAbout;
+        } | null)
+      | ({
+          relationTo: 'external-visi';
+          value: number | ExternalVisi;
+        } | null)
+      | ({
+          relationTo: 'external-editorial-spot';
+          value: string | ExternalEditorialSpot;
+        } | null)
+      | ({
+          relationTo: 'external-misi';
+          value: number | ExternalMisi;
+        } | null)
+      | ({
+          relationTo: 'external-organogram';
+          value: number | ExternalOrganogram;
+        } | null)
+      | ({
+          relationTo: 'external-heritage-timeline';
+          value: number | ExternalHeritageTimeline;
+        } | null)
+      | ({
+          relationTo: 'external-pillar';
+          value: number | ExternalPillar;
+        } | null)
+      | ({
+          relationTo: 'external-contact';
+          value: number | ExternalContact;
+        } | null)
+      | ({
+          relationTo: 'external-image';
+          value: number | ExternalImage;
+        } | null)
+      | ({
+          relationTo: 'external-logo-meaning';
+          value: number | ExternalLogoMeaning;
         } | null);
     global?: string | null;
     user?: (number | null) | User;
