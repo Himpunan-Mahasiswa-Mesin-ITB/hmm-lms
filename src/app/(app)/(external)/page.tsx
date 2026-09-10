@@ -1,37 +1,53 @@
-import Image from "next/image";
-import { publicFileExists } from "~/lib/external-asset";
-import {
-  editorialSpots,
-  externalImages,
-  heritageTimeline,
-  manifesto,
-  pillars,
-} from "./content";
-import { ExternalEditorialGrid } from "./external-editorial-grid";
-import { ExternalReveal } from "./external-reveal";
-import { ExternalSolidarityCta } from "./external-solidarity-cta";
-import { ExternalWordmarkRail } from "./external-wordmark-rail";
-import { ExternalLandingFooter } from "./external-landing-footer";
-import { HmmExternalNavbar } from "./hmm-external-navbar";
+import Image from 'next/image';
 
-function resolvePublic(src: string): string | null {
-  const rel = src.startsWith("/") ? src.slice(1) : src;
-  return publicFileExists(rel) ? src : null;
+import {
+  getActiveManifesto,
+  getActiveEditorialSpots,
+  getActiveHeritageTimeline,
+  getActivePillars,
+  getExternalImageByKey,
+} from '~/lib/external-content';
+
+import { ExternalEditorialGrid } from './external-editorial-grid';
+import { ExternalLandingFooter } from './external-landing-footer';
+import { ExternalReveal } from './external-reveal';
+import { ExternalSolidarityCta } from './external-solidarity-cta';
+import { ExternalWordmarkRail } from './external-wordmark-rail';
+import { HmmExternalNavbar } from './hmm-external-navbar';
+
+function resolveMediaUrl(media: any): string | null {
+  if (!media) return null;
+  if (typeof media === 'string') return media;
+  if (media.url) return media.url;
+  if (media.sizes?.url) return media.sizes.url;
+  return null;
 }
 
-export default function ExternalLandingPage() {
+export default async function ExternalLandingPage() {
+  const manifesto = await getActiveManifesto();
+  const editorialSpots = await getActiveEditorialSpots();
+  const heritageTimeline = await getActiveHeritageTimeline();
+  const pillars = await getActivePillars();
+
+  const heroImage = await getExternalImageByKey('hero');
+  const pillarStudyImage = await getExternalImageByKey('pillarStudy');
+  const pillarSocietyImage = await getExternalImageByKey('pillarSociety');
+  const pillarSolidarityImage = await getExternalImageByKey('pillarSolidarity');
+  const heritageImage = await getExternalImageByKey('heritage');
+  const ctaImage = await getExternalImageByKey('cta');
+
   const im = {
-    hero: resolvePublic(externalImages.hero),
-    pillarStudy: resolvePublic(externalImages.pillarStudy),
-    pillarSociety: resolvePublic(externalImages.pillarSociety),
-    pillarSolidarity: resolvePublic(externalImages.pillarSolidarity),
-    heritage: resolvePublic(externalImages.heritage),
-    cta: resolvePublic(externalImages.cta),
+    hero: resolveMediaUrl(heroImage?.image),
+    pillarStudy: resolveMediaUrl(pillarStudyImage?.image),
+    pillarSociety: resolveMediaUrl(pillarSocietyImage?.image),
+    pillarSolidarity: resolveMediaUrl(pillarSolidarityImage?.image),
+    heritage: resolveMediaUrl(heritageImage?.image),
+    cta: resolveMediaUrl(ctaImage?.image),
   };
 
-  const editorialResolved = editorialSpots.map((s) => ({
+  const editorialResolved = editorialSpots.map((s: any) => ({
     ...s,
-    imageUrl: resolvePublic(s.imageSrc),
+    imageUrl: resolveMediaUrl(s.image),
   }));
 
   return (
@@ -44,14 +60,7 @@ export default function ExternalLandingPage() {
           className="hmm-chapter-dark relative min-h-[100svh] scroll-mt-[4.5rem] overflow-hidden"
         >
           {im.hero ? (
-            <Image
-              src={im.hero}
-              alt=""
-              fill
-              priority
-              className="object-cover"
-              sizes="100vw"
-            />
+            <Image src={im.hero} alt="" fill priority className="object-cover" sizes="100vw" />
           ) : (
             <div className="hmm-grad-hero-burst absolute inset-0" aria-hidden />
           )}
@@ -99,10 +108,10 @@ export default function ExternalLandingPage() {
             </h1>
 
             <p className="hmm-type-punch mt-6 text-balance text-white drop-shadow-sm sm:mt-8">
-              {manifesto.punch}
+              {manifesto?.punch || ''}
             </p>
             <p className="hmm-type-lede mt-4 max-w-full text-pretty text-white/90 sm:max-w-[50ch]">
-              {manifesto.support}
+              {manifesto?.support || ''}
             </p>
 
             <div className="mt-8 flex max-w-2xl flex-col gap-3 sm:mt-9 sm:flex-row sm:flex-wrap sm:items-stretch sm:gap-3">
@@ -141,7 +150,7 @@ export default function ExternalLandingPage() {
                   KABINET
                 </p>
                 <p className="hmm-sans text-[0.7rem] font-bold tracking-[0.18em] text-[color-mix(in_srgb,var(--color-hmm-yellow)_50%,var(--color-hmm-cream))]">
-                  PIONIR BERKARYA
+                  {manifesto?.kabinetName || 'PIONIR BERKARYA'}
                 </p>
               </div>
             </div>
@@ -159,10 +168,7 @@ export default function ExternalLandingPage() {
           <div className="hmm-chapter-dark border-b border-white/8 bg-[color-mix(in_srgb,var(--color-hmm-navy-deep)_96%,var(--color-hmm-navy))] px-4 py-5 sm:px-8 sm:py-8">
             <div className="mx-auto flex max-w-[86rem] flex-col gap-4 sm:flex-row sm:items-center sm:gap-8">
               <div className="flex items-center gap-3 sm:gap-4">
-                <div
-                  className="hmm-tiga-pilar-stripes hmm-tiga-pilar-stripes--lg"
-                  aria-hidden
-                >
+                <div className="hmm-tiga-pilar-stripes hmm-tiga-pilar-stripes--lg" aria-hidden>
                   <span className="hmm-tiga-pilar-stripes__bar" />
                   <span className="hmm-tiga-pilar-stripes__bar" />
                   <span className="hmm-tiga-pilar-stripes__bar" />
@@ -198,19 +204,13 @@ export default function ExternalLandingPage() {
               </div>
               <div className="hmm-section-y-md flex flex-col justify-end px-4 sm:px-8 lg:px-12">
                 <div className="hmm-eyebrow-rule text-white/80">
-                  <p className="hmm-type-eyebrow text-[var(--color-hmm-cream)]">
-                    01
-                  </p>
+                  <p className="hmm-type-eyebrow text-[var(--color-hmm-cream)]">01</p>
                 </div>
-                <h2 className="hmm-type-section mt-3 text-balance text-white sm:mt-4">
-                  Study
-                </h2>
+                <h2 className="hmm-type-section mt-3 text-balance text-white sm:mt-4">Study</h2>
                 <p className="hmm-sans text-xs font-bold tracking-[0.2em] text-white/50 uppercase">
-                  {pillars[0].kicker}
+                  {pillars[0]?.kicker || ''}
                 </p>
-                <p className="hmm-type-prose mt-5 text-white/85">
-                  {pillars[0].description}
-                </p>
+                <p className="hmm-type-prose mt-5 text-white/85">{pillars[0]?.description || ''}</p>
               </div>
             </div>
           </section>
@@ -223,7 +223,7 @@ export default function ExternalLandingPage() {
                 alt=""
                 fill
                 className="object-cover"
-                style={{ objectPosition: "18% 42%" }}
+                style={{ objectPosition: '18% 42%' }}
                 sizes="100vw"
               />
             ) : (
@@ -234,18 +234,16 @@ export default function ExternalLandingPage() {
 
             <div className="hmm-section-y-md relative z-10 flex min-h-[min(88svh,40rem)] w-full max-w-[86rem] flex-col justify-end px-4 sm:min-h-[80svh] sm:px-8">
               <div className="hmm-eyebrow-rule text-white/85">
-                <p className="hmm-type-eyebrow text-[var(--color-hmm-cream)]">
-                  02
-                </p>
+                <p className="hmm-type-eyebrow text-[var(--color-hmm-cream)]">02</p>
               </div>
               <blockquote className="hmm-title mt-3 max-w-full text-[clamp(1.5rem,6vw,3rem)] leading-[1.2] font-bold text-balance text-white sm:max-w-[20ch] sm:text-4xl md:max-w-[24ch] md:text-5xl">
                 Society
               </blockquote>
               <h2 className="hmm-sans mt-4 text-sm font-bold tracking-[0.2em] text-white/60 uppercase">
-                {pillars[1].kicker}
+                {pillars[1]?.kicker || ''}
               </h2>
               <p className="hmm-type-prose mt-4 max-w-[50ch] text-white/90">
-                {pillars[1].description}
+                {pillars[1]?.description || ''}
               </p>
             </div>
           </section>
@@ -255,18 +253,16 @@ export default function ExternalLandingPage() {
             <div className="grid min-h-0 items-stretch lg:min-h-[min(75svh,48rem)] lg:grid-cols-[minmax(0,42%)_1fr]">
               <div className="hmm-section-y-md order-2 flex flex-col justify-center bg-[var(--color-hmm-navy-deep)] px-4 sm:px-8 lg:order-1 lg:pr-4 lg:pl-8 xl:pl-12">
                 <div className="hmm-eyebrow-rule text-white/85">
-                  <p className="hmm-type-eyebrow text-[var(--color-hmm-cream)]">
-                    03
-                  </p>
+                  <p className="hmm-type-eyebrow text-[var(--color-hmm-cream)]">03</p>
                 </div>
                 <h2 className="hmm-type-section mt-3 text-balance text-white sm:mt-2">
-                  {pillars[2].title}
+                  {pillars[2]?.title || ''}
                 </h2>
                 <p className="hmm-sans text-xs font-bold tracking-[0.2em] text-white/50 uppercase">
-                  {pillars[2].kicker}
+                  {pillars[2]?.kicker || ''}
                 </p>
                 <p className="hmm-type-prose mt-4 text-pretty text-white/85">
-                  {pillars[2].description}
+                  {pillars[2]?.description || ''}
                 </p>
               </div>
               <div className="relative order-1 min-h-[44svh] sm:min-h-[52svh] lg:order-2 lg:min-h-full">
@@ -276,16 +272,13 @@ export default function ExternalLandingPage() {
                     alt=""
                     fill
                     className="object-cover"
-                    style={{ objectPosition: "50% 35%" }}
+                    style={{ objectPosition: '50% 35%' }}
                     sizes="(min-width: 1024px) 58vw, 100vw"
                   />
                 ) : (
                   <div className="absolute inset-0 bg-[var(--color-hmm-navy)]" />
                 )}
-                <div
-                  className="hmm-grad-solidarity absolute inset-0"
-                  aria-hidden
-                />
+                <div className="hmm-grad-solidarity absolute inset-0" aria-hidden />
                 <div className="absolute inset-0 bg-gradient-to-r from-[color-mix(in_srgb,var(--color-hmm-navy-deep)_70%,transparent)] to-transparent" />
               </div>
             </div>
@@ -306,7 +299,7 @@ export default function ExternalLandingPage() {
                 alt=""
                 fill
                 className="object-cover"
-                style={{ objectPosition: "50% 40%" }}
+                style={{ objectPosition: '50% 40%' }}
                 sizes="100vw"
               />
               <div
@@ -339,7 +332,7 @@ export default function ExternalLandingPage() {
                 </div>
                 <ol className="hmm-timeline hmm-timeline--on-dark">
                   {heritageTimeline.map((item) => (
-                    <li key={item.year} className="pb-10 last:pb-0">
+                    <li key={item.id} className="pb-10 last:pb-0">
                       <p className="hmm-heritage-year hmm-title text-3xl font-bold sm:text-4xl">
                         {item.year}
                       </p>
@@ -368,7 +361,7 @@ export default function ExternalLandingPage() {
               alt=""
               fill
               className="object-cover"
-              style={{ objectPosition: "50% 45%" }}
+              style={{ objectPosition: '50% 45%' }}
               sizes="100vw"
             />
           ) : (
@@ -383,12 +376,9 @@ export default function ExternalLandingPage() {
                 Solidarity
               </p>
             </div>
-            <h2 className="hmm-type-section mt-2 max-w-3xl text-white">
-              Solidarity forever
-            </h2>
+            <h2 className="hmm-type-section mt-2 max-w-3xl text-white">Solidarity forever</h2>
             <p className="hmm-type-prose mt-4 max-w-2xl text-white/90">
-              Satu arah, satu solidaritas, memperkuat pionir masa depan dalam
-              dan luar kampus.
+              Satu arah, satu solidaritas, memperkuat pionir masa depan dalam dan luar kampus.
             </p>
             <ExternalSolidarityCta />
           </div>

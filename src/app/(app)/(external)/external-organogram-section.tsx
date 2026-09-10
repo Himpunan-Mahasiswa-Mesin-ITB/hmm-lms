@@ -1,13 +1,15 @@
-"use client";
+'use client';
 
-import Image from "next/image";
-import { useMemo, useState } from "react";
-
-import { organogramDetailsByTitle } from "./organogram-details";
+import Image from 'next/image';
+import { useMemo, useState } from 'react';
 
 type OrganogramCard = {
   title: string;
   imageUrl: string;
+  detailType: string;
+  featuredDetail?: any;
+  rosterDetail?: any;
+  isPrince?: boolean;
 };
 
 type Props = {
@@ -18,9 +20,9 @@ type Group = {
   key: string;
   label: string;
   description: string;
-  tone?: "regular" | "subtle";
-  cardSize?: "lead" | "regular" | "compact";
-  cardLabel: "Core Role" | "Unit";
+  tone?: 'regular' | 'subtle';
+  cardSize?: 'lead' | 'regular' | 'compact';
+  cardLabel: 'Core Role' | 'Unit';
   items: OrganogramCard[];
 };
 
@@ -46,40 +48,28 @@ function TextWithBold({ text }: { text: string }) {
   );
 }
 
-function OrganogramModalDetailBody({ title }: { title: string }) {
-  const detail = organogramDetailsByTitle[title];
-
-  if (!detail) {
-    return (
-      <p className="hmm-type-prose mt-4 text-sm leading-relaxed text-white/78">
-        Detail untuk posisi ini belum dipublikasikan.
-      </p>
-    );
-  }
-
-  if (detail.kind === "featured") {
+function OrganogramModalDetailBody({ item }: { item: OrganogramCard }) {
+  if (item.detailType === 'featured' && item.featuredDetail) {
     return (
       <>
-        <p className="hmm-organogram-modal__tagline mt-4">{detail.tagline}</p>
+        <p className="hmm-organogram-modal__tagline mt-4">{item.featuredDetail.tagline}</p>
         <ul className="hmm-organogram-modal__people mt-5 space-y-3">
-          {detail.people.map((row) => (
-            <li key={`${row.role}-${row.name}`}>
+          {item.featuredDetail.people?.map((row: any, i: number) => (
+            <li key={`${row.role}-${row.name}-${i}`}>
               <p className="text-[0.65rem] font-bold tracking-[0.14em] text-white/55 uppercase">
                 {row.role}
               </p>
-              <p className="mt-1 text-base font-semibold text-white/95">
-                {row.name}
-              </p>
+              <p className="mt-1 text-base font-semibold text-white/95">{row.name}</p>
             </li>
           ))}
         </ul>
         <div className="mt-5 space-y-3 border-t border-white/10 pt-5">
-          {detail.paragraphs.map((paragraph, i) => (
+          {item.featuredDetail.paragraphs?.map((paragraph: any, i: number) => (
             <p
               key={i}
               className="hmm-type-prose text-sm leading-relaxed text-white/78 sm:text-[0.95rem]"
             >
-              <TextWithBold text={paragraph} />
+              <TextWithBold text={paragraph.paragraph || paragraph} />
             </p>
           ))}
         </div>
@@ -87,22 +77,28 @@ function OrganogramModalDetailBody({ title }: { title: string }) {
     );
   }
 
+  if (item.detailType === 'roster' && item.rosterDetail) {
+    return (
+      <>
+        <p className="hmm-organogram-card__kicker mt-4">Susunan</p>
+        <dl className="hmm-organogram-modal__roster mt-3 space-y-4">
+          {item.rosterDetail.rows?.map((row: any, i: number) => (
+            <div key={`${row.role}-${row.name}-${i}`}>
+              <dt className="text-[0.68rem] font-bold tracking-widest text-white/55 uppercase">
+                {row.role}
+              </dt>
+              <dd className="mt-1 text-sm font-semibold text-white/92">{row.name}</dd>
+            </div>
+          ))}
+        </dl>
+      </>
+    );
+  }
+
   return (
-    <>
-      <p className="hmm-organogram-card__kicker mt-4">Susunan</p>
-      <dl className="hmm-organogram-modal__roster mt-3 space-y-4">
-        {detail.rows.map((row) => (
-          <div key={`${row.role}-${row.name}`}>
-            <dt className="text-[0.68rem] font-bold tracking-[0.1em] text-white/55 uppercase">
-              {row.role}
-            </dt>
-            <dd className="mt-1 text-sm font-semibold text-white/92">
-              {row.name}
-            </dd>
-          </div>
-        ))}
-      </dl>
-    </>
+    <p className="hmm-type-prose mt-4 text-sm leading-relaxed text-white/78">
+      Detail untuk posisi ini belum dipublikasikan.
+    </p>
   );
 }
 
@@ -111,43 +107,46 @@ function splitGroups(items: OrganogramCard[]): {
   leadership: Group;
   internalGroups: Group[];
 } {
-  const externalTitles = new Set(["DPA", "SENATOR", "RCKT"]);
+  const externalTitles = new Set(['DPA', 'SENATOR', 'RCKT']);
   const external = items.filter((item) => externalTitles.has(item.title));
   const internal = items.filter((item) => !externalTitles.has(item.title));
 
+  // extract Prince (marked as isPrince or first item as fallback)
+  const prince = internal.find((item) => item.isPrince) || internal[0];
+  const otherInternal = internal.filter((item) => item !== prince);
+
   const externalGroup: Group = {
-    key: "external",
-    label: "External & Advisory Bodies",
-    description: "",
-    tone: "subtle",
-    cardSize: "regular",
-    cardLabel: "Core Role",
+    key: 'external',
+    label: 'External & Advisory Bodies',
+    description: '',
+    tone: 'subtle',
+    cardSize: 'regular',
+    cardLabel: 'Core Role',
     items: external,
   };
   const leadershipGroup: Group = {
-    key: "leadership",
-    label: "Leadership Core",
-    description: "Pimpinan inti kabinet.",
-    cardSize: "lead",
-    cardLabel: "Core Role",
-    items: internal.slice(0, 1),
+    key: 'leadership',
+    label: 'Leadership Core',
+    description: 'Pimpinan inti kabinet.',
+    cardSize: 'lead',
+    cardLabel: 'Core Role',
+    items: prince ? [prince] : [],
   };
   const directingGroup: Group = {
-    key: "directing",
-    label: "Directing",
-    description: "Bureau dan department heads yang mengarahkan strategi.",
-    cardSize: "regular",
-    cardLabel: "Unit",
-    items: internal.slice(1, 9),
+    key: 'directing',
+    label: 'Directing',
+    description: 'Bureau dan department heads yang mengarahkan strategi.',
+    cardSize: 'regular',
+    cardLabel: 'Unit',
+    items: otherInternal.slice(0, 8),
   };
   const executingSupportingGroup: Group = {
-    key: "executing-supporting",
-    label: "Executing & Supporting",
-    description:
-      "Sub-bureau dan divisi pelaksana, dikelompokkan per unit induk.",
-    cardSize: "compact",
-    cardLabel: "Unit",
-    items: internal.slice(9),
+    key: 'executing-supporting',
+    label: 'Executing & Supporting',
+    description: 'Sub-bureau dan divisi pelaksana, dikelompokkan per unit induk.',
+    cardSize: 'compact',
+    cardLabel: 'Unit',
+    items: otherInternal.slice(8),
   };
   return {
     external: externalGroup,
@@ -161,13 +160,13 @@ function splitGroups(items: OrganogramCard[]): {
 function OrganogramCardButton({
   item,
   cardLabel,
-  cardSize = "regular",
+  cardSize = 'regular',
   subtle = false,
   onClick,
 }: {
   item: OrganogramCard;
-  cardLabel: "Core Role" | "Unit";
-  cardSize?: "lead" | "regular" | "compact";
+  cardLabel: 'Core Role' | 'Unit';
+  cardSize?: 'lead' | 'regular' | 'compact';
   subtle?: boolean;
   onClick: () => void;
 }) {
@@ -178,7 +177,7 @@ function OrganogramCardButton({
       type="button"
       onClick={onClick}
       title={title}
-      className={`hmm-organogram-card hmm-organogram-card--${cardSize} ${subtle ? "hmm-organogram-card--external" : ""} text-left`}
+      className={`hmm-organogram-card hmm-organogram-card--${cardSize} ${subtle ? 'hmm-organogram-card--external' : ''} text-left`}
     >
       <div className="hmm-organogram-card__media">
         {loading ? (
@@ -212,10 +211,7 @@ function OrganogramCardButton({
 
 export function ExternalOrganogramSection({ items }: Props) {
   const [active, setActive] = useState<OrganogramCard | null>(null);
-  const { external, leadership, internalGroups } = useMemo(
-    () => splitGroups(items),
-    [items],
-  );
+  const { external, leadership, internalGroups } = useMemo(() => splitGroups(items), [items]);
 
   return (
     <section
@@ -237,9 +233,7 @@ export function ExternalOrganogramSection({ items }: Props) {
             <div className="hmm-organogram-group-head">
               <h3 className="hmm-organogram-group-title">{leadership.label}</h3>
               {leadership.description ? (
-                <p className="hmm-organogram-group-desc">
-                  {leadership.description}
-                </p>
+                <p className="hmm-organogram-group-desc">{leadership.description}</p>
               ) : null}
             </div>
             <div className="mt-4 grid grid-cols-[repeat(auto-fit,minmax(16rem,20rem))] justify-center gap-4">
@@ -259,16 +253,12 @@ export function ExternalOrganogramSection({ items }: Props) {
           {internalGroups.map((group) => (
             <div
               key={group.key}
-              className={
-                group.cardSize === "compact" ? "hmm-organogram-subtier" : ""
-              }
+              className={group.cardSize === 'compact' ? 'hmm-organogram-subtier' : ''}
             >
               <div className="hmm-organogram-group-head">
                 <h3 className="hmm-organogram-group-title">{group.label}</h3>
                 {group.description ? (
-                  <p className="hmm-organogram-group-desc">
-                    {group.description}
-                  </p>
+                  <p className="hmm-organogram-group-desc">{group.description}</p>
                 ) : null}
               </div>
 
@@ -334,10 +324,8 @@ export function ExternalOrganogramSection({ items }: Props) {
             <div className="hmm-organogram-modal__content">
               <div className="hmm-organogram-modal__scroll">
                 <p className="hmm-organogram-card__kicker">Position Detail</p>
-                <h4 className="hmm-type-subsection mt-2 text-white">
-                  {active.title}
-                </h4>
-                <OrganogramModalDetailBody title={active.title} />
+                <h4 className="hmm-type-subsection mt-2 text-white">{active.title}</h4>
+                <OrganogramModalDetailBody item={active} />
               </div>
               <button
                 type="button"

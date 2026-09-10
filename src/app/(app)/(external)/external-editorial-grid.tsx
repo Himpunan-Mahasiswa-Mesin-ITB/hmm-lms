@@ -3,9 +3,16 @@
 import Image from "next/image";
 import Link from "next/link";
 import { motion, useReducedMotion } from "motion/react";
-import { type EditorialSpot } from "./content";
 
-export type ResolvedEditorialSpot = EditorialSpot & { imageUrl: string | null };
+export type ResolvedEditorialSpot = {
+  id: string;
+  image: any;
+  imageUrl: string | null;
+  tag: string;
+  caption: string;
+  href?: string;
+  bento: string;
+};
 
 function EditorialTile({
   spot,
@@ -86,9 +93,11 @@ type Props = {
 
 export function ExternalEditorialGrid({ spots }: Props) {
   const reduceMotion = useReducedMotion() ?? false;
-  const [feature, ...rest] = spots;
+  
+  if (!spots || spots.length === 0) return null;
 
-  if (!feature) return null;
+  const featureSpot = spots.find(spot => spot.bento === 'feature') || spots[0];
+  const remainingSpots = spots.filter(spot => spot !== featureSpot);
 
   return (
     <section
@@ -110,12 +119,14 @@ export function ExternalEditorialGrid({ spots }: Props) {
         </p>
 
         <div className="mt-10 grid min-h-0 auto-rows-fr grid-cols-1 gap-4 sm:gap-5 lg:grid-cols-4 lg:grid-rows-2 lg:gap-5">
-          <div className="min-h-[16rem] lg:col-span-2 lg:row-span-2 lg:min-h-[22rem]">
-            <EditorialTile spot={feature} reduceMotion={reduceMotion} />
-          </div>
-          {rest.map((spot, i) => (
+          {featureSpot && (
+            <div className="min-h-[16rem] lg:col-span-2 lg:row-span-2 lg:min-h-[22rem]">
+              <EditorialTile spot={featureSpot} reduceMotion={reduceMotion} />
+            </div>
+          )}
+          {remainingSpots.map((spot, i) => (
             <div
-              key={spot.id}
+              key={spot.id || i}
               className={
                 i % 2 === 0
                   ? "min-h-[12rem] lg:min-h-[10.5rem]"

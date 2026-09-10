@@ -1,7 +1,8 @@
-import { misi } from "./content";
 import { ExternalReveal } from "./external-reveal";
 
-export function ExternalMisiSection() {
+type Props = { misi?: any[] };
+
+export function ExternalMisiSection({ misi = [] }: Props) {
   const groups = [
     { label: "Fondasi", range: [0, 2] as const },
     { label: "Strategi", range: [3, 5] as const },
@@ -45,7 +46,7 @@ export function ExternalMisiSection() {
                     const index = group.range[0] + localIdx;
                     const n = String(index + 1).padStart(2, "0");
                     return (
-                      <li key={index} className="hmm-misi-row py-5 sm:py-6">
+                      <li key={item.id || index} className="hmm-misi-row py-5 sm:py-6">
                         <div className="grid items-start gap-4 sm:grid-cols-[auto_1fr] sm:gap-6">
                           <span
                             className="hmm-title text-2xl font-bold text-[var(--color-hmm-cream)] tabular-nums sm:text-[1.65rem]"
