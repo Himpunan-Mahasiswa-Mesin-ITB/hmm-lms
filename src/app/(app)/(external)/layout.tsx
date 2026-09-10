@@ -17,15 +17,13 @@ const montserrat = Montserrat({
 });
 
 export default async function ExternalLayout({ children }: { children: ReactNode }) {
-  // const session = await auth();
+  const session = await auth();
   // temporary redirect to sign-in page if not authenticated and to dashboard if authenticated
-  // if (!session) {
-  //   redirect('/auth/sign-in');
-  // }
-
-  // else if (session) {
-  //   redirect('/dashboard');
-  // }
+  if (!session) {
+    redirect('/auth/sign-in');
+  } else if (session) {
+    redirect('/dashboard');
+  }
 
   return (
     <div
