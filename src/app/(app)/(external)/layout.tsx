@@ -4,7 +4,7 @@ import type { ReactNode } from 'react';
 
 import '~/styles/external.css';
 import { auth } from '~/server/auth';
-import { Role } from '~/server/db/schema'; // Ensure Role enum/type is imported
+import { Role } from '@prisma/client';
 
 const inter = Inter({
   subsets: ['latin'],
