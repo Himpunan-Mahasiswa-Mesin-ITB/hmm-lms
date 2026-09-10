@@ -42,7 +42,7 @@ export const ExternalVisi: CollectionConfig<'external-visi'> = {
     {
       name: 'inkubatorKarya',
       type: 'group',
-      label: 'Inkubator Karya',
+      label: 'Core Values',
       fields: [
         {
           name: 'title',
@@ -54,7 +54,7 @@ export const ExternalVisi: CollectionConfig<'external-visi'> = {
         {
           name: 'karya',
           type: 'group',
-          label: 'Karya Section',
+          label: 'Value 1 Section',
           fields: [
             {
               name: 'subtitle',
@@ -84,7 +84,7 @@ export const ExternalVisi: CollectionConfig<'external-visi'> = {
         {
           name: 'keprofesian',
           type: 'group',
-          label: 'Keprofesian Section',
+          label: 'Value 2 Section',
           fields: [
             {
               name: 'subtitle',
