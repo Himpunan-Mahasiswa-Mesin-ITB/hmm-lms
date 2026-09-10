@@ -939,6 +939,10 @@ export interface ExternalManifesto {
    * Full-bleed manifesto/hero image
    */
   heroImage?: (number | null) | Media;
+  /**
+   * Kabinet Logo
+   */
+  logoKabinet?: (number | null) | Media;
   kabinetName: string;
   /**
    * Only one manifesto should be active at a time
@@ -955,6 +959,10 @@ export interface ExternalManifesto {
 export interface ExternalAbout {
   id: number;
   kabinetName: string;
+  /**
+   * Kabinet Logo
+   */
+  logoKabinet?: (number | null) | Media;
   /**
    * First clause styled bold italic in the hero
    */
@@ -1222,7 +1230,7 @@ export interface ExternalContact {
 export interface ExternalImage {
   id: number;
   /**
-   * Unique key to reference this image (e.g., hero, pillarStudy, heritage)
+   * Unique key to reference this image (e.g., hero, pillarStudy, pillarSociety, pillarSolidarity, heritage, cta)
    */
   key: string;
   image: number | Media;
@@ -1960,6 +1968,7 @@ export interface ExternalManifestoSelect<T extends boolean = true> {
   punch?: T;
   support?: T;
   heroImage?: T;
+  logoKabinet?: T;
   kabinetName?: T;
   isActive?: T;
   updatedAt?: T;
@@ -1972,6 +1981,7 @@ export interface ExternalManifestoSelect<T extends boolean = true> {
  */
 export interface ExternalAboutSelect<T extends boolean = true> {
   kabinetName?: T;
+  logoKabinet?: T;
   headingPrefix?: T;
   headingSuffix?: T;
   lead?: T;

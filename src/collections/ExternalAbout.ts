@@ -21,7 +21,16 @@ export const ExternalAbout: CollectionConfig<'external-about'> = {
       type: 'text',
       required: true,
       label: 'Cabinet Name',
-      defaultValue: 'Pionir Berkarya',
+      defaultValue: 'Eksplorasi Potensi',
+    },
+    {
+      name: 'logoKabinet',
+      type: 'upload',
+      relationTo: 'media',
+      label: 'Logo Kabinet',
+      admin: {
+        description: 'Kabinet Logo',
+      },
     },
     {
       name: 'headingPrefix',

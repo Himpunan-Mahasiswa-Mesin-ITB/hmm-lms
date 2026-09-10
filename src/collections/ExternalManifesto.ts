@@ -44,11 +44,20 @@ export const ExternalManifesto: CollectionConfig<'external-manifesto'> = {
       },
     },
     {
+      name: 'logoKabinet',
+      type: 'upload',
+      relationTo: 'media',
+      label: 'Logo Kabinet',
+      admin: {
+        description: 'Kabinet Logo',
+      },
+    },
+    {
       name: 'kabinetName',
       type: 'text',
       required: true,
       label: 'Cabinet Name',
-      defaultValue: 'Pionir Berkarya',
+      defaultValue: 'Eksplorasi Potensi',
     },
     {
       name: 'isActive',

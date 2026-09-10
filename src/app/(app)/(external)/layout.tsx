@@ -17,14 +17,13 @@ const montserrat = Montserrat({
 });
 
 export default async function ExternalLayout({ children }: { children: ReactNode }) {
-  const session = await auth();
   // temporary redirect to sign-in page if not authenticated and to dashboard if authenticated
+  const session = await auth();
   if (!session) {
     redirect('/auth/sign-in');
   } else if (session) {
     redirect('/dashboard');
   }
-
   return (
     <div
       className={`${inter.variable} ${montserrat.variable} hmm-external min-h-screen scroll-smooth`}

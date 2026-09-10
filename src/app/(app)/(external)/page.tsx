@@ -43,6 +43,7 @@ export default async function ExternalLandingPage() {
     pillarSolidarity: resolveMediaUrl(pillarSolidarityImage?.image),
     heritage: resolveMediaUrl(heritageImage?.image),
     cta: resolveMediaUrl(ctaImage?.image),
+    logoKabinet: resolveMediaUrl(manifesto?.logoKabinet),
   };
 
   const editorialResolved = editorialSpots.map((s: any) => ({
@@ -85,7 +86,7 @@ export default async function ExternalLandingPage() {
                   className="h-14 w-14 object-contain drop-shadow-lg min-[400px]:h-16 min-[400px]:w-16 sm:h-[4.5rem] sm:w-[4.5rem]"
                 />
                 <Image
-                  src="/external/images/logos/logo-putih.svg"
+                  src={im.logoKabinet || '/external/images/logos/logo-putih.svg'}
                   alt=""
                   width={72}
                   height={72}
@@ -150,7 +151,7 @@ export default async function ExternalLandingPage() {
                   KABINET
                 </p>
                 <p className="hmm-sans text-[0.7rem] font-bold tracking-[0.18em] text-[color-mix(in_srgb,var(--color-hmm-yellow)_50%,var(--color-hmm-cream))]">
-                  {manifesto?.kabinetName || 'PIONIR BERKARYA'}
+                  {manifesto?.kabinetName || 'EKSPLORASI POTENSI'}
                 </p>
               </div>
             </div>

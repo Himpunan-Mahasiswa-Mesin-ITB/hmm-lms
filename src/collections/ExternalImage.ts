@@ -22,7 +22,8 @@ export const ExternalImage: CollectionConfig<'external-image'> = {
       required: true,
       label: 'Image Key',
       admin: {
-        description: 'Unique key to reference this image (e.g., hero, pillarStudy, heritage)',
+        description:
+          'Unique key to reference this image (e.g., hero, pillarStudy, pillarSociety, pillarSolidarity, heritage, cta)',
       },
     },
     {

@@ -29,6 +29,7 @@ export default async function ExternalAboutPage() {
 
   const heroImage = resolveMediaUrl(about?.heroImage);
   const visiImage = resolveMediaUrl(visi?.heroImage);
+  const logoKabinet = resolveMediaUrl(about?.logoKabinet);
 
   const organogramResolved = organogram
     .map((item) => ({
@@ -61,14 +62,14 @@ export default async function ExternalAboutPage() {
           <div className="relative z-10 mx-auto flex min-h-[82svh] w-full max-w-[86rem] flex-col justify-end px-4 pt-24 pb-14 sm:px-8 sm:pt-28 sm:pb-18">
             <div className="hmm-eyebrow-rule text-white/85">
               <p className="hmm-type-eyebrow text-[color-mix(in_srgb,var(--color-hmm-yellow)_62%,var(--color-hmm-cream))]">
-                Kabinet {about?.kabinetName || 'Pionir Berkarya'}
+                Kabinet {about?.kabinetName || 'Eksplorasi Potensi'}
               </p>
             </div>
 
             <div className="mt-6 flex flex-col gap-5 sm:flex-row sm:items-center sm:gap-6">
               <Image
-                src="/external/images/logos/logo-putih.svg"
-                alt={`Logo Kabinet ${about?.kabinetName || 'Pionir Berkarya'}`}
+                src={logoKabinet || "/external/images/logos/logo-putih.svg"}
+                alt={`Logo Kabinet ${about?.kabinetName || 'Eksplorasi Potensi'}`}
                 width={92}
                 height={92}
                 className="h-18 w-18 object-contain drop-shadow-lg sm:h-22 sm:w-22"
@@ -92,7 +93,7 @@ export default async function ExternalAboutPage() {
           <div className="mx-auto max-w-[86rem] px-4 py-6 sm:px-8 sm:py-7">
             <p className="hmm-type-eyebrow text-white/70">Vision and Mission</p>
             <h2 className="hmm-type-section mt-2 text-white">
-              Arah gerak Kabinet {about?.kabinetName || 'Pionir Berkarya'}
+              Arah gerak Kabinet {about?.kabinetName || 'Eksplorasi Potensi'}
             </h2>
             <p className="hmm-type-prose mt-3 max-w-3xl text-white/82">
               Visi sebagai kompas utama, lalu diterjemahkan menjadi misi kerja yang bertahap dan
