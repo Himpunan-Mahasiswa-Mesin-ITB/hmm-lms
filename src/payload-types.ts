@@ -964,6 +964,10 @@ export interface ExternalAbout {
    */
   logoKabinet?: (number | null) | Media;
   /**
+   * Description of the logo meaning (used in logo meaning section)
+   */
+  logoDescription?: string | null;
+  /**
    * First clause styled bold italic in the hero
    */
   headingPrefix: string;
@@ -1982,6 +1986,7 @@ export interface ExternalManifestoSelect<T extends boolean = true> {
 export interface ExternalAboutSelect<T extends boolean = true> {
   kabinetName?: T;
   logoKabinet?: T;
+  logoDescription?: T;
   headingPrefix?: T;
   headingSuffix?: T;
   lead?: T;

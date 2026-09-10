@@ -33,6 +33,14 @@ export const ExternalAbout: CollectionConfig<'external-about'> = {
       },
     },
     {
+      name: 'logoDescription',
+      type: 'textarea',
+      label: 'Logo Description',
+      admin: {
+        description: 'Description of the logo meaning (used in logo meaning section)',
+      },
+    },
+    {
       name: 'headingPrefix',
       type: 'text',
       required: true,
