@@ -11,14 +11,15 @@ import { Categories } from './collections/Categories';
 import { Events } from './collections/Events';
 import { ExternalAbout } from './collections/ExternalAbout';
 import { ExternalContact } from './collections/ExternalContact';
-import { ExternalEditorialSpot } from './collections/ExternalEditorialSpot';
 import { ExternalHeritageTimeline } from './collections/ExternalHeritageTimeline';
+import { ExternalHighlight } from './collections/ExternalHighlight';
 import { ExternalImage } from './collections/ExternalImage';
 import { ExternalLogoMeaning } from './collections/ExternalLogoMeaning';
 import { ExternalManifesto } from './collections/ExternalManifesto';
 import { ExternalMisi } from './collections/ExternalMisi';
 import { ExternalOrganogram } from './collections/ExternalOrganogram';
 import { ExternalPillar } from './collections/ExternalPillar';
+import { ExternalSpotlight } from './collections/ExternalSpotlight';
 import { ExternalVisi } from './collections/ExternalVisi';
 import { Media } from './collections/Media';
 import { News } from './collections/News';
@@ -97,7 +98,8 @@ export default buildConfig({
     ExternalManifesto,
     ExternalAbout,
     ExternalVisi,
-    ExternalEditorialSpot,
+    ExternalHighlight,
+    ExternalSpotlight,
     ExternalMisi,
     ExternalOrganogram,
     ExternalHeritageTimeline,

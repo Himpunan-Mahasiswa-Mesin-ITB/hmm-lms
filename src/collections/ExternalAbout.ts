@@ -41,6 +41,14 @@ export const ExternalAbout: CollectionConfig<'external-about'> = {
       },
     },
     {
+      name: 'visionAndMissionDescription',
+      type: 'textarea',
+      label: 'Vision and Mission Description',
+      admin: {
+        description: 'Description text between vision and mission sections',
+      },
+    },
+    {
       name: 'headingPrefix',
       type: 'text',
       required: true,

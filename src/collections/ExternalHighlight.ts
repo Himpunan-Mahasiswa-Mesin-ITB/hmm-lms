@@ -3,8 +3,8 @@ import type { CollectionConfig } from 'payload';
 import { authenticated } from '../access/authenticated';
 import { authenticatedOrPublished } from '../access/authenticatedOrPublished';
 
-export const ExternalEditorialSpot: CollectionConfig<'external-editorial-spot'> = {
-  slug: 'external-editorial-spot',
+export const ExternalHighlight: CollectionConfig<'external-highlight'> = {
+  slug: 'external-highlight',
   access: {
     create: authenticated,
     delete: authenticated,
@@ -12,19 +12,10 @@ export const ExternalEditorialSpot: CollectionConfig<'external-editorial-spot'> 
     update: authenticated,
   },
   admin: {
-    defaultColumns: ['id', 'tag', 'caption', 'bento', 'updatedAt'],
-    useAsTitle: 'id',
+    defaultColumns: ['tag', 'caption', 'bento', 'updatedAt'],
+    useAsTitle: 'caption',
   },
   fields: [
-    {
-      name: 'id',
-      type: 'text',
-      required: true,
-      label: 'ID',
-      admin: {
-        description: 'Unique identifier for the editorial spot',
-      },
-    },
     {
       name: 'image',
       type: 'upload',
@@ -37,6 +28,7 @@ export const ExternalEditorialSpot: CollectionConfig<'external-editorial-spot'> 
       type: 'select',
       required: true,
       label: 'Tag',
+
       options: [
         { label: 'Study', value: 'Study' },
         { label: 'Society', value: 'Society' },

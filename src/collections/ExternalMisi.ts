@@ -12,39 +12,82 @@ export const ExternalMisi: CollectionConfig<'external-misi'> = {
     update: authenticated,
   },
   admin: {
-    defaultColumns: ['cardTitle', 'oneLiner', 'updatedAt'],
-    useAsTitle: 'cardTitle',
+    defaultColumns: ['title', 'updatedAt'],
+    useAsTitle: 'title',
   },
   fields: [
     {
-      name: 'cardTitle',
+      name: 'title',
       type: 'text',
       required: true,
-      label: 'Card Title',
+      label: 'Title',
+      defaultValue: 'Misi HMM',
     },
     {
-      name: 'oneLiner',
-      type: 'text',
-      required: true,
-      label: 'One-Liner',
-      admin: {
-        description: 'Short one-line description',
-      },
-    },
-    {
-      name: 'summary',
-      type: 'text',
-      required: true,
-      label: 'Summary',
-    },
-    {
-      name: 'body',
-      type: 'textarea',
-      required: true,
-      label: 'Body',
-      admin: {
-        description: 'Detailed description of the mission',
-      },
+      name: 'groups',
+      type: 'array',
+      label: 'Groups',
+      fields: [
+        {
+          name: 'groupTitle',
+          type: 'text',
+          label: 'Group Title',
+        },
+        {
+          name: 'missions',
+          type: 'array',
+          label: 'Missions',
+          fields: [
+            {
+              name: 'cardTitle',
+              type: 'text',
+              required: true,
+              label: 'Card Title',
+            },
+            {
+              name: 'oneLiner',
+              type: 'text',
+              required: true,
+              label: 'One-Liner',
+              admin: {
+                description: 'Short one-line description',
+              },
+            },
+            {
+              name: 'summary',
+              type: 'text',
+              required: true,
+              label: 'Summary',
+            },
+            {
+              name: 'body',
+              type: 'textarea',
+              required: true,
+              label: 'Body',
+              admin: {
+                description: 'Detailed description of the mission',
+              },
+            },
+            {
+              name: 'isActive',
+              type: 'checkbox',
+              label: 'Active',
+              defaultValue: true,
+              admin: {
+                description: 'Only active missions will be displayed',
+              },
+            },
+            {
+              name: 'order',
+              type: 'number',
+              label: 'Display Order',
+              admin: {
+                description: 'Lower numbers appear first',
+              },
+            },
+          ],
+        },
+      ],
     },
     {
       name: 'isActive',
@@ -52,15 +95,7 @@ export const ExternalMisi: CollectionConfig<'external-misi'> = {
       label: 'Active',
       defaultValue: true,
       admin: {
-        description: 'Only active missions will be displayed',
-      },
-    },
-    {
-      name: 'order',
-      type: 'number',
-      label: 'Display Order',
-      admin: {
-        description: 'Lower numbers appear first',
+        description: 'Only one mission section should be active at a time',
       },
     },
   ],

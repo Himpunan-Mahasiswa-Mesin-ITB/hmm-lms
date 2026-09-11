@@ -43,6 +43,9 @@ export default async function ExternalAboutPage() {
     }))
     .filter((item): item is typeof item & { imageUrl: string } => item.imageUrl !== null);
 
+  // get the first (and should be only) active misi document
+  const misiData = Array.isArray(misi) ? misi[0] : misi;
+
   return (
     <>
       <HmmExternalNavbar />
@@ -68,7 +71,7 @@ export default async function ExternalAboutPage() {
 
             <div className="mt-6 flex flex-col gap-5 sm:flex-row sm:items-center sm:gap-6">
               <Image
-                src={logoKabinet || "/external/images/logos/logo-putih.svg"}
+                src={logoKabinet || '/external/images/logos/logo-putih.svg'}
                 alt={`Logo Kabinet ${about?.kabinetName || 'Eksplorasi Potensi'}`}
                 width={92}
                 height={92}
@@ -93,16 +96,16 @@ export default async function ExternalAboutPage() {
           <div className="mx-auto max-w-[86rem] px-4 py-6 sm:px-8 sm:py-7">
             <p className="hmm-type-eyebrow text-white/70">Vision and Mission</p>
             <h2 className="hmm-type-section mt-2 text-white">
-              Arah gerak Kabinet {about?.kabinetName || 'Eksplorasi Potensi'}
+              Kabinet {about?.kabinetName || 'Eksplorasi Potensi'}
             </h2>
             <p className="hmm-type-prose mt-3 max-w-3xl text-white/82">
-              Visi sebagai kompas utama, lalu diterjemahkan menjadi misi kerja yang bertahap dan
-              terukur.
+              {about?.visionAndMissionDescription ||
+                'Visi sebagai kompas utama, lalu diterjemahkan menjadi misi kerja yang bertahap dan terukur.'}
             </p>
           </div>
         </section>
         <ExternalVisiSection visi={visi} visiImage={visiImage} />
-        <ExternalMisiSection misi={misi} />
+        <ExternalMisiSection misi={misiData} />
       </main>
     </>
   );

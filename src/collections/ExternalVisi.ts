@@ -40,7 +40,7 @@ export const ExternalVisi: CollectionConfig<'external-visi'> = {
       },
     },
     {
-      name: 'inkubatorKarya',
+      name: 'coreValues',
       type: 'group',
       label: 'Core Values',
       fields: [
@@ -52,9 +52,9 @@ export const ExternalVisi: CollectionConfig<'external-visi'> = {
           defaultValue: 'Inkubator karya & keprofesian',
         },
         {
-          name: 'karya',
-          type: 'group',
-          label: 'Value 1 Section',
+          name: 'values',
+          type: 'array',
+          label: 'Values',
           fields: [
             {
               name: 'subtitle',
@@ -77,36 +77,6 @@ export const ExternalVisi: CollectionConfig<'external-visi'> = {
               label: 'Body',
               admin: {
                 description: 'Detailed description of the karya incubator',
-              },
-            },
-          ],
-        },
-        {
-          name: 'keprofesian',
-          type: 'group',
-          label: 'Value 2 Section',
-          fields: [
-            {
-              name: 'subtitle',
-              type: 'text',
-              required: true,
-              label: 'Subtitle',
-              defaultValue: 'Inkubator keprofesian',
-            },
-            {
-              name: 'lead',
-              type: 'textarea',
-              required: true,
-              label: 'Lead',
-              defaultValue: 'Karir terpersonalisasi, relevan, siap industri.',
-            },
-            {
-              name: 'body',
-              type: 'textarea',
-              required: true,
-              label: 'Body',
-              admin: {
-                description: 'Detailed description of the professional incubator',
               },
             },
           ],

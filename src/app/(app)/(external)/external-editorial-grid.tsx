@@ -1,8 +1,10 @@
-"use client";
+'use client';
 
-import Image from "next/image";
-import Link from "next/link";
-import { motion, useReducedMotion } from "motion/react";
+import { motion, useReducedMotion } from 'motion/react';
+import Image from 'next/image';
+import Link from 'next/link';
+
+import type { ExternalSpotlight } from '~/payload-types';
 
 export type ResolvedEditorialSpot = {
   id: string;
@@ -22,8 +24,8 @@ function EditorialTile({
   reduceMotion: boolean;
 }) {
   const im = spot.imageUrl;
-  const href = spot.href ?? "#pillars";
-  const isFeature = spot.bento === "feature";
+  const href = spot.href ?? '#pillars';
+  const isFeature = spot.bento === 'feature';
 
   const inner = (
     <>
@@ -33,11 +35,7 @@ function EditorialTile({
           alt=""
           fill
           className="object-cover transition duration-300 ease-out group-hover:scale-[1.03]"
-          sizes={
-            isFeature
-              ? "(min-width: 1024px) 50vw, 100vw"
-              : "(min-width: 1024px) 25vw, 50vw"
-          }
+          sizes={isFeature ? '(min-width: 1024px) 50vw, 100vw' : '(min-width: 1024px) 25vw, 50vw'}
         />
       ) : (
         <div
@@ -61,7 +59,7 @@ function EditorialTile({
   );
 
   const cardClass =
-    "hmm-editorial-tile group relative block h-full min-h-[12rem] overflow-hidden rounded-2xl border border-white/20 bg-[color-mix(in_srgb,var(--color-hmm-navy-deep)_55%,var(--color-hmm-navy))] shadow-[0_6px_28px_color-mix(in_srgb,var(--color-hmm-black)_28%,transparent),inset_0_1px_0_0_color-mix(in_srgb,var(--color-hmm-white)_8%,transparent)] ring-1 ring-white/5 transition duration-300 ease-out hover:-translate-y-0.5 hover:border-white/30 hover:shadow-[0_18px_44px_color-mix(in_srgb,var(--color-hmm-black)_36%,transparent)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-hmm-yellow)] sm:min-h-[13.5rem]";
+    'hmm-editorial-tile group relative block h-full min-h-[12rem] overflow-hidden rounded-2xl border border-white/20 bg-[color-mix(in_srgb,var(--color-hmm-navy-deep)_55%,var(--color-hmm-navy))] shadow-[0_6px_28px_color-mix(in_srgb,var(--color-hmm-black)_28%,transparent),inset_0_1px_0_0_color-mix(in_srgb,var(--color-hmm-white)_8%,transparent)] ring-1 ring-white/5 transition duration-300 ease-out hover:-translate-y-0.5 hover:border-white/30 hover:shadow-[0_18px_44px_color-mix(in_srgb,var(--color-hmm-black)_36%,transparent)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-hmm-yellow)] sm:min-h-[13.5rem]';
 
   if (reduceMotion) {
     return (
@@ -76,7 +74,7 @@ function EditorialTile({
       className="h-full min-h-0"
       initial={{ opacity: 0, y: 14 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-8% 0px" }}
+      viewport={{ once: true, margin: '-8% 0px' }}
       transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
     >
       <Link href={href} className={cardClass}>
@@ -89,15 +87,17 @@ function EditorialTile({
 type Props = {
   /** Image paths resolved on the server (Node `publicFileExists` is not available on the client). */
   spots: readonly ResolvedEditorialSpot[];
+  /** Spotlight data for the editorial section */
+  spotlight: ExternalSpotlight | null;
 };
 
-export function ExternalEditorialGrid({ spots }: Props) {
+export function ExternalEditorialGrid({ spots, spotlight }: Props) {
   const reduceMotion = useReducedMotion() ?? false;
-  
+
   if (!spots || spots.length === 0) return null;
 
-  const featureSpot = spots.find(spot => spot.bento === 'feature') || spots[0];
-  const remainingSpots = spots.filter(spot => spot !== featureSpot);
+  const featureSpot = spots.find((spot) => spot.bento === 'feature') || spots[0];
+  const remainingSpots = spots.filter((spot) => spot !== featureSpot);
 
   return (
     <section
@@ -112,10 +112,10 @@ export function ExternalEditorialGrid({ spots }: Props) {
           </p>
         </div>
         <h2 className="hmm-type-section mt-2 max-w-[20ch] text-balance text-[color-mix(in_srgb,var(--color-hmm-cream)_96%,white)]">
-          Kilas karya &amp; solidaritas
+          {spotlight?.title || 'Kilas karya & solidaritas'}
         </h2>
         <p className="hmm-sans mt-3 max-w-xl text-sm leading-relaxed font-medium text-white/80 sm:text-[0.95rem]">
-          Ubah pikiranmu sebelum masuk ke narasi pilar.
+          {spotlight?.caption || 'Ubah pikiranmu sebelum masuk ke narasi pilar.'}
         </p>
 
         <div className="mt-10 grid min-h-0 auto-rows-fr grid-cols-1 gap-4 sm:gap-5 lg:grid-cols-4 lg:grid-rows-2 lg:gap-5">
@@ -129,8 +129,8 @@ export function ExternalEditorialGrid({ spots }: Props) {
               key={spot.id || i}
               className={
                 i % 2 === 0
-                  ? "min-h-[12rem] lg:min-h-[10.5rem]"
-                  : "min-h-[12rem] lg:min-h-[12.5rem]"
+                  ? 'min-h-[12rem] lg:min-h-[10.5rem]'
+                  : 'min-h-[12rem] lg:min-h-[12.5rem]'
               }
             >
               <EditorialTile spot={spot} reduceMotion={reduceMotion} />

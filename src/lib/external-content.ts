@@ -47,7 +47,7 @@ export async function getActiveVisi() {
 export async function getActiveEditorialSpots() {
   const payload = await getPayload({ config });
   const result = await payload.find({
-    collection: 'external-editorial-spot',
+    collection: 'external-highlight',
     where: {
       isActive: {
         equals: true,
@@ -56,6 +56,20 @@ export async function getActiveEditorialSpots() {
     sort: 'id',
   });
   return result.docs;
+}
+
+export async function getActiveSpotlight() {
+  const payload = await getPayload({ config });
+  const result = await payload.find({
+    collection: 'external-spotlight',
+    where: {
+      isActive: {
+        equals: true,
+      },
+    },
+    limit: 1,
+  });
+  return result.docs[0] || null;
 }
 
 export async function getActiveMisi() {
@@ -67,9 +81,9 @@ export async function getActiveMisi() {
         equals: true,
       },
     },
-    sort: 'order',
+    limit: 1,
   });
-  return result.docs;
+  return result.docs[0] || null;
 }
 
 export async function getActiveOrganogram() {

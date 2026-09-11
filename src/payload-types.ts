@@ -78,7 +78,8 @@ export interface Config {
     'external-manifesto': ExternalManifesto;
     'external-about': ExternalAbout;
     'external-visi': ExternalVisi;
-    'external-editorial-spot': ExternalEditorialSpot;
+    'external-highlight': ExternalHighlight;
+    'external-spotlight': ExternalSpotlight;
     'external-misi': ExternalMisi;
     'external-organogram': ExternalOrganogram;
     'external-heritage-timeline': ExternalHeritageTimeline;
@@ -109,7 +110,8 @@ export interface Config {
     'external-manifesto': ExternalManifestoSelect<false> | ExternalManifestoSelect<true>;
     'external-about': ExternalAboutSelect<false> | ExternalAboutSelect<true>;
     'external-visi': ExternalVisiSelect<false> | ExternalVisiSelect<true>;
-    'external-editorial-spot': ExternalEditorialSpotSelect<false> | ExternalEditorialSpotSelect<true>;
+    'external-highlight': ExternalHighlightSelect<false> | ExternalHighlightSelect<true>;
+    'external-spotlight': ExternalSpotlightSelect<false> | ExternalSpotlightSelect<true>;
     'external-misi': ExternalMisiSelect<false> | ExternalMisiSelect<true>;
     'external-organogram': ExternalOrganogramSelect<false> | ExternalOrganogramSelect<true>;
     'external-heritage-timeline': ExternalHeritageTimelineSelect<false> | ExternalHeritageTimelineSelect<true>;
@@ -968,6 +970,10 @@ export interface ExternalAbout {
    */
   logoDescription?: string | null;
   /**
+   * Description text between vision and mission sections
+   */
+  visionAndMissionDescription?: string | null;
+  /**
    * First clause styled bold italic in the hero
    */
   headingPrefix: string;
@@ -1000,24 +1006,19 @@ export interface ExternalVisi {
    * Short summary of the vision
    */
   tldr: string;
-  inkubatorKarya: {
+  coreValues: {
     title: string;
-    karya: {
-      subtitle: string;
-      lead: string;
-      /**
-       * Detailed description of the karya incubator
-       */
-      body: string;
-    };
-    keprofesian: {
-      subtitle: string;
-      lead: string;
-      /**
-       * Detailed description of the professional incubator
-       */
-      body: string;
-    };
+    values?:
+      | {
+          subtitle: string;
+          lead: string;
+          /**
+           * Detailed description of the karya incubator
+           */
+          body: string;
+          id?: string | null;
+        }[]
+      | null;
   };
   /**
    * Visi/inkubator dark chapter image (optional)
@@ -1033,13 +1034,10 @@ export interface ExternalVisi {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "external-editorial-spot".
+ * via the `definition` "external-highlight".
  */
-export interface ExternalEditorialSpot {
-  /**
-   * Unique identifier for the editorial spot
-   */
-  id: string;
+export interface ExternalHighlight {
+  id: number;
   image: number | Media;
   tag: 'Study' | 'Society' | 'Solidarity';
   caption: string;
@@ -1058,28 +1056,60 @@ export interface ExternalEditorialSpot {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "external-spotlight".
+ */
+export interface ExternalSpotlight {
+  id: number;
+  title: string;
+  caption: string;
+  /**
+   * Only active spotlight will be displayed
+   */
+  isActive?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "external-misi".
  */
 export interface ExternalMisi {
   id: number;
-  cardTitle: string;
+  title: string;
+  groups?:
+    | {
+        groupTitle?: string | null;
+        missions?:
+          | {
+              cardTitle: string;
+              /**
+               * Short one-line description
+               */
+              oneLiner: string;
+              summary: string;
+              /**
+               * Detailed description of the mission
+               */
+              body: string;
+              /**
+               * Only active missions will be displayed
+               */
+              isActive?: boolean | null;
+              /**
+               * Lower numbers appear first
+               */
+              order?: number | null;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
   /**
-   * Short one-line description
-   */
-  oneLiner: string;
-  summary: string;
-  /**
-   * Detailed description of the mission
-   */
-  body: string;
-  /**
-   * Only active missions will be displayed
+   * Only one mission section should be active at a time
    */
   isActive?: boolean | null;
-  /**
-   * Lower numbers appear first
-   */
-  order?: number | null;
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -1517,8 +1547,12 @@ export interface PayloadLockedDocument {
         value: number | ExternalVisi;
       } | null)
     | ({
-        relationTo: 'external-editorial-spot';
-        value: string | ExternalEditorialSpot;
+        relationTo: 'external-highlight';
+        value: number | ExternalHighlight;
+      } | null)
+    | ({
+        relationTo: 'external-spotlight';
+        value: number | ExternalSpotlight;
       } | null)
     | ({
         relationTo: 'external-misi';
@@ -1987,6 +2021,7 @@ export interface ExternalAboutSelect<T extends boolean = true> {
   kabinetName?: T;
   logoKabinet?: T;
   logoDescription?: T;
+  visionAndMissionDescription?: T;
   headingPrefix?: T;
   headingSuffix?: T;
   lead?: T;
@@ -2004,23 +2039,17 @@ export interface ExternalVisiSelect<T extends boolean = true> {
   heading?: T;
   lead?: T;
   tldr?: T;
-  inkubatorKarya?:
+  coreValues?:
     | T
     | {
         title?: T;
-        karya?:
+        values?:
           | T
           | {
               subtitle?: T;
               lead?: T;
               body?: T;
-            };
-        keprofesian?:
-          | T
-          | {
-              subtitle?: T;
-              lead?: T;
-              body?: T;
+              id?: T;
             };
       };
   heroImage?: T;
@@ -2031,10 +2060,9 @@ export interface ExternalVisiSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "external-editorial-spot_select".
+ * via the `definition` "external-highlight_select".
  */
-export interface ExternalEditorialSpotSelect<T extends boolean = true> {
-  id?: T;
+export interface ExternalHighlightSelect<T extends boolean = true> {
   image?: T;
   tag?: T;
   caption?: T;
@@ -2047,15 +2075,40 @@ export interface ExternalEditorialSpotSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "external-spotlight_select".
+ */
+export interface ExternalSpotlightSelect<T extends boolean = true> {
+  title?: T;
+  caption?: T;
+  isActive?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "external-misi_select".
  */
 export interface ExternalMisiSelect<T extends boolean = true> {
-  cardTitle?: T;
-  oneLiner?: T;
-  summary?: T;
-  body?: T;
+  title?: T;
+  groups?:
+    | T
+    | {
+        groupTitle?: T;
+        missions?:
+          | T
+          | {
+              cardTitle?: T;
+              oneLiner?: T;
+              summary?: T;
+              body?: T;
+              isActive?: T;
+              order?: T;
+              id?: T;
+            };
+        id?: T;
+      };
   isActive?: T;
-  order?: T;
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
@@ -2597,8 +2650,12 @@ export interface TaskSchedulePublish {
           value: number | ExternalVisi;
         } | null)
       | ({
-          relationTo: 'external-editorial-spot';
-          value: string | ExternalEditorialSpot;
+          relationTo: 'external-highlight';
+          value: number | ExternalHighlight;
+        } | null)
+      | ({
+          relationTo: 'external-spotlight';
+          value: number | ExternalSpotlight;
         } | null)
       | ({
           relationTo: 'external-misi';

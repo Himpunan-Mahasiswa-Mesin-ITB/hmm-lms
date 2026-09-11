@@ -6,6 +6,7 @@ import {
   getActiveHeritageTimeline,
   getActivePillars,
   getExternalImageByKey,
+  getActiveSpotlight,
 } from '~/lib/external-content';
 
 import { ExternalEditorialGrid } from './external-editorial-grid';
@@ -28,7 +29,7 @@ export default async function ExternalLandingPage() {
   const editorialSpots = await getActiveEditorialSpots();
   const heritageTimeline = await getActiveHeritageTimeline();
   const pillars = await getActivePillars();
-
+  const spotlight = await getActiveSpotlight();
   const heroImage = await getExternalImageByKey('hero');
   const pillarStudyImage = await getExternalImageByKey('pillarStudy');
   const pillarSocietyImage = await getExternalImageByKey('pillarSociety');
@@ -55,7 +56,6 @@ export default async function ExternalLandingPage() {
     <>
       <HmmExternalNavbar />
       <main className="hmm-sans text-[var(--color-hmm-navy)]">
-        {/* — Manifesto — */}
         <section
           id="manifesto"
           className="hmm-chapter-dark relative min-h-[100svh] scroll-mt-[4.5rem] overflow-hidden"
@@ -160,11 +160,10 @@ export default async function ExternalLandingPage() {
 
         <ExternalWordmarkRail />
 
-        <ExternalEditorialGrid spots={editorialResolved} />
+        <ExternalEditorialGrid spotlight={spotlight} spots={editorialResolved} />
 
         <div className="hmm-chapter-transition-editorial" aria-hidden />
 
-        {/* — Three pillars (distinct layouts) — */}
         <div id="pillars" className="scroll-mt-[4.5rem]">
           <div className="hmm-chapter-dark border-b border-white/8 bg-[color-mix(in_srgb,var(--color-hmm-navy-deep)_96%,var(--color-hmm-navy))] px-4 py-5 sm:px-8 sm:py-8">
             <div className="mx-auto flex max-w-[86rem] flex-col gap-4 sm:flex-row sm:items-center sm:gap-8">

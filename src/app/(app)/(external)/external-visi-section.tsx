@@ -9,7 +9,7 @@ type Props = {
 };
 
 export function ExternalVisiSection({ visi, visiImage }: Props) {
-  const inkubatorKarya = visi?.inkubatorKarya;
+  const coreValues = visi?.coreValues;
 
   return (
     <section id="visi" className="hmm-chapter-dark relative scroll-mt-[4.5rem] overflow-hidden">
@@ -50,65 +50,50 @@ export function ExternalVisiSection({ visi, visiImage }: Props) {
 
             <ExternalReveal className="mt-8 sm:mt-10">
               <h3 className="hmm-type-subsection text-lg text-white/95 sm:text-xl">
-                {inkubatorKarya?.title || ''}
+                {coreValues?.title || ''}
               </h3>
 
               <div className="mt-8 grid items-stretch gap-6 lg:mt-10 lg:grid-cols-1 lg:gap-6 xl:grid-cols-2 xl:gap-8">
-                <div className="hmm-ink-card flex h-full">
-                  <div className="flex items-start gap-3">
-                    <RiFlaskLine
-                      className="mt-0.5 h-7 w-7 shrink-0 text-[color-mix(in_srgb,var(--color-hmm-cream)_88%,var(--color-hmm-maroon))]"
-                      aria-hidden
-                    />
-                    <div>
-                      <h4 className="hmm-sans text-xs font-bold tracking-[0.2em] text-[color-mix(in_srgb,var(--color-hmm-cream)_75%,white)] uppercase">
-                        {inkubatorKarya?.karya?.subtitle || ''}
-                      </h4>
-                      <p className="hmm-sans mt-2 text-sm leading-relaxed font-semibold text-white/92">
-                        {inkubatorKarya?.karya?.lead || ''}
-                      </p>
-                      <details className="group/d mt-3">
-                        <summary className="hmm-sans cursor-pointer list-none text-xs font-bold tracking-[0.12em] text-white/60 uppercase transition group-open/d:text-white/85">
-                          Baca penjabaran
-                        </summary>
-                        <p className="hmm-type-prose mt-2 border-l-2 border-[color-mix(in_srgb,var(--color-hmm-yellow)_50%,var(--color-hmm-maroon))] pl-3 text-white/78">
-                          {inkubatorKarya?.karya?.body || ''}
+                {coreValues?.values?.map((value: any, index: number) => (
+                  <div key={index} className="hmm-ink-card flex h-full">
+                    <div className="flex items-start gap-3">
+                      {index === 0 ? (
+                        <RiFlaskLine
+                          className="mt-0.5 h-7 w-7 shrink-0 text-[color-mix(in_srgb,var(--color-hmm-cream)_88%,var(--color-hmm-maroon))]"
+                          aria-hidden
+                        />
+                      ) : (
+                        <RiBriefcase3Line
+                          className="mt-0.5 h-7 w-7 shrink-0 text-[color-mix(in_srgb,var(--color-hmm-cream)_88%,var(--color-hmm-maroon))]"
+                          aria-hidden
+                        />
+                      )}
+                      <div>
+                        <h4 className="hmm-sans text-xs font-bold tracking-[0.2em] text-[color-mix(in_srgb,var(--color-hmm-cream)_75%,white)] uppercase">
+                          {value?.subtitle || ''}
+                        </h4>
+                        <p className="hmm-sans mt-2 text-sm leading-relaxed font-semibold text-white/92">
+                          {value?.lead || ''}
                         </p>
-                      </details>
+                        <details className="group/d mt-3">
+                          <summary className="hmm-sans cursor-pointer list-none text-xs font-bold tracking-[0.12em] text-white/60 uppercase transition group-open/d:text-white/85">
+                            Baca penjabaran
+                          </summary>
+                          <p className="hmm-type-prose mt-2 border-l-2 border-[color-mix(in_srgb,var(--color-hmm-yellow)_50%,var(--color-hmm-maroon))] pl-3 text-white/78">
+                            {value?.body || ''}
+                          </p>
+                        </details>
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div className="hmm-ink-card flex h-full">
-                  <div className="flex items-start gap-3">
-                    <RiBriefcase3Line
-                      className="mt-0.5 h-7 w-7 shrink-0 text-[color-mix(in_srgb,var(--color-hmm-cream)_88%,var(--color-hmm-maroon))]"
-                      aria-hidden
-                    />
-                    <div>
-                      <h4 className="hmm-sans text-xs font-bold tracking-[0.2em] text-[color-mix(in_srgb,var(--color-hmm-cream)_75%,white)] uppercase">
-                        {inkubatorKarya?.keprofesian?.subtitle || ''}
-                      </h4>
-                      <p className="hmm-sans mt-2 text-sm leading-relaxed font-semibold text-white/92">
-                        {inkubatorKarya?.keprofesian?.lead || ''}
-                      </p>
-                      <details className="group/d mt-3">
-                        <summary className="hmm-sans cursor-pointer list-none text-xs font-bold tracking-[0.12em] text-white/60 uppercase transition group-open/d:text-white/85">
-                          Baca penjabaran
-                        </summary>
-                        <p className="hmm-type-prose mt-2 border-l-2 border-[color-mix(in_srgb,var(--color-hmm-yellow)_50%,var(--color-hmm-maroon))] pl-3 text-white/78">
-                          {inkubatorKarya?.keprofesian?.body || ''}
-                        </p>
-                      </details>
-                    </div>
-                  </div>
-                </div>
+                ))}
               </div>
             </ExternalReveal>
           </div>
 
           {visiImage ? (
             <div className="relative mt-0 hidden self-start lg:sticky lg:top-28 lg:mt-6 lg:block">
-              <div className="relative aspect-[3/4] w-full max-w-md overflow-hidden rounded-2xl border border-white/15 shadow-[0_24px_60px_color-mix(in_srgb,var(--color-hmm-black)_40%,transparent)]">
+              <div className="relative aspect-3/4 w-full max-w-md overflow-hidden rounded-2xl border border-white/15 shadow-[0_24px_60px_color-mix(in_srgb,var(--color-hmm-black)_40%,transparent)]">
                 <Image
                   src={visiImage}
                   alt=""
