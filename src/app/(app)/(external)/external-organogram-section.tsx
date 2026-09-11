@@ -10,6 +10,7 @@ type OrganogramCard = {
   featuredDetail?: any;
   rosterDetail?: any;
   isPrince?: boolean;
+  isExternal?: boolean;
 };
 
 type Props = {
@@ -107,9 +108,8 @@ function splitGroups(items: OrganogramCard[]): {
   leadership: Group;
   internalGroups: Group[];
 } {
-  const externalTitles = new Set(['DPA', 'SENATOR', 'RCKT']);
-  const external = items.filter((item) => externalTitles.has(item.title));
-  const internal = items.filter((item) => !externalTitles.has(item.title));
+  const external = items.filter((item) => item.isExternal === true);
+  const internal = items.filter((item) => item.isExternal !== true);
 
   // extract Prince (marked as isPrince or first item as fallback)
   const prince = internal.find((item) => item.isPrince) || internal[0];
@@ -182,8 +182,8 @@ function OrganogramCardButton({
       <div className="hmm-organogram-card__media">
         {loading ? (
           <span className="hmm-organogram-card__loading" aria-hidden>
-            Compiling
             <span className="hmm-organogram-card__dot" />
+            Compiling
           </span>
         ) : null}
         <Image

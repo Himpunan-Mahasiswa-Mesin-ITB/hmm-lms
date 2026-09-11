@@ -1013,7 +1013,7 @@ export interface ExternalVisi {
           subtitle: string;
           lead: string;
           /**
-           * Detailed description of the karya incubator
+           * Detailed description of the value
            */
           body: string;
           id?: string | null;
@@ -1021,7 +1021,7 @@ export interface ExternalVisi {
       | null;
   };
   /**
-   * Visi/inkubator dark chapter image (optional)
+   * Visi image (optional)
    */
   heroImage?: (number | null) | Media;
   /**
@@ -1129,6 +1129,10 @@ export interface ExternalOrganogram {
    * Mark as the current Prince of the cabinet/organization (will always appear first)
    */
   isPrince?: boolean | null;
+  /**
+   * Mark as external/advisory position (will appear in External & Advisory Bodies section)
+   */
+  isExternal?: boolean | null;
   detailType: 'featured' | 'roster';
   featuredDetail?: {
     tagline?: string | null;
@@ -2121,6 +2125,7 @@ export interface ExternalOrganogramSelect<T extends boolean = true> {
   title?: T;
   image?: T;
   isPrince?: T;
+  isExternal?: T;
   detailType?: T;
   featuredDetail?:
     | T

@@ -76,7 +76,7 @@ export const ExternalVisi: CollectionConfig<'external-visi'> = {
               required: true,
               label: 'Body',
               admin: {
-                description: 'Detailed description of the karya incubator',
+                description: 'Detailed description of the value',
               },
             },
           ],
@@ -89,7 +89,7 @@ export const ExternalVisi: CollectionConfig<'external-visi'> = {
       relationTo: 'media',
       label: 'Hero Image',
       admin: {
-        description: 'Visi/inkubator dark chapter image (optional)',
+        description: 'Visi image (optional)',
       },
     },
     {

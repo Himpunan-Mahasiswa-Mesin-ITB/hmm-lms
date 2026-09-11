@@ -43,6 +43,16 @@ export const ExternalOrganogram: CollectionConfig<'external-organogram'> = {
       },
     },
     {
+      name: 'isExternal',
+      type: 'checkbox',
+      label: 'External Position',
+      defaultValue: false,
+      admin: {
+        description:
+          'Mark as external/advisory position (will appear in External & Advisory Bodies section)',
+      },
+    },
+    {
       name: 'detailType',
       type: 'select',
       required: true,
