@@ -54,6 +54,7 @@ export async function getActiveEditorialSpots() {
       },
     },
     sort: 'id',
+    limit: 9999,
   });
   return result.docs;
 }
@@ -95,6 +96,7 @@ export async function getActiveOrganogram() {
         equals: true,
       },
     },
+    limit: 9999,
     sort: 'order',
   });
 
@@ -117,6 +119,7 @@ export async function getActiveHeritageTimeline() {
       },
     },
     sort: 'order',
+    limit: 9999,
   });
   return result.docs;
 }
@@ -181,6 +184,7 @@ export async function getAllExternalImages() {
         equals: true,
       },
     },
+    limit: 9999,
   });
   return result.docs;
 }
@@ -195,6 +199,7 @@ export async function getActiveLogoMeanings() {
       },
     },
     sort: 'order',
+    limit: 9999,
   });
   return result.docs;
 }
