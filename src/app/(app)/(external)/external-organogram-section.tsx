@@ -1,7 +1,10 @@
 'use client';
 
+import { useMediaQuery } from "usehooks-ts";
+import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
 import Image from 'next/image';
 import { useMemo, useState } from 'react';
+import { EyeOff, Eye } from "lucide-react";
 
 type OrganogramCard = {
   title: string;
@@ -64,7 +67,7 @@ function OrganogramModalDetailBody({ item }: { item: OrganogramCard }) {
             </li>
           ))}
         </ul>
-        <div className="mt-5 space-y-3 border-t border-white/10 pt-5">
+        <div className="mt-5 space-y-3 border-t border-white/10 pt-5 max-sm:max-h-64 max-sm:overflow-y-auto">
           {item.featuredDetail.paragraphs?.map((paragraph: any, i: number) => (
             <p
               key={i}
@@ -163,16 +166,21 @@ function OrganogramCardButton({
   cardSize = 'regular',
   subtle = false,
   onClick,
+  index,
+  reduceMotion,
 }: {
   item: OrganogramCard;
   cardLabel: 'Core Role' | 'Unit';
   cardSize?: 'lead' | 'regular' | 'compact';
   subtle?: boolean;
   onClick: () => void;
+  index: number;
+  reduceMotion: boolean;
 }) {
   const [loading, setLoading] = useState(true);
   const title = item.title;
-  return (
+
+  const buttonContent = (
     <button
       type="button"
       onClick={onClick}
@@ -182,8 +190,8 @@ function OrganogramCardButton({
       <div className="hmm-organogram-card__media">
         {loading ? (
           <span className="hmm-organogram-card__loading" aria-hidden>
-            <span className="hmm-organogram-card__dot" />
             Compiling
+            <span className="hmm-organogram-card__dot" />
           </span>
         ) : null}
         <Image
@@ -207,11 +215,39 @@ function OrganogramCardButton({
       </div>
     </button>
   );
+
+  if (reduceMotion) {
+    return buttonContent;
+  }
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-8% 0px' }}
+      transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1], delay: index * 0.05 }}
+    >
+      {buttonContent}
+    </motion.div>
+  );
 }
 
 export function ExternalOrganogramSection({ items }: Props) {
+  const isSmallScreen = useMediaQuery('(max-width: 859px)');
   const [active, setActive] = useState<OrganogramCard | null>(null);
+  const [showContent, setShowContent] = useState(true);
   const { external, leadership, internalGroups } = useMemo(() => splitGroups(items), [items]);
+  const reduceMotion = useReducedMotion() ?? false;
+
+  const handleOpenModal = (item: OrganogramCard) => {
+    setActive(item);
+    setShowContent(true);
+  };
+
+  const handleCloseModal = () => {
+    setActive(null);
+    setShowContent(true);
+  };
 
   return (
     <section
@@ -237,12 +273,14 @@ export function ExternalOrganogramSection({ items }: Props) {
               ) : null}
             </div>
             <div className="mt-4 grid grid-cols-[repeat(auto-fit,minmax(16rem,20rem))] justify-center gap-4">
-              {leadership.items.map((item) => (
+              {leadership.items.map((item, index) => (
                 <OrganogramCardButton
                   key={item.title}
                   item={item}
                   cardLabel={leadership.cardLabel}
-                  onClick={() => setActive(item)}
+                  onClick={() => handleOpenModal(item)}
+                  index={index}
+                  reduceMotion={reduceMotion}
                 />
               ))}
             </div>
@@ -263,13 +301,15 @@ export function ExternalOrganogramSection({ items }: Props) {
               </div>
 
               <div className="mt-4 grid grid-cols-[repeat(auto-fit,minmax(13rem,1fr))] justify-center gap-4 md:grid-cols-4">
-                {group.items.map((item) => (
+                {group.items.map((item, index) => (
                   <OrganogramCardButton
                     key={item.title}
                     item={item}
                     cardLabel={group.cardLabel}
                     cardSize={group.cardSize}
-                    onClick={() => setActive(item)}
+                    onClick={() => handleOpenModal(item)}
+                    index={index}
+                    reduceMotion={reduceMotion}
                   />
                 ))}
               </div>
@@ -284,13 +324,15 @@ export function ExternalOrganogramSection({ items }: Props) {
             </div>
             <div className="hmm-organogram-external-separator" aria-hidden />
             <div className="mt-4 grid grid-cols-[repeat(auto-fit,minmax(11.5rem,13.5rem))] justify-center gap-4">
-              {external.items.map((item) => (
+              {external.items.map((item, index) => (
                 <OrganogramCardButton
                   key={item.title}
                   item={item}
                   cardLabel={external.cardLabel}
                   subtle
-                  onClick={() => setActive(item)}
+                  onClick={() => handleOpenModal(item)}
+                  index={index}
+                  reduceMotion={reduceMotion}
                 />
               ))}
             </div>
@@ -298,46 +340,79 @@ export function ExternalOrganogramSection({ items }: Props) {
         ) : null}
       </div>
 
-      {active ? (
-        <div
-          className="hmm-organogram-modal"
-          role="dialog"
-          aria-modal="true"
-          aria-label={active.title}
-        >
-          <button
-            type="button"
-            className="hmm-organogram-modal__backdrop"
-            onClick={() => setActive(null)}
-            aria-label="Close details"
-          />
-          <div className="hmm-organogram-modal__panel">
-            <div className="hmm-organogram-modal__media">
-              <Image
-                src={active.imageUrl}
-                alt={active.title}
-                fill
-                className="object-cover"
-                sizes="(max-width: 1024px) 100vw, 40vw"
-              />
-            </div>
-            <div className="hmm-organogram-modal__content">
-              <div className="hmm-organogram-modal__scroll">
-                <p className="hmm-organogram-card__kicker">Position Detail</p>
-                <h4 className="hmm-type-subsection mt-2 text-white">{active.title}</h4>
-                <OrganogramModalDetailBody item={active} />
-              </div>
-              <button
-                type="button"
-                className="hmm-nav-signin mt-6 shrink-0"
-                onClick={() => setActive(null)}
-              >
-                Close
-              </button>
-            </div>
-          </div>
-        </div>
-      ) : null}
+      <AnimatePresence>
+        {active && (
+          <motion.div
+            className="hmm-organogram-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-label={active.title}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+          >
+            <motion.button
+              type="button"
+              className="hmm-organogram-modal__backdrop"
+              onClick={handleCloseModal}
+              aria-label="Close details"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+            />
+            <motion.div
+              className={`hmm-organogram-modal__panel ${isSmallScreen && !showContent ? 'hmm-organogram-modal__panel--image-only' : ''
+                }`}
+              initial={{ scale: 0.95, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.95, opacity: 0, y: 20 }}
+              transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+            >
+              {isSmallScreen && (
+                <button
+                  type="button"
+                  className="hmm-organogram-modal__toggle-btn"
+                  onClick={() => setShowContent((prev) => !prev)}
+                  aria-label="Toggle Content Details"
+                >
+                  <span>{showContent ? <EyeOff /> : <Eye />}</span>
+                </button>
+              )}
+
+              {(!isSmallScreen || !showContent) && (
+                <div className="hmm-organogram-modal__media">
+                  <Image
+                    src={active.imageUrl}
+                    alt={active.title}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 1024px) 100vw, 40vw"
+                  />
+                </div>
+              )}
+
+              {(!isSmallScreen || showContent) && (
+                <div className="hmm-organogram-modal__content">
+                  <div className="hmm-organogram-modal__scroll">
+                    <p className="hmm-organogram-card__kicker">Position Detail</p>
+                    <h4 className="hmm-type-subsection mt-2 text-white">{active.title}</h4>
+                    <OrganogramModalDetailBody item={active} />
+                  </div>
+                  <button
+                    type="button"
+                    className="hmm-nav-signin hmm-organogram-modal__close-bottom mt-6 shrink-0"
+                    onClick={handleCloseModal}
+                  >
+                    Close
+                  </button>
+                </div>
+              )}
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 }

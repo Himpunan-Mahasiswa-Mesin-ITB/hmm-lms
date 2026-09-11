@@ -1,1490 +1,1580 @@
 @font-face {
-  font-family: "HMM ITC New Baskerville";
-  src: url("../fonts/title-sub-itc/NewBaskervilleStd-Roman.woff2") format("woff2");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
+    font-family: 'HMM ITC New Baskerville';
+    src: url('../fonts/title-sub-itc/NewBaskervilleStd-Roman.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
-  font-family: "HMM ITC New Baskerville";
-  src: url("../fonts/title-sub-itc/NewBaskervilleStd-Italic.woff2") format("woff2");
-  font-weight: 400;
-  font-style: italic;
-  font-display: swap;
+    font-family: 'HMM ITC New Baskerville';
+    src: url('../fonts/title-sub-itc/NewBaskervilleStd-Italic.woff2') format('woff2');
+    font-weight: 400;
+    font-style: italic;
+    font-display: swap;
 }
 
 @font-face {
-  font-family: "HMM ITC New Baskerville";
-  src: url("../fonts/title-sub-itc/NewBaskervilleStd-Bold.woff2") format("woff2");
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
+    font-family: 'HMM ITC New Baskerville';
+    src: url('../fonts/title-sub-itc/NewBaskervilleStd-Bold.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
-  font-family: "HMM ITC New Baskerville";
-  src: url("../fonts/title-sub-itc/NewBaskervilleStd-BoldIt.woff2") format("woff2");
-  font-weight: 700;
-  font-style: italic;
-  font-display: swap;
+    font-family: 'HMM ITC New Baskerville';
+    src: url('../fonts/title-sub-itc/NewBaskervilleStd-BoldIt.woff2') format('woff2');
+    font-weight: 700;
+    font-style: italic;
+    font-display: swap;
 }
 
 @theme inline {
-  --color-hmm-navy: var(--hmm-navy);
-  --color-hmm-maroon: var(--hmm-maroon);
-  --color-hmm-cream: var(--hmm-cream);
-  --color-hmm-navy-deep: var(--hmm-navy-deep);
-  --color-hmm-navy-muted: var(--hmm-navy-muted);
-  --color-hmm-black: var(--hmm-black);
-  --color-hmm-white: var(--hmm-white);
-  --color-hmm-yellow: var(--hmm-yellow);
-  --color-hmm-yellow-acid: var(--hmm-yellow-acid);
-  --color-hmm-grey-light: var(--hmm-grey-light);
+    --color-hmm-navy: var(--hmm-navy);
+    --color-hmm-maroon: var(--hmm-maroon);
+    --color-hmm-cream: var(--hmm-cream);
+    --color-hmm-navy-deep: var(--hmm-navy-deep);
+    --color-hmm-navy-muted: var(--hmm-navy-muted);
+    --color-hmm-black: var(--hmm-black);
+    --color-hmm-white: var(--hmm-white);
+    --color-hmm-yellow: var(--hmm-yellow);
+    --color-hmm-yellow-acid: var(--hmm-yellow-acid);
+    --color-hmm-grey-light: var(--hmm-grey-light);
 }
 
 .hmm-external {
-  --hmm-navy: #253041;
-  --hmm-maroon: #590f11;
-  --hmm-cream: #f4ede1;
-  --hmm-navy-deep: #06162f;
-  --hmm-navy-muted: #445e86;
-  --hmm-black: #000000;
-  --hmm-white: #ffffff;
-  --hmm-yellow: #f0d637;
-  --hmm-yellow-acid: #d9d909;
-  --hmm-grey-light: #d9d9d9;
-  --color-hmm-navy: var(--hmm-navy);
-  --color-hmm-maroon: var(--hmm-maroon);
-  --color-hmm-cream: var(--hmm-cream);
-  --color-hmm-navy-deep: var(--hmm-navy-deep);
-  --color-hmm-navy-muted: var(--hmm-navy-muted);
-  --color-hmm-black: var(--hmm-black);
-  --color-hmm-white: var(--hmm-white);
-  --color-hmm-yellow: var(--hmm-yellow);
-  --color-hmm-yellow-acid: var(--hmm-yellow-acid);
-  --color-hmm-grey-light: var(--hmm-grey-light);
+    --hmm-navy: #253041;
+    --hmm-maroon: #590f11;
+    --hmm-cream: #f4ede1;
+    --hmm-navy-deep: #06162f;
+    --hmm-navy-muted: #445e86;
+    --hmm-black: #000000;
+    --hmm-white: #ffffff;
+    --hmm-yellow: #f0d637;
+    --hmm-yellow-acid: #d9d909;
+    --hmm-grey-light: #d9d9d9;
+    --color-hmm-navy: var(--hmm-navy);
+    --color-hmm-maroon: var(--hmm-maroon);
+    --color-hmm-cream: var(--hmm-cream);
+    --color-hmm-navy-deep: var(--hmm-navy-deep);
+    --color-hmm-navy-muted: var(--hmm-navy-muted);
+    --color-hmm-black: var(--hmm-black);
+    --color-hmm-white: var(--hmm-white);
+    --color-hmm-yellow: var(--hmm-yellow);
+    --color-hmm-yellow-acid: var(--hmm-yellow-acid);
+    --color-hmm-grey-light: var(--hmm-grey-light);
 
-  --hmm-font-title: "HMM ITC New Baskerville", "Times New Roman", serif;
-  --hmm-font-sans: var(--font-montserrat), var(--font-inter), "Helvetica Neue", Arial,
-    sans-serif;
-  --hmm-scale-ratio: 1.2;
+    --hmm-font-title: 'HMM ITC New Baskerville', 'Times New Roman', serif;
+    --hmm-font-sans: var(--font-montserrat), var(--font-inter), 'Helvetica Neue', Arial, sans-serif;
+    --hmm-scale-ratio: 1.2;
 
-  /* Section vertical rhythm (roughly 80–120px desktop) */
-  --hmm-section-y-sm: clamp(2.75rem, 6vw, 4.5rem);
-  --hmm-section-y-md: clamp(3.5rem, 7vw, 5.5rem);
-  --hmm-section-y-lg: clamp(4.5rem, 9vw, 7.5rem);
+    /* Section vertical rhythm (roughly 80–120px desktop) */
+    --hmm-section-y-sm: clamp(2.75rem, 6vw, 4.5rem);
+    --hmm-section-y-md: clamp(3.5rem, 7vw, 5.5rem);
+    --hmm-section-y-lg: clamp(4.5rem, 9vw, 7.5rem);
 
-  background-color: var(--color-hmm-white);
-  color: var(--color-hmm-navy);
+    background-color: var(--color-hmm-white);
+    color: var(--color-hmm-navy);
 }
 
 .hmm-external .hmm-section-y-md {
-  padding-top: var(--hmm-section-y-md);
-  padding-bottom: var(--hmm-section-y-md);
+    padding-top: var(--hmm-section-y-md);
+    padding-bottom: var(--hmm-section-y-md);
 }
 
 .hmm-external .hmm-section-y-lg {
-  padding-top: var(--hmm-section-y-lg);
-  padding-bottom: var(--hmm-section-y-lg);
+    padding-top: var(--hmm-section-y-lg);
+    padding-bottom: var(--hmm-section-y-lg);
 }
 
 /* Editorial: image + text legibility */
 .hmm-external .hmm-grad-hero {
-  /* Lighter scrim: photo reads as content, type stays legible at bottom */
-  background: linear-gradient(
-    180deg,
-    color-mix(in srgb, var(--color-hmm-navy-deep) 52%, transparent) 0%,
-    color-mix(in srgb, var(--color-hmm-navy-deep) 8%, transparent) 40%,
-    color-mix(in srgb, var(--color-hmm-navy-deep) 28%, transparent) 70%,
-    color-mix(in srgb, var(--color-hmm-navy-deep) 88%, transparent) 100%
-  );
+    /* Lighter scrim: photo reads as content, type stays legible at bottom */
+    background: linear-gradient(180deg,
+            color-mix(in srgb, var(--color-hmm-navy-deep) 52%, transparent) 0%,
+            color-mix(in srgb, var(--color-hmm-navy-deep) 8%, transparent) 40%,
+            color-mix(in srgb, var(--color-hmm-navy-deep) 28%, transparent) 70%,
+            color-mix(in srgb, var(--color-hmm-navy-deep) 88%, transparent) 100%);
 }
 
 .hmm-external .hmm-grad-section {
-  background: linear-gradient(
-    180deg,
-    color-mix(in srgb, var(--color-hmm-navy) 0%, transparent) 0%,
-    color-mix(in srgb, var(--color-hmm-navy-deep) 55%, transparent) 100%
-  );
+    background: linear-gradient(180deg,
+            color-mix(in srgb, var(--color-hmm-navy) 0%, transparent) 0%,
+            color-mix(in srgb, var(--color-hmm-navy-deep) 55%, transparent) 100%);
 }
 
 .hmm-external .hmm-grad-vignette {
-  background: radial-gradient(
-    ellipse 90% 70% at 50% 40%,
-    color-mix(in srgb, var(--color-hmm-navy-deep) 0%, transparent) 0%,
-    color-mix(in srgb, var(--color-hmm-navy-deep) 45%, transparent) 100%
-  );
+    background: radial-gradient(ellipse 90% 70% at 50% 40%,
+            color-mix(in srgb, var(--color-hmm-navy-deep) 0%, transparent) 0%,
+            color-mix(in srgb, var(--color-hmm-navy-deep) 45%, transparent) 100%);
 }
 
 .hmm-external .hmm-grad-cta {
-  background: linear-gradient(
-    125deg,
-    color-mix(in srgb, var(--color-hmm-navy-deep) 88%, transparent) 0%,
-    color-mix(in srgb, var(--color-hmm-maroon) 50%, transparent) 55%,
-    color-mix(in srgb, var(--color-hmm-navy-deep) 75%, transparent) 100%
-  );
+    background: linear-gradient(125deg,
+            color-mix(in srgb, var(--color-hmm-navy-deep) 88%, transparent) 0%,
+            color-mix(in srgb, var(--color-hmm-maroon) 50%, transparent) 55%,
+            color-mix(in srgb, var(--color-hmm-navy-deep) 75%, transparent) 100%);
 }
 
 /* Visi: extra read legibility on busy photos */
 .hmm-external .hmm-grad-visi-boost {
-  background: linear-gradient(
-    180deg,
-    color-mix(in srgb, var(--color-hmm-navy-deep) 55%, transparent) 0%,
-    color-mix(in srgb, var(--color-hmm-navy-deep) 78%, transparent) 45%,
-    color-mix(in srgb, var(--color-hmm-navy-deep) 88%, transparent) 100%
-  );
+    background: linear-gradient(180deg,
+            color-mix(in srgb, var(--color-hmm-navy-deep) 55%, transparent) 0%,
+            color-mix(in srgb, var(--color-hmm-navy-deep) 78%, transparent) 45%,
+            color-mix(in srgb, var(--color-hmm-navy-deep) 88%, transparent) 100%);
 }
 
 .hmm-external .hmm-grad-visi-bottom {
-  background: linear-gradient(
-    0deg,
-    color-mix(in srgb, var(--color-hmm-navy-deep) 92%, transparent) 0%,
-    transparent 55%
-  );
+    background: linear-gradient(0deg,
+            color-mix(in srgb, var(--color-hmm-navy-deep) 92%, transparent) 0%,
+            transparent 55%);
 }
 
 /* Light seams only — heritage section is dark in markup */
 .hmm-external .hmm-chapter-transition {
-  height: 1px;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    color-mix(in srgb, var(--color-hmm-white) 12%, transparent) 30%,
-    color-mix(in srgb, var(--color-hmm-white) 12%, transparent) 70%,
-    transparent 100%
-  );
-  border: none;
+    height: 1px;
+    background: linear-gradient(90deg,
+            transparent 0%,
+            color-mix(in srgb, var(--color-hmm-white) 12%, transparent) 30%,
+            color-mix(in srgb, var(--color-hmm-white) 12%, transparent) 70%,
+            transparent 100%);
+    border: none;
 }
 
 .hmm-external .hmm-chapter-transition-heritage-misi {
-  height: 1px;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    color-mix(in srgb, var(--color-hmm-white) 10%, transparent) 45%,
-    transparent 100%
-  );
+    height: 1px;
+    background: linear-gradient(90deg,
+            transparent 0%,
+            color-mix(in srgb, var(--color-hmm-white) 10%, transparent) 45%,
+            transparent 100%);
 }
 
 .hmm-external .hmm-chapter-transition-editorial {
-  /* Visi → Spotlight: land on slightly lifted navy (editorial is not a flat void) */
-  height: 1.25rem;
-  background: linear-gradient(
-    180deg,
-    var(--color-hmm-navy-deep) 0%,
-    color-mix(in srgb, var(--color-hmm-navy) 32%, var(--color-hmm-navy-deep)) 100%
-  );
-  border: none;
+    /* Visi → Spotlight: land on slightly lifted navy (editorial is not a flat void) */
+    height: 1.25rem;
+    background: linear-gradient(180deg,
+            var(--color-hmm-navy-deep) 0%,
+            color-mix(in srgb, var(--color-hmm-navy) 32%, var(--color-hmm-navy-deep)) 100%);
+    border: none;
 }
 
 /* Spotlight / editorial: depth + light — avoids a solid black slab */
 .hmm-external .hmm-chapter-dark.hmm-editorial-chapter {
-  background-color: var(--color-hmm-navy);
-  background-image:
-    radial-gradient(ellipse 110% 85% at 50% -30%, color-mix(in srgb, var(--color-hmm-navy-muted) 26%, transparent), transparent 58%),
-    radial-gradient(ellipse 60% 50% at 100% 15%, color-mix(in srgb, var(--color-hmm-cream) 6%, transparent), transparent 52%),
-    radial-gradient(ellipse 55% 50% at 0% 75%, color-mix(in srgb, var(--color-hmm-yellow) 5%, transparent), transparent 55%),
-    linear-gradient(
-      180deg,
-      color-mix(in srgb, var(--color-hmm-navy) 45%, var(--color-hmm-navy-deep)) 0%,
-      color-mix(in srgb, var(--color-hmm-navy-deep) 88%, var(--color-hmm-navy)) 48%,
-      color-mix(in srgb, var(--color-hmm-navy) 36%, var(--color-hmm-navy-deep)) 100%
-    );
+    background-color: var(--color-hmm-navy);
+    background-image:
+        radial-gradient(ellipse 110% 85% at 50% -30%,
+            color-mix(in srgb, var(--color-hmm-navy-muted) 26%, transparent),
+            transparent 58%),
+        radial-gradient(ellipse 60% 50% at 100% 15%,
+            color-mix(in srgb, var(--color-hmm-cream) 6%, transparent),
+            transparent 52%),
+        radial-gradient(ellipse 55% 50% at 0% 75%,
+            color-mix(in srgb, var(--color-hmm-yellow) 5%, transparent),
+            transparent 55%),
+        linear-gradient(180deg,
+            color-mix(in srgb, var(--color-hmm-navy) 45%, var(--color-hmm-navy-deep)) 0%,
+            color-mix(in srgb, var(--color-hmm-navy-deep) 88%, var(--color-hmm-navy)) 48%,
+            color-mix(in srgb, var(--color-hmm-navy) 36%, var(--color-hmm-navy-deep)) 100%);
 }
 
 .hmm-external .hmm-editorial-chapter__mesh {
-  pointer-events: none;
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  opacity: 0.5;
-  background-image: radial-gradient(
-    color-mix(in srgb, var(--color-hmm-white) 7%, transparent) 1.25px,
-    transparent 1.25px
-  );
-  background-size: 22px 22px;
-  mask-image: linear-gradient(180deg, black, black 60%, transparent);
-  -webkit-mask-image: linear-gradient(180deg, black, black 60%, transparent);
+    pointer-events: none;
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    opacity: 0.5;
+    background-image: radial-gradient(color-mix(in srgb, var(--color-hmm-white) 7%, transparent) 1.25px,
+            transparent 1.25px);
+    background-size: 22px 22px;
+    mask-image: linear-gradient(180deg, black, black 60%, transparent);
+    -webkit-mask-image: linear-gradient(180deg, black, black 60%, transparent);
 }
 
 .hmm-external .hmm-divider {
-  height: 1px;
-  width: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    color-mix(in srgb, var(--color-hmm-cream) 50%, var(--color-hmm-navy) 15%),
-    transparent
-  );
+    height: 1px;
+    width: 100%;
+    background: linear-gradient(90deg,
+            transparent,
+            color-mix(in srgb, var(--color-hmm-cream) 50%, var(--color-hmm-navy) 15%),
+            transparent);
 }
 
 .hmm-external .hmm-timeline {
-  position: relative;
-  margin: 0;
-  padding: 0 0 0 1.5rem;
-  list-style: none;
-  border: none;
+    position: relative;
+    margin: 0;
+    padding: 0 0 0 1.5rem;
+    list-style: none;
+    border: none;
 }
 
 .hmm-external .hmm-timeline::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0.4rem;
-  bottom: 0.4rem;
-  width: 1px;
-  background: linear-gradient(
-    180deg,
-    transparent 0%,
-    color-mix(in srgb, var(--color-hmm-navy) 32%, transparent) 20%,
-    color-mix(in srgb, var(--color-hmm-navy) 32%, transparent) 80%,
-    transparent 100%
-  );
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.4rem;
+    bottom: 0.4rem;
+    width: 1px;
+    background: linear-gradient(180deg,
+            transparent 0%,
+            color-mix(in srgb, var(--color-hmm-navy) 32%, transparent) 20%,
+            color-mix(in srgb, var(--color-hmm-navy) 32%, transparent) 80%,
+            transparent 100%);
 }
 
 .hmm-external .hmm-timeline--on-dark::before {
-  background: linear-gradient(
-    180deg,
-    color-mix(in srgb, var(--color-hmm-yellow) 35%, transparent) 0%,
-    color-mix(in srgb, var(--color-hmm-white) 22%, transparent) 20%,
-    color-mix(in srgb, var(--color-hmm-maroon) 40%, transparent) 50%,
-    color-mix(in srgb, var(--color-hmm-white) 18%, transparent) 80%,
-    color-mix(in srgb, var(--color-hmm-yellow) 20%, transparent) 100%
-  );
+    background: linear-gradient(180deg,
+            color-mix(in srgb, var(--color-hmm-yellow) 35%, transparent) 0%,
+            color-mix(in srgb, var(--color-hmm-white) 22%, transparent) 20%,
+            color-mix(in srgb, var(--color-hmm-maroon) 40%, transparent) 50%,
+            color-mix(in srgb, var(--color-hmm-white) 18%, transparent) 80%,
+            color-mix(in srgb, var(--color-hmm-yellow) 20%, transparent) 100%);
 }
 
 /* Heritage: never set large type in maroon-on-navy — use light type + maroon accent rule */
 .hmm-external .hmm-heritage-stat-card {
-  border: 1px solid color-mix(in srgb, var(--color-hmm-white) 14%, transparent);
-  border-left: 3px solid var(--color-hmm-maroon);
-  border-radius: 0.75rem;
-  background: color-mix(in srgb, var(--color-hmm-white) 7%, var(--color-hmm-navy-deep));
-  box-shadow:
-    inset 0 1px 0 0 color-mix(in srgb, var(--color-hmm-yellow) 32%, transparent),
-    0 1px 0 color-mix(in srgb, var(--color-hmm-white) 8%, transparent),
-    0 14px 36px color-mix(in srgb, var(--color-hmm-black) 35%, transparent);
+    border: 1px solid color-mix(in srgb, var(--color-hmm-white) 14%, transparent);
+    border-left: 3px solid var(--color-hmm-maroon);
+    border-radius: 0.75rem;
+    background: color-mix(in srgb, var(--color-hmm-white) 7%, var(--color-hmm-navy-deep));
+    box-shadow:
+        inset 0 1px 0 0 color-mix(in srgb, var(--color-hmm-yellow) 32%, transparent),
+        0 1px 0 color-mix(in srgb, var(--color-hmm-white) 8%, transparent),
+        0 14px 36px color-mix(in srgb, var(--color-hmm-black) 35%, transparent);
 }
 
 .hmm-external .hmm-heritage-stat-num {
-  color: color-mix(in srgb, var(--color-hmm-cream) 96%, var(--color-hmm-white));
-  text-shadow: 0 1px 14px color-mix(in srgb, var(--color-hmm-black) 42%, transparent);
+    color: color-mix(in srgb, var(--color-hmm-cream) 96%, var(--color-hmm-white));
+    text-shadow: 0 1px 14px color-mix(in srgb, var(--color-hmm-black) 42%, transparent);
 }
 
 .hmm-external .hmm-heritage-year {
-  color: color-mix(in srgb, var(--color-hmm-cream) 94%, var(--color-hmm-white));
-  text-shadow: 0 1px 12px color-mix(in srgb, var(--color-hmm-black) 45%, transparent);
+    color: color-mix(in srgb, var(--color-hmm-cream) 94%, var(--color-hmm-white));
+    text-shadow: 0 1px 12px color-mix(in srgb, var(--color-hmm-black) 45%, transparent);
 }
 
 .hmm-external .hmm-heritage-body {
-  color: color-mix(in srgb, var(--color-hmm-cream) 88%, var(--color-hmm-white));
+    color: color-mix(in srgb, var(--color-hmm-cream) 88%, var(--color-hmm-white));
 }
 
 /* Sticky glass navbar (isolated) */
 .hmm-external .hmm-scroll-progress-track {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  z-index: 60;
-  background: color-mix(in srgb, var(--color-hmm-white) 10%, transparent);
-  pointer-events: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    z-index: 60;
+    background: color-mix(in srgb, var(--color-hmm-white) 10%, transparent);
+    pointer-events: none;
 }
 
 .hmm-external .hmm-scroll-progress-fill {
-  height: 100%;
-  width: 0;
-  min-width: 0;
-  background: linear-gradient(
-    90deg,
-    var(--color-hmm-yellow) 0%,
-    var(--color-hmm-maroon) 42%,
-    color-mix(in srgb, var(--color-hmm-navy-muted) 50%, var(--color-hmm-maroon)) 100%
-  );
-  transition: width 80ms linear;
+    height: 100%;
+    width: 0;
+    min-width: 0;
+    background: linear-gradient(90deg,
+            var(--color-hmm-yellow) 0%,
+            var(--color-hmm-maroon) 42%,
+            color-mix(in srgb, var(--color-hmm-navy-muted) 50%, var(--color-hmm-maroon)) 100%);
+    transition: width 80ms linear;
 }
 
 /* Tiga pilar: three white vertical bars (HMM / adidas-style motif) */
 .hmm-external .hmm-tiga-pilar-stripes {
-  display: inline-flex;
-  align-items: stretch;
-  gap: 0.32rem;
+    display: inline-flex;
+    align-items: stretch;
+    gap: 0.32rem;
 }
 
 .hmm-external .hmm-tiga-pilar-stripes__bar {
-  width: 0.22rem;
-  min-height: 2.5rem;
-  align-self: stretch;
-  border-radius: 0.125rem;
-  background: color-mix(in srgb, var(--color-hmm-white) 90%, transparent);
-  box-shadow: 0 0 0 1px color-mix(in srgb, var(--color-hmm-white) 12%, transparent);
+    width: 0.22rem;
+    min-height: 2.5rem;
+    align-self: stretch;
+    border-radius: 0.125rem;
+    background: color-mix(in srgb, var(--color-hmm-white) 90%, transparent);
+    box-shadow: 0 0 0 1px color-mix(in srgb, var(--color-hmm-white) 12%, transparent);
 }
 
 .hmm-external .hmm-tiga-pilar-stripes--sm .hmm-tiga-pilar-stripes__bar {
-  min-height: 2.25rem;
-  width: 0.2rem;
+    min-height: 2.25rem;
+    width: 0.2rem;
 }
 
 .hmm-external .hmm-tiga-pilar-stripes--lg .hmm-tiga-pilar-stripes__bar {
-  min-height: 3.25rem;
-  width: 0.26rem;
+    min-height: 3.25rem;
+    width: 0.26rem;
 }
 
 .hmm-external .hmm-nav-sticky {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 50;
-  border-bottom: 1px solid color-mix(in srgb, var(--color-hmm-white) 14%, transparent);
-  background: color-mix(in srgb, var(--color-hmm-navy-deep) 42%, transparent);
-  -webkit-backdrop-filter: blur(18px);
-  backdrop-filter: blur(18px);
-  transition:
-    background 0.22s ease,
-    border-color 0.22s ease,
-    box-shadow 0.22s ease;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    border-bottom: 1px solid color-mix(in srgb, var(--color-hmm-white) 14%, transparent);
+    background: color-mix(in srgb, var(--color-hmm-navy-deep) 42%, transparent);
+    -webkit-backdrop-filter: blur(18px);
+    backdrop-filter: blur(18px);
+    transition:
+        background 0.22s ease,
+        border-color 0.22s ease,
+        box-shadow 0.22s ease;
 }
 
-.hmm-external .hmm-nav-sticky[data-hmm-scrolled="true"] {
-  background: color-mix(in srgb, var(--color-hmm-navy-deep) 90%, transparent);
-  border-bottom-color: color-mix(in srgb, var(--color-hmm-white) 22%, transparent);
-  box-shadow: 0 10px 40px color-mix(in srgb, var(--color-hmm-black) 35%, transparent);
+.hmm-external .hmm-nav-sticky[data-hmm-scrolled='true'] {
+    background: color-mix(in srgb, var(--color-hmm-navy-deep) 90%, transparent);
+    border-bottom-color: color-mix(in srgb, var(--color-hmm-white) 22%, transparent);
+    box-shadow: 0 10px 40px color-mix(in srgb, var(--color-hmm-black) 35%, transparent);
 }
 
 .hmm-external .hmm-nav-inner {
-  display: flex;
-  max-width: 86rem;
-  margin-inline: auto;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.75rem;
-  padding: 0.65rem 1rem 0.75rem;
+    display: flex;
+    max-width: 86rem;
+    margin-inline: auto;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 0.65rem 1rem 0.75rem;
 }
 
 .hmm-external .hmm-nav-signin {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 2.35rem;
-  padding: 0.55rem 0.9rem;
-  border-radius: 0.35rem;
-  border: 1px solid color-mix(in srgb, var(--color-hmm-white) 22%, transparent);
-  background: color-mix(in srgb, var(--color-hmm-white) 6%, transparent);
-  color: color-mix(in srgb, var(--color-hmm-cream) 84%, var(--color-hmm-white));
-  text-decoration: none;
-  font-family: var(--hmm-font-sans);
-  font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  transition:
-    background-color 0.2s ease,
-    border-color 0.2s ease,
-    color 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 2.35rem;
+    padding: 0.55rem 0.9rem;
+    border-radius: 0.35rem;
+    border: 1px solid color-mix(in srgb, var(--color-hmm-white) 22%, transparent);
+    background: color-mix(in srgb, var(--color-hmm-white) 6%, transparent);
+    color: color-mix(in srgb, var(--color-hmm-cream) 84%, var(--color-hmm-white));
+    text-decoration: none;
+    font-family: var(--hmm-font-sans);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease;
 }
 
 .hmm-external .hmm-nav-signin:hover {
-  border-color: color-mix(in srgb, var(--color-hmm-white) 32%, transparent);
-  background: color-mix(in srgb, var(--color-hmm-white) 10%, transparent);
-  color: var(--color-hmm-white);
+    border-color: color-mix(in srgb, var(--color-hmm-white) 32%, transparent);
+    background: color-mix(in srgb, var(--color-hmm-white) 10%, transparent);
+    color: var(--color-hmm-white);
 }
 
 .hmm-external .hmm-nav-signin:focus-visible {
-  outline: 2px solid color-mix(in srgb, var(--color-hmm-yellow) 35%, var(--color-hmm-cream));
-  outline-offset: 2px;
+    outline: 2px solid color-mix(in srgb, var(--color-hmm-yellow) 35%, var(--color-hmm-cream));
+    outline-offset: 2px;
 }
 
 .hmm-external .hmm-nav-desktop {
-  display: flex;
-  justify-content: center;
+    display: flex;
+    justify-content: center;
 }
 
 .hmm-external .hmm-nav-desktop--centered {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  pointer-events: none;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    pointer-events: none;
 }
 
-.hmm-external .hmm-nav-desktop--centered > ul {
-  pointer-events: auto;
+.hmm-external .hmm-nav-desktop--centered>ul {
+    pointer-events: auto;
 }
 
 .hmm-external .hmm-nav-desktop-link {
-  color: color-mix(in srgb, var(--color-hmm-cream) 72%, var(--color-hmm-white));
-  border-bottom: 2px solid transparent;
+    color: color-mix(in srgb, var(--color-hmm-cream) 72%, var(--color-hmm-white));
+    border-bottom: 2px solid transparent;
 }
 
 .hmm-external .hmm-nav-desktop-link:hover {
-  color: var(--color-hmm-white);
-  border-bottom-color: color-mix(in srgb, var(--color-hmm-yellow) 78%, var(--color-hmm-cream));
+    color: var(--color-hmm-white);
+    border-bottom-color: color-mix(in srgb, var(--color-hmm-yellow) 78%, var(--color-hmm-cream));
 }
 
 .hmm-external .hmm-nav-mobile-toggle {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 2.4rem;
-  min-width: 3.25rem;
-  border-radius: 0.35rem;
-  border: 1px solid color-mix(in srgb, var(--color-hmm-white) 20%, transparent);
-  background: color-mix(in srgb, var(--color-hmm-white) 8%, transparent);
-  color: var(--color-hmm-white);
-  transition:
-    background-color 0.2s ease,
-    border-color 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 2.4rem;
+    min-width: 3.25rem;
+    border-radius: 0.35rem;
+    border: 1px solid color-mix(in srgb, var(--color-hmm-white) 20%, transparent);
+    background: color-mix(in srgb, var(--color-hmm-white) 8%, transparent);
+    color: var(--color-hmm-white);
+    transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease;
 }
 
 .hmm-external .hmm-nav-mobile-toggle:hover {
-  border-color: color-mix(in srgb, var(--color-hmm-white) 34%, transparent);
-  background: color-mix(in srgb, var(--color-hmm-white) 14%, transparent);
+    border-color: color-mix(in srgb, var(--color-hmm-white) 34%, transparent);
+    background: color-mix(in srgb, var(--color-hmm-white) 14%, transparent);
 }
 
 .hmm-external .hmm-nav-mobile-toggle:focus-visible {
-  outline: 2px solid color-mix(in srgb, var(--color-hmm-yellow) 55%, var(--color-hmm-cream));
-  outline-offset: 2px;
+    outline: 2px solid color-mix(in srgb, var(--color-hmm-yellow) 55%, var(--color-hmm-cream));
+    outline-offset: 2px;
 }
 
 .hmm-external .hmm-nav-mobile-icon {
-  position: relative;
-  display: inline-block;
-  width: 1.2rem;
-  height: 1.2rem;
+    position: relative;
+    display: inline-block;
+    width: 1.2rem;
+    height: 1.2rem;
 }
 
 .hmm-external .hmm-nav-mobile-icon__line {
-  position: absolute;
-  left: 0;
-  top: 50%;
-  width: 100%;
-  height: 2px;
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--color-hmm-white) 95%, transparent);
-  transition:
-    transform 0.2s ease,
-    opacity 0.2s ease;
-  transform-origin: center;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 100%;
+    height: 2px;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--color-hmm-white) 95%, transparent);
+    transition:
+        transform 0.2s ease,
+        opacity 0.2s ease;
+    transform-origin: center;
 }
 
 .hmm-external .hmm-nav-mobile-icon__line:nth-child(1) {
-  transform: translateY(-5px);
+    transform: translateY(-5px);
 }
 
 .hmm-external .hmm-nav-mobile-icon__line:nth-child(2) {
-  transform: translateY(0);
+    transform: translateY(0);
 }
 
 .hmm-external .hmm-nav-mobile-icon__line:nth-child(3) {
-  transform: translateY(5px);
+    transform: translateY(5px);
 }
 
-.hmm-external .hmm-nav-mobile-toggle[data-hmm-open="true"] .hmm-nav-mobile-icon__line:nth-child(1) {
-  transform: translateY(0) rotate(45deg);
+.hmm-external .hmm-nav-mobile-toggle[data-hmm-open='true'] .hmm-nav-mobile-icon__line:nth-child(1) {
+    transform: translateY(0) rotate(45deg);
 }
 
-.hmm-external .hmm-nav-mobile-toggle[data-hmm-open="true"] .hmm-nav-mobile-icon__line:nth-child(2) {
-  opacity: 0;
+.hmm-external .hmm-nav-mobile-toggle[data-hmm-open='true'] .hmm-nav-mobile-icon__line:nth-child(2) {
+    opacity: 0;
 }
 
-.hmm-external .hmm-nav-mobile-toggle[data-hmm-open="true"] .hmm-nav-mobile-icon__line:nth-child(3) {
-  transform: translateY(0) rotate(-45deg);
+.hmm-external .hmm-nav-mobile-toggle[data-hmm-open='true'] .hmm-nav-mobile-icon__line:nth-child(3) {
+    transform: translateY(0) rotate(-45deg);
 }
 
 .hmm-external .hmm-nav-mobile-link {
-  border-radius: 0.25rem;
-  border: 1px solid transparent;
-  background: transparent;
-  transition:
-    border-color 0.2s ease,
-    background-color 0.2s ease,
-    color 0.2s ease;
+    border-radius: 0.25rem;
+    border: 1px solid transparent;
+    background: transparent;
+    transition:
+        border-color 0.2s ease,
+        background-color 0.2s ease,
+        color 0.2s ease;
 }
 
 .hmm-external .hmm-nav-mobile-link:hover {
-  border-color: color-mix(in srgb, var(--color-hmm-white) 22%, transparent);
-  background: color-mix(in srgb, var(--color-hmm-white) 8%, transparent);
-  color: var(--color-hmm-white);
+    border-color: color-mix(in srgb, var(--color-hmm-white) 22%, transparent);
+    background: color-mix(in srgb, var(--color-hmm-white) 8%, transparent);
+    color: var(--color-hmm-white);
 }
 
 .hmm-external .hmm-nav-mobile-link.hmm-nav-link--active {
-  background: transparent !important;
-  border-color: color-mix(in srgb, var(--color-hmm-yellow) 44%, transparent) !important;
-  color: color-mix(in srgb, var(--color-hmm-cream) 96%, var(--color-hmm-white)) !important;
+    background: transparent !important;
+    border-color: color-mix(in srgb, var(--color-hmm-yellow) 44%, transparent) !important;
+    color: color-mix(in srgb, var(--color-hmm-cream) 96%, var(--color-hmm-white)) !important;
 }
 
 .hmm-external .hmm-nav-mobile {
-  margin-inline: auto;
-  max-width: 86rem;
-  padding: 0 1rem 0.85rem;
-  overflow: hidden;
-  transition:
-    max-height 0.25s ease,
-    opacity 0.2s ease;
+    margin-inline: auto;
+    max-width: 86rem;
+    padding: 0 1rem 0.85rem;
+    overflow: hidden;
+    transition:
+        max-height 0.25s ease,
+        opacity 0.2s ease;
 }
 
 .hmm-external .hmm-nav-mobile--closed {
-  max-height: 0;
-  opacity: 0;
-  padding-bottom: 0;
+    max-height: 0;
+    opacity: 0;
+    padding-bottom: 0;
 }
 
 .hmm-external .hmm-nav-mobile--open {
-  max-height: 26rem;
-  opacity: 1;
+    max-height: 26rem;
+    opacity: 1;
 }
 
 @media (min-width: 640px) {
-  .hmm-external .hmm-nav-inner {
-    padding: 0.75rem 1.5rem 0.85rem;
-  }
+    .hmm-external .hmm-nav-inner {
+        padding: 0.75rem 1.5rem 0.85rem;
+    }
 
-  .hmm-external .hmm-nav-mobile {
-    padding-inline: 1.5rem;
-  }
+    .hmm-external .hmm-nav-mobile {
+        padding-inline: 1.5rem;
+    }
 }
 
 @media (max-width: 767px) {
-  .hmm-external .hmm-nav-mobile-toggle {
-    display: inline-flex;
-  }
+    .hmm-external .hmm-nav-mobile-toggle {
+        display: inline-flex;
+    }
 }
 
 @media (min-width: 768px) {
-  .hmm-external .hmm-nav-inner {
-    justify-content: flex-start;
-  }
+    .hmm-external .hmm-nav-inner {
+        justify-content: flex-start;
+    }
 
-  .hmm-external .hmm-nav-mobile-toggle,
-  .hmm-external .hmm-nav-mobile {
-    display: none !important;
-  }
+    .hmm-external .hmm-nav-mobile-toggle,
+    .hmm-external .hmm-nav-mobile {
+        display: none !important;
+    }
 }
 
 .hmm-external .hmm-title {
-  font-family: var(--hmm-font-title);
+    font-family: var(--hmm-font-title);
 }
 
 .hmm-external .hmm-sans {
-  font-family: var(--hmm-font-sans);
+    font-family: var(--hmm-font-sans);
 }
 
 .hmm-external .hmm-title-scale-lg {
-  font-size: clamp(2.75rem, 10vw, 6.25rem);
-  line-height: 0.95;
-  letter-spacing: 0.02em;
+    font-size: clamp(2.75rem, 10vw, 6.25rem);
+    line-height: 0.95;
+    letter-spacing: 0.02em;
 }
 
 .hmm-external .hmm-subtitle-scale-lg {
-  font-size: clamp(2.1rem, 8.3vw, 5.21rem);
-  line-height: 1;
+    font-size: clamp(2.1rem, 8.3vw, 5.21rem);
+    line-height: 1;
 }
 
 .hmm-external .hmm-title-scale-md {
-  font-size: clamp(2rem, 6vw, 3.75rem);
-  line-height: 1;
+    font-size: clamp(2rem, 6vw, 3.75rem);
+    line-height: 1;
 }
 
 .hmm-external .hmm-subtitle-scale-md {
-  font-size: clamp(1.67rem, 5vw, 3.125rem);
-  line-height: 1.05;
+    font-size: clamp(1.67rem, 5vw, 3.125rem);
+    line-height: 1.05;
 }
 
 .hmm-external .hmm-solid-border {
-  border: 1px solid var(--color-hmm-navy);
+    border: 1px solid var(--color-hmm-navy);
 }
 
 .hmm-external .hmm-solid-border-thick {
-  border: 2px solid var(--color-hmm-navy);
+    border: 2px solid var(--color-hmm-navy);
 }
 
 /* Type system (hmm-prefixed) */
 .hmm-external .hmm-type-display {
-  font-family: var(--hmm-font-title);
-  font-size: clamp(2.5rem, 8vw, 5rem);
-  line-height: 0.98;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+    font-family: var(--hmm-font-title);
+    font-size: clamp(2.5rem, 8vw, 5rem);
+    line-height: 0.98;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
 }
 
 .hmm-external .hmm-type-display-reg {
-  font-family: var(--hmm-font-title);
-  font-weight: 400;
-  letter-spacing: 0.06em;
+    font-family: var(--hmm-font-title);
+    font-weight: 400;
+    letter-spacing: 0.06em;
 }
 
 .hmm-external .hmm-type-section {
-  font-family: var(--hmm-font-title);
-  font-size: clamp(2rem, 4.5vw, 3.25rem);
-  line-height: 1.05;
-  font-weight: 700;
-  letter-spacing: 0.02em;
+    font-family: var(--hmm-font-title);
+    font-size: clamp(2rem, 4.5vw, 3.25rem);
+    line-height: 1.05;
+    font-weight: 700;
+    letter-spacing: 0.02em;
 }
 
 .hmm-external .hmm-type-subsection {
-  font-family: var(--hmm-font-title);
-  font-size: clamp(1.35rem, 2.6vw, 1.75rem);
-  line-height: 1.2;
-  font-weight: 700;
-  letter-spacing: 0.03em;
+    font-family: var(--hmm-font-title);
+    font-size: clamp(1.35rem, 2.6vw, 1.75rem);
+    line-height: 1.2;
+    font-weight: 700;
+    letter-spacing: 0.03em;
 }
 
 .hmm-external .hmm-type-eyebrow {
-  font-family: var(--hmm-font-sans);
-  font-size: clamp(0.75rem, 1.1vw, 0.875rem);
-  font-weight: 600;
-  letter-spacing: 0.24em;
-  text-transform: uppercase;
+    font-family: var(--hmm-font-sans);
+    font-size: clamp(0.75rem, 1.1vw, 0.875rem);
+    font-weight: 600;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
 }
 
 .hmm-external .hmm-eyebrow-rule {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
 }
 
 .hmm-external .hmm-eyebrow-rule::before {
-  content: "";
-  width: 2.5rem;
-  height: 2px;
-  flex-shrink: 0;
-  background: linear-gradient(
-    90deg,
-    var(--color-hmm-yellow) 0%,
-    var(--color-hmm-maroon) 100%
-  );
+    content: '';
+    width: 2.5rem;
+    height: 2px;
+    flex-shrink: 0;
+    background: linear-gradient(90deg, var(--color-hmm-yellow) 0%, var(--color-hmm-maroon) 100%);
 }
 
 /* Softer but still on-brand: yellow cap → maroon → muted */
 .hmm-external .hmm-eyebrow-rule--cool::before {
-  background: linear-gradient(
-    90deg,
-    var(--color-hmm-yellow) 0%,
-    var(--color-hmm-maroon) 45%,
-    color-mix(in srgb, var(--color-hmm-navy-muted) 40%, var(--color-hmm-maroon)) 100%
-  );
+    background: linear-gradient(90deg,
+            var(--color-hmm-yellow) 0%,
+            var(--color-hmm-maroon) 45%,
+            color-mix(in srgb, var(--color-hmm-navy-muted) 40%, var(--color-hmm-maroon)) 100%);
 }
 
 .hmm-external .hmm-type-punch {
-  font-family: var(--hmm-font-sans);
-  font-size: clamp(1.35rem, 2.8vw, 1.75rem);
-  line-height: 1.2;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  text-wrap: balance;
+    font-family: var(--hmm-font-sans);
+    font-size: clamp(1.35rem, 2.8vw, 1.75rem);
+    line-height: 1.2;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-wrap: balance;
 }
 
 .hmm-external .hmm-type-lede {
-  font-family: var(--hmm-font-sans);
-  font-size: clamp(1.05rem, 2vw, 1.25rem);
-  line-height: 1.55;
-  max-width: 45ch;
-  font-weight: 500;
+    font-family: var(--hmm-font-sans);
+    font-size: clamp(1.05rem, 2vw, 1.25rem);
+    line-height: 1.55;
+    max-width: 45ch;
+    font-weight: 500;
 }
 
 .hmm-external .hmm-type-body {
-  font-family: var(--hmm-font-sans);
-  font-size: 1rem;
-  line-height: 1.7;
-  max-width: 65ch;
+    font-family: var(--hmm-font-sans);
+    font-size: 1rem;
+    line-height: 1.7;
+    max-width: 65ch;
 }
 
 .hmm-external .hmm-type-prose {
-  font-family: var(--hmm-font-sans);
-  font-size: 0.95rem;
-  line-height: 1.8;
-  max-width: 72ch;
+    font-family: var(--hmm-font-sans);
+    font-size: 0.95rem;
+    line-height: 1.8;
+    max-width: 72ch;
 }
 
 .hmm-external .hmm-pair-6-5 {
-  --hmm-pair-a: clamp(2.4rem, 6vw, 3.75rem);
-  --hmm-pair-b: calc(var(--hmm-pair-a) * 5 / 6);
+    --hmm-pair-a: clamp(2.4rem, 6vw, 3.75rem);
+    --hmm-pair-b: calc(var(--hmm-pair-a) * 5 / 6);
 }
 
 .hmm-external .hmm-pair-6-5 .hmm-pair-title {
-  font-family: var(--hmm-font-title);
-  font-size: var(--hmm-pair-a);
-  line-height: 1.02;
-  font-weight: 700;
+    font-family: var(--hmm-font-title);
+    font-size: var(--hmm-pair-a);
+    line-height: 1.02;
+    font-weight: 700;
 }
 
 .hmm-external .hmm-pair-6-5 .hmm-pair-sub {
-  font-family: var(--hmm-font-sans);
-  font-size: var(--hmm-pair-b);
-  line-height: 1.1;
-  font-weight: 600;
-  letter-spacing: 0.02em;
+    font-family: var(--hmm-font-sans);
+    font-size: var(--hmm-pair-b);
+    line-height: 1.1;
+    font-weight: 600;
+    letter-spacing: 0.02em;
 }
 
 /* Chapter shells */
 .hmm-external .hmm-chapter-dark {
-  color: var(--color-hmm-cream);
-  background-color: var(--color-hmm-navy-deep);
+    color: var(--color-hmm-cream);
+    background-color: var(--color-hmm-navy-deep);
 }
 
 .hmm-external .hmm-chapter-dark .hmm-type-eyebrow {
-  color: color-mix(in srgb, var(--color-hmm-cream) 70%, var(--color-hmm-white));
+    color: color-mix(in srgb, var(--color-hmm-cream) 70%, var(--color-hmm-white));
 }
 
 .hmm-external .hmm-chapter-light {
-  color: var(--color-hmm-navy);
-  /* Cool neutral, no warm beige */
-  background: linear-gradient(
-    180deg,
-    var(--color-hmm-white) 0%,
-    color-mix(in srgb, var(--color-hmm-navy) 3%, var(--color-hmm-white)) 50%,
-    var(--color-hmm-white) 100%
-  );
+    color: var(--color-hmm-navy);
+    /* Cool neutral, no warm beige */
+    background: linear-gradient(180deg,
+            var(--color-hmm-white) 0%,
+            color-mix(in srgb, var(--color-hmm-navy) 3%, var(--color-hmm-white)) 50%,
+            var(--color-hmm-white) 100%);
 }
 
 .hmm-external .hmm-chapter-light-frame {
-  position: relative;
-  border-top: 1px solid color-mix(in srgb, var(--color-hmm-navy) 18%, transparent);
-  border-bottom: 1px solid color-mix(in srgb, var(--color-hmm-navy) 18%, transparent);
-  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-hmm-navy) 6%, transparent);
+    position: relative;
+    border-top: 1px solid color-mix(in srgb, var(--color-hmm-navy) 18%, transparent);
+    border-bottom: 1px solid color-mix(in srgb, var(--color-hmm-navy) 18%, transparent);
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-hmm-navy) 6%, transparent);
 }
 
 .hmm-external .hmm-grad-hero-burst {
-  background: linear-gradient(
-    130deg,
-    var(--color-hmm-navy-deep) 0%,
-    color-mix(in srgb, var(--color-hmm-navy) 55%, var(--color-hmm-navy-deep)) 40%,
-    var(--color-hmm-navy-deep) 100%
-  );
+    background: linear-gradient(130deg,
+            var(--color-hmm-navy-deep) 0%,
+            color-mix(in srgb, var(--color-hmm-navy) 55%, var(--color-hmm-navy-deep)) 40%,
+            var(--color-hmm-navy-deep) 100%);
 }
 
 .hmm-external .hmm-grad-society {
-  background: linear-gradient(
-    90deg,
-    color-mix(in srgb, var(--color-hmm-navy-deep) 72%, transparent) 0%,
-    color-mix(in srgb, var(--color-hmm-navy-deep) 22%, transparent) 55%,
-    color-mix(in srgb, var(--color-hmm-navy) 12%, transparent) 100%
-  );
+    background: linear-gradient(90deg,
+            color-mix(in srgb, var(--color-hmm-navy-deep) 72%, transparent) 0%,
+            color-mix(in srgb, var(--color-hmm-navy-deep) 22%, transparent) 55%,
+            color-mix(in srgb, var(--color-hmm-navy) 12%, transparent) 100%);
 }
 
 .hmm-external .hmm-grad-solidarity {
-  background: linear-gradient(
-    195deg,
-    color-mix(in srgb, var(--color-hmm-navy-deep) 58%, transparent) 0%,
-    color-mix(in srgb, var(--color-hmm-maroon) 24%, transparent) 45%,
-    color-mix(in srgb, var(--color-hmm-navy-deep) 55%, transparent) 100%
-  );
+    background: linear-gradient(195deg,
+            color-mix(in srgb, var(--color-hmm-navy-deep) 58%, transparent) 0%,
+            color-mix(in srgb, var(--color-hmm-maroon) 24%, transparent) 45%,
+            color-mix(in srgb, var(--color-hmm-navy-deep) 55%, transparent) 100%);
 }
 
 /* TL;DR + cards */
 .hmm-external .hmm-tldr {
-  border-left: 3px solid var(--color-hmm-yellow);
-  background: color-mix(in srgb, var(--color-hmm-navy-deep) 55%, transparent);
-  padding: 1rem 1.25rem;
-  border-radius: 0 0.375rem 0.375rem 0;
-  box-shadow: 0 12px 40px color-mix(in srgb, var(--color-hmm-black) 25%, transparent);
+    border-left: 3px solid var(--color-hmm-yellow);
+    background: color-mix(in srgb, var(--color-hmm-navy-deep) 55%, transparent);
+    padding: 1rem 1.25rem;
+    border-radius: 0 0.375rem 0.375rem 0;
+    box-shadow: 0 12px 40px color-mix(in srgb, var(--color-hmm-black) 25%, transparent);
 }
 
 .hmm-external .hmm-ink-card {
-  border: 1px solid color-mix(in srgb, var(--color-hmm-white) 12%, transparent);
-  background: color-mix(in srgb, var(--color-hmm-navy-deep) 40%, transparent);
-  border-radius: 0.5rem;
-  padding: 1.25rem 1.35rem;
-  transition:
-    border-color 0.22s ease,
-    background 0.22s ease,
-    transform 0.22s ease;
+    border: 1px solid color-mix(in srgb, var(--color-hmm-white) 12%, transparent);
+    background: color-mix(in srgb, var(--color-hmm-navy-deep) 40%, transparent);
+    border-radius: 0.5rem;
+    padding: 1.25rem 1.35rem;
+    transition:
+        border-color 0.22s ease,
+        background 0.22s ease,
+        transform 0.22s ease;
 }
 
 .hmm-external .hmm-ink-card:hover {
-  border-color: color-mix(in srgb, var(--color-hmm-yellow) 30%, var(--color-hmm-maroon) 55%);
-  background: color-mix(in srgb, var(--color-hmm-navy-deep) 50%, transparent);
-  transform: translateY(-1px);
+    border-color: color-mix(in srgb, var(--color-hmm-yellow) 30%, var(--color-hmm-maroon) 55%);
+    background: color-mix(in srgb, var(--color-hmm-navy-deep) 50%, transparent);
+    transform: translateY(-1px);
 }
 
 .hmm-external .hmm-misi-card {
-  border: 1px solid color-mix(in srgb, var(--color-hmm-white) 16%, transparent);
-  border-left: 3px solid var(--color-hmm-maroon);
-  border-radius: 0.75rem;
-  background: color-mix(in srgb, var(--color-hmm-white) 6%, var(--color-hmm-navy-deep));
-  box-shadow:
-    inset 0 1px 0 0 color-mix(in srgb, var(--color-hmm-yellow) 32%, transparent),
-    0 1px 0 color-mix(in srgb, var(--color-hmm-white) 8%, transparent),
-    0 14px 36px color-mix(in srgb, var(--color-hmm-black) 38%, transparent);
-  padding: 1.1rem 1.25rem;
-  transition:
-    border-color 0.22s ease,
-    background 0.22s ease,
-    transform 0.22s ease,
-    box-shadow 0.22s ease;
+    border: 1px solid color-mix(in srgb, var(--color-hmm-white) 16%, transparent);
+    border-left: 3px solid var(--color-hmm-maroon);
+    border-radius: 0.75rem;
+    background: color-mix(in srgb, var(--color-hmm-white) 6%, var(--color-hmm-navy-deep));
+    box-shadow:
+        inset 0 1px 0 0 color-mix(in srgb, var(--color-hmm-yellow) 32%, transparent),
+        0 1px 0 color-mix(in srgb, var(--color-hmm-white) 8%, transparent),
+        0 14px 36px color-mix(in srgb, var(--color-hmm-black) 38%, transparent);
+    padding: 1.1rem 1.25rem;
+    transition:
+        border-color 0.22s ease,
+        background 0.22s ease,
+        transform 0.22s ease,
+        box-shadow 0.22s ease;
 }
 
 .hmm-external .hmm-misi-card:hover {
-  border-color: color-mix(in srgb, var(--color-hmm-yellow) 24%, var(--color-hmm-maroon));
-  background: color-mix(in srgb, var(--color-hmm-white) 9%, var(--color-hmm-navy-deep));
-  transform: scale(1.02);
-  box-shadow:
-    inset 0 1px 0 0 color-mix(in srgb, var(--color-hmm-yellow) 45%, transparent),
-    0 1px 0 color-mix(in srgb, var(--color-hmm-white) 12%, transparent),
-    0 18px 44px color-mix(in srgb, var(--color-hmm-black) 42%, transparent);
+    border-color: color-mix(in srgb, var(--color-hmm-yellow) 24%, var(--color-hmm-maroon));
+    background: color-mix(in srgb, var(--color-hmm-white) 9%, var(--color-hmm-navy-deep));
+    transform: scale(1.02);
+    box-shadow:
+        inset 0 1px 0 0 color-mix(in srgb, var(--color-hmm-yellow) 45%, transparent),
+        0 1px 0 color-mix(in srgb, var(--color-hmm-white) 12%, transparent),
+        0 18px 44px color-mix(in srgb, var(--color-hmm-black) 42%, transparent);
 }
 
 /* Index + icon: must not use low-contrast maroon on dark; titles use .hmm-misi-card__index */
 .hmm-external .hmm-misi-card__index {
-  color: color-mix(in srgb, var(--color-hmm-cream) 92%, var(--color-hmm-white));
-  text-shadow:
-    0 0 20px color-mix(in srgb, var(--color-hmm-yellow) 16%, transparent),
-    0 1px 12px color-mix(in srgb, var(--color-hmm-black) 45%, transparent);
+    color: color-mix(in srgb, var(--color-hmm-cream) 92%, var(--color-hmm-white));
+    text-shadow:
+        0 0 20px color-mix(in srgb, var(--color-hmm-yellow) 16%, transparent),
+        0 1px 12px color-mix(in srgb, var(--color-hmm-black) 45%, transparent);
 }
 
 .hmm-external .hmm-misi-card__icon {
-  color: color-mix(in srgb, var(--color-hmm-cream) 88%, var(--color-hmm-white));
-  filter: drop-shadow(0 1px 2px color-mix(in srgb, var(--color-hmm-black) 55%, transparent));
+    color: color-mix(in srgb, var(--color-hmm-cream) 88%, var(--color-hmm-white));
+    filter: drop-shadow(0 1px 2px color-mix(in srgb, var(--color-hmm-black) 55%, transparent));
 }
 
 .hmm-external .hmm-misi-card__details {
-  border-top: 1px solid color-mix(in srgb, var(--color-hmm-white) 16%, transparent);
-  margin-top: 0.75rem;
-  padding-top: 0.85rem;
+    border-top: 1px solid color-mix(in srgb, var(--color-hmm-white) 16%, transparent);
+    margin-top: 0.75rem;
+    padding-top: 0.85rem;
 }
 
 .hmm-external .hmm-misi-card__summary {
-  font-size: 0.7rem;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: color-mix(in srgb, var(--color-hmm-cream) 80%, var(--color-hmm-white));
+    font-size: 0.7rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: color-mix(in srgb, var(--color-hmm-cream) 80%, var(--color-hmm-white));
 }
 
 .hmm-external .hmm-misi-card__details[open] .hmm-misi-card__summary {
-  color: var(--color-hmm-white);
+    color: var(--color-hmm-white);
 }
 
 .hmm-external .hmm-misi-card__summary:hover {
-  color: var(--color-hmm-white);
+    color: var(--color-hmm-white);
 }
 
 .hmm-external .hmm-misi-card__summary:focus-visible {
-  outline: 2px solid color-mix(in srgb, var(--color-hmm-yellow) 40%, var(--color-hmm-cream));
-  outline-offset: 2px;
-  border-radius: 0.125rem;
+    outline: 2px solid color-mix(in srgb, var(--color-hmm-yellow) 40%, var(--color-hmm-cream));
+    outline-offset: 2px;
+    border-radius: 0.125rem;
 }
 
 @media (min-width: 640px) {
-  .hmm-external .hmm-misi-card__summary {
-    font-size: 0.72rem;
-  }
+    .hmm-external .hmm-misi-card__summary {
+        font-size: 0.72rem;
+    }
 }
 
 /* CTA buttons */
 .hmm-external .hmm-btn-cta {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  padding: 0.65rem 1.1rem;
-  font-family: var(--hmm-font-sans);
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  border-radius: 0.25rem;
-  text-decoration: none;
-  transition:
-    background 0.2s ease,
-    color 0.2s ease,
-    border-color 0.2s ease,
-    opacity 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.65rem 1.1rem;
+    font-family: var(--hmm-font-sans);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    border-radius: 0.25rem;
+    text-decoration: none;
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease,
+        opacity 0.2s ease;
 }
 
 .hmm-external .hmm-btn-cta--primary {
-  background: var(--color-hmm-yellow);
-  color: var(--color-hmm-navy-deep);
-  border: 1px solid color-mix(in srgb, var(--color-hmm-yellow-acid) 35%, var(--color-hmm-yellow));
-  box-shadow: 0 4px 22px color-mix(in srgb, var(--color-hmm-black) 38%, transparent);
+    background: var(--color-hmm-yellow);
+    color: var(--color-hmm-navy-deep);
+    border: 1px solid color-mix(in srgb, var(--color-hmm-yellow-acid) 35%, var(--color-hmm-yellow));
+    box-shadow: 0 4px 22px color-mix(in srgb, var(--color-hmm-black) 38%, transparent);
 }
 
 .hmm-external .hmm-btn-cta--primary:hover {
-  background: color-mix(in srgb, var(--color-hmm-white) 14%, var(--color-hmm-yellow));
-  color: var(--color-hmm-navy-deep);
+    background: color-mix(in srgb, var(--color-hmm-white) 14%, var(--color-hmm-yellow));
+    color: var(--color-hmm-navy-deep);
 }
 
 .hmm-external .hmm-btn-cta--secondary {
-  background: transparent;
-  color: var(--color-hmm-cream);
-  border: 1px solid color-mix(in srgb, var(--color-hmm-cream) 45%, transparent);
+    background: transparent;
+    color: var(--color-hmm-cream);
+    border: 1px solid color-mix(in srgb, var(--color-hmm-cream) 45%, transparent);
 }
 
 .hmm-external .hmm-btn-cta--secondary:hover {
-  background: color-mix(in srgb, var(--color-hmm-white) 8%, transparent);
-  border-color: color-mix(in srgb, var(--color-hmm-yellow) 40%, var(--color-hmm-cream) 50%);
+    background: color-mix(in srgb, var(--color-hmm-white) 8%, transparent);
+    border-color: color-mix(in srgb, var(--color-hmm-yellow) 40%, var(--color-hmm-cream) 50%);
 }
 
 .hmm-external .hmm-nav-link--active {
-  color: color-mix(in srgb, var(--color-hmm-yellow) 45%, var(--color-hmm-cream)) !important;
-  background: transparent !important;
-  border-bottom-color: transparent !important;
+    color: color-mix(in srgb, var(--color-hmm-yellow) 45%, var(--color-hmm-cream)) !important;
+    background: transparent !important;
+    border-bottom-color: transparent !important;
 }
 
 .hmm-external .hmm-nav-desktop-link.hmm-nav-link--active:hover {
-  border-bottom-color: color-mix(in srgb, var(--color-hmm-yellow) 88%, var(--color-hmm-cream)) !important;
+    border-bottom-color: color-mix(in srgb,
+            var(--color-hmm-yellow) 88%,
+            var(--color-hmm-cream)) !important;
 }
 
 .hmm-external .hmm-about-hero-overlay {
-  background: linear-gradient(
-    160deg,
-    color-mix(in srgb, var(--color-hmm-navy-deep) 88%, transparent) 0%,
-    color-mix(in srgb, var(--color-hmm-navy-deep) 62%, transparent) 45%,
-    color-mix(in srgb, var(--color-hmm-maroon) 38%, transparent) 100%
-  );
+    background: linear-gradient(160deg,
+            color-mix(in srgb, var(--color-hmm-navy-deep) 88%, transparent) 0%,
+            color-mix(in srgb, var(--color-hmm-navy-deep) 62%, transparent) 45%,
+            color-mix(in srgb, var(--color-hmm-maroon) 38%, transparent) 100%);
 }
 
 .hmm-external .hmm-about-hero-vignette {
-  background: radial-gradient(
-    ellipse 90% 70% at 50% 35%,
-    color-mix(in srgb, var(--color-hmm-navy-deep) 5%, transparent) 0%,
-    color-mix(in srgb, var(--color-hmm-navy-deep) 62%, transparent) 100%
-  );
+    background: radial-gradient(ellipse 90% 70% at 50% 35%,
+            color-mix(in srgb, var(--color-hmm-navy-deep) 5%, transparent) 0%,
+            color-mix(in srgb, var(--color-hmm-navy-deep) 62%, transparent) 100%);
 }
 
 .hmm-external .hmm-about-organogram-bg {
-  background-image:
-    radial-gradient(ellipse 90% 65% at 0% 5%, color-mix(in srgb, var(--color-hmm-navy-muted) 24%, transparent), transparent 55%),
-    radial-gradient(ellipse 60% 45% at 100% 100%, color-mix(in srgb, var(--color-hmm-maroon) 20%, transparent), transparent 62%);
-  opacity: 0.85;
-  pointer-events: none;
+    background-image:
+        radial-gradient(ellipse 90% 65% at 0% 5%,
+            color-mix(in srgb, var(--color-hmm-navy-muted) 24%, transparent),
+            transparent 55%),
+        radial-gradient(ellipse 60% 45% at 100% 100%,
+            color-mix(in srgb, var(--color-hmm-maroon) 20%, transparent),
+            transparent 62%);
+    opacity: 0.85;
+    pointer-events: none;
 }
 
 .hmm-external .hmm-about-logo-meaning {
-  position: relative;
-  isolation: isolate;
-  overflow: hidden;
-  background:
-    radial-gradient(
-      ellipse 80% 65% at 100% 0%,
-      color-mix(in srgb, var(--color-hmm-yellow) 8%, transparent),
-      transparent 58%
-    ),
-    radial-gradient(
-      ellipse 75% 65% at 0% 100%,
-      color-mix(in srgb, var(--color-hmm-navy-muted) 28%, transparent),
-      transparent 60%
-    ),
-    linear-gradient(
-      165deg,
-      color-mix(in srgb, var(--color-hmm-navy-deep) 92%, var(--color-hmm-navy)) 0%,
-      color-mix(in srgb, var(--color-hmm-navy) 70%, var(--color-hmm-navy-deep)) 52%,
-      color-mix(in srgb, var(--color-hmm-maroon) 20%, var(--color-hmm-navy-deep)) 100%
-    );
-  border-top: 1px solid color-mix(in srgb, var(--color-hmm-white) 10%, transparent);
-  border-bottom: 1px solid color-mix(in srgb, var(--color-hmm-white) 12%, transparent);
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    background:
+        radial-gradient(ellipse 80% 65% at 100% 0%,
+            color-mix(in srgb, var(--color-hmm-yellow) 8%, transparent),
+            transparent 58%),
+        radial-gradient(ellipse 75% 65% at 0% 100%,
+            color-mix(in srgb, var(--color-hmm-navy-muted) 28%, transparent),
+            transparent 60%),
+        linear-gradient(165deg,
+            color-mix(in srgb, var(--color-hmm-navy-deep) 92%, var(--color-hmm-navy)) 0%,
+            color-mix(in srgb, var(--color-hmm-navy) 70%, var(--color-hmm-navy-deep)) 52%,
+            color-mix(in srgb, var(--color-hmm-maroon) 20%, var(--color-hmm-navy-deep)) 100%);
+    border-top: 1px solid color-mix(in srgb, var(--color-hmm-white) 10%, transparent);
+    border-bottom: 1px solid color-mix(in srgb, var(--color-hmm-white) 12%, transparent);
 }
 
 .hmm-external .hmm-about-logo-meaning__hero {
-  border-left: 3px solid color-mix(in srgb, var(--color-hmm-yellow) 72%, var(--color-hmm-cream));
-  padding-left: 1rem;
+    border-left: 3px solid color-mix(in srgb, var(--color-hmm-yellow) 72%, var(--color-hmm-cream));
+    padding-left: 1rem;
 }
 
 .hmm-external .hmm-about-logo-meaning__row {
-  display: grid;
-  gap: 0.75rem;
-  align-items: center;
-  border-top: 1px solid color-mix(in srgb, var(--color-hmm-white) 10%, transparent);
-  padding: 0.9rem 0;
+    display: grid;
+    gap: 0.75rem;
+    align-items: center;
+    border-top: 1px solid color-mix(in srgb, var(--color-hmm-white) 10%, transparent);
+    padding: 0.9rem 0;
 }
 
 .hmm-external .hmm-about-logo-meaning__step {
-  font-family: var(--hmm-font-title);
-  font-size: clamp(1.3rem, 2vw, 1.75rem);
-  line-height: 1;
-  letter-spacing: 0.06em;
-  color: color-mix(in srgb, var(--color-hmm-yellow) 78%, var(--color-hmm-cream));
-  text-shadow: 0 6px 20px color-mix(in srgb, var(--color-hmm-black) 30%, transparent);
-  align-self: start;
-  padding-top: 0.15rem;
+    font-family: var(--hmm-font-title);
+    font-size: clamp(1.3rem, 2vw, 1.75rem);
+    line-height: 1;
+    letter-spacing: 0.06em;
+    color: color-mix(in srgb, var(--color-hmm-yellow) 78%, var(--color-hmm-cream));
+    text-shadow: 0 6px 20px color-mix(in srgb, var(--color-hmm-black) 30%, transparent);
+    align-self: start;
+    padding-top: 0.15rem;
 }
 
 .hmm-external .hmm-about-logo-meaning__glyph-wrap {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  align-items: center;
-  gap: 0.65rem;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    gap: 0.65rem;
 }
 
 .hmm-external .hmm-about-logo-meaning__glyph {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 1rem;
-  background:
-    radial-gradient(
-      ellipse 120% 100% at 25% 15%,
-      color-mix(in srgb, var(--color-hmm-white) 22%, transparent),
-      transparent 65%
-    ),
-    color-mix(in srgb, var(--color-hmm-white) 12%, var(--color-hmm-navy));
-  border: 1px solid color-mix(in srgb, var(--color-hmm-yellow) 24%, color-mix(in srgb, var(--color-hmm-white) 16%, transparent));
-  box-shadow:
-    inset 0 1px 0 color-mix(in srgb, var(--color-hmm-white) 20%, transparent),
-    0 8px 20px color-mix(in srgb, var(--color-hmm-black) 22%, transparent);
-  padding: 0.85rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 1rem;
+    background:
+        radial-gradient(ellipse 120% 100% at 25% 15%,
+            color-mix(in srgb, var(--color-hmm-white) 22%, transparent),
+            transparent 65%),
+        color-mix(in srgb, var(--color-hmm-white) 12%, var(--color-hmm-navy));
+    border: 1px solid color-mix(in srgb,
+            var(--color-hmm-yellow) 24%,
+            color-mix(in srgb, var(--color-hmm-white) 16%, transparent));
+    box-shadow:
+        inset 0 1px 0 color-mix(in srgb, var(--color-hmm-white) 20%, transparent),
+        0 8px 20px color-mix(in srgb, var(--color-hmm-black) 22%, transparent);
+    padding: 0.85rem;
 }
 
 .hmm-external .hmm-about-logo-meaning__connector {
-  height: 1px;
-  background:
-    linear-gradient(
-      90deg,
-      color-mix(in srgb, var(--color-hmm-yellow) 52%, transparent) 0%,
-      color-mix(in srgb, var(--color-hmm-white) 20%, transparent) 50%,
-      transparent 100%
-    );
-  position: relative;
+    height: 1px;
+    background: linear-gradient(90deg,
+            color-mix(in srgb, var(--color-hmm-yellow) 52%, transparent) 0%,
+            color-mix(in srgb, var(--color-hmm-white) 20%, transparent) 50%,
+            transparent 100%);
+    position: relative;
 }
 
 .hmm-external .hmm-about-logo-meaning__connector::after {
-  content: "";
-  position: absolute;
-  right: -1px;
-  top: 50%;
-  width: 5px;
-  height: 5px;
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--color-hmm-yellow) 78%, var(--color-hmm-cream));
-  transform: translateY(-50%);
+    content: '';
+    position: absolute;
+    right: -1px;
+    top: 50%;
+    width: 5px;
+    height: 5px;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--color-hmm-yellow) 78%, var(--color-hmm-cream));
+    transform: translateY(-50%);
 }
 
 .hmm-external .hmm-about-logo-meaning__glyph-image {
-  filter:
-    saturate(1.08)
-    contrast(1.08)
-    brightness(1.06)
-    drop-shadow(0 1px 0 color-mix(in srgb, var(--color-hmm-white) 28%, transparent));
+    filter: saturate(1.08) contrast(1.08) brightness(1.06) drop-shadow(0 1px 0 color-mix(in srgb, var(--color-hmm-white) 28%, transparent));
 }
 
 .hmm-external .hmm-about-logo-meaning__copy {
-  padding: 0.1rem 0.2rem 0.1rem 0;
+    padding: 0.1rem 0.2rem 0.1rem 0;
 }
 
 .hmm-external .hmm-about-logo-meaning__panel-title {
-  display: inline-block;
-  font-family: var(--hmm-font-sans);
-  font-size: 0.67rem;
-  font-weight: 800;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: color-mix(in srgb, var(--color-hmm-yellow) 72%, var(--color-hmm-cream));
-  border-bottom: 1px solid color-mix(in srgb, var(--color-hmm-yellow) 45%, transparent);
-  padding-bottom: 0.2rem;
+    display: inline-block;
+    font-family: var(--hmm-font-sans);
+    font-size: 0.67rem;
+    font-weight: 800;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: color-mix(in srgb, var(--color-hmm-yellow) 72%, var(--color-hmm-cream));
+    border-bottom: 1px solid color-mix(in srgb, var(--color-hmm-yellow) 45%, transparent);
+    padding-bottom: 0.2rem;
 }
 
 .hmm-external .hmm-about-logo-meaning__panel strong {
-  color: color-mix(in srgb, var(--color-hmm-cream) 92%, white);
-  font-weight: 800;
+    color: color-mix(in srgb, var(--color-hmm-cream) 92%, white);
+    font-weight: 800;
 }
 
 @media (min-width: 720px) {
-  .hmm-external .hmm-about-logo-meaning__row {
-    grid-template-columns: auto minmax(0, 12rem) minmax(0, 1fr);
-    gap: 1rem 1.15rem;
-  }
+    .hmm-external .hmm-about-logo-meaning__row {
+        grid-template-columns: auto minmax(0, 12rem) minmax(0, 1fr);
+        gap: 1rem 1.15rem;
+    }
 
-  .hmm-external .hmm-about-logo-meaning__row--offset {
-    margin-left: 1.2rem;
-  }
+    .hmm-external .hmm-about-logo-meaning__row--offset {
+        margin-left: 1.2rem;
+    }
 
-  .hmm-external .hmm-about-logo-meaning__row:first-child {
-    border-top: 1px solid color-mix(in srgb, var(--color-hmm-white) 10%, transparent);
-  }
+    .hmm-external .hmm-about-logo-meaning__row:first-child {
+        border-top: 1px solid color-mix(in srgb, var(--color-hmm-white) 10%, transparent);
+    }
 }
 
 .hmm-external .hmm-about-logo-meaning .hmm-organogram-card__loading {
-  display: none !important;
+    display: none !important;
 }
 
 .hmm-external .hmm-organogram-group-head {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.75rem 1rem;
-  border-bottom: 1px solid color-mix(in srgb, var(--color-hmm-yellow) 42%, transparent);
-  padding-bottom: 0.65rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem 1rem;
+    border-bottom: 1px solid color-mix(in srgb, var(--color-hmm-yellow) 42%, transparent);
+    padding-bottom: 0.65rem;
 }
 
 .hmm-external .hmm-organogram-group-title {
-  font-family: var(--hmm-font-sans);
-  font-size: clamp(0.95rem, 1.4vw, 1.2rem);
-  font-weight: 800;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: color-mix(in srgb, var(--color-hmm-yellow) 58%, var(--color-hmm-cream));
+    font-family: var(--hmm-font-sans);
+    font-size: clamp(0.95rem, 1.4vw, 1.2rem);
+    font-weight: 800;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: color-mix(in srgb, var(--color-hmm-yellow) 58%, var(--color-hmm-cream));
 }
 
 .hmm-external .hmm-organogram-group-desc {
-  font-family: var(--hmm-font-sans);
-  font-size: 0.84rem;
-  color: color-mix(in srgb, var(--color-hmm-cream) 82%, var(--color-hmm-white));
+    font-family: var(--hmm-font-sans);
+    font-size: 0.84rem;
+    color: color-mix(in srgb, var(--color-hmm-cream) 82%, var(--color-hmm-white));
 }
 
 .hmm-external .hmm-organogram-external-separator {
-  margin-top: 0.9rem;
-  height: 1px;
-  border-top: 1px dashed color-mix(in srgb, var(--color-hmm-yellow) 45%, transparent);
+    margin-top: 0.9rem;
+    height: 1px;
+    border-top: 1px dashed color-mix(in srgb, var(--color-hmm-yellow) 45%, transparent);
 }
 
 .hmm-external .hmm-organogram-subtier {
-  border-left: 2px solid color-mix(in srgb, var(--color-hmm-yellow) 35%, transparent);
-  padding-left: 0.9rem;
+    border-left: 2px solid color-mix(in srgb, var(--color-hmm-yellow) 35%, transparent);
+    padding-left: 0.9rem;
 }
 
 .hmm-external .hmm-organogram-card {
-  display: block;
-  width: 100%;
-  aspect-ratio: 3 / 4;
-  overflow: hidden;
-  border-radius: 16px;
-  border: none;
-  background: var(--color-hmm-navy-deep);
-  box-shadow: 0 12px 24px color-mix(in srgb, var(--color-hmm-black) 30%, transparent);
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease,
-    filter 0.2s ease;
-  cursor: pointer;
-  position: relative;
+    display: block;
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    overflow: hidden;
+    border-radius: 16px;
+    border: none;
+    background: var(--color-hmm-navy-deep);
+    box-shadow: 0 12px 24px color-mix(in srgb, var(--color-hmm-black) 30%, transparent);
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        filter 0.2s ease;
+    cursor: pointer;
+    position: relative;
 }
 
 .hmm-external .hmm-organogram-card:hover {
-  transform: scale(1.03);
-  box-shadow: 0 20px 36px color-mix(in srgb, var(--color-hmm-black) 40%, transparent);
+    transform: scale(1.03);
+    box-shadow: 0 20px 36px color-mix(in srgb, var(--color-hmm-black) 40%, transparent);
 }
 
 .hmm-external .hmm-organogram-card--external {
-  opacity: 0.9;
+    opacity: 0.9;
 }
 
 .hmm-external .hmm-organogram-card--lead {
-  aspect-ratio: 2 / 3;
+    aspect-ratio: 2 / 3;
 }
 
 .hmm-external .hmm-organogram-card--compact .hmm-organogram-card__media {
-  max-height: 17.5rem;
+    max-height: 17.5rem;
 }
 
 .hmm-external .hmm-organogram-card--compact {
-  max-height: 17.5rem;
+    max-height: 17.5rem;
 }
 
 .hmm-external .hmm-organogram-card__loading {
-  position: absolute;
-  left: 0.6rem;
-  top: 0.6rem;
-  z-index: 2;
-  border: 1px solid color-mix(in srgb, var(--color-hmm-white) 22%, transparent);
-  background: color-mix(in srgb, var(--color-hmm-navy-deep) 70%, transparent);
-  border-radius: 999px;
-  padding: 0.2rem 0.5rem;
-  font-family: var(--hmm-font-sans);
-  font-size: 0.58rem;
-  font-weight: 700;
-  letter-spacing: 0.11em;
-  text-transform: uppercase;
-  color: color-mix(in srgb, var(--color-hmm-cream) 88%, var(--color-hmm-white));
+    position: absolute;
+    left: 0.6rem;
+    top: 0.6rem;
+    z-index: 2;
+    border: 1px solid color-mix(in srgb, var(--color-hmm-white) 22%, transparent);
+    background: color-mix(in srgb, var(--color-hmm-navy-deep) 70%, transparent);
+    border-radius: 999px;
+    padding: 0.2rem 0.5rem;
+    font-family: var(--hmm-font-sans);
+    font-size: 0.58rem;
+    font-weight: 700;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+    color: color-mix(in srgb, var(--color-hmm-cream) 88%, var(--color-hmm-white));
 }
 
 .hmm-external .hmm-organogram-card__dot {
-  display: inline-block;
-  margin-left: 0.25rem;
-  height: 0.28rem;
-  width: 0.28rem;
-  border-radius: 999px;
-  background: var(--color-hmm-yellow);
-  animation: hmm-organogram-dot 1.2s ease-in-out infinite;
+    display: inline-block;
+    margin-left: 0.25rem;
+    height: 0.28rem;
+    width: 0.28rem;
+    border-radius: 999px;
+    background: var(--color-hmm-yellow);
+    animation: hmm-organogram-dot 1.2s ease-in-out infinite;
 }
 
 @keyframes hmm-organogram-dot {
-  0%,
-  100% {
-    opacity: 0.3;
-    transform: scale(0.9);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1);
-  }
+
+    0%,
+    100% {
+        opacity: 0.3;
+        transform: scale(0.9);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1);
+    }
 }
 
 .hmm-external .hmm-organogram-card__media {
-  position: relative;
-  height: 100%;
-  overflow: hidden;
+    position: relative;
+    height: 100%;
+    overflow: hidden;
 }
 
 .hmm-external .hmm-organogram-card::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 3px;
-  background: color-mix(in srgb, var(--color-hmm-yellow) 88%, var(--color-hmm-cream));
-  opacity: 0;
-  transition: opacity 0.3s ease;
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 3px;
+    background: color-mix(in srgb, var(--color-hmm-yellow) 88%, var(--color-hmm-cream));
+    opacity: 0;
+    transition: opacity 0.3s ease;
 }
 
 .hmm-external .hmm-organogram-card:hover::after {
-  opacity: 1;
+    opacity: 1;
 }
 
 .hmm-external .hmm-organogram-card__overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    180deg,
-    rgba(10, 15, 40, 0) 42%,
-    rgba(10, 15, 40, 0.68) 100%
-  );
-  transition: background 0.3s ease;
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(10, 15, 40, 0) 42%, rgba(10, 15, 40, 0.68) 100%);
+    transition: background 0.3s ease;
 }
 
 .hmm-external .hmm-organogram-card:hover .hmm-organogram-card__overlay {
-  background: linear-gradient(
-    180deg,
-    rgba(10, 15, 40, 0.06) 34%,
-    rgba(10, 15, 40, 0.8) 100%
-  );
+    background: linear-gradient(180deg, rgba(10, 15, 40, 0.06) 34%, rgba(10, 15, 40, 0.8) 100%);
 }
 
 .hmm-external .hmm-organogram-card__content {
-  position: absolute;
-  inset: auto 0 0 0;
-  z-index: 2;
-  padding: 0.8rem 0.9rem 0.95rem;
+    position: absolute;
+    inset: auto 0 0 0;
+    z-index: 2;
+    padding: 0.8rem 0.9rem 0.95rem;
 }
 
 .hmm-external .hmm-organogram-card__kicker {
-  font-family: var(--hmm-font-sans);
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: #f5a623;
+    font-family: var(--hmm-font-sans);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #f5a623;
 }
 
 .hmm-external .hmm-organogram-card--compact .hmm-organogram-card__title {
-  font-size: 0.96rem;
+    font-size: 0.96rem;
 }
 
 .hmm-external .hmm-organogram-card__title {
-  margin-top: 0.4rem;
-  font-family: var(--hmm-font-sans);
-  font-size: clamp(1rem, 1.45vw, 1.125rem);
-  line-height: 1.2;
-  font-weight: 700;
-  color: var(--color-hmm-white);
+    margin-top: 0.4rem;
+    font-family: var(--hmm-font-sans);
+    font-size: clamp(1rem, 1.45vw, 1.125rem);
+    line-height: 1.2;
+    font-weight: 700;
+    color: var(--color-hmm-white);
 }
 
-.hmm-external .hmm-organogram-card__title > span {
-  display: inline-block;
-  border-left: 2px solid color-mix(in srgb, var(--color-hmm-yellow) 72%, var(--color-hmm-cream));
-  padding-left: 0.45rem;
+.hmm-external .hmm-organogram-card__title>span {
+    display: inline-block;
+    border-left: 2px solid color-mix(in srgb, var(--color-hmm-yellow) 72%, var(--color-hmm-cream));
+    padding-left: 0.45rem;
 }
 
 .hmm-external .hmm-organogram-card__detail-cta {
-  margin-top: 0.5rem;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.3rem;
-  font-family: var(--hmm-font-sans);
-  font-size: 0.64rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: color-mix(in srgb, var(--color-hmm-yellow) 70%, var(--color-hmm-cream));
-  transform: translateY(8px);
-  opacity: 0;
-  transition:
-    transform 0.3s ease,
-    opacity 0.3s ease;
+    margin-top: 0.5rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-family: var(--hmm-font-sans);
+    font-size: 0.64rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: color-mix(in srgb, var(--color-hmm-yellow) 70%, var(--color-hmm-cream));
+    transform: translateY(8px);
+    opacity: 0;
+    transition:
+        transform 0.3s ease,
+        opacity 0.3s ease;
 }
 
 .hmm-external .hmm-organogram-card:hover .hmm-organogram-card__detail-cta {
-  transform: translateY(0);
-  opacity: 1;
+    transform: translateY(0);
+    opacity: 1;
 }
 
 .hmm-external .hmm-organogram-modal {
-  position: fixed;
-  inset: 0;
-  z-index: 70;
-  display: grid;
-  place-items: center;
-  padding: 1rem;
+    position: fixed;
+    inset: 0;
+    z-index: 70;
+    display: grid;
+    place-items: center;
+    padding: 1rem;
 }
 
 .hmm-external .hmm-organogram-modal__backdrop {
-  position: absolute;
-  inset: 0;
-  border: none;
-  background: color-mix(in srgb, var(--color-hmm-navy-deep) 48%, transparent);
+    position: absolute;
+    inset: 0;
+    border: none;
+    background: color-mix(in srgb, var(--color-hmm-navy-deep) 48%, transparent);
 }
 
 .hmm-external .hmm-organogram-modal__panel {
-  position: relative;
-  z-index: 1;
-  width: min(64rem, 100%);
-  display: grid;
-  align-items: stretch;
-  overflow: hidden;
-  border-radius: 1rem;
-  border: 1px solid color-mix(in srgb, var(--color-hmm-white) 20%, transparent);
-  background: var(--color-hmm-navy-deep);
-  box-shadow: 0 22px 70px color-mix(in srgb, var(--color-hmm-black) 55%, transparent);
+    position: relative;
+    z-index: 1;
+    width: min(64rem, 100%);
+    display: grid;
+    align-items: stretch;
+    overflow: hidden;
+    border-radius: 1rem;
+    border: 1px solid color-mix(in srgb, var(--color-hmm-white) 20%, transparent);
+    background: var(--color-hmm-navy-deep);
+    box-shadow: 0 22px 70px color-mix(in srgb, var(--color-hmm-black) 55%, transparent);
+}
+
+.hmm-external .hmm-organogram-modal__toggle-btn {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 999px;
+    border: 1px solid color-mix(in srgb, var(--color-hmm-white) 30%, transparent);
+    background: color-mix(in srgb, var(--color-hmm-navy-deep) 70%, transparent);
+    color: var(--color-hmm-white);
+    cursor: pointer;
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.hmm-external .hmm-organogram-modal__toggle-btn:hover {
+    background: color-mix(in srgb, var(--color-hmm-navy-deep) 85%, transparent);
+    border-color: color-mix(in srgb, var(--color-hmm-white) 50%, transparent);
+    transform: scale(1.05);
+}
+
+.hmm-external .hmm-organogram-modal__toggle-btn:focus-visible {
+    outline: 2px solid color-mix(in srgb, var(--color-hmm-yellow) 35%, var(--color-hmm-cream));
+    outline-offset: 2px;
+}
+
+.hmm-external .hmm-organogram-modal__toggle {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border-radius: 999px;
+    border: 1px solid color-mix(in srgb, var(--color-hmm-white) 30%, transparent);
+    background: color-mix(in srgb, var(--color-hmm-navy-deep) 75%, transparent);
+    color: var(--color-hmm-white);
+    font-family: var(--hmm-font-sans);
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease;
+    z-index: 5;
+}
+
+.hmm-external .hmm-organogram-modal__toggle:hover {
+    background: color-mix(in srgb, var(--color-hmm-navy-deep) 85%, transparent);
+    border-color: color-mix(in srgb, var(--color-hmm-white) 50%, transparent);
+}
+
+.hmm-external .hmm-organogram-modal__toggle:focus-visible {
+    outline: 2px solid color-mix(in srgb, var(--color-hmm-yellow) 35%, var(--color-hmm-cream));
+    outline-offset: 2px;
+}
+
+.hmm-external .hmm-organogram-modal__content--hidden {
+    display: none;
+}
+
+.hmm-external .hmm-organogram-modal__panel--image-only {
+    display: block;
+    max-width: min(40rem, 100%);
+}
+
+.hmm-external .hmm-organogram-modal__panel--image-only .hmm-organogram-modal__media {
+    min-height: 30rem;
+    aspect-ratio: 3 / 4;
 }
 
 .hmm-external .hmm-organogram-modal__media {
-  position: relative;
-  min-height: 16rem;
+    position: relative;
+    min-height: 12rem;
 }
 
 .hmm-external .hmm-organogram-modal__content {
-  display: flex;
-  max-height: min(85vh, 52rem);
-  min-height: 0;
-  flex-direction: column;
-  padding: 1rem 1rem 1.2rem;
-  overflow: hidden;
+    display: flex;
+    max-height: min(85vh, 52rem);
+    min-height: 0;
+    flex-direction: column;
+    padding: 0.875rem 0.875rem 1rem;
+    overflow: hidden;
 }
 
 .hmm-external .hmm-organogram-modal__scroll {
-  flex: 1 1 auto;
-  min-height: 0;
-  padding-right: 0.25rem;
-  overflow-x: hidden;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
+    flex: 1 1 auto;
+    min-height: 0;
+    padding-right: 0.25rem;
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
 .hmm-external .hmm-organogram-modal__tagline {
-  margin: 0;
-  border-left: 3px solid color-mix(in srgb, var(--color-hmm-yellow) 62%, var(--color-hmm-maroon));
-  padding-left: 0.85rem;
-  font-family: var(--hmm-font-sans);
-  font-size: 0.9rem;
-  font-style: italic;
-  line-height: 1.55;
-  color: color-mix(in srgb, var(--color-hmm-cream) 88%, var(--color-hmm-white));
+    margin: 0;
+    border-left: 3px solid color-mix(in srgb, var(--color-hmm-yellow) 62%, var(--color-hmm-maroon));
+    padding-left: 0.85rem;
+    font-family: var(--hmm-font-sans);
+    font-size: 0.9rem;
+    font-style: italic;
+    line-height: 1.55;
+    color: color-mix(in srgb, var(--color-hmm-cream) 88%, var(--color-hmm-white));
 }
 
 .hmm-external .hmm-organogram-modal__people {
-  margin: 0;
-  padding: 0;
-  list-style: none;
+    margin: 0;
+    padding: 0;
+    list-style: none;
 }
 
 @media (min-width: 860px) {
-  .hmm-external .hmm-organogram-modal__panel {
-    grid-template-columns: 1.1fr 1fr;
-  }
+    .hmm-external .hmm-organogram-modal__panel {
+        grid-template-columns: 1.1fr 1fr;
+    }
 
-  .hmm-external .hmm-organogram-modal__media {
-    min-height: 24rem;
-  }
+    .hmm-external .hmm-organogram-modal__panel--image-only {
+        grid-template-columns: 1fr;
+        max-width: min(40rem, 100%);
+    }
 
-  .hmm-external .hmm-organogram-modal__content {
-    padding: 1.25rem 1.25rem 1.4rem;
-  }
+    .hmm-external .hmm-organogram-modal__media {
+        min-height: 24rem;
+    }
+
+    .hmm-external .hmm-organogram-modal__panel--image-only .hmm-organogram-modal__media {
+        min-height: 35rem;
+    }
+
+    .hmm-external .hmm-organogram-modal__content {
+        padding: 1.25rem 1.25rem 1.4rem;
+    }
+
+    .hmm-external .hmm-organogram-modal__toggle-btn {
+        top: 1rem;
+        right: 1rem;
+    }
+
+    .hmm-external .hmm-organogram-modal__toggle {
+        display: none;
+    }
+}
+
+@media (max-width: 859px) {
+    .hmm-external .hmm-organogram-modal {
+        padding: 0.5rem;
+    }
+
+    .hmm-external .hmm-organogram-modal__panel {
+        border-radius: 0.75rem;
+    }
+
+    .hmm-external .hmm-organogram-modal__media {
+        min-height: 10rem;
+    }
+
+    .hmm-external .hmm-organogram-modal__content {
+        max-height: calc(100vh - 3rem);
+    }
+
+    .hmm-external .hmm-organogram-modal__toggle-btn {
+        top: 0.5rem;
+        right: 0.5rem;
+        width: 2.25rem;
+        height: 2.25rem;
+    }
+
+    .hmm-external .hmm-organogram-modal__tagline {
+        font-size: 0.85rem;
+        padding-left: 0.75rem;
+    }
+
+    .hmm-external .hmm-organogram-modal__scroll {
+        padding-right: 0.5rem;
+    }
+
+    .hmm-external .hmm-organogram-modal__close-bottom {
+        display: none;
+    }
+
+    .hmm-external .hmm-organogram-modal__toggle {
+        font-size: 0.6rem;
+    }
+
+    .hmm-external .hmm-organogram-modal__panel--image-only {
+        max-width: min(30rem, 100%);
+    }
+
+    .hmm-external .hmm-organogram-modal__panel--image-only .hmm-organogram-modal__media {
+        min-height: 30rem;
+    }
 }
 
 .hmm-external .hmm-about-vision-bridge {
-  height: clamp(1rem, 3vw, 1.75rem);
-  background: linear-gradient(
-    180deg,
-    var(--color-hmm-navy-deep) 0%,
-    color-mix(in srgb, var(--color-hmm-navy) 34%, var(--color-hmm-navy-deep)) 100%
-  );
+    height: clamp(1rem, 3vw, 1.75rem);
+    background: linear-gradient(180deg,
+            var(--color-hmm-navy-deep) 0%,
+            color-mix(in srgb, var(--color-hmm-navy) 34%, var(--color-hmm-navy-deep)) 100%);
 }
 
 .hmm-external .hmm-about-vision-intro {
-  border-top: 1px solid color-mix(in srgb, var(--color-hmm-white) 12%, transparent);
-  border-bottom: 1px solid color-mix(in srgb, var(--color-hmm-white) 12%, transparent);
-  background: linear-gradient(
-    135deg,
-    color-mix(in srgb, var(--color-hmm-navy-deep) 92%, var(--color-hmm-navy)) 0%,
-    color-mix(in srgb, var(--color-hmm-maroon) 20%, var(--color-hmm-navy-deep)) 100%
-  );
+    border-top: 1px solid color-mix(in srgb, var(--color-hmm-white) 12%, transparent);
+    border-bottom: 1px solid color-mix(in srgb, var(--color-hmm-white) 12%, transparent);
+    background: linear-gradient(135deg,
+            color-mix(in srgb, var(--color-hmm-navy-deep) 92%, var(--color-hmm-navy)) 0%,
+            color-mix(in srgb, var(--color-hmm-maroon) 20%, var(--color-hmm-navy-deep)) 100%);
 }
 
 .hmm-external .hmm-visi-expand {
-  border-left: 3px solid color-mix(in srgb, var(--color-hmm-yellow) 62%, var(--color-hmm-cream));
-  background: color-mix(in srgb, var(--color-hmm-white) 5%, var(--color-hmm-navy-deep));
+    border-left: 3px solid color-mix(in srgb, var(--color-hmm-yellow) 62%, var(--color-hmm-cream));
+    background: color-mix(in srgb, var(--color-hmm-white) 5%, var(--color-hmm-navy-deep));
 }
 
 .hmm-external .hmm-vision-photo-badge {
-  position: absolute;
-  left: 0.75rem;
-  bottom: 0.75rem;
-  border: 1px solid color-mix(in srgb, var(--color-hmm-white) 22%, transparent);
-  background: color-mix(in srgb, var(--color-hmm-navy-deep) 58%, transparent);
-  border-radius: 999px;
-  padding: 0.3rem 0.65rem;
-  font-family: var(--hmm-font-sans);
-  font-size: 0.62rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--color-hmm-white);
+    position: absolute;
+    left: 0.75rem;
+    bottom: 0.75rem;
+    border: 1px solid color-mix(in srgb, var(--color-hmm-white) 22%, transparent);
+    background: color-mix(in srgb, var(--color-hmm-navy-deep) 58%, transparent);
+    border-radius: 999px;
+    padding: 0.3rem 0.65rem;
+    font-family: var(--hmm-font-sans);
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-hmm-white);
 }
 
 .hmm-external .hmm-misi-group {
-  border-radius: 0.75rem;
-  border: 1px solid color-mix(in srgb, var(--color-hmm-white) 12%, transparent);
-  background: color-mix(in srgb, var(--color-hmm-white) 3%, transparent);
-  padding: 0.9rem 0.9rem 0.2rem;
+    border-radius: 0.75rem;
+    border: 1px solid color-mix(in srgb, var(--color-hmm-white) 12%, transparent);
+    background: color-mix(in srgb, var(--color-hmm-white) 3%, transparent);
+    padding: 0.9rem 0.9rem 0.2rem;
 }
 
 .hmm-external .hmm-misi-group__head {
-  margin-bottom: 0.6rem;
+    margin-bottom: 0.6rem;
 }
 
 .hmm-external .hmm-misi-group__title {
-  font-family: var(--hmm-font-sans);
-  font-size: 0.78rem;
-  font-weight: 900;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: color-mix(in srgb, var(--color-hmm-yellow) 58%, var(--color-hmm-cream));
-  border-bottom: 1px solid color-mix(in srgb, var(--color-hmm-yellow) 55%, transparent);
-  display: inline-block;
-  padding-bottom: 0.22rem;
+    font-family: var(--hmm-font-sans);
+    font-size: 0.78rem;
+    font-weight: 900;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: color-mix(in srgb, var(--color-hmm-yellow) 58%, var(--color-hmm-cream));
+    border-bottom: 1px solid color-mix(in srgb, var(--color-hmm-yellow) 55%, transparent);
+    display: inline-block;
+    padding-bottom: 0.22rem;
 }
 
 .hmm-external .hmm-misi-row {
-  border-left: 2px solid transparent;
-  transition:
-    border-color 0.2s ease,
-    background-color 0.2s ease;
+    border-left: 2px solid transparent;
+    transition:
+        border-color 0.2s ease,
+        background-color 0.2s ease;
 }
 
 .hmm-external .hmm-misi-row:hover {
-  border-left-color: color-mix(in srgb, var(--color-hmm-yellow) 70%, var(--color-hmm-cream));
-  background-color: color-mix(in srgb, var(--color-hmm-white) 4%, transparent);
+    border-left-color: color-mix(in srgb, var(--color-hmm-yellow) 70%, var(--color-hmm-cream));
+    background-color: color-mix(in srgb, var(--color-hmm-white) 4%, transparent);
 }
 
 .hmm-external details summary {
-  list-style: none;
+    list-style: none;
 }
 
 .hmm-external details summary::-webkit-details-marker {
-  display: none;
+    display: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hmm-external .hmm-ink-card,
-  .hmm-external .hmm-ink-card:hover,
-  .hmm-external .hmm-misi-card,
-  .hmm-external .hmm-misi-card:hover,
-  .hmm-external .hmm-scroll-progress-fill,
-  .hmm-external a.hmm-editorial-tile img,
-  .hmm-external a.hmm-editorial-tile {
-    transition: none;
-    transform: none;
-  }
+
+    .hmm-external .hmm-ink-card,
+    .hmm-external .hmm-ink-card:hover,
+    .hmm-external .hmm-misi-card,
+    .hmm-external .hmm-misi-card:hover,
+    .hmm-external .hmm-scroll-progress-fill,
+    .hmm-external a.hmm-editorial-tile img,
+    .hmm-external a.hmm-editorial-tile {
+        transition: none;
+        transform: none;
+    }
 }
