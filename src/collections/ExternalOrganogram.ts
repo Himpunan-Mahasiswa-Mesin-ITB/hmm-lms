@@ -53,6 +53,25 @@ export const ExternalOrganogram: CollectionConfig<'external-organogram'> = {
       },
     },
     {
+      name: 'isDirecting',
+      type: 'checkbox',
+      label: 'Directing (Head of Department/Bureau)',
+      defaultValue: false,
+      admin: {
+        description: 'Mark as Head of Department or Bureau (will appear in Directing section)',
+      },
+    },
+    {
+      name: 'isExecuting',
+      type: 'checkbox',
+      label: 'Executing & Supporting (Sub-bureau/Division)',
+      defaultValue: false,
+      admin: {
+        description:
+          'Mark as sub-bureau or division (will appear in Executing & Supporting section)',
+      },
+    },
+    {
       name: 'detailType',
       type: 'select',
       required: true,

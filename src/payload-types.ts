@@ -1133,6 +1133,14 @@ export interface ExternalOrganogram {
    * Mark as external/advisory position (will appear in External & Advisory Bodies section)
    */
   isExternal?: boolean | null;
+  /**
+   * Mark as Head of Department or Bureau (will appear in Directing section)
+   */
+  isDirecting?: boolean | null;
+  /**
+   * Mark as sub-bureau or division (will appear in Executing & Supporting section)
+   */
+  isExecuting?: boolean | null;
   detailType: 'featured' | 'roster';
   featuredDetail?: {
     tagline?: string | null;
@@ -2126,6 +2134,8 @@ export interface ExternalOrganogramSelect<T extends boolean = true> {
   image?: T;
   isPrince?: T;
   isExternal?: T;
+  isDirecting?: T;
+  isExecuting?: T;
   detailType?: T;
   featuredDetail?:
     | T

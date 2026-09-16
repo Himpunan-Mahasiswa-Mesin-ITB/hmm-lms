@@ -1,10 +1,11 @@
+import { Role } from '@prisma/client';
 import { Inter, Montserrat } from 'next/font/google';
 import { redirect } from 'next/navigation';
-import type { ReactNode } from 'react';
 
 import '~/styles/external.css';
+import type { ReactNode } from 'react';
+
 import { auth } from '~/server/auth';
-import { Role } from '@prisma/client';
 
 const inter = Inter({
   subsets: ['latin'],

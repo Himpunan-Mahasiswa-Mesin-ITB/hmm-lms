@@ -1,10 +1,10 @@
 'use client';
 
-import { useMediaQuery } from "usehooks-ts";
+import { EyeOff, Eye } from 'lucide-react';
 import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
 import Image from 'next/image';
 import { useMemo, useState } from 'react';
-import { EyeOff, Eye } from "lucide-react";
+import { useMediaQuery } from 'usehooks-ts';
 
 type OrganogramCard = {
   title: string;
@@ -14,6 +14,8 @@ type OrganogramCard = {
   rosterDetail?: any;
   isPrince?: boolean;
   isExternal?: boolean;
+  isDirecting?: boolean;
+  isExecuting?: boolean;
 };
 
 type Props = {
@@ -141,7 +143,7 @@ function splitGroups(items: OrganogramCard[]): {
     description: 'Bureau dan department heads yang mengarahkan strategi.',
     cardSize: 'regular',
     cardLabel: 'Unit',
-    items: otherInternal.slice(0, 8),
+    items: otherInternal.filter((item) => item.isDirecting === true),
   };
   const executingSupportingGroup: Group = {
     key: 'executing-supporting',
@@ -149,7 +151,7 @@ function splitGroups(items: OrganogramCard[]): {
     description: 'Sub-bureau dan divisi pelaksana, dikelompokkan per unit induk.',
     cardSize: 'compact',
     cardLabel: 'Unit',
-    items: otherInternal.slice(8),
+    items: otherInternal.filter((item) => item.isExecuting === true),
   };
   return {
     external: externalGroup,
@@ -363,8 +365,9 @@ export function ExternalOrganogramSection({ items }: Props) {
               transition={{ duration: 0.2 }}
             />
             <motion.div
-              className={`hmm-organogram-modal__panel ${isSmallScreen && !showContent ? 'hmm-organogram-modal__panel--image-only' : ''
-                }`}
+              className={`hmm-organogram-modal__panel ${
+                isSmallScreen && !showContent ? 'hmm-organogram-modal__panel--image-only' : ''
+              }`}
               initial={{ scale: 0.95, opacity: 0, y: 20 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.95, opacity: 0, y: 20 }}
