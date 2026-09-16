@@ -119,7 +119,7 @@ function splitGroups(items: OrganogramCard[]): {
   // extract Prince (marked as isPrince or first item as fallback)
   const prince = internal.find((item) => item.isPrince) || internal[0];
   const otherInternal = internal.filter((item) => item !== prince);
-
+  console.log("Other Internal Directing: ", otherInternal.filter((item) => item.isDirecting === true))
   const externalGroup: Group = {
     key: 'external',
     label: 'External & Advisory Bodies',
@@ -365,9 +365,8 @@ export function ExternalOrganogramSection({ items }: Props) {
               transition={{ duration: 0.2 }}
             />
             <motion.div
-              className={`hmm-organogram-modal__panel ${
-                isSmallScreen && !showContent ? 'hmm-organogram-modal__panel--image-only' : ''
-              }`}
+              className={`hmm-organogram-modal__panel ${isSmallScreen && !showContent ? 'hmm-organogram-modal__panel--image-only' : ''
+                }`}
               initial={{ scale: 0.95, opacity: 0, y: 20 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.95, opacity: 0, y: 20 }}

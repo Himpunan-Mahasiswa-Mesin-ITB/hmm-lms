@@ -41,6 +41,8 @@ export default async function ExternalAboutPage() {
       rosterDetail: item.rosterDetail,
       isPrince: item.isPrince === true,
       isExternal: item.isExternal === true,
+      isDirecting: item.isDirecting === true,
+      isExecuting: item.isExecuting === true,
     }))
     .filter((item): item is typeof item & { imageUrl: string } => item.imageUrl !== null);
 
