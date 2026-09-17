@@ -119,7 +119,6 @@ function splitGroups(items: OrganogramCard[]): {
   // extract Prince (marked as isPrince or first item as fallback)
   const prince = internal.find((item) => item.isPrince) || internal[0];
   const otherInternal = internal.filter((item) => item !== prince);
-  console.log("Other Internal Directing: ", otherInternal.filter((item) => item.isDirecting === true))
   const externalGroup: Group = {
     key: 'external',
     label: 'External & Advisory Bodies',
