@@ -5,6 +5,9 @@ import type { PreviewSearchParams } from '~/app/(app)/(payload-cms)/next/preview
 const collectionPrefixMap: Partial<Record<CollectionSlug, string>> = {
   posts: '/posts',
   pages: '',
+  news: '/news',
+  achievements: '/achievements',
+  events: '/event',
 };
 
 type Props = {

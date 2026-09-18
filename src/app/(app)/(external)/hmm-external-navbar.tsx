@@ -13,6 +13,9 @@ import { cn } from '~/lib/utils';
 const EXTERNAL_PAGES: ReadonlyArray<{ href: string; label: string }> = [
   { href: '/', label: 'Beranda' },
   { href: '/about', label: 'About' },
+  { href: '/news', label: 'News' },
+  { href: '/achievements', label: 'Achievements' },
+  { href: '/event', label: 'Events' },
 ];
 
 function computeScrollProgress(): number {
