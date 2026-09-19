@@ -149,6 +149,19 @@ export const adminProcedure = t.procedure
     });
   });
 
+export const bpProcedure = t.procedure
+  .use(timingMiddleware)
+  .use(({ ctx, next }) => {
+    if (!ctx.session?.user || !["BP", "SUPERADMIN"].includes(ctx.session.user.role)) {
+      throw new TRPCError({ code: "UNAUTHORIZED" });
+    }
+    return next({
+      ctx: {
+        session: { ...ctx.session, user: ctx.session.user },
+      },
+    });
+  });
+
 /**
  * Super Admin procedure - Full database control including user role management
  * Has complete access to all operations including sensitive user management

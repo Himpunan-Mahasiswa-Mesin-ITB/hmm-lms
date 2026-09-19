@@ -53,7 +53,7 @@ import { TablePagination } from './table-pagination';
 interface DatabaseTableProps {
   modelName: string;
   displayName: string;
-  userRole: 'ADMIN' | 'SUPERADMIN' | 'STUDENT' | 'MACHINING';
+  userRole: 'ADMIN' | 'SUPERADMIN' | 'STUDENT' | 'MACHINING' | "BP";
   onDataChange: () => void;
 }
 
