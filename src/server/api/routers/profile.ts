@@ -241,6 +241,18 @@ export const profileRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ input }) => {
+      const existing = await db.userProfileProgress.findUnique({
+        where: {
+          userId_profileId: {
+            userId: input.userId,
+            profileId: input.profileId,
+          },
+        },
+      })
+      if (existing) throw new TRPCError({
+        code: "BAD_REQUEST",
+        message: "This member is already have this Profile"
+      })
       return await db.userProfileProgress.upsert({
         where: {
           userId_profileId: {
@@ -281,7 +293,7 @@ export const profileRouter = createTRPCRouter({
         console.log('Error updating profile progress:', error);
         throw new TRPCError({
           code: 'NOT_FOUND',
-          message: 'No Profile record found for this user.',
+          message: 'No Profile record found for this member.',
         });
       }
     }),
@@ -306,7 +318,7 @@ export const profileRouter = createTRPCRouter({
         console.log('Error deleting profile progress:', error);
         throw new TRPCError({
           code: 'NOT_FOUND',
-          message: 'No Profile record found for this user.',
+          message: 'No Profile record found for this member.',
         });
       }
     }),
@@ -318,6 +330,18 @@ export const profileRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ input }) => {
+      const existing = await db.userGroupProfile.findUnique({
+        where: {
+          userId_groupProfileId: {
+            userId: input.userId,
+            groupProfileId: input.groupProfileId,
+          },
+        },
+      })
+      if (existing) throw new TRPCError({
+        code: "BAD_REQUEST",
+        message: "This member is already exist on this Group Profile"
+      })
       return await db.userGroupProfile.upsert({
         where: {
           userId_groupProfileId: {
@@ -354,7 +378,7 @@ export const profileRouter = createTRPCRouter({
         console.log('Error deleting group profile membership:', error);
         throw new TRPCError({
           code: 'NOT_FOUND',
-          message: 'User is not a member of this Group Profile.',
+          message: 'This member is not exist in this Group Profile.',
         });
       }
     }),

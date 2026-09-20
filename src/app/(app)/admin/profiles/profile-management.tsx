@@ -256,7 +256,7 @@ function ProfilesTable({
               <TableHead>Name</TableHead>
               <TableHead>Description</TableHead>
               <TableHead>Group</TableHead>
-              <TableHead>User Progress</TableHead>
+              <TableHead>Members</TableHead>
               <TableHead>Created</TableHead>
               <TableHead className="text-right">Actions</TableHead>
             </TableRow>
@@ -323,9 +323,7 @@ function ProfilesTable({
             {paginatedProfiles?.length === 0 && (
               <TableRow>
                 <TableCell colSpan={6} className="text-center py-8">
-                  {search
-                    ? `No profile found matching "${search}"`
-                    : 'No profile found'}
+                  {search ? `No profile found matching "${search}"` : 'No profile found'}
                 </TableCell>
               </TableRow>
             )}
@@ -410,7 +408,7 @@ function UserMembershipManagement() {
 
   const createGroupProfileMembership = api.profile.createGroupProfileMembership.useMutation({
     onSuccess: () => {
-      toast.success('User added to group profile successfully');
+      toast.success('Member added to group profile successfully');
       setSelectedUserId('');
       setSelectedGroupProfileId('');
     },
@@ -433,7 +431,7 @@ function UserMembershipManagement() {
 
   const deleteGroupProfileMembership = api.profile.deleteGroupProfileMembership.useMutation({
     onSuccess: () => {
-      toast.success('User removed from group profile successfully');
+      toast.success('Member removed from group profile successfully');
       setRemoveGroupProfileId('');
       setSelectedUserId('');
     },
@@ -459,14 +457,14 @@ function UserMembershipManagement() {
         <div className="space-y-4 p-4 border rounded-lg">
           <h3 className="font-semibold flex items-center gap-2">
             <Users className="h-4 w-4" />
-            Add User to Group Profile
+            Add Member to Group Profile
           </h3>
           <div className="space-y-2">
-            <Label>User</Label>
+            <Label>Member</Label>
             <div className="relative">
               <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
               <Input
-                placeholder="Search users by name, email, or NIM..."
+                placeholder="Search members by name, email, or NIM..."
                 value={userSearch}
                 onChange={(e) => setUserSearch(e.target.value)}
                 className="pl-10 mb-2"
@@ -474,7 +472,7 @@ function UserMembershipManagement() {
             </div>
             <Select value={selectedUserId} onValueChange={setSelectedUserId}>
               <SelectTrigger>
-                <SelectValue placeholder="Select user" />
+                <SelectValue placeholder="Select member" />
               </SelectTrigger>
               <SelectContent>
                 {filteredUsers && filteredUsers?.length > 0 ? (
@@ -540,11 +538,11 @@ function UserMembershipManagement() {
             Add Profile to Member
           </h3>
           <div className="space-y-2">
-            <Label>User</Label>
+            <Label>Member</Label>
             <div className="relative">
               <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
               <Input
-                placeholder="Search users by name, email, or NIM..."
+                placeholder="Search mmebers by name, email, or NIM..."
                 value={userSearch}
                 onChange={(e) => setUserSearch(e.target.value)}
                 className="pl-10 mb-2"
@@ -552,7 +550,7 @@ function UserMembershipManagement() {
             </div>
             <Select value={selectedUserId} onValueChange={setSelectedUserId}>
               <SelectTrigger>
-                <SelectValue placeholder="Select user" />
+                <SelectValue placeholder="Select member" />
               </SelectTrigger>
               <SelectContent>
                 {filteredUsers && filteredUsers?.length > 0 ? (
@@ -624,14 +622,14 @@ function UserMembershipManagement() {
         <div className="space-y-4 p-4 border rounded-lg">
           <h3 className="font-semibold flex items-center gap-2">
             <Users className="h-4 w-4" />
-            Remove User from Group Profile
+            Remove Member from Group Profile
           </h3>
           <div className="space-y-2">
-            <Label>User</Label>
+            <Label>Member</Label>
             <div className="relative">
               <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
               <Input
-                placeholder="Search users by name, email, or NIM..."
+                placeholder="Search members by name, email, or NIM..."
                 value={userSearch}
                 onChange={(e) => setUserSearch(e.target.value)}
                 className="pl-10 mb-2"
@@ -639,7 +637,7 @@ function UserMembershipManagement() {
             </div>
             <Select value={selectedUserId} onValueChange={setSelectedUserId}>
               <SelectTrigger>
-                <SelectValue placeholder="Select user" />
+                <SelectValue placeholder="Select member" />
               </SelectTrigger>
               <SelectContent>
                 {filteredUsers && filteredUsers?.length > 0 ? (
@@ -706,11 +704,11 @@ function UserMembershipManagement() {
             Delete Member Profile
           </h3>
           <div className="space-y-2">
-            <Label>User</Label>
+            <Label>Member</Label>
             <div className="relative">
               <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
               <Input
-                placeholder="Search users by name, email, or NIM..."
+                placeholder="Search members by name, email, or NIM..."
                 value={userSearch}
                 onChange={(e) => setUserSearch(e.target.value)}
                 className="pl-10 mb-2"
@@ -718,7 +716,7 @@ function UserMembershipManagement() {
             </div>
             <Select value={selectedUserId} onValueChange={setSelectedUserId}>
               <SelectTrigger>
-                <SelectValue placeholder="Select user" />
+                <SelectValue placeholder="Select member" />
               </SelectTrigger>
               <SelectContent>
                 {filteredUsers && filteredUsers?.length > 0 ? (
@@ -921,7 +919,7 @@ function AssignedMemberships() {
 
   const deleteGroupProfileMembership = api.profile.deleteGroupProfileMembership.useMutation({
     onSuccess: () => {
-      toast.success('User removed from group profile successfully');
+      toast.success('Member removed from group profile successfully');
       setSelectedUserId(null);
       setDeleteGroupDialog(null);
       refetchGroupProfiles();
@@ -986,7 +984,7 @@ function AssignedMemberships() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>User</TableHead>
+                  <TableHead>Member</TableHead>
                   <TableHead>NIM</TableHead>
                   <TableHead>Group Profile</TableHead>
                   <TableHead>Joined Date</TableHead>
@@ -1067,7 +1065,7 @@ function AssignedMemberships() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>User</TableHead>
+                  <TableHead>Member</TableHead>
                   <TableHead>NIM</TableHead>
                   <TableHead>Profile</TableHead>
                   <TableHead>Progress</TableHead>
@@ -1131,9 +1129,7 @@ function AssignedMemberships() {
                 {paginatedProfileProgress.length === 0 && (
                   <TableRow>
                     <TableCell colSpan={6} className="text-center py-8">
-                      {search
-                        ? `No profile found matching "${search}"`
-                        : 'No profile found'}
+                      {search ? `No profile found matching "${search}"` : 'No profile found'}
                     </TableCell>
                   </TableRow>
                 )}
@@ -1183,7 +1179,7 @@ function AssignedMemberships() {
               </div>
             </div>
             <div className="space-y-2">
-              <Label>User</Label>
+              <Label>Member</Label>
               <div className="p-3 bg-muted rounded-md space-y-1">
                 <div className="font-medium">{editProfileDialog?.userName}</div>
                 <div className="text-sm text-muted-foreground">{editProfileDialog?.userEmail}</div>
@@ -1469,16 +1465,18 @@ export default function ProfileManagement() {
       </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList>
-          <TabsTrigger value="group-profiles">Group Profiles</TabsTrigger>
-          <TabsTrigger value="profiles">Profiles</TabsTrigger>
-          <TabsTrigger value="user-memberships">User Memberships</TabsTrigger>
-          <TabsTrigger value="assigned-memberships">Assigned Memberships</TabsTrigger>
-        </TabsList>
+        <div className="overflow-x-auto pb-2 -mx-4 px-4 sm:mx-0 sm:px-0">
+          <TabsList className="w-full sm:w-auto inline-flex min-w-max">
+            <TabsTrigger value="group-profiles">Group Profiles</TabsTrigger>
+            <TabsTrigger value="profiles">Profiles</TabsTrigger>
+            <TabsTrigger value="user-memberships">User Memberships</TabsTrigger>
+            <TabsTrigger value="assigned-memberships">Assigned Memberships</TabsTrigger>
+          </TabsList>
+        </div>
 
         <TabsContent value="group-profiles" className="space-y-4">
-          <div className="flex justify-end">
-            <Button onClick={() => setCreateGroupDialog(true)}>
+          <div className="flex justify-center sm:justify-end">
+            <Button onClick={() => setCreateGroupDialog(true)} className="max-sm:w-full">
               <Plus className="h-4 w-4 mr-2" />
               Create Group Profile
             </Button>
@@ -1501,8 +1499,8 @@ export default function ProfileManagement() {
         </TabsContent>
 
         <TabsContent value="profiles" className="space-y-4">
-          <div className="flex justify-end">
-            <Button onClick={() => setCreateProfileDialog(true)}>
+          <div className="flex justify-center sm:justify-end">
+            <Button onClick={() => setCreateProfileDialog(true)} className="max-sm:w-full">
               <Plus className="h-4 w-4 mr-2" />
               Create Profile
             </Button>
