@@ -555,50 +555,59 @@ model ResourceAccess {
 }
 
 model GroupProfile{
-id          String @id @default(cuid())
-name        String @unique
-description String?
-profiles    Profile[]
-userId      String?
-user        User?          @relation("UserGroupProfiles", fields: [userId], references: [id], onDelete: Cascade)
+id              String @id @default(cuid())
+name            String @unique
+description     String?
+profiles        Profile[]
+
+userMemberships UserGroupProfile[]
 
 updatedAt       DateTime        @updatedAt
 createdAt       DateTime        @default(now())
-
-@@index([userId])
 }
 
 model Profile{
 id          String @id @default(cuid())
 groupId     String?
 group       GroupProfile?   @relation(fields: [groupId], references: [id], onDelete: Cascade)
-userId      String?
-user        User?          @relation("UserProfiles", fields: [userId], references: [id], onDelete: Cascade)
 name        String
 description String?
 
-userProgress ProfileProgress[]
+userProgresses UserProfileProgress[]
 
 updatedAt       DateTime        @updatedAt
 createdAt       DateTime        @default(now())
 
 @@index([groupId])
-@@index([userId])
 }
 
-model ProfileProgress{
+model UserGroupProfile {
+  id              String          @id @default(cuid())
+  userId          String
+  user            User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  groupProfileId  String
+  groupProfile    GroupProfile    @relation(fields: [groupProfileId], references: [id], onDelete: Cascade)
+  joinedAt        DateTime        @default(now())
+
+  @@unique([userId,groupProfileId])
+  @@index([groupProfileId])
+  @@index([userId])
+}
+
+model UserProfileProgress{
 id              String          @id @default(cuid())
 userId          String
 user            User            @relation(fields: [userId], references: [id], onDelete: Cascade)
 profileId       String
 profile         Profile         @relation(fields: [profileId], references: [id], onDelete: Cascade)
-progress        Int
+progress        Int             @default(0)
 
 updatedAt       DateTime        @updatedAt
 createdAt       DateTime        @default(now())
 
 @@unique([userId, profileId])
 @@index([profileId])
+@@index([userId])
 }
 
 model User {
@@ -618,9 +627,8 @@ model User {
   image         String?
   coverImage    String?
 
-  groupProfiles        GroupProfile[]     @relation("UserGroupProfiles")
-  profiles             Profile[]          @relation("UserProfiles")
-  profileProgresses    ProfileProgress[]
+  groupProfiles        UserGroupProfile[]
+  profileProgresses    UserProfileProgress[]
   sessions             Session[]
   courses              Course[]
   learningSessions     LearningSession[]
