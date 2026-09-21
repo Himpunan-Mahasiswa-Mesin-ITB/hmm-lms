@@ -48,6 +48,8 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from '../ui/sidebar';
+import type { Role } from '@prisma/client';
+import { BP_ACCESS_ROLES } from '~/constants/access';
 
 const adminSidebarTabs: {
   group: string;
@@ -169,6 +171,30 @@ const adminSidebarTabs: {
     },
   ];
 
+const bpSidebarTabs: {
+  group: string;
+  items: {
+    label: string;
+    href: string;
+    icon: typeof Banknote;
+    tooltip: string;
+    dev?: boolean;
+  }[];
+}[] = [
+    {
+      group: 'Badan Pengurus',
+      items: [
+        {
+          label: 'Profiles Management',
+          href: '/admin/profiles',
+          icon: Users,
+          tooltip: 'Profiles Management',
+          dev: false,
+        },
+      ],
+    },
+  ];
+
 export default async function AdminNavbar({ children }: Readonly<{ children: React.ReactNode }>) {
   const SIDEBAR_COOKIE_NAME = 'admin_sidebar_state';
   const cookieStore = await cookies();
@@ -266,6 +292,33 @@ async function AdminSidebar() {
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
+        {BP_ACCESS_ROLES.includes(session?.user?.role as Role) && (
+          bpSidebarTabs.map((group) => (
+            <SidebarGroup key={'bp-sidebar-group-' + group.group}>
+              <SidebarGroupLabel>{group.group}</SidebarGroupLabel>
+              <SidebarMenu>
+                {group.items.map((item) => (
+                  <SidebarMenuItem key={'admin-sidebar-item-' + item.label}>
+                    <SidebarMenuButton tooltip={item.tooltip} asChild>
+                      <Link
+                        href={item.href}
+                        className="transition-all rounded-l-full pl-4 py-1.5 flex items-center hover:bg-orange-50 dark:hover:bg-orange-950/20"
+                      >
+                        <item.icon />
+                        <span>{item.label}</span>
+                        {item.dev && (
+                          <Badge variant="secondary" className="ml-2">
+                            dev
+                          </Badge>
+                        )}
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ))}
+              </SidebarMenu>
+            </SidebarGroup>
+          ))
+        )}
         {adminSidebarTabs.map((group) => (
           <SidebarGroup key={'admin-sidebar-group-' + group.group}>
             <SidebarGroupLabel>{group.group}</SidebarGroupLabel>

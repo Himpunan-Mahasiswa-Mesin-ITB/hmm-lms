@@ -17,6 +17,7 @@ import {
   Activity,
   ArrowRight,
   BarChart3,
+  UserCircle,
 } from "lucide-react";
 import { api } from "~/trpc/react";
 import { Button } from "~/components/ui/button";
@@ -26,8 +27,12 @@ import { Progress } from "~/components/ui/progress";
 // import { Separator } from "~/components/ui/separator";
 import { Alert, AlertDescription, AlertTitle } from "~/components/ui/alert";
 import Link from "next/link";
+import type { Role } from "@prisma/client";
+import { useSession } from "next-auth/react";
+import { BP_ACCESS_ROLES } from "~/constants/access";
 
 export function DashboardContent() {
+  const session = useSession()
   // Quick stats queries
   const { data: dashboardStats, isLoading } = api.dashboard.getQuickStats.useQuery(undefined, {
     refetchInterval: 30000, // Refresh every 30 seconds
@@ -298,6 +303,15 @@ export function DashboardContent() {
                   Create Announcement
                 </Link>
               </Button>
+              {BP_ACCESS_ROLES.includes(session?.data?.user.role as Role) && (
+                <Button variant="outline" className="w-full justify-start" asChild>
+                  <Link href="/admin/profiles">
+                    <UserCircle className="h-4 w-4 mr-2" />
+                    Manage Profiles
+                  </Link>
+                </Button>
+              )
+              }
             </div>
           </CardContent>
         </Card>

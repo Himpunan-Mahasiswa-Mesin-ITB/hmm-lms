@@ -45,7 +45,7 @@ const MODEL_FIELDS: Record<string, Record<string, { type: string; required?: boo
     faculty: { type: "text" },
     program: { type: "text" },
     position: { type: "text" },
-    role: { type: "select", options: ["ADMIN", "STUDENT", "SUPERADMIN", "MACHINING"], required: true },
+    role: { type: "select", options: ["ADMIN", "STUDENT", "SUPERADMIN", "MACHINING", "BP"], required: true },
   },
   course: {
     title: { type: "text", required: true },

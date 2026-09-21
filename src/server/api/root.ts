@@ -19,6 +19,7 @@ import { shortLinkRouter } from './routers/short-link';
 import { studentDashboardRouter } from './routers/student/dashboard';
 import { tryoutRouter } from './routers/tryout';
 import { userRouter } from './routers/user';
+import { profileRouter } from './routers/profile';
 
 /**
  * This is the primary router for your server.
@@ -45,6 +46,7 @@ export const appRouter = createTRPCRouter({
   shortLink: shortLinkRouter,
   machining: machiningRouter,
   payload: payloadRouter,
+  profile: profileRouter,
 });
 
 // export type definition of API

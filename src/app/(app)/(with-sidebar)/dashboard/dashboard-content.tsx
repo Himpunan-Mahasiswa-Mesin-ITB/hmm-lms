@@ -1,53 +1,40 @@
-// ~/app/(student)/dashboard/dashboard-content.tsx
-"use client";
+'use client';
 
-import { api } from "~/trpc/react";
-import { DashboardChart } from "./dashboard-chart";
-import { DashboardCalendar } from "./dashboard-calendar";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "~/components/ui/card";
-import {
-  ArrowRight,
-  BookOpen,
-  CalendarDays,
-  Crown,
-  Flame,
-  Sparkles,
-  Trophy,
-} from "lucide-react";
-import { Skeleton } from "~/components/ui/skeleton";
-import Link from "next/link";
-import { Button } from "~/components/ui/button";
-import { Badge } from "~/components/ui/badge";
+import { ArrowRight, BookOpen, CalendarDays, Crown, Flame, Sparkles, Trophy } from 'lucide-react';
+import Link from 'next/link';
+
+import { Badge } from '~/components/ui/badge';
+import { Button } from '~/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card';
+import { Skeleton } from '~/components/ui/skeleton';
+import { api } from '~/trpc/react';
+
+import { DashboardCalendar } from './dashboard-calendar';
+import { DashboardChart } from './dashboard-chart';
+import { ProfileProgressCard } from './profile-progress-card';
 
 export function DashboardContent() {
   const { data: courses, isLoading: coursesLoading } =
     api.studentDashboard.getEnrolledCourses.useQuery();
 
-  const { isLoading: statsLoading } =
-    api.studentDashboard.getDashboardStats.useQuery();
+  const { isLoading: statsLoading } = api.studentDashboard.getDashboardStats.useQuery();
   const { data: hallOfFame, isLoading: hallOfFameLoading } =
     api.studentDashboard.getWeeklyHallOfFame.useQuery({ limit: 3 });
 
-  if (coursesLoading || statsLoading || hallOfFameLoading) {
+  const { data: profileProgress, isLoading: profileProgressLoading } =
+    api.profile.getCurrentUserProfileProgress.useQuery();
+
+  if (coursesLoading || statsLoading || hallOfFameLoading || profileProgressLoading) {
     return <DashboardSkeleton />;
   }
 
   return (
     <div className="mx-auto w-full max-w-6xl space-y-7 overflow-x-clip">
       <Card className="border-border/70 bg-card overflow-hidden shadow-sm">
-        <div className="from-primary/15 pointer-events-none absolute inset-0 bg-gradient-to-br via-transparent to-transparent" />
+        <div className="from-primary/15 pointer-events-none absolute inset-0 bg-linear-to-br via-transparent to-transparent" />
         <CardContent className="flex flex-col gap-6 p-6 md:flex-row md:items-end md:justify-between md:p-7">
           <div className="space-y-3.5">
-            <Badge
-              variant="secondary"
-              className="h-6 w-fit gap-1 px-2 text-[11px] font-medium"
-            >
+            <Badge variant="secondary" className="h-6 w-fit gap-1 px-2 text-[11px] font-medium">
               <Flame className="h-3.5 w-3.5" />
               Weekly Learning Focus
             </Badge>
@@ -56,8 +43,7 @@ export function DashboardContent() {
                 Make progress with a clearer plan
               </h2>
               <p className="text-muted-foreground max-w-2xl text-sm leading-6 md:text-[15px]">
-                Jump back into your active courses and keep your learning streak
-                going this week.
+                Jump back into your active courses and keep your learning streak going this week.
               </p>
             </div>
           </div>
@@ -72,15 +58,17 @@ export function DashboardContent() {
         </CardContent>
       </Card>
 
+      {profileProgress && profileProgress.length > 0 && (
+        <ProfileProgressCard profileProgress={profileProgress} />
+      )}
+
       <div className="grid gap-6 xl:grid-cols-12">
         <div className="min-w-0 space-y-6 xl:col-span-8">
           <Card className="border-border/70 shadow-sm">
             <CardHeader className="pb-2">
               <div className="flex items-center justify-between gap-3">
                 <div className="space-y-1">
-                  <CardTitle className="text-xl tracking-tight">
-                    Continue Your Courses
-                  </CardTitle>
+                  <CardTitle className="text-xl tracking-tight">Continue Your Courses</CardTitle>
                   <CardDescription className="text-sm">
                     Your active classes in one clean list
                   </CardDescription>
@@ -99,9 +87,7 @@ export function DashboardContent() {
                     className="border-border/70 bg-card hover:bg-accent/40 flex items-center justify-between gap-3 rounded-xl border p-4 shadow-xs transition-all hover:-translate-y-0.5 hover:shadow-sm"
                   >
                     <div className="min-w-0 space-y-1.5">
-                      <p className="truncate text-[15px] leading-5 font-semibold">
-                        {course.title}
-                      </p>
+                      <p className="truncate text-[15px] leading-5 font-semibold">{course.title}</p>
                       <div className="text-muted-foreground flex flex-wrap items-center gap-2 text-[11px] font-medium tracking-wide">
                         <span>{course.classCode}</span>
                         <span aria-hidden>•</span>
@@ -136,9 +122,7 @@ export function DashboardContent() {
             <CardHeader className="pb-2">
               <div className="flex items-center gap-2">
                 <Crown className="h-5 w-5 text-amber-500" />
-                <CardTitle className="text-lg tracking-tight">
-                  Hall of Fame
-                </CardTitle>
+                <CardTitle className="text-lg tracking-tight">Hall of Fame</CardTitle>
                 <Sparkles className="ml-auto h-4 w-4 text-fuchsia-500" />
               </div>
               <CardDescription className="text-xs tracking-[0.08em] uppercase">
@@ -158,8 +142,7 @@ export function DashboardContent() {
                           #{entry.rank} {entry.userName}
                         </p>
                         <p className="text-muted-foreground text-[11px]">
-                          {Math.round(entry.weeklyDurationSeconds / 60)} mins
-                          this week
+                          {Math.round(entry.weeklyDurationSeconds / 60)} mins this week
                         </p>
                       </div>
                       {entry.rank === 1 ? (
@@ -199,7 +182,7 @@ function DashboardSkeleton() {
         </div>
         <div className="space-y-6 xl:col-span-4">
           <Skeleton className="h-64 w-full" />
-          <Skeleton className="h-[420px] w-full" />
+          <Skeleton className="h-105 w-full" />
         </div>
       </div>
     </div>

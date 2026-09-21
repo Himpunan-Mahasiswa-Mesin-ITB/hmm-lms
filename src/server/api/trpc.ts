@@ -10,6 +10,7 @@
 import { initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
+import { ADMIN_ACCESS_ROLES, BP_ACCESS_ROLES } from "~/constants/access";
 
 import { auth } from "~/server/auth";
 import { db } from "~/server/db";
@@ -139,7 +140,20 @@ export const protectedProcedure = t.procedure
 export const adminProcedure = t.procedure
   .use(timingMiddleware)
   .use(({ ctx, next }) => {
-    if (!ctx.session?.user || !["ADMIN", "SUPERADMIN"].includes(ctx.session.user.role)) {
+    if (!ctx.session?.user || !ADMIN_ACCESS_ROLES.includes(ctx.session.user.role)) {
+      throw new TRPCError({ code: "UNAUTHORIZED" });
+    }
+    return next({
+      ctx: {
+        session: { ...ctx.session, user: ctx.session.user },
+      },
+    });
+  });
+
+export const bpProcedure = t.procedure
+  .use(timingMiddleware)
+  .use(({ ctx, next }) => {
+    if (!ctx.session?.user || !BP_ACCESS_ROLES.includes(ctx.session.user.role)) {
       throw new TRPCError({ code: "UNAUTHORIZED" });
     }
     return next({
