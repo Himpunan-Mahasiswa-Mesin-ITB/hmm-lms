@@ -20,17 +20,17 @@ const montserrat = Montserrat({
 });
 
 export default async function ExternalLayout({ children }: { children: ReactNode }) {
-  // const session = await auth();
+  const session = await auth();
 
-  // if (!session) {
-  //   console.log("Redirected!")
-  //   redirect('/auth/sign-in');
-  // }
+  if (!session) {
+    console.log("Redirected!")
+    redirect('/auth/sign-in');
+  }
 
-  // if (session.user.role !== Role.SUPERADMIN) {
-  //   console.log("Redirected!")
-  //   redirect('/dashboard');
-  // }
+  if (session.user.role !== Role.SUPERADMIN) {
+    console.log("Redirected!")
+    redirect('/dashboard');
+  }
 
   return (
     <div
