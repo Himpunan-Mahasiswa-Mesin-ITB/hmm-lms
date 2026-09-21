@@ -86,9 +86,9 @@ export function ProfileProgressCard({ profileProgress }: ProfileProgressCardProp
           const groupProgress =
             group.profiles.length > 0
               ? Math.round(
-                  group.profiles.reduce((sum, profile) => sum + profile.progress, 0) /
-                    group.profiles.length,
-                )
+                group.profiles.reduce((sum, profile) => sum + profile.progress, 0) /
+                group.profiles.length,
+              )
               : 0;
 
           return (
@@ -131,6 +131,7 @@ export function ProfileProgressCard({ profileProgress }: ProfileProgressCardProp
                   </Button>
                 </CollapsibleTrigger>
                 <CollapsibleContent className="space-y-3 pt-3">
+                  <p className='space-y-2 pl-6 sm:pl-7 text-muted-foreground text-sm'>{group.groupProfile.description}</p>
                   {group.profiles.map((profile) => (
                     <div key={profile.id} className="space-y-2 pl-6 sm:pl-7">
                       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">

@@ -11,6 +11,7 @@ import {
   Search,
   ChevronLeft,
   ChevronRight,
+  RefreshCcw,
 } from 'lucide-react';
 import { useState, Suspense, useMemo } from 'react';
 import { toast } from 'sonner';
@@ -59,7 +60,8 @@ function GroupProfilesTable({
   const [search, setSearch] = useState<string>('');
   const [page, setPage] = useState<number>(1);
   const itemsPerPage = 10;
-  const { data: groupProfiles, isLoading } = api.profile.getGroupProfiles.useQuery();
+  const { data: groupProfiles, isLoading, isRefetching, refetch } = api.profile.getGroupProfiles.useQuery();
+  const isFetching = isLoading || isRefetching
 
   const filteredGroupProfiles = useMemo(() => {
     if (!search) return groupProfiles;
@@ -90,14 +92,19 @@ function GroupProfilesTable({
 
   return (
     <div className="space-y-4">
-      <div className="relative">
-        <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-        <Input
-          placeholder="Search group profiles by name or description..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="pl-10"
-        />
+      <div className="flex items-center gap-2">
+        <div className="relative w-full">
+          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <Input
+            placeholder="Search group profiles by name or description..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="pl-10"
+          />
+        </div>
+        <Button onClick={() => refetch()} disabled={isFetching}>
+          <RefreshCcw className={`${isFetching && `animate-spin`}`} />
+        </Button>
       </div>
       <div className="rounded-md border">
         <Table>
@@ -208,7 +215,8 @@ function ProfilesTable({
   const [search, setSearch] = useState<string>('');
   const [page, setPage] = useState<number>(1);
   const itemsPerPage = 10;
-  const { data: profiles, isLoading } = api.profile.getProfiles.useQuery();
+  const { data: profiles, isLoading, isRefetching, refetch } = api.profile.getProfiles.useQuery();
+  const isFetching = isLoading || isRefetching
 
   const filteredProfiles = useMemo(() => {
     if (!search) return profiles;
@@ -240,14 +248,19 @@ function ProfilesTable({
 
   return (
     <div className="space-y-4">
-      <div className="relative">
-        <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-        <Input
-          placeholder="Search profiles by name, description, or group..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="pl-10"
-        />
+      <div className="flex items-center gap-2">
+        <div className="relative w-full">
+          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <Input
+            placeholder="Search group profiles by name or description..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="pl-10"
+          />
+        </div>
+        <Button onClick={() => refetch()} disabled={isFetching}>
+          <RefreshCcw className={`${isFetching && `animate-spin`}`} />
+        </Button>
       </div>
       <div className="rounded-md border">
         <Table>
@@ -362,7 +375,7 @@ function ProfilesTable({
 function UserMembershipManagement() {
   const [selectedUserId, setSelectedUserId] = useState<string>('');
   const [selectedGroupProfileId, setSelectedGroupProfileId] = useState<string>('');
-  const [membershipProfileId, setMembershipProfileId] = useState<string>('');
+  const [selectedProfileId, setSelectedProfileId] = useState<string>('');
   const [progress, setProgress] = useState<number>(0);
   const [removeGroupProfileId, setRemoveGroupProfileId] = useState<string>('');
   const [removeProfileId, setRemoveProfileId] = useState<string>('');
@@ -372,8 +385,8 @@ function UserMembershipManagement() {
   const [profileSearch, setProfileSearch] = useState<string>('');
 
   const { data: users } = api.profile.getAllUsers.useQuery();
-  const { data: groupProfiles } = api.profile.getGroupProfiles.useQuery();
-  const { data: profiles } = api.profile.getProfiles.useQuery();
+  const { data: groupProfiles, refetch: refetchGroupProfiles } = api.profile.getGroupProfiles.useQuery();
+  const { data: profiles, refetch: refetchProfiles } = api.profile.getProfiles.useQuery();
 
   const filteredUsers = useMemo(() => {
     if (!userSearch) return users;
@@ -406,11 +419,32 @@ function UserMembershipManagement() {
     );
   }, [profiles, profileSearch]);
 
+  const addAssociatedProfileProgress = api.profile.createProfileProgress.useMutation({
+    onSuccess: () => {
+      toast.success('Added associated profile to member successfully');
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
+
+
   const createGroupProfileMembership = api.profile.createGroupProfileMembership.useMutation({
     onSuccess: () => {
       toast.success('Member added to group profile successfully');
+      const profilesByGroupId = profiles?.filter((profile) => profile.groupId === selectedGroupProfileId)
+      profilesByGroupId?.forEach((profile) => {
+        addAssociatedProfileProgress.mutate({
+          userId: selectedUserId,
+          profileId: profile.id,
+          progress: 0,
+        })
+      })
       setSelectedUserId('');
       setSelectedGroupProfileId('');
+
+      void refetchGroupProfiles()
+      void refetchProfiles()
     },
     onError: (error) => {
       toast.error(error.message);
@@ -419,32 +453,43 @@ function UserMembershipManagement() {
 
   const createProfileProgress = api.profile.createProfileProgress.useMutation({
     onSuccess: () => {
-      toast.success('Profile member added successfully');
+      toast.success('Added profile to member successfully');
       setSelectedUserId('');
-      setMembershipProfileId('');
+      setSelectedProfileId('');
       setProgress(0);
+      void refetchProfiles()
     },
     onError: (error) => {
       toast.error(error.message);
     },
   });
-
   const deleteGroupProfileMembership = api.profile.deleteGroupProfileMembership.useMutation({
     onSuccess: () => {
       toast.success('Member removed from group profile successfully');
       setRemoveGroupProfileId('');
       setSelectedUserId('');
+
+      void refetchGroupProfiles()
+      void refetchProfiles()
     },
     onError: (error) => {
       toast.error(error.message);
     },
   });
-
+  const deleteAssociatedProfileProgress = api.profile.deleteProfileProgress.useMutation({
+    onSuccess: () => {
+      toast.success(`Removed associated profile from member successfully`);
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
   const deleteProfileProgress = api.profile.deleteProfileProgress.useMutation({
     onSuccess: () => {
-      toast.success('Profile member deleted successfully');
+      toast.success(`Member's profile deleted successfully`);
       setRemoveProfileId('');
       setSelectedUserId('');
+      void refetchProfiles()
     },
     onError: (error) => {
       toast.error(error.message);
@@ -542,7 +587,7 @@ function UserMembershipManagement() {
             <div className="relative">
               <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
               <Input
-                placeholder="Search mmebers by name, email, or NIM..."
+                placeholder="Search members by name, email, or NIM..."
                 value={userSearch}
                 onChange={(e) => setUserSearch(e.target.value)}
                 className="pl-10 mb-2"
@@ -576,7 +621,7 @@ function UserMembershipManagement() {
                 className="pl-10 mb-2"
               />
             </div>
-            <Select value={membershipProfileId} onValueChange={setMembershipProfileId}>
+            <Select value={selectedProfileId} onValueChange={setSelectedProfileId}>
               <SelectTrigger>
                 <SelectValue placeholder="Select profile" />
               </SelectTrigger>
@@ -605,15 +650,15 @@ function UserMembershipManagement() {
           </div>
           <Button
             onClick={() => {
-              if (selectedUserId && membershipProfileId) {
+              if (selectedUserId && selectedProfileId) {
                 createProfileProgress.mutate({
                   userId: selectedUserId,
-                  profileId: membershipProfileId,
+                  profileId: selectedProfileId,
                   progress,
                 });
               }
             }}
-            disabled={!selectedUserId || !membershipProfileId || createProfileProgress.isPending}
+            disabled={!selectedUserId || !selectedProfileId || createProfileProgress.isPending}
           >
             Add Profile
           </Button>
@@ -684,6 +729,13 @@ function UserMembershipManagement() {
             variant="destructive"
             onClick={() => {
               if (selectedUserId && removeGroupProfileId) {
+                const profilesByGroupId = profiles?.filter((profile) => profile.groupId === removeGroupProfileId)
+                profilesByGroupId?.forEach((profile) => {
+                  deleteAssociatedProfileProgress.mutate({
+                    userId: selectedUserId,
+                    profileId: profile.id,
+                  })
+                })
                 deleteGroupProfileMembership.mutate({
                   userId: selectedUserId,
                   groupProfileId: removeGroupProfileId,
@@ -798,9 +850,11 @@ function AssignedMemberships() {
   const itemsPerPage = 10;
 
   const { data: users } = api.profile.getAllUsers.useQuery();
-  const { data: groupProfiles, refetch: refetchGroupProfiles } =
+  const { data: groupProfiles, refetch: refetchGroupProfiles, isRefetching: isRefetchingGroupProfiles, isLoading: isLoadingGroupProfiles } =
     api.profile.getGroupProfiles.useQuery();
-  const { data: profiles, refetch: refetchProfiles } = api.profile.getProfiles.useQuery();
+  const { data: profiles, refetch: refetchProfiles, isRefetching: isRefetchingProfiles, isLoading: isLoadingProfiles, } = api.profile.getProfiles.useQuery();
+
+  const isFetching = ((isRefetchingGroupProfiles || isRefetchingProfiles) || (isLoadingGroupProfiles || isLoadingProfiles))
 
   const allGroupMemberships = useMemo(() => {
     const memberships: Array<{
@@ -957,17 +1011,27 @@ function AssignedMemberships() {
             <TabsTrigger value="profiles">Profile Progress</TabsTrigger>
           </TabsList>
         </Tabs>
-        <div className="relative w-full sm:w-64">
-          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-          <Input
-            placeholder="Search by user name, email, NIM..."
-            value={search}
-            onChange={(e) => {
-              setSearch(e.target.value);
-              setPage(1);
-            }}
-            className="pl-10"
-          />
+        <div className="flex items-center gap-2">
+          <Button onClick={() => {
+            void refetchGroupProfiles()
+            void refetchProfiles()
+          }}
+            disabled={isFetching}
+          >
+            <RefreshCcw className={`${isFetching && `animate-spin`}`} />
+          </Button>
+          <div className="relative w-full sm:w-64">
+            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            <Input
+              placeholder="Search by user name, email, NIM..."
+              value={search}
+              onChange={(e) => {
+                setSearch(e.target.value);
+                setPage(1);
+              }}
+              className="pl-10"
+            />
+          </div>
         </div>
       </div>
 

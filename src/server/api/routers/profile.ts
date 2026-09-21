@@ -356,7 +356,6 @@ export const profileRouter = createTRPCRouter({
         update: {},
       });
     }),
-
   deleteGroupProfileMembership: bpProcedure
     .input(
       z.object({
@@ -564,9 +563,30 @@ export const profileRouter = createTRPCRouter({
         groupProfile: {
           id: 'standalone',
           name: 'Standalone Profiles',
-          description: 'Profiles not assigned to any group',
+          description: 'Profiles not assigned to any group, your own picked profiles displayed here',
         },
         profiles: standaloneProfiles.map((progress) => ({
+          id: progress.profile.id,
+          name: progress.profile.name,
+          description: progress.profile.description,
+          progress: progress.progress,
+          updatedAt: progress.updatedAt,
+        })),
+      });
+    }
+
+    const userAssignedGroupProfileIds = userGroupProfiles.map((groupProfile) => groupProfile.groupProfileId)
+    const groupedProfiles = userProfileProgress.filter((progress) => progress.profile.groupId !== null);
+    const orphanedProfiles = groupedProfiles.filter((profileProgress) => !userAssignedGroupProfileIds.includes(profileProgress.profile.groupId as string))
+
+    if (orphanedProfiles.length > 0) {
+      groupedProgress.push({
+        groupProfile: {
+          id: 'Independent',
+          name: 'Independent Profiles',
+          description: 'Profiles not assigned to your assigned groups, your own picked grouped profiles displayed here',
+        },
+        profiles: orphanedProfiles.map((progress) => ({
           id: progress.profile.id,
           name: progress.profile.name,
           description: progress.profile.description,
