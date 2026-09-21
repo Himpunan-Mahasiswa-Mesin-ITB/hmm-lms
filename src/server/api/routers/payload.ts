@@ -207,4 +207,54 @@ export const payloadRouter = createTRPCRouter({
       }
       return event.docs[0];
     }),
+  getExternalGallery: publicProcedure.query(async () => {
+    const payloadConfig = await config;
+    const payload = await getPayload({
+      config: payloadConfig,
+    });
+
+    const gallery = await payload.find({
+      collection: 'externalGallery',
+      where: {
+        status: {
+          equals: 'published',
+        },
+      },
+      sort: '-publishedAt',
+    });
+
+    return gallery;
+  }),
+  getExternalGalleryItem: publicProcedure
+    .input(
+      z.object({
+        id: z.string(),
+      }),
+    )
+    .query(async ({ input }) => {
+      const id = input.id;
+      const payloadConfig = await config;
+      const payload = await getPayload({
+        config: payloadConfig,
+      });
+
+      const galleryItem = await payload.find({
+        collection: 'externalGallery',
+        where: {
+          id: {
+            equals: id,
+          },
+          status: {
+            equals: 'published',
+          },
+        },
+      });
+      if (!galleryItem.docs || galleryItem.docs.length === 0) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Gallery item not found',
+        });
+      }
+      return galleryItem.docs[0];
+    }),
 });

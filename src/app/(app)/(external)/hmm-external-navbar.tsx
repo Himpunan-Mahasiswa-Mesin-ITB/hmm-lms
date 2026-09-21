@@ -16,6 +16,7 @@ const EXTERNAL_PAGES: ReadonlyArray<{ href: string; label: string }> = [
   { href: '/news', label: 'News' },
   { href: '/achievements', label: 'Achievements' },
   { href: '/event', label: 'Events' },
+  { href: '/gallery', label: 'Gallery' },
 ];
 
 function computeScrollProgress(): number {

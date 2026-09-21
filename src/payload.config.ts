@@ -11,6 +11,7 @@ import { Categories } from './collections/Categories';
 import { Events } from './collections/Events';
 import { ExternalAbout } from './collections/ExternalAbout';
 import { ExternalContact } from './collections/ExternalContact';
+import { ExternalGallery } from './collections/ExternalGallery';
 import { ExternalHeritageTimeline } from './collections/ExternalHeritageTimeline';
 import { ExternalHighlight } from './collections/ExternalHighlight';
 import { ExternalImage } from './collections/ExternalImage';
@@ -101,6 +102,7 @@ export default buildConfig({
     ExternalHighlight,
     ExternalSpotlight,
     ExternalMisi,
+    ExternalGallery,
     ExternalOrganogram,
     ExternalHeritageTimeline,
     ExternalPillar,

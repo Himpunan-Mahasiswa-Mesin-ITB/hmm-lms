@@ -14,7 +14,6 @@ import RichText from '~/payload/components/RichText';
 import { generateMeta } from '~/payload/utilities/generateMeta';
 
 import { ExternalLandingFooter } from '../../external-landing-footer';
-import { HmmExternalNavbar } from '../../hmm-external-navbar';
 import PageClient from './page.client';
 
 export async function generateStaticParams() {
@@ -74,7 +73,6 @@ export default async function Achievement({ params: paramsPromise }: Args) {
 
   return (
     <>
-      <HmmExternalNavbar />
       <main className="hmm-sans text-[var(--color-hmm-navy)]">
         <PageClient />
         <PayloadRedirects disableNotFound url={url} />
