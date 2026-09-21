@@ -81,6 +81,7 @@ export interface Config {
     'external-highlight': ExternalHighlight;
     'external-spotlight': ExternalSpotlight;
     'external-misi': ExternalMisi;
+    externalGallery: ExternalGallery;
     'external-organogram': ExternalOrganogram;
     'external-heritage-timeline': ExternalHeritageTimeline;
     'external-pillar': ExternalPillar;
@@ -113,6 +114,7 @@ export interface Config {
     'external-highlight': ExternalHighlightSelect<false> | ExternalHighlightSelect<true>;
     'external-spotlight': ExternalSpotlightSelect<false> | ExternalSpotlightSelect<true>;
     'external-misi': ExternalMisiSelect<false> | ExternalMisiSelect<true>;
+    externalGallery: ExternalGallerySelect<false> | ExternalGallerySelect<true>;
     'external-organogram': ExternalOrganogramSelect<false> | ExternalOrganogramSelect<true>;
     'external-heritage-timeline': ExternalHeritageTimelineSelect<false> | ExternalHeritageTimelineSelect<true>;
     'external-pillar': ExternalPillarSelect<false> | ExternalPillarSelect<true>;
@@ -1116,6 +1118,50 @@ export interface ExternalMisi {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "externalGallery".
+ */
+export interface ExternalGallery {
+  id: number;
+  /**
+   * Title of the album
+   */
+  title: string;
+  /**
+   * Image of the album
+   */
+  albumImage: number | Media;
+  /**
+   * Description of the album
+   */
+  description: string;
+  /**
+   * Add tags or categories for this news
+   */
+  tags?:
+    | {
+        tag: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Link to the Google Drive for the album
+   */
+  googleDriveLink: string;
+  publishedAt?: string | null;
+  authors?: (number | User)[] | null;
+  status?: ('draft' | 'published') | null;
+  populatedAuthors?:
+    | {
+        id?: string | null;
+        name?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "external-organogram".
  */
 export interface ExternalOrganogram {
@@ -1569,6 +1615,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'external-misi';
         value: number | ExternalMisi;
+      } | null)
+    | ({
+        relationTo: 'externalGallery';
+        value: number | ExternalGallery;
       } | null)
     | ({
         relationTo: 'external-organogram';
@@ -2127,6 +2177,34 @@ export interface ExternalMisiSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "externalGallery_select".
+ */
+export interface ExternalGallerySelect<T extends boolean = true> {
+  title?: T;
+  albumImage?: T;
+  description?: T;
+  tags?:
+    | T
+    | {
+        tag?: T;
+        id?: T;
+      };
+  googleDriveLink?: T;
+  publishedAt?: T;
+  authors?: T;
+  status?: T;
+  populatedAuthors?:
+    | T
+    | {
+        id?: T;
+        name?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "external-organogram_select".
  */
 export interface ExternalOrganogramSelect<T extends boolean = true> {
@@ -2675,6 +2753,10 @@ export interface TaskSchedulePublish {
       | ({
           relationTo: 'external-misi';
           value: number | ExternalMisi;
+        } | null)
+      | ({
+          relationTo: 'externalGallery';
+          value: number | ExternalGallery;
         } | null)
       | ({
           relationTo: 'external-organogram';
