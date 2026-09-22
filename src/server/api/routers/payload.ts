@@ -257,4 +257,22 @@ export const payloadRouter = createTRPCRouter({
       }
       return galleryItem.docs[0];
     }),
+  getExternalContact: publicProcedure.query(async () => {
+    const payloadConfig = await config;
+    const payload = await getPayload({
+      config: payloadConfig,
+    });
+
+    const contact = await payload.find({
+      collection: 'external-contact',
+      where: {
+        isActive: {
+          equals: true,
+        },
+      },
+      limit: 1,
+    });
+
+    return contact.docs?.[0] || null;
+  }),
 });
