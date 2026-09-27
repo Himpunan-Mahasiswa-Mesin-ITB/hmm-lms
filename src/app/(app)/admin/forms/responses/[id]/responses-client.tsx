@@ -67,6 +67,176 @@ interface ResponsesClientProps {
   submissions: Submission[];
 }
 
+// helper function to get option text from question settings
+function getOptionText(question: FormWithQuestions['questions'][number], value: string): string {
+  if (!question.settings || typeof question.settings !== 'object') return value;
+
+  const settings = question.settings as {
+    options?: Array<{ id: string; text: string; value: string }>;
+    allowOther?: boolean;
+  };
+
+  if (settings.options && Array.isArray(settings.options)) {
+    const option = settings.options.find((opt) => opt.value === value);
+    if (option) return option.text;
+  }
+
+  // if not found in options, return the original value (or "other" custom text)
+  return value;
+}
+
+// helper function to render answer value based on question type
+function renderAnswerValue(
+  question: FormWithQuestions['questions'][number],
+  answer: Submission['answers'][number] | null | undefined,
+): React.ReactNode {
+  if (!answer) {
+    return <span className="text-muted-foreground italic">Skipped</span>;
+  }
+
+  switch (question.type) {
+    case 'SHORT_ANSWER':
+    case 'LONG_ANSWER':
+    case 'NAME_SELECT':
+    case 'NIM_SELECT':
+    case 'TIME':
+    case 'COURSE_SELECT':
+    case 'EVENT_SELECT':
+      return answer.textValue ?? 'No answer';
+
+    case 'MULTIPLE_CHOICE':
+      if (answer.textValue) {
+        return getOptionText(question, answer.textValue);
+      }
+      return 'No answer';
+
+    case 'MULTIPLE_SELECT':
+      if (answer.jsonValue && Array.isArray(answer.jsonValue)) {
+        return (answer.jsonValue as string[])
+          .map((value) => getOptionText(question, value))
+          .join(', ');
+      }
+      return 'No answer';
+
+    case 'RATING':
+      if (answer.numberValue !== null && answer.numberValue !== undefined) {
+        return answer.numberValue.toString();
+      }
+      return 'No answer';
+
+    case 'DATE':
+      if (answer.dateValue) {
+        return formatInTimeZone(new Date(answer.dateValue), TIMEZONE, 'PPP');
+      }
+      return 'No answer';
+
+    case 'FILE_UPLOAD':
+      if (answer.fileUrl) {
+        return (
+          <a
+            href={answer.fileUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-primary hover:underline"
+          >
+            View
+          </a>
+        );
+      }
+      if (answer.jsonValue && Array.isArray(answer.jsonValue)) {
+        // multiple files stored as array of objects with url and name
+        const files = answer.jsonValue as Array<{ url: string; name: string }>;
+        return files.map((file, idx) => (
+          <div key={idx}>
+            <a
+              href={file.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary hover:underline"
+            >
+              {file.name || 'View'}
+            </a>
+            {idx < files.length - 1 && ', '}
+          </div>
+        ));
+      }
+      return 'No answer';
+
+    default:
+      return (
+        answer.textValue ??
+        (answer.numberValue !== null ? String(answer.numberValue) : null) ??
+        (answer.dateValue ? formatInTimeZone(new Date(answer.dateValue), TIMEZONE, 'PPP') : null) ??
+        (answer.jsonValue ? JSON.stringify(answer.jsonValue) : 'No answer')
+      );
+  }
+}
+
+// helper function to get answer value as string for export
+function getAnswerValueAsString(
+  question: FormWithQuestions['questions'][number],
+  answer: Submission['answers'][number] | null | undefined,
+): string {
+  if (!answer) return 'No answer';
+
+  switch (question.type) {
+    case 'SHORT_ANSWER':
+    case 'LONG_ANSWER':
+    case 'NAME_SELECT':
+    case 'NIM_SELECT':
+    case 'TIME':
+    case 'COURSE_SELECT':
+    case 'EVENT_SELECT':
+      return answer.textValue ?? 'No answer';
+
+    case 'MULTIPLE_CHOICE':
+      if (answer.textValue) {
+        return getOptionText(question, answer.textValue);
+      }
+      return 'No answer';
+
+    case 'MULTIPLE_SELECT':
+      if (answer.jsonValue && Array.isArray(answer.jsonValue)) {
+        return (answer.jsonValue as string[])
+          .map((value) => getOptionText(question, value))
+          .join(', ');
+      }
+      return 'No answer';
+
+    case 'RATING':
+      if (answer.numberValue !== null && answer.numberValue !== undefined) {
+        return answer.numberValue.toString();
+      }
+      return 'No answer';
+
+    case 'DATE':
+      if (answer.dateValue) {
+        return formatInTimeZone(new Date(answer.dateValue), TIMEZONE, 'PPP');
+      }
+      return 'No answer';
+
+    case 'FILE_UPLOAD':
+      if (answer.fileUrl) {
+        return answer.fileUrl;
+      }
+      if (answer.jsonValue && Array.isArray(answer.jsonValue)) {
+        const files = answer.jsonValue as Array<{ url: string; name: string }>;
+        return files.map((f) => f.url).join(', ');
+      }
+      return 'No answer';
+
+    default:
+      return (
+        answer.textValue ??
+        (answer.numberValue !== null ? String(answer.numberValue) : 'No answer') ??
+        (answer.dateValue
+          ? formatInTimeZone(new Date(answer.dateValue), TIMEZONE, 'PPP')
+          : 'No answer') ??
+        (answer.jsonValue ? JSON.stringify(answer.jsonValue) : 'No answer')
+      );
+  }
+}
+
 function UpdateNoteDialog({
   submissionId,
   currentNotes,
@@ -199,34 +369,7 @@ const createResponseColumns = (
       header: ({ column }) => <DataTableColumnHeader column={column} title={question.title} />,
       cell: ({ row }) => {
         const answer = row.original.answers.find((a) => a.questionId === question.id);
-        let jsonValuesArray: string[] = [];
-        if (answer?.jsonValue && Array.isArray(answer.jsonValue)) {
-          jsonValuesArray = answer.jsonValue as string[];
-        }
-        return (
-          <span className="text-sm">
-            {answer?.textValue ? (
-              answer.textValue
-            ) : answer?.numberValue !== null && answer?.numberValue !== undefined ? (
-              answer.numberValue.toString()
-            ) : answer?.jsonValue && Array.isArray(answer.jsonValue) ? (
-              jsonValuesArray.map((value) => value).join(', ')
-            ) : answer?.dateValue ? (
-              formatInTimeZone(new Date(answer.dateValue), TIMEZONE, 'PPP')
-            ) : answer?.fileUrl ? (
-              <a
-                href={answer.fileUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-primary hover:underline"
-              >
-                View
-              </a>
-            ) : (
-              '-'
-            )}
-          </span>
-        );
+        return <span className="text-sm">{renderAnswerValue(question, answer)}</span>;
       },
     }),
   );
@@ -270,26 +413,8 @@ export function ResponsesClient({ form, submissions }: ResponsesClientProps) {
         formatInTimeZone(new Date(s.submittedAt), TIMEZONE, 'yyyy-MM-dd HH:mm'),
         s.notes ?? '',
         ...form.questions.map((question) => {
-          const answers = s.answers.filter((a) => a.questionId === question.id);
-
-          if (answers.length === 0) return 'No answer';
-
-          const textAnswer = answers
-            .map((a) => {
-              let jsonValuesArray: string[] = [];
-              if (a.textValue) return a.textValue;
-              else if (a.dateValue) return formatInTimeZone(new Date(a.dateValue), TIMEZONE, 'PPP');
-              else if (a.numberValue !== null && a.numberValue !== undefined)
-                return a.numberValue.toString();
-              else if (a.jsonValue && Array.isArray(a.jsonValue)) {
-                jsonValuesArray = a.jsonValue as string[];
-                return jsonValuesArray.join(', ');
-              }
-              return 'No answer';
-            })
-            .join(', ');
-
-          return textAnswer;
+          const answer = s.answers.find((a) => a.questionId === question.id);
+          return getAnswerValueAsString(question, answer);
         }),
       ]),
     ];
@@ -315,14 +440,35 @@ export function ResponsesClient({ form, submissions }: ResponsesClientProps) {
         const counts: Record<string, number> = {};
         answers.forEach((a) => {
           let values: string[] = [];
-          if (a.jsonValue && Array.isArray(a.jsonValue)) {
-            values = a.jsonValue as string[];
-          } else if (a.textValue) {
-            values = [a.textValue];
-          } else if (a.numberValue !== null && a.numberValue !== undefined) {
-            values = [String(a.numberValue)];
-          } else if (a.fileUrl) {
-            values = [a.fileUrl];
+
+          switch (question.type) {
+            case 'MULTIPLE_CHOICE':
+              if (a.textValue) {
+                values = [getOptionText(question, a.textValue)];
+              }
+              break;
+            case 'NAME_SELECT':
+            case 'NIM_SELECT':
+            case 'TIME':
+            case 'COURSE_SELECT':
+            case 'EVENT_SELECT':
+              if (a.textValue) values = [a.textValue];
+              break;
+            case 'MULTIPLE_SELECT':
+              if (a.jsonValue && Array.isArray(a.jsonValue)) {
+                values = (a.jsonValue as string[]).map((v) => getOptionText(question, v));
+              }
+              break;
+            case 'RATING':
+              if (a.numberValue !== null && a.numberValue !== undefined) {
+                values = [String(a.numberValue)];
+              }
+              break;
+            case 'FILE_UPLOAD':
+              if (a.fileUrl) values = [a.fileUrl];
+              break;
+            default:
+              if (a.textValue) values = [a.textValue];
           }
 
           values.forEach((v) => {
@@ -332,12 +478,7 @@ export function ResponsesClient({ form, submissions }: ResponsesClientProps) {
 
         chartData = Object.entries(counts).map(([name, value]) => ({ name, value }));
       } else {
-        textAnswers = answers.map((a) => {
-          if (a.textValue) return a.textValue;
-          if (a.dateValue) return formatInTimeZone(new Date(a.dateValue), TIMEZONE, 'PPP');
-          if (a.jsonValue) return JSON.stringify(a.jsonValue);
-          return 'No answer';
-        });
+        textAnswers = answers.map((a) => getAnswerValueAsString(question, a));
       }
 
       return {
@@ -441,6 +582,7 @@ export function ResponsesClient({ form, submissions }: ResponsesClientProps) {
                             borderRadius: '8px',
                             border: 'none',
                             boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                            color: 'black',
                           }}
                           cursor={{ fill: 'transparent' }}
                         />
@@ -503,18 +645,7 @@ export function ResponsesClient({ form, submissions }: ResponsesClientProps) {
               <CardContent className="space-y-4">
                 <ScrollArea className="h-87.5 w-full rounded-md border p-4">
                   {selectedQuestionAnswers.map((item, i) => {
-                    const val = item.answer
-                      ? (item.answer.textValue ??
-                        (item.answer.numberValue !== null
-                          ? String(item.answer.numberValue)
-                          : null) ??
-                        (item.answer.dateValue
-                          ? formatInTimeZone(new Date(item.answer.dateValue), TIMEZONE, 'PPP')
-                          : null) ??
-                        (item.answer.jsonValue
-                          ? JSON.stringify(item.answer.jsonValue)
-                          : 'No answer'))
-                      : 'Skipped';
+                    const val = renderAnswerValue(selectedQuestion, item.answer);
 
                     return (
                       <div
@@ -599,20 +730,7 @@ export function ResponsesClient({ form, submissions }: ResponsesClientProps) {
                   const answer = currentSubmission.answers.find(
                     (a) => a.questionId === question.id,
                   );
-                  const val = answer ? (
-                    (answer.textValue ??
-                    (answer.numberValue !== null ? String(answer.numberValue) : null) ??
-                    (answer.dateValue
-                      ? formatInTimeZone(new Date(answer.dateValue), TIMEZONE, 'PPP')
-                      : null) ??
-                    (answer.jsonValue
-                      ? Array.isArray(answer.jsonValue)
-                        ? (answer.jsonValue as string[]).join(', ')
-                        : JSON.stringify(answer.jsonValue)
-                      : 'No answer'))
-                  ) : (
-                    <span className="text-muted-foreground italic">Skipped</span>
-                  );
+                  const val = renderAnswerValue(question, answer);
 
                   return (
                     <div key={question.id} className="space-y-2">

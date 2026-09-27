@@ -35,7 +35,7 @@ export async function ExternalSolidarityCta() {
           Lihat karya mahasiswa
         </a>
         <Link
-          href="/events"
+          href="/event"
           className="hmm-btn-cta hmm-btn-cta--secondary min-h-11 w-full sm:min-h-0 sm:w-auto"
         >
           Eksplor kegiatan
