@@ -1007,8 +1007,8 @@ function AssignedMemberships() {
           }}
         >
           <TabsList>
-            <TabsTrigger value="group-profiles">Group Profile Members</TabsTrigger>
-            <TabsTrigger value="profiles">Profile Progress</TabsTrigger>
+            <TabsTrigger value="group-profiles">Group Profiles</TabsTrigger>
+            <TabsTrigger value="profiles">Profile Progresses</TabsTrigger>
           </TabsList>
         </Tabs>
         <div className="flex items-center gap-2">
@@ -1298,7 +1298,7 @@ function AssignedMemberships() {
             <DialogTitle>Delete Group Profile</DialogTitle>
             <DialogDescription>
               Are you sure you want to delete this group profile? This action cannot be undone and
-              will remove all associated profiles and user memberships.
+              will remove all associated profiles and user's assigned profile.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
@@ -1326,7 +1326,7 @@ function AssignedMemberships() {
             <DialogTitle>Delete Profile</DialogTitle>
             <DialogDescription>
               Are you sure you want to delete this profile? This action cannot be undone and will
-              remove all associated user progress data.
+              remove all associated user profile's progress data.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
@@ -1533,8 +1533,8 @@ export default function ProfileManagement() {
           <TabsList className="w-full sm:w-auto inline-flex min-w-max">
             <TabsTrigger value="group-profiles">Group Profiles</TabsTrigger>
             <TabsTrigger value="profiles">Profiles</TabsTrigger>
-            <TabsTrigger value="user-memberships">User Memberships</TabsTrigger>
-            <TabsTrigger value="assigned-memberships">Assigned Memberships</TabsTrigger>
+            <TabsTrigger value="user-memberships">Manage Profiles</TabsTrigger>
+            <TabsTrigger value="assigned-memberships">Assigned Profiles</TabsTrigger>
           </TabsList>
         </div>
 
@@ -1722,7 +1722,7 @@ export default function ProfileManagement() {
             <DialogTitle>Delete Group Profile</DialogTitle>
             <DialogDescription>
               Are you sure you want to delete this group profile? This action cannot be undone and
-              will remove all associated profiles and user memberships.
+              will remove all associated profiles and user's assigned profile.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
