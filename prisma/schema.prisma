@@ -254,6 +254,7 @@ model Event {
   courseId        String?
   course          Course?             @relation("CourseEvents", fields: [courseId], references: [id])
   scope           EventScope          @default(GLOBAL)
+  relatedProfiles EventProfileRelation[]
   rsvpForm        EventRSVPForm?
   rsvpResponses   EventRSVPResponse[]
   presenceRecords EventPresence[]
@@ -575,6 +576,7 @@ name        String
 description String?
 
 userProgresses UserProfileProgress[]
+relatedEvents  EventProfileRelation[]
 
 updatedAt       DateTime        @updatedAt
 createdAt       DateTime        @default(now())
@@ -609,6 +611,23 @@ createdAt       DateTime        @default(now())
 @@unique([userId, profileId])
 @@index([profileId])
 @@index([userId])
+}
+
+model EventProfileRelation{
+id              String          @id @default(cuid())
+profileId       String
+profile         Profile         @relation(fields: [profileId], references: [id], onDelete: Cascade)
+eventId         String
+event           Event           @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+progressToAdd   Int             @default(0)
+
+updatedAt       DateTime        @updatedAt
+createdAt       DateTime        @default(now())
+
+@@unique([profileId, eventId])
+@@index([profileId])
+@@index([eventId])
 }
 
 model User {

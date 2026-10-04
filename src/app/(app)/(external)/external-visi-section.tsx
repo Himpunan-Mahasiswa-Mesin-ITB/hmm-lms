@@ -102,7 +102,7 @@ export function ExternalVisiSection({ visi, visiImage }: Props) {
                   sizes="(min-width: 1024px) 38vw, 100vw"
                   priority={false}
                 />
-                <div className="hmm-vision-photo-badge">Kabinet in motion</div>
+                {/*<div className="hmm-vision-photo-badge">Kabinet in motion</div>*/}
               </div>
             </div>
           ) : null}

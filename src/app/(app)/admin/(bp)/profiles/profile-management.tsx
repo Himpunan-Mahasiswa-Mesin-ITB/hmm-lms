@@ -60,8 +60,13 @@ function GroupProfilesTable({
   const [search, setSearch] = useState<string>('');
   const [page, setPage] = useState<number>(1);
   const itemsPerPage = 10;
-  const { data: groupProfiles, isLoading, isRefetching, refetch } = api.profile.getGroupProfiles.useQuery();
-  const isFetching = isLoading || isRefetching
+  const {
+    data: groupProfiles,
+    isLoading,
+    isRefetching,
+    refetch,
+  } = api.profile.getGroupProfiles.useQuery();
+  const isFetching = isLoading || isRefetching;
 
   const filteredGroupProfiles = useMemo(() => {
     if (!search) return groupProfiles;
@@ -216,7 +221,7 @@ function ProfilesTable({
   const [page, setPage] = useState<number>(1);
   const itemsPerPage = 10;
   const { data: profiles, isLoading, isRefetching, refetch } = api.profile.getProfiles.useQuery();
-  const isFetching = isLoading || isRefetching
+  const isFetching = isLoading || isRefetching;
 
   const filteredProfiles = useMemo(() => {
     if (!search) return profiles;
@@ -252,7 +257,7 @@ function ProfilesTable({
         <div className="relative w-full">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <Input
-            placeholder="Search group profiles by name or description..."
+            placeholder="Search profiles by name or description..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="pl-10"
@@ -285,7 +290,7 @@ function ProfilesTable({
                   {profile.group ? (
                     <Badge variant="secondary">{profile.group.name}</Badge>
                   ) : (
-                    <Badge variant="outline">No Group</Badge>
+                    <Badge variant="outline">No Group/Standalone</Badge>
                   )}
                 </TableCell>
                 <TableCell>
@@ -385,7 +390,8 @@ function UserMembershipManagement() {
   const [profileSearch, setProfileSearch] = useState<string>('');
 
   const { data: users } = api.profile.getAllUsers.useQuery();
-  const { data: groupProfiles, refetch: refetchGroupProfiles } = api.profile.getGroupProfiles.useQuery();
+  const { data: groupProfiles, refetch: refetchGroupProfiles } =
+    api.profile.getGroupProfiles.useQuery();
   const { data: profiles, refetch: refetchProfiles } = api.profile.getProfiles.useQuery();
 
   const filteredUsers = useMemo(() => {
@@ -428,23 +434,24 @@ function UserMembershipManagement() {
     },
   });
 
-
   const createGroupProfileMembership = api.profile.createGroupProfileMembership.useMutation({
     onSuccess: () => {
       toast.success('Member added to group profile successfully');
-      const profilesByGroupId = profiles?.filter((profile) => profile.groupId === selectedGroupProfileId)
+      const profilesByGroupId = profiles?.filter(
+        (profile) => profile.groupId === selectedGroupProfileId,
+      );
       profilesByGroupId?.forEach((profile) => {
         addAssociatedProfileProgress.mutate({
           userId: selectedUserId,
           profileId: profile.id,
           progress: 0,
-        })
-      })
+        });
+      });
       setSelectedUserId('');
       setSelectedGroupProfileId('');
 
-      void refetchGroupProfiles()
-      void refetchProfiles()
+      void refetchGroupProfiles();
+      void refetchProfiles();
     },
     onError: (error) => {
       toast.error(error.message);
@@ -457,7 +464,7 @@ function UserMembershipManagement() {
       setSelectedUserId('');
       setSelectedProfileId('');
       setProgress(0);
-      void refetchProfiles()
+      void refetchProfiles();
     },
     onError: (error) => {
       toast.error(error.message);
@@ -469,8 +476,8 @@ function UserMembershipManagement() {
       setRemoveGroupProfileId('');
       setSelectedUserId('');
 
-      void refetchGroupProfiles()
-      void refetchProfiles()
+      void refetchGroupProfiles();
+      void refetchProfiles();
     },
     onError: (error) => {
       toast.error(error.message);
@@ -489,7 +496,7 @@ function UserMembershipManagement() {
       toast.success(`Member's profile deleted successfully`);
       setRemoveProfileId('');
       setSelectedUserId('');
-      void refetchProfiles()
+      void refetchProfiles();
     },
     onError: (error) => {
       toast.error(error.message);
@@ -729,13 +736,15 @@ function UserMembershipManagement() {
             variant="destructive"
             onClick={() => {
               if (selectedUserId && removeGroupProfileId) {
-                const profilesByGroupId = profiles?.filter((profile) => profile.groupId === removeGroupProfileId)
+                const profilesByGroupId = profiles?.filter(
+                  (profile) => profile.groupId === removeGroupProfileId,
+                );
                 profilesByGroupId?.forEach((profile) => {
                   deleteAssociatedProfileProgress.mutate({
                     userId: selectedUserId,
                     profileId: profile.id,
-                  })
-                })
+                  });
+                });
                 deleteGroupProfileMembership.mutate({
                   userId: selectedUserId,
                   groupProfileId: removeGroupProfileId,
@@ -850,11 +859,24 @@ function AssignedMemberships() {
   const itemsPerPage = 10;
 
   const { data: users } = api.profile.getAllUsers.useQuery();
-  const { data: groupProfiles, refetch: refetchGroupProfiles, isRefetching: isRefetchingGroupProfiles, isLoading: isLoadingGroupProfiles } =
-    api.profile.getGroupProfiles.useQuery();
-  const { data: profiles, refetch: refetchProfiles, isRefetching: isRefetchingProfiles, isLoading: isLoadingProfiles, } = api.profile.getProfiles.useQuery();
+  const {
+    data: groupProfiles,
+    refetch: refetchGroupProfiles,
+    isRefetching: isRefetchingGroupProfiles,
+    isLoading: isLoadingGroupProfiles,
+  } = api.profile.getGroupProfiles.useQuery();
+  const {
+    data: profiles,
+    refetch: refetchProfiles,
+    isRefetching: isRefetchingProfiles,
+    isLoading: isLoadingProfiles,
+  } = api.profile.getProfiles.useQuery();
 
-  const isFetching = ((isRefetchingGroupProfiles || isRefetchingProfiles) || (isLoadingGroupProfiles || isLoadingProfiles))
+  const isFetching =
+    isRefetchingGroupProfiles ||
+    isRefetchingProfiles ||
+    isLoadingGroupProfiles ||
+    isLoadingProfiles;
 
   const allGroupMemberships = useMemo(() => {
     const memberships: Array<{
@@ -1012,10 +1034,11 @@ function AssignedMemberships() {
           </TabsList>
         </Tabs>
         <div className="flex items-center gap-2">
-          <Button onClick={() => {
-            void refetchGroupProfiles()
-            void refetchProfiles()
-          }}
+          <Button
+            onClick={() => {
+              void refetchGroupProfiles();
+              void refetchProfiles();
+            }}
             disabled={isFetching}
           >
             <RefreshCcw className={`${isFetching && `animate-spin`}`} />
@@ -1518,7 +1541,7 @@ export default function ProfileManagement() {
   });
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 pb-6">
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Profile Management</h1>

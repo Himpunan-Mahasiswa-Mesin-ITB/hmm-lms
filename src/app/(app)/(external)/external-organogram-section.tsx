@@ -130,7 +130,7 @@ function splitGroups(items: OrganogramCard[]): {
   };
   const leadershipGroup: Group = {
     key: 'leadership',
-    label: 'Leadership Core',
+    label: 'Leadership',
     description: 'Pimpinan inti kabinet.',
     cardSize: 'lead',
     cardLabel: 'Core Role',
@@ -138,16 +138,16 @@ function splitGroups(items: OrganogramCard[]): {
   };
   const directingGroup: Group = {
     key: 'directing',
-    label: 'Directing',
-    description: 'Bureau dan department heads yang mengarahkan strategi.',
+    label: 'Kadep/Kabiro',
+    description: 'Biro dan kepala departemen yang mengarahkan strategi.',
     cardSize: 'regular',
     cardLabel: 'Unit',
     items: otherInternal.filter((item) => item.isDirecting === true),
   };
   const executingSupportingGroup: Group = {
     key: 'executing-supporting',
-    label: 'Executing & Supporting',
-    description: 'Sub-bureau dan divisi pelaksana, dikelompokkan per unit induk.',
+    label: 'Kadiv/Kasubbiro',
+    description: 'Divisi & sub-biro pelaksana, dikelompokkan per unit induk.',
     cardSize: 'compact',
     cardLabel: 'Unit',
     items: otherInternal.filter((item) => item.isExecuting === true),

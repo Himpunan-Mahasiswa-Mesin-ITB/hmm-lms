@@ -232,6 +232,100 @@ export const profileRouter = createTRPCRouter({
         });
       }
     }),
+  linkProfileToEvent: bpProcedure
+    .input(
+      z.object({
+        profileId: z.string(),
+        eventId: z.string(),
+        progressToAdd: z.number(),
+      }),
+    )
+    .mutation(async ({ input }) => {
+      const existing = await db.eventProfileRelation.findUnique({
+        where: {
+          profileId_eventId: {
+            profileId: input.profileId,
+            eventId: input.eventId,
+          },
+        },
+      });
+      if (existing)
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'This event is already linked with this Profile',
+        });
+      return await db.eventProfileRelation.create({
+        data: {
+          profileId: input.profileId,
+          eventId: input.eventId,
+          progressToAdd: input.progressToAdd,
+        },
+      });
+    }),
+  unlinkProfileFromEvent: bpProcedure
+    .input(
+      z.object({
+        profileId: z.string(),
+        eventId: z.string(),
+      }),
+    )
+    .mutation(async ({ input }) => {
+      const existing = await db.eventProfileRelation.findUnique({
+        where: {
+          profileId_eventId: {
+            profileId: input.profileId,
+            eventId: input.eventId,
+          },
+        },
+      });
+      if (!existing)
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'This event linked with this Profile is not found',
+        });
+      return await db.eventProfileRelation.delete({
+        where: {
+          profileId_eventId: {
+            profileId: input.profileId,
+            eventId: input.eventId,
+          },
+        },
+      });
+    }),
+  updateEventProfileRelation: bpProcedure
+    .input(
+      z.object({
+        profileId: z.string(),
+        eventId: z.string(),
+        progressToAdd: z.number().min(0).max(100),
+      }),
+    )
+    .mutation(async ({ input }) => {
+      const existing = await db.eventProfileRelation.findUnique({
+        where: {
+          profileId_eventId: {
+            profileId: input.profileId,
+            eventId: input.eventId,
+          },
+        },
+      });
+      if (!existing)
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'This event linked with this Profile is not found',
+        });
+      return await db.eventProfileRelation.update({
+        where: {
+          profileId_eventId: {
+            profileId: input.profileId,
+            eventId: input.eventId,
+          },
+        },
+        data: {
+          progressToAdd: input.progressToAdd,
+        },
+      });
+    }),
   createProfileProgress: bpProcedure
     .input(
       z.object({
@@ -248,11 +342,12 @@ export const profileRouter = createTRPCRouter({
             profileId: input.profileId,
           },
         },
-      })
-      if (existing) throw new TRPCError({
-        code: "BAD_REQUEST",
-        message: "This member is already have this Profile"
-      })
+      });
+      if (existing)
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'This member is already have this Profile',
+        });
       return await db.userProfileProgress.upsert({
         where: {
           userId_profileId: {
@@ -266,6 +361,71 @@ export const profileRouter = createTRPCRouter({
           progress: input.progress,
         },
         update: {},
+      });
+    }),
+  addStandaloneProfiles: protectedProcedure
+    .input(
+      z.object({
+        profileId: z.string(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const userId = ctx.session.user.id;
+      const existing = await db.userProfileProgress.findUnique({
+        where: {
+          userId_profileId: {
+            userId,
+            profileId: input.profileId,
+          },
+        },
+      });
+      if (existing)
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'You already have this profile',
+        });
+      return await db.userProfileProgress.upsert({
+        where: {
+          userId_profileId: {
+            userId,
+            profileId: input.profileId,
+          },
+        },
+        create: {
+          userId,
+          profileId: input.profileId,
+        },
+        update: {},
+      });
+    }),
+  removeStandaloneProfiles: protectedProcedure
+    .input(
+      z.object({
+        profileId: z.string(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const userId = ctx.session.user.id;
+      const existing = await db.userProfileProgress.findUnique({
+        where: {
+          userId_profileId: {
+            userId,
+            profileId: input.profileId,
+          },
+        },
+      });
+      if (!existing)
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'You do not have this profile',
+        });
+      return await db.userProfileProgress.delete({
+        where: {
+          userId_profileId: {
+            userId,
+            profileId: input.profileId,
+          },
+        },
       });
     }),
   updateProfileProgress: bpProcedure
@@ -337,11 +497,12 @@ export const profileRouter = createTRPCRouter({
             groupProfileId: input.groupProfileId,
           },
         },
-      })
-      if (existing) throw new TRPCError({
-        code: "BAD_REQUEST",
-        message: "This member is already exist on this Group Profile"
-      })
+      });
+      if (existing)
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'This member is already exist on this Group Profile',
+        });
       return await db.userGroupProfile.upsert({
         where: {
           userId_groupProfileId: {
@@ -448,6 +609,7 @@ export const profileRouter = createTRPCRouter({
       include: {
         group: true,
         userProgresses: true,
+        relatedEvents: true,
       },
     });
   }),
@@ -563,7 +725,8 @@ export const profileRouter = createTRPCRouter({
         groupProfile: {
           id: 'standalone',
           name: 'Standalone Profiles',
-          description: 'Profiles not assigned to any group, your own picked profiles displayed here',
+          description:
+            'Profiles not assigned to any group, your own picked profiles displayed here',
         },
         profiles: standaloneProfiles.map((progress) => ({
           id: progress.profile.id,
@@ -575,16 +738,24 @@ export const profileRouter = createTRPCRouter({
       });
     }
 
-    const userAssignedGroupProfileIds = userGroupProfiles.map((groupProfile) => groupProfile.groupProfileId)
-    const groupedProfiles = userProfileProgress.filter((progress) => progress.profile.groupId !== null);
-    const orphanedProfiles = groupedProfiles.filter((profileProgress) => !userAssignedGroupProfileIds.includes(profileProgress.profile.groupId as string))
+    const userAssignedGroupProfileIds = userGroupProfiles.map(
+      (groupProfile) => groupProfile.groupProfileId,
+    );
+    const groupedProfiles = userProfileProgress.filter(
+      (progress) => progress.profile.groupId !== null,
+    );
+    const orphanedProfiles = groupedProfiles.filter(
+      (profileProgress) =>
+        !userAssignedGroupProfileIds.includes(profileProgress.profile.groupId as string),
+    );
 
     if (orphanedProfiles.length > 0) {
       groupedProgress.push({
         groupProfile: {
-          id: 'Independent',
-          name: 'Independent Profiles',
-          description: 'Profiles not assigned to your assigned groups, your own picked grouped profiles displayed here',
+          id: 'Individual',
+          name: 'Individual Profiles',
+          description:
+            'Profiles not assigned to your assigned groups, your own picked grouped profiles displayed here',
         },
         profiles: orphanedProfiles.map((progress) => ({
           id: progress.profile.id,
@@ -597,5 +768,17 @@ export const profileRouter = createTRPCRouter({
     }
 
     return groupedProgress;
+  }),
+  getAllEvents: bpProcedure.query(async () => {
+    return await db.event.findMany({
+      include: {
+        relatedProfiles: {
+          include: {
+            event: true,
+            profile: true,
+          },
+        },
+      },
+    });
   }),
 });

@@ -21,8 +21,11 @@ export function DashboardContent() {
   const { data: hallOfFame, isLoading: hallOfFameLoading } =
     api.studentDashboard.getWeeklyHallOfFame.useQuery({ limit: 3 });
 
-  const { data: profileProgress, isLoading: profileProgressLoading } =
-    api.profile.getCurrentUserProfileProgress.useQuery();
+  const {
+    data: profileProgress,
+    isLoading: profileProgressLoading,
+    refetch: refetchProfileProgress,
+  } = api.profile.getCurrentUserProfileProgress.useQuery();
 
   if (coursesLoading || statsLoading || hallOfFameLoading || profileProgressLoading) {
     return <DashboardSkeleton />;
@@ -58,10 +61,9 @@ export function DashboardContent() {
         </CardContent>
       </Card>
 
-      {profileProgress && profileProgress.length > 0 && (
-        <ProfileProgressCard profileProgress={profileProgress} />
+      {profileProgress && profileProgress?.length > 0 && (
+        <ProfileProgressCard profileProgress={profileProgress || []} refetch={refetchProfileProgress} />
       )}
-
       <div className="grid gap-6 xl:grid-cols-12">
         <div className="min-w-0 space-y-6 xl:col-span-8">
           <Card className="border-border/70 shadow-sm">

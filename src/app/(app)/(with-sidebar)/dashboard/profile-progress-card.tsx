@@ -1,13 +1,32 @@
 'use client';
 
-import { Award, Target, TrendingUp, ChevronDown, ChevronUp } from 'lucide-react';
-import { useState } from 'react';
+import { Award, Target, TrendingUp, ChevronDown, ChevronUp, Search } from 'lucide-react';
+import { useState, useMemo } from 'react';
+import { toast } from 'sonner';
 
 import { Badge } from '~/components/ui/badge';
 import { Button } from '~/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '~/components/ui/collapsible';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '~/components/ui/dialog';
+import { Input } from '~/components/ui/input';
+import { Label } from '~/components/ui/label';
 import { Progress } from '~/components/ui/progress';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '~/components/ui/select';
+import { api } from '~/trpc/react';
 
 interface Profile {
   id: string;
@@ -28,10 +47,78 @@ interface GroupProfile {
 
 interface ProfileProgressCardProps {
   profileProgress: GroupProfile[];
+  refetch?: () => void;
 }
 
-export function ProfileProgressCard({ profileProgress }: ProfileProgressCardProps) {
+export function ProfileProgressCard({ profileProgress, refetch }: ProfileProgressCardProps) {
   const [openGroups, setOpenGroups] = useState<Set<string>>(new Set());
+  const [openAddDialog, setOpenAddDialog] = useState(false);
+  const [openRemoveDialog, setOpenRemoveDialog] = useState(false);
+  const [search, setSearch] = useState<string>('');
+  const [selectedProfileId, setSelectedProfileId] = useState<string>('');
+
+  const { data: profiles } = api.profile.getProfiles.useQuery();
+
+  const filteredStandaloneProfiles = useMemo(() => {
+    if (!profiles) return [];
+    const standaloneProfiles = profiles.filter((p) => !p.groupId);
+    if (!search) return standaloneProfiles;
+    const searchLower = search.toLowerCase();
+    return standaloneProfiles.filter(
+      (profile) =>
+        profile.name.toLowerCase().includes(searchLower) ||
+        (profile.description && profile.description.toLowerCase().includes(searchLower)),
+    );
+  }, [profiles, search]);
+
+  const existingProfileIds = useMemo(() => {
+    const ids = new Set<string>();
+    if (profileProgress) {
+      profileProgress.forEach((group) => {
+        group.profiles.forEach((profile) => {
+          ids.add(profile.id);
+        });
+      });
+    }
+    return ids;
+  }, [profileProgress]);
+
+  const availableProfiles = useMemo(() => {
+    return filteredStandaloneProfiles.filter((p) => !existingProfileIds.has(p.id));
+  }, [filteredStandaloneProfiles, existingProfileIds]);
+
+  const availableProfilesToRemove = useMemo(() => {
+    return filteredStandaloneProfiles.filter((p) => existingProfileIds.has(p.id));
+  }, [filteredStandaloneProfiles, existingProfileIds]);
+
+  const addStandaloneProfiles = api.profile.addStandaloneProfiles.useMutation({
+    onSuccess: () => {
+      toast.success('Standalone profile added successfully');
+      setOpenAddDialog(false);
+      setSelectedProfileId('');
+      setSearch('');
+      if (refetch) {
+        void refetch();
+      }
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
+  const removeStandaloneProfiles = api.profile.removeStandaloneProfiles.useMutation({
+    onSuccess: () => {
+      toast.success('Standalone profile removed successfully');
+      setOpenRemoveDialog(false);
+      setSelectedProfileId('');
+      setSearch('');
+      if (refetch) {
+        void refetch();
+      }
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
 
   const toggleGroup = (groupId: string) => {
     const newOpenGroups = new Set(openGroups);
@@ -86,9 +173,9 @@ export function ProfileProgressCard({ profileProgress }: ProfileProgressCardProp
           const groupProgress =
             group.profiles.length > 0
               ? Math.round(
-                group.profiles.reduce((sum, profile) => sum + profile.progress, 0) /
-                group.profiles.length,
-              )
+                  group.profiles.reduce((sum, profile) => sum + profile.progress, 0) /
+                    group.profiles.length,
+                )
               : 0;
 
           return (
@@ -106,7 +193,9 @@ export function ProfileProgressCard({ profileProgress }: ProfileProgressCardProp
                     <div className="flex items-center gap-2 sm:gap-3 text-left flex-1 min-w-0">
                       <Award className="h-4 w-4 text-primary shrink-0" />
                       <div className="space-y-0.5 sm:space-y-1 min-w-0 flex-1">
-                        <div className="font-medium text-sm sm:text-base truncate">{group.groupProfile.name}</div>
+                        <div className="font-medium text-sm sm:text-base truncate">
+                          {group.groupProfile.name}
+                        </div>
                         <div className="text-muted-foreground text-xs">
                           {group.profiles.length} profile{group.profiles.length !== 1 ? 's' : ''}
                         </div>
@@ -131,7 +220,9 @@ export function ProfileProgressCard({ profileProgress }: ProfileProgressCardProp
                   </Button>
                 </CollapsibleTrigger>
                 <CollapsibleContent className="space-y-3 pt-3">
-                  <p className='space-y-2 pl-6 sm:pl-7 text-muted-foreground text-sm'>{group.groupProfile.description}</p>
+                  <p className="space-y-2 pl-6 sm:pl-7 text-muted-foreground text-sm">
+                    {group.groupProfile.description}
+                  </p>
                   {group.profiles.map((profile) => (
                     <div key={profile.id} className="space-y-2 pl-6 sm:pl-7">
                       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
@@ -153,7 +244,9 @@ export function ProfileProgressCard({ profileProgress }: ProfileProgressCardProp
                           {profile.progress > 0 && profile.progress < 100 && (
                             <TrendingUp className="h-3 w-3 text-primary shrink-0" />
                           )}
-                          {profile.progress === 100 && <Award className="h-3 w-3 text-amber-500 shrink-0" />}
+                          {profile.progress === 100 && (
+                            <Award className="h-3 w-3 text-amber-500 shrink-0" />
+                          )}
                         </div>
                       </div>
                       <Progress value={profile.progress} className="h-1.5" />
@@ -169,7 +262,140 @@ export function ProfileProgressCard({ profileProgress }: ProfileProgressCardProp
             </Collapsible>
           );
         })}
+        <Button
+          className="w-full border-dashed border-white/30!"
+          variant="outline"
+          onClick={() => setOpenAddDialog(true)}
+        >
+          Add Standalone Profiles
+        </Button>
+        <Button
+          className="w-full border-dashed border-destructive/50!"
+          variant="outline"
+          onClick={() => setOpenRemoveDialog(true)}
+        >
+          Remove Standalone Profiles
+        </Button>
       </CardContent>
+
+      <Dialog open={openAddDialog} onOpenChange={setOpenAddDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Add Standalone Profile</DialogTitle>
+            <DialogDescription>Select a standalone profile</DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <Label>Standalone Profile</Label>
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                <Input
+                  placeholder="Search standalone profiles by name or description..."
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  className="pl-10"
+                />
+              </div>
+              <Select value={selectedProfileId} onValueChange={setSelectedProfileId}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select standalone profile" />
+                </SelectTrigger>
+                <SelectContent>
+                  {availableProfiles.length > 0 ? (
+                    availableProfiles.map((profile) => (
+                      <SelectItem key={profile.id} value={profile.id}>
+                        {profile.name}
+                      </SelectItem>
+                    ))
+                  ) : (
+                    <div className="p-2 text-sm text-muted-foreground">
+                      {search ? 'No standalone profiles found' : 'No available standalone profiles'}
+                    </div>
+                  )}
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setOpenAddDialog(false)}>
+              Cancel
+            </Button>
+            <Button
+              onClick={() => {
+                if (selectedProfileId) {
+                  addStandaloneProfiles.mutate({
+                    profileId: selectedProfileId,
+                  });
+                }
+              }}
+              disabled={!selectedProfileId || addStandaloneProfiles.isPending}
+            >
+              Add Profile
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+      <Dialog open={openRemoveDialog} onOpenChange={setOpenRemoveDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Remove Standalone Profile</DialogTitle>
+            <DialogDescription>
+              Select a standalone profile to remove, doing this will reset the corresponding
+              profile's progress
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <Label>Standalone Profile</Label>
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                <Input
+                  placeholder="Search standalone profiles by name or description..."
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  className="pl-10"
+                />
+              </div>
+              <Select value={selectedProfileId} onValueChange={setSelectedProfileId}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select standalone profile" />
+                </SelectTrigger>
+                <SelectContent>
+                  {availableProfilesToRemove.length > 0 ? (
+                    availableProfilesToRemove.map((profile) => (
+                      <SelectItem key={profile.id} value={profile.id}>
+                        {profile.name}
+                      </SelectItem>
+                    ))
+                  ) : (
+                    <div className="p-2 text-sm text-muted-foreground">
+                      {search ? 'No standalone profiles found' : 'No available standalone profiles'}
+                    </div>
+                  )}
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setOpenRemoveDialog(false)}>
+              Cancel
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={() => {
+                if (selectedProfileId) {
+                  removeStandaloneProfiles.mutate({
+                    profileId: selectedProfileId,
+                  });
+                }
+              }}
+              disabled={!selectedProfileId || removeStandaloneProfiles.isPending}
+            >
+              Remove Profile
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </Card>
   );
 }

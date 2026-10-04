@@ -16,6 +16,7 @@ import {
 import { cookies } from 'next/headers';
 import Image from 'next/image';
 
+import { ADMIN_ACCESS_ROLES } from '~/constants/access';
 import {
   getAnnoucements,
   getCourses,
@@ -45,7 +46,6 @@ import {
 import SearchCMDK, { type TabsType } from './cmdk-search';
 import ProfileMenu from './profile-menu';
 import { SidebarNavLink } from './sidebar-nav-link';
-import { ADMIN_ACCESS_ROLES } from '~/constants/access';
 
 const sidebarTabs: {
   group: string;
@@ -58,130 +58,129 @@ const sidebarTabs: {
     tag?: string;
   }[];
 }[] = [
-    {
-      group: 'General',
-      items: [
-        {
-          label: 'Dashboard',
-          href: '/dashboard',
-          icon: Home,
-          tooltip: 'Dashboard',
-        },
-        {
-          label: 'Hall of Fame',
-          href: '/hall-of-fame',
-          icon: Trophy,
-          tooltip: 'Hall of Fame',
-          tag: 'new',
-        },
-        {
-          label: 'Schedule',
-          href: '/schedule',
-          icon: Calendar,
-          tooltip: 'Schedule',
-          dev: false,
-        },
-      ],
-    },
-    {
-      group: 'Academics',
-      items: [
-        {
-          label: 'Courses',
-          href: '/courses',
-          icon: GraduationCap,
-          tooltip: 'Courses',
-        },
-        { label: 'Tryouts', href: '/tryouts', icon: Tally5, tooltip: 'Tryouts' },
-        {
-          label: 'Scholarships',
-          href: '/scholarships',
-          icon: Banknote,
-          tooltip: 'Scholarships',
-        },
-      ],
-    },
-    {
-      group: 'Himpunan',
-      items: [
-        {
-          label: 'Events',
-          href: '/events',
-          icon: Footprints,
-          tooltip: 'Events',
-          dev: false,
-        },
-        {
-          label: 'Announcements',
-          href: '/announcements',
-          icon: Megaphone,
-          tooltip: 'Announcements',
-          dev: false,
-        },
-        {
-          label: 'M-Opportunity',
-          href: '/loker',
-          icon: Briefcase,
-          tooltip: 'M-Opportunity',
-          dev: false,
-        },
-        {
-          label: 'Hotline',
-          href: '/hotline',
-          icon: Phone,
-          tooltip: 'Hotline',
-          dev: false,
-        },
-        {
-          label: 'Competition',
-          href: '/competition',
-          icon: Target,
-          tooltip: 'Competition',
-          dev: false,
-        },
-      ],
-    },
-    // {
-    //   group: 'Quick Access',
-    //   items: [
-    //     {
-    //       label: 'Guidebook',
-    //       href: '/docs/user',
-    //       icon: BookOpen,
-    //       tooltip: 'Guidebook',
-    //     },
-    //   ],
-    // },
-    {
-      group: 'Preferences',
-      items: [
-        {
-          label: 'Settings',
-          href: '/settings',
-          icon: Settings,
-          tooltip: 'Settings',
-          dev: false,
-        },
-      ],
-    },
-    {
-      group: 'Admin',
-      items: [
-        {
-          label: 'Admin Panel',
-          href: '/admin',
-          icon: Home,
-          tooltip: 'Admin Panel',
-        },
-        {
-          label: 'Machining',
-          href: '/machining',
-          icon: BookOpen,
-          tooltip: 'Machining',
-        },
-      ],
-    },
-  ];
+  {
+    group: 'General',
+    items: [
+      {
+        label: 'Dashboard',
+        href: '/dashboard',
+        icon: Home,
+        tooltip: 'Dashboard',
+      },
+      {
+        label: 'Hall of Fame',
+        href: '/hall-of-fame',
+        icon: Trophy,
+        tooltip: 'Hall of Fame',
+      },
+      {
+        label: 'Schedule',
+        href: '/schedule',
+        icon: Calendar,
+        tooltip: 'Schedule',
+        dev: false,
+      },
+    ],
+  },
+  {
+    group: 'Academics',
+    items: [
+      {
+        label: 'Courses',
+        href: '/courses',
+        icon: GraduationCap,
+        tooltip: 'Courses',
+      },
+      { label: 'Tryouts', href: '/tryouts', icon: Tally5, tooltip: 'Tryouts' },
+      {
+        label: 'Scholarships',
+        href: '/scholarships',
+        icon: Banknote,
+        tooltip: 'Scholarships',
+      },
+    ],
+  },
+  {
+    group: 'Himpunan',
+    items: [
+      {
+        label: 'Events',
+        href: '/events',
+        icon: Footprints,
+        tooltip: 'Events',
+        dev: false,
+      },
+      {
+        label: 'Announcements',
+        href: '/announcements',
+        icon: Megaphone,
+        tooltip: 'Announcements',
+        dev: false,
+      },
+      {
+        label: 'M-Opportunity',
+        href: '/loker',
+        icon: Briefcase,
+        tooltip: 'M-Opportunity',
+        dev: false,
+      },
+      {
+        label: 'Hotline',
+        href: '/hotline',
+        icon: Phone,
+        tooltip: 'Hotline',
+        dev: false,
+      },
+      {
+        label: 'Competition',
+        href: '/competition',
+        icon: Target,
+        tooltip: 'Competition',
+        dev: false,
+      },
+    ],
+  },
+  // {
+  //   group: 'Quick Access',
+  //   items: [
+  //     {
+  //       label: 'Guidebook',
+  //       href: '/docs/user',
+  //       icon: BookOpen,
+  //       tooltip: 'Guidebook',
+  //     },
+  //   ],
+  // },
+  {
+    group: 'Preferences',
+    items: [
+      {
+        label: 'Settings',
+        href: '/settings',
+        icon: Settings,
+        tooltip: 'Settings',
+        dev: false,
+      },
+    ],
+  },
+  {
+    group: 'Admin',
+    items: [
+      {
+        label: 'Admin Panel',
+        href: '/admin',
+        icon: Home,
+        tooltip: 'Admin Panel',
+      },
+      {
+        label: 'Machining',
+        href: '/machining',
+        icon: BookOpen,
+        tooltip: 'Machining',
+      },
+    ],
+  },
+];
 
 export default async function MainNavbar({ children }: Readonly<{ children: React.ReactNode }>) {
   const SIDEBAR_COOKIE_NAME = 'sidebar_state';
