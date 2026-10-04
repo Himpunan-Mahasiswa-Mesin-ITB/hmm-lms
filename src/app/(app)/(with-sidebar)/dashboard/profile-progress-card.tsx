@@ -173,9 +173,9 @@ export function ProfileProgressCard({ profileProgress, refetch }: ProfileProgres
           const groupProgress =
             group.profiles.length > 0
               ? Math.round(
-                  group.profiles.reduce((sum, profile) => sum + profile.progress, 0) /
-                    group.profiles.length,
-                )
+                group.profiles.reduce((sum, profile) => sum + profile.progress, 0) /
+                group.profiles.length,
+              )
               : 0;
 
           return (
@@ -267,14 +267,14 @@ export function ProfileProgressCard({ profileProgress, refetch }: ProfileProgres
           variant="outline"
           onClick={() => setOpenAddDialog(true)}
         >
-          Add Standalone Profiles
+          Add Standalone Profile
         </Button>
         <Button
           className="w-full border-dashed border-destructive/50!"
           variant="outline"
           onClick={() => setOpenRemoveDialog(true)}
         >
-          Remove Standalone Profiles
+          Remove Standalone Profile
         </Button>
       </CardContent>
 
