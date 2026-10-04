@@ -127,7 +127,7 @@ export default function EventProfileManagementClient() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 pb-6">
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Event Profiles</h1>
