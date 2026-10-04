@@ -45,6 +45,7 @@ import {
 import SearchCMDK, { type TabsType } from './cmdk-search';
 import ProfileMenu from './profile-menu';
 import { SidebarNavLink } from './sidebar-nav-link';
+import { ADMIN_ACCESS_ROLES } from '~/constants/access';
 
 const sidebarTabs: {
   group: string;
@@ -278,7 +279,7 @@ async function AppSidebar() {
       </SidebarHeader>
       <SidebarContent className="px-2 pb-2 group-data-[collapsible=icon]:items-center group-data-[collapsible=icon]:px-1.5">
         {sidebarTabs.map((group) => {
-          if (group.group === 'Admin' && user.role !== 'ADMIN' && user.role !== 'SUPERADMIN') {
+          if (group.group === 'Admin' && !ADMIN_ACCESS_ROLES.includes(user.role)) {
             return null;
           }
           const isSpaciousNav = group.group === 'Academics' || group.group === 'Himpunan';
