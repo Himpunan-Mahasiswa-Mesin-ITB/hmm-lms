@@ -175,7 +175,9 @@ export default function EventProfileManagementClient() {
                   <TableRow key={event.id}>
                     <TableCell className="font-medium">{event.title}</TableCell>
                     <TableCell className="text-muted-foreground">
-                      {event.description || '-'}
+                      <span className="inline-block max-w-50 truncate">
+                        {event.description || '-'}
+                      </span>
                     </TableCell>
                     <TableCell>
                       <Badge variant="secondary">{event.relatedProfiles.length}</Badge>
