@@ -13,7 +13,6 @@ import { PayloadRedirects } from '~/payload/components/PayloadRedirects';
 import RichText from '~/payload/components/RichText';
 import { generateMeta } from '~/payload/utilities/generateMeta';
 
-import { ExternalLandingFooter } from '../../external-landing-footer';
 import PageClient from './page.client';
 
 export async function generateStaticParams() {
@@ -112,7 +111,7 @@ export default async function News({ params: paramsPromise }: Args) {
         </section>
 
         <section className="hmm-chapter-dark px-4 py-[var(--hmm-section-y-md)] sm:px-8">
-          <div className="mx-auto max-w-3xl">
+          <div className="mx-auto max-w-2xl">
             {tags.length > 0 && (
               <div className="mb-8 flex flex-wrap items-center gap-2">
                 <Tag className="h-4 w-4" />
@@ -133,12 +132,11 @@ export default async function News({ params: paramsPromise }: Args) {
               </p>
             )}
 
-            <RichText data={newsItem.content} />
+            <RichText data={newsItem.content} enableGutter={true} enableProse={true} />
           </div>
         </section>
       </article>
 
-      <ExternalLandingFooter />
     </main >
   );
 }

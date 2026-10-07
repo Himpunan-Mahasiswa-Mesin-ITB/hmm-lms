@@ -45,15 +45,6 @@ export const ExternalMisi: CollectionConfig<'external-misi'> = {
               label: 'Card Title',
             },
             {
-              name: 'oneLiner',
-              type: 'text',
-              required: true,
-              label: 'One-Liner',
-              admin: {
-                description: 'Short one-line description',
-              },
-            },
-            {
               name: 'summary',
               type: 'text',
               required: true,
@@ -62,7 +53,6 @@ export const ExternalMisi: CollectionConfig<'external-misi'> = {
             {
               name: 'body',
               type: 'textarea',
-              required: true,
               label: 'Body',
               admin: {
                 description: 'Detailed description of the mission',

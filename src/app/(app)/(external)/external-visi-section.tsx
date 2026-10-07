@@ -1,4 +1,4 @@
-import { RiBriefcase3Line, RiFlaskLine } from '@remixicon/react';
+// import { RiBriefcase3Line, RiFlaskLine } from '@remixicon/react';
 import Image from 'next/image';
 
 import { ExternalReveal } from './external-reveal';
@@ -37,7 +37,7 @@ export function ExternalVisiSection({ visi, visiImage }: Props) {
             </div>
 
             {visiImage ? (
-              <div className="relative mt-8 aspect-[4/3] w-full overflow-hidden rounded-xl border border-white/15 shadow-[0_20px_50px_color-mix(in_srgb,var(--color-hmm-black)_35%,transparent)] lg:mt-0 lg:hidden">
+              <div className="relative mt-8 w-full overflow-hidden rounded-xl border border-white/15 shadow-[0_20px_50px_color-mix(in_srgb,var(--color-hmm-black)_35%,transparent)] min-h-full lg:mt-0 lg:hidden">
                 <Image
                   src={visiImage}
                   alt=""
@@ -57,17 +57,6 @@ export function ExternalVisiSection({ visi, visiImage }: Props) {
                 {coreValues?.values?.map((value: any, index: number) => (
                   <div key={index} className="hmm-ink-card flex h-full">
                     <div className="flex items-start gap-3">
-                      {index === 0 ? (
-                        <RiFlaskLine
-                          className="mt-0.5 h-7 w-7 shrink-0 text-[color-mix(in_srgb,var(--color-hmm-cream)_88%,var(--color-hmm-maroon))]"
-                          aria-hidden
-                        />
-                      ) : (
-                        <RiBriefcase3Line
-                          className="mt-0.5 h-7 w-7 shrink-0 text-[color-mix(in_srgb,var(--color-hmm-cream)_88%,var(--color-hmm-maroon))]"
-                          aria-hidden
-                        />
-                      )}
                       <div>
                         <h4 className="hmm-sans text-xs font-bold tracking-[0.2em] text-[color-mix(in_srgb,var(--color-hmm-cream)_75%,white)] uppercase">
                           {value?.subtitle || ''}
@@ -75,14 +64,14 @@ export function ExternalVisiSection({ visi, visiImage }: Props) {
                         <p className="hmm-sans mt-2 text-sm leading-relaxed font-semibold text-white/92">
                           {value?.lead || ''}
                         </p>
-                        <details className="group/d mt-3">
+                        {/*<details className="group/d mt-3">
                           <summary className="hmm-sans cursor-pointer list-none text-xs font-bold tracking-[0.12em] text-white/60 uppercase transition group-open/d:text-white/85">
                             Baca penjabaran
                           </summary>
                           <p className="hmm-type-prose mt-2 border-l-2 border-[color-mix(in_srgb,var(--color-hmm-yellow)_50%,var(--color-hmm-maroon))] pl-3 text-white/78">
                             {value?.body || ''}
                           </p>
-                        </details>
+                        </details>*/}
                       </div>
                     </div>
                   </div>

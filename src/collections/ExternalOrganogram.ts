@@ -103,7 +103,6 @@ export const ExternalOrganogram: CollectionConfig<'external-organogram'> = {
             {
               name: 'paragraph',
               type: 'textarea',
-              required: true,
               label: 'Paragraph Text',
             },
           ],

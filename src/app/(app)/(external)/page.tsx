@@ -10,10 +10,9 @@ import {
 } from '~/lib/external-content';
 
 import { ExternalEditorialGrid } from './external-editorial-grid';
-import { ExternalLandingFooter } from './external-landing-footer';
 import { ExternalReveal } from './external-reveal';
 import { ExternalSolidarityCta } from './external-solidarity-cta';
-import { ExternalWordmarkRail } from './external-wordmark-rail';
+// import { ExternalWordmarkRail } from './external-wordmark-rail';
 
 function resolveMediaUrl(media: any): string | null {
   if (!media) return null;
@@ -155,7 +154,7 @@ export default async function ExternalLandingPage() {
         </div>
       </section>
 
-      <ExternalWordmarkRail />
+      {/* <ExternalWordmarkRail /> */}
 
       <ExternalEditorialGrid spotlight={spotlight} spots={editorialResolved} />
 
@@ -381,7 +380,6 @@ export default async function ExternalLandingPage() {
         </div>
       </section>
 
-      <ExternalLandingFooter />
     </main>
   );
 }

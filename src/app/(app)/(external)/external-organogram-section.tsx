@@ -58,7 +58,9 @@ function OrganogramModalDetailBody({ item }: { item: OrganogramCard }) {
   if (item.detailType === 'featured' && item.featuredDetail) {
     return (
       <>
-        <p className="hmm-organogram-modal__tagline mt-4">{item.featuredDetail.tagline}</p>
+        {item.featuredDetail.tagline && (
+          <p className="hmm-organogram-modal__tagline mt-4">{item.featuredDetail.tagline}</p>
+        )}
         <ul className="hmm-organogram-modal__people mt-5 space-y-3">
           {item.featuredDetail.people?.map((row: any, i: number) => (
             <li key={`${row.role}-${row.name}-${i}`}>
@@ -130,7 +132,7 @@ function splitGroups(items: OrganogramCard[]): {
   };
   const leadershipGroup: Group = {
     key: 'leadership',
-    label: 'Leadership',
+    label: 'Leader',
     description: 'Pimpinan inti kabinet.',
     cardSize: 'lead',
     cardLabel: 'Core Role',
@@ -138,7 +140,7 @@ function splitGroups(items: OrganogramCard[]): {
   };
   const directingGroup: Group = {
     key: 'directing',
-    label: 'Kadep/Kabiro',
+    label: 'Departments & Bureaus',
     description: 'Biro dan kepala departemen yang mengarahkan strategi.',
     cardSize: 'regular',
     cardLabel: 'Unit',
@@ -146,7 +148,7 @@ function splitGroups(items: OrganogramCard[]): {
   };
   const executingSupportingGroup: Group = {
     key: 'executing-supporting',
-    label: 'Kadiv/Kasubbiro',
+    label: 'Division & Sub-bureau',
     description: 'Divisi & sub-biro pelaksana, dikelompokkan per unit induk.',
     cardSize: 'compact',
     cardLabel: 'Unit',
@@ -191,7 +193,7 @@ function OrganogramCardButton({
       <div className="hmm-organogram-card__media">
         {loading ? (
           <span className="hmm-organogram-card__loading" aria-hidden>
-            Compiling
+            Loading
             <span className="hmm-organogram-card__dot" />
           </span>
         ) : null}
@@ -205,7 +207,7 @@ function OrganogramCardButton({
         />
         <div className="hmm-organogram-card__overlay" aria-hidden />
         <div className="hmm-organogram-card__content">
-          <p className="hmm-organogram-card__kicker">{cardLabel}</p>
+          {/*<p className="hmm-organogram-card__kicker">{cardLabel}</p>*/}
           <h4 className="hmm-organogram-card__title">
             <span>{title}</span>
           </h4>
@@ -269,9 +271,9 @@ export function ExternalOrganogramSection({ items }: Props) {
           <div className="mt-8 lg:mt-12">
             <div className="hmm-organogram-group-head">
               <h3 className="hmm-organogram-group-title">{leadership.label}</h3>
-              {leadership.description ? (
+              {/*{leadership.description ? (
                 <p className="hmm-organogram-group-desc">{leadership.description}</p>
-              ) : null}
+              ) : null}*/}
             </div>
             <div className="mt-4 grid grid-cols-[repeat(auto-fit,minmax(16rem,20rem))] justify-center gap-4">
               {leadership.items.map((item, index) => (
@@ -296,9 +298,9 @@ export function ExternalOrganogramSection({ items }: Props) {
             >
               <div className="hmm-organogram-group-head">
                 <h3 className="hmm-organogram-group-title">{group.label}</h3>
-                {group.description ? (
+                {/*{group.description ? (
                   <p className="hmm-organogram-group-desc">{group.description}</p>
-                ) : null}
+                ) : null}*/}
               </div>
 
               <div className="mt-4 grid grid-cols-[repeat(auto-fit,minmax(13rem,1fr))] justify-center gap-4 md:grid-cols-4">
@@ -324,12 +326,13 @@ export function ExternalOrganogramSection({ items }: Props) {
               <h3 className="hmm-organogram-group-title">{external.label}</h3>
             </div>
             <div className="hmm-organogram-external-separator" aria-hidden />
-            <div className="mt-4 grid grid-cols-[repeat(auto-fit,minmax(11.5rem,13.5rem))] justify-center gap-4">
+            <div className="mt-4 grid grid-cols-[repeat(auto-fit,minmax(13rem,20rem))] justify-center gap-4">
               {external.items.map((item, index) => (
                 <OrganogramCardButton
                   key={item.title}
                   item={item}
                   cardLabel={external.cardLabel}
+                  cardSize={external.cardSize}
                   subtle
                   onClick={() => handleOpenModal(item)}
                   index={index}
@@ -388,7 +391,7 @@ export function ExternalOrganogramSection({ items }: Props) {
                     src={active.imageUrl}
                     alt={active.title}
                     fill
-                    className="object-cover"
+                    className="object-contain"
                     sizes="(max-width: 1024px) 100vw, 40vw"
                   />
                 </div>

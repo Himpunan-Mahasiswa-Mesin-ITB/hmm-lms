@@ -6,11 +6,10 @@ import Link from 'next/link';
 
 import { api } from '~/trpc/server';
 
-import { ExternalLandingFooter } from '../external-landing-footer';
 import PageClient from './page.client';
 
-export const dynamic = 'force-static';
-export const revalidate = 600;
+// export const dynamic = 'force-static';
+// export const revalidate = 600;
 
 async function getEvents() {
   try {
@@ -135,7 +134,6 @@ export default async function EventsPage() {
         </div>
       </section>
 
-      <ExternalLandingFooter />
     </main>
   );
 }

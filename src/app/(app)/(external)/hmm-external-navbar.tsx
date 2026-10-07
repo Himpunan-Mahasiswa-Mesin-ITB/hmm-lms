@@ -5,7 +5,8 @@ import { signOut, useSession } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useEffect, useState } from 'react';
+// import { useEffect } from 'react';
+import { useState } from 'react';
 import { toast } from 'sonner';
 
 import { cn } from '~/lib/utils';
@@ -13,18 +14,18 @@ import { cn } from '~/lib/utils';
 const EXTERNAL_PAGES: ReadonlyArray<{ href: string; label: string }> = [
   { href: '/', label: 'Beranda' },
   { href: '/about', label: 'About' },
-  { href: '/news', label: 'News' },
-  { href: '/achievements', label: 'Achievements' },
-  { href: '/event', label: 'Events' },
-  { href: '/gallery', label: 'Gallery' },
+  // { href: '/news', label: 'News' },
+  // { href: '/achievements', label: 'Achievements' },
+  // { href: '/event', label: 'Events' },
+  // { href: '/gallery', label: 'Gallery' },
 ];
 
-function computeScrollProgress(): number {
-  const h = document.documentElement;
-  const maxScroll = h.scrollHeight - h.clientHeight;
-  if (maxScroll <= 0) return 0;
-  return Math.min(100, Math.max(0, (h.scrollTop / maxScroll) * 100));
-}
+// function computeScrollProgress(): number {
+//   const h = document.documentElement;
+//   const maxScroll = h.scrollHeight - h.clientHeight;
+//   if (maxScroll <= 0) return 0;
+//   return Math.min(100, Math.max(0, (h.scrollTop / maxScroll) * 100));
+// }
 
 function getInitials(name: string): string {
   return name
@@ -38,8 +39,8 @@ function getInitials(name: string): string {
 export function HmmExternalNavbar() {
   const pathname = usePathname();
   const { data: session, status } = useSession();
-  const [scrolled, setScrolled] = useState(false);
-  const [scrollProgress, setScrollProgress] = useState(0);
+  // const [scrolled, setScrolled] = useState(false);
+  // const [scrollProgress, setScrollProgress] = useState(0);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isSigningOut, setIsSigningOut] = useState(false);
 
@@ -51,28 +52,28 @@ export function HmmExternalNavbar() {
     setIsSigningOut(false);
   };
 
-  useEffect(() => {
-    const onScroll = () => {
-      setScrolled(window.scrollY > 12);
-      setScrollProgress(computeScrollProgress());
-    };
-    onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll, { passive: true });
-    return () => {
-      window.removeEventListener('scroll', onScroll);
-      window.removeEventListener('resize', onScroll);
-    };
-  }, []);
+  // useEffect(() => {
+  //   const onScroll = () => {
+  //     setScrolled(window.scrollY > 12);
+  //     setScrollProgress(computeScrollProgress());
+  //   };
+  //   onScroll();
+  //   window.addEventListener('scroll', onScroll, { passive: true });
+  //   window.addEventListener('resize', onScroll, { passive: true });
+  //   return () => {
+  //     window.removeEventListener('scroll', onScroll);
+  //     window.removeEventListener('resize', onScroll);
+  //   };
+  // }, []);
 
   return (
     <header
       className="hmm-nav-sticky relative pt-[env(safe-area-inset-top,0px)]"
-      data-hmm-scrolled={scrolled ? 'true' : 'false'}
+    // data-hmm-scrolled={scrolled ? 'true' : 'false'}
     >
-      <div className="hmm-scroll-progress-track" aria-hidden>
+      {/*<div className="hmm-scroll-progress-track" aria-hidden>
         <div className="hmm-scroll-progress-fill" style={{ width: `${scrollProgress}%` }} />
-      </div>
+      </div>*/}
       <div className="hmm-nav-inner">
         <Link
           href="/"
