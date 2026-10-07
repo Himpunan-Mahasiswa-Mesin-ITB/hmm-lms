@@ -11,12 +11,11 @@ generator client {
 enum Role {
   MACHINING
   STUDENT
-  BP          // Executive Committee
+  BP
   ADMIN
   SUPERADMIN
 }
 
-// Resource system enums
 enum ResourceType {
   FILE
   LINK
@@ -50,7 +49,6 @@ enum AccessType {
   DOWNLOAD
 }
 
-// Quiz-related enums
 enum QuestionType {
   MULTIPLE_CHOICE_SINGLE
   MULTIPLE_CHOICE_MULTIPLE
@@ -58,7 +56,6 @@ enum QuestionType {
   LONG_ANSWER
 }
 
-// Organization-related enums
 enum EventColor {
   SKY
   AMBER
@@ -169,11 +166,12 @@ model PasswordResetToken {
   @@index([email])
 }
 
-// Core LMS course models
 model Course {
   id              String              @id @default(cuid())
   title           String
   description     String?
+  image           String?
+  lecturers       String?
   classCode       String              @unique
   createdAt       DateTime            @default(now())
   updatedAt       DateTime            @updatedAt
@@ -193,7 +191,7 @@ model CourseTestimonial {
   id        String   @id @default(cuid())
   courseId  String
   userId    String
-  rating    Int // 1 to 5
+  rating    Int
   comment   String?  @db.Text
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -241,7 +239,6 @@ model Event {
   presenceAllowLateCheckIn Boolean    @default(true)
   presenceCheckInBuffer    Int?
 
-  // Google Sheets integration
   rsvpSheetUrl       String?
   rsvpSheetId        String?
   attendanceSheetUrl String?
@@ -404,11 +401,8 @@ model JobVacancy {
   overview    String   @db.Text
   timeline    String   @db.Text
   applyLink   String
-  /// Display e.g. "Competitive" or "IDR 8–12M / month"
   salaryLabel   String?
-  /// e.g. Intern, Junior, Mid, Senior
   seniority     String?
-  /// e.g. Internship, Full-time, Contract
   employmentType String?
   isActive    Boolean  @default(true)
   createdAt   DateTime @default(now())
@@ -705,7 +699,7 @@ model Form {
   creator     User     @relation(fields: [createdBy], references: [id])
   type        FormType @default(NORMAL)
 
-  // Form settings
+  // form settings
   allowMultipleSubmissions Boolean @default(false)
   requireAuth              Boolean @default(true)
   showProgressBar          Boolean @default(true)
@@ -713,11 +707,11 @@ model Form {
   start                    DateTime?
   end                      DateTime?
 
-  // Collaboration
+  // collaboration
   isPublicToAdmins         Boolean         @default(false)
   managers                 User[]          @relation("FormManagers")
 
-  // Relations
+  // relations
   questions   FormQuestion[]
   submissions FormSubmission[]
 
@@ -785,7 +779,6 @@ model FormAnswer {
   @@map("form_answers")
 }
 
-// Link shortener model
 model ShortLink {
   id          String    @id @default(cuid())
   slug        String    @unique
@@ -796,10 +789,8 @@ model ShortLink {
   expiresAt   DateTime?
   isActive    Boolean   @default(true)
 
-  // Analytics
   clicks Int @default(0)
 
-  // Relations
   createdById String
   createdBy   User   @relation("CreatedShortLinks", fields: [createdById], references: [id], onDelete: Cascade)
 

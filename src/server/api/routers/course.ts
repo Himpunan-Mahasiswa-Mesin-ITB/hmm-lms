@@ -33,6 +33,11 @@ export const unenrollCourseSchema = z.object({
 
 export const updateCourseSchema = createCourseSchema.extend({
   id: z.string().cuid(),
+  title: z.string(),
+  description: z.string().optional(),
+  lecturers: z.string().optional(),
+  image: z.string().nullable(),
+  classCode: z.string(),
   scope: z.enum(["GLOBAL", "MACHINING"]),
   type: z.enum(["MANDATORY", "OPTIONAL", "MACHINING"]),
 });

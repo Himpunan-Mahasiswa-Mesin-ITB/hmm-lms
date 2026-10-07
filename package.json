@@ -119,7 +119,7 @@
     "ical.js": "^2.2.1",
     "little-date": "^1.0.0",
     "lowlight": "^3.3.0",
-    "lucide-react": "^1.28.0",
+    "lucide-react": "^1.52.0",
     "mime-types": "^3.0.1",
     "motion": "^12.23.22",
     "next": "^16.3.0",

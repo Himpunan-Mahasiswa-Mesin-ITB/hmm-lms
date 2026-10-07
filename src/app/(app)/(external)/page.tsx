@@ -178,7 +178,6 @@ export default async function ExternalLandingPage() {
             </p>
           </div>
         </div>
-        {/* Study — split */}
         <section className="hmm-chapter-dark relative min-h-0 overflow-hidden lg:min-h-[85svh]">
           <div className="grid min-h-0 lg:min-h-[85svh] lg:grid-cols-2">
             <div className="relative min-h-[40svh] sm:min-h-[48svh] lg:min-h-full">
@@ -211,7 +210,6 @@ export default async function ExternalLandingPage() {
           </div>
         </section>
 
-        {/* Society — full bleed, left-weighted */}
         <section className="relative min-h-[min(88svh,40rem)] overflow-hidden sm:min-h-[80svh]">
           {im.pillarSociety ? (
             <Image
@@ -244,7 +242,6 @@ export default async function ExternalLandingPage() {
           </div>
         </section>
 
-        {/* Solidarity — text column + full image column */}
         <section className="hmm-chapter-dark relative min-h-0 overflow-hidden">
           <div className="grid min-h-0 items-stretch lg:min-h-[min(75svh,48rem)] lg:grid-cols-[minmax(0,42%)_1fr]">
             <div className="hmm-section-y-md order-2 flex flex-col justify-center bg-[var(--color-hmm-navy-deep)] px-4 sm:px-8 lg:order-1 lg:pr-4 lg:pl-8 xl:pl-12">
@@ -283,7 +280,6 @@ export default async function ExternalLandingPage() {
 
       <div className="hmm-chapter-transition" aria-hidden />
 
-      {/* — Heritage: same dark canvas as the rest (no beige “island”) — */}
       <section
         id="heritage"
         className="hmm-chapter-dark relative scroll-mt-[4.5rem] overflow-hidden"
@@ -346,7 +342,6 @@ export default async function ExternalLandingPage() {
         </div>
       </section>
 
-      {/* — CTA / Solidarity — */}
       <section
         id="solidarity"
         className="relative min-h-[min(64svh,40rem)] scroll-mt-[4.5rem] overflow-hidden"
