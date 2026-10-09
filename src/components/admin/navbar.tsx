@@ -21,7 +21,7 @@ import { cookies } from 'next/headers';
 import Image from 'next/image';
 import Link from 'next/link';
 
-import { BP_ACCESS_ROLES } from '~/constants/access';
+import { BP_ACCESS_ROLES, SUPERADMIN_ACCESS_ROLES } from '~/constants/access';
 import {
   getAnnoucements,
   getCourses,
@@ -203,6 +203,30 @@ const bpSidebarTabs: {
   },
 ];
 
+const superadminSidebarTabs: {
+  group: string;
+  items: {
+    label: string;
+    href: string;
+    icon: typeof Banknote;
+    tooltip: string;
+    dev?: boolean;
+  }[];
+}[] = [
+  {
+    group: 'SUPERADMIN Area',
+    items: [
+      {
+        label: 'SUPERADMIN Panel',
+        href: '/admin/superadmin-area',
+        icon: Users,
+        tooltip: 'SUPERADMIN Panel',
+        dev: false,
+      },
+    ],
+  },
+];
+
 export default async function AdminNavbar({ children }: Readonly<{ children: React.ReactNode }>) {
   const SIDEBAR_COOKIE_NAME = 'admin_sidebar_state';
   const cookieStore = await cookies();
@@ -300,6 +324,32 @@ async function AdminSidebar() {
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
+        {SUPERADMIN_ACCESS_ROLES.includes(session?.user?.role as Role) &&
+          superadminSidebarTabs.map((group) => (
+            <SidebarGroup key={'superadmin-sidebar-group-' + group.group}>
+              <SidebarGroupLabel>{group.group}</SidebarGroupLabel>
+              <SidebarMenu>
+                {group.items.map((item) => (
+                  <SidebarMenuItem key={'superadmin-sidebar-item-' + item.label}>
+                    <SidebarMenuButton tooltip={item.tooltip} asChild>
+                      <Link
+                        href={item.href}
+                        className="transition-all rounded-l-full pl-4 py-1.5 flex items-center hover:bg-orange-50 dark:hover:bg-orange-950/20"
+                      >
+                        <item.icon />
+                        <span>{item.label}</span>
+                        {item.dev && (
+                          <Badge variant="secondary" className="ml-2">
+                            dev
+                          </Badge>
+                        )}
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ))}
+              </SidebarMenu>
+            </SidebarGroup>
+          ))}
         {BP_ACCESS_ROLES.includes(session?.user?.role as Role) &&
           bpSidebarTabs.map((group) => (
             <SidebarGroup key={'bp-sidebar-group-' + group.group}>
