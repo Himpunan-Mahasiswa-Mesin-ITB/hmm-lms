@@ -40,7 +40,7 @@ export default async function NewsPage() {
             Kabar &amp; Pengumuman
           </h1>
           <p className="hmm-type-lede mt-3 max-w-[46ch] text-white/85">
-            Info terbaru seputar kegiatan, program kerja, dan pengumuman HMM ITB.
+            Informasi terbaru seputar berita HMM ITB.
           </p>
         </div>
       </section>

@@ -41,7 +41,7 @@ export default async function EventsPage() {
             Agenda &amp; Kegiatan
           </h1>
           <p className="hmm-type-lede mt-3 max-w-[46ch] text-white/85">
-            Temukan agenda, workshop, dan kegiatan mendatang HMM ITB.
+            Kanal agenda dan kegiatan HMM ITB.
           </p>
         </div>
       </section>

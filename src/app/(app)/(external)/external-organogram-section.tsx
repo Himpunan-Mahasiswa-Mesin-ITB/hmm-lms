@@ -203,7 +203,7 @@ function OrganogramCardButton({
           fill
           className="object-cover"
           sizes="(max-width: 520px) 100vw, (max-width: 1280px) 50vw, 25vw"
-          onLoadingComplete={() => setLoading(false)}
+          onLoad={() => setLoading(false)}
         />
         <div className="hmm-organogram-card__overlay" aria-hidden />
         <div className="hmm-organogram-card__content">

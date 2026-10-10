@@ -1,6 +1,6 @@
 'use client';
 
-import { LogOut } from 'lucide-react';
+import { LogOut, ChevronDown } from 'lucide-react';
 import { signOut, useSession } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -8,24 +8,24 @@ import { usePathname } from 'next/navigation';
 // import { useEffect } from 'react';
 import { useState } from 'react';
 import { toast } from 'sonner';
-
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '~/components/ui/dropdown-menu';
 import { cn } from '~/lib/utils';
 
 const EXTERNAL_PAGES: ReadonlyArray<{ href: string; label: string }> = [
   { href: '/', label: 'Beranda' },
   { href: '/about', label: 'About' },
-  // { href: '/news', label: 'News' },
-  // { href: '/achievements', label: 'Achievements' },
-  // { href: '/event', label: 'Events' },
-  // { href: '/gallery', label: 'Gallery' },
 ];
-
-// function computeScrollProgress(): number {
-//   const h = document.documentElement;
-//   const maxScroll = h.scrollHeight - h.clientHeight;
-//   if (maxScroll <= 0) return 0;
-//   return Math.min(100, Math.max(0, (h.scrollTop / maxScroll) * 100));
-// }
+const CONTENT_PAGES: ReadonlyArray<{ href: string; label: string }> = [
+  { href: '/news', label: 'News' },
+  { href: '/achievements', label: 'Achievements' },
+  { href: '/event', label: 'Events' },
+  { href: '/gallery', label: 'Gallery' },
+];
 
 function getInitials(name: string): string {
   return name
@@ -39,10 +39,9 @@ function getInitials(name: string): string {
 export function HmmExternalNavbar() {
   const pathname = usePathname();
   const { data: session, status } = useSession();
-  // const [scrolled, setScrolled] = useState(false);
-  // const [scrollProgress, setScrollProgress] = useState(0);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isSigningOut, setIsSigningOut] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false)
 
   const handleSignOut = async () => {
     setIsSigningOut(true);
@@ -52,28 +51,12 @@ export function HmmExternalNavbar() {
     setIsSigningOut(false);
   };
 
-  // useEffect(() => {
-  //   const onScroll = () => {
-  //     setScrolled(window.scrollY > 12);
-  //     setScrollProgress(computeScrollProgress());
-  //   };
-  //   onScroll();
-  //   window.addEventListener('scroll', onScroll, { passive: true });
-  //   window.addEventListener('resize', onScroll, { passive: true });
-  //   return () => {
-  //     window.removeEventListener('scroll', onScroll);
-  //     window.removeEventListener('resize', onScroll);
-  //   };
-  // }, []);
+  const isContentPillarActive = CONTENT_PAGES.some(
+    (page) => pathname === page.href,
+  );
 
   return (
-    <header
-      className="hmm-nav-sticky relative pt-[env(safe-area-inset-top,0px)]"
-    // data-hmm-scrolled={scrolled ? 'true' : 'false'}
-    >
-      {/*<div className="hmm-scroll-progress-track" aria-hidden>
-        <div className="hmm-scroll-progress-fill" style={{ width: `${scrollProgress}%` }} />
-      </div>*/}
+    <header className="hmm-nav-sticky relative pt-[env(safe-area-inset-top,0px)]">
       <div className="hmm-nav-inner">
         <Link
           href="/"
@@ -88,12 +71,12 @@ export function HmmExternalNavbar() {
             priority
           />
           <div className="hidden flex-col sm:flex">
-            <span className="hmm-title text-sm font-bold tracking-wide text-white drop-shadow">
+            <span className="hmm-title text-lg font-bold tracking-wide text-white drop-shadow">
               HMM ITB
             </span>
-            <span className="hmm-sans text-[0.6rem] font-medium tracking-[0.2em] text-white/80">
+            {/*<span className="hmm-sans text-[0.6rem] font-medium tracking-[0.2em] text-white/80">
               HIMPUNAN MAHASISWA MESIN ITB
-            </span>
+            </span>*/}
           </div>
         </Link>
 
@@ -121,6 +104,51 @@ export function HmmExternalNavbar() {
                   </li>
                 );
               })}
+              <li
+              >
+                <DropdownMenu open={dropdownOpen} onOpenChange={setDropdownOpen}>
+                  <DropdownMenuTrigger asChild>
+                    <button
+                      onMouseEnter={() => setDropdownOpen(true)}
+                      onMouseLeave={() => setDropdownOpen(false)}
+                      className={cn(
+                        'hmm-nav-desktop-link inline-flex items-center gap-1 px-3 py-2 text-xs font-semibold tracking-[0.12em] transition',
+                        'focus-visible:ring-2 focus-visible:ring-[var(--color-hmm-yellow)]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-[color-mix(in_srgb,var(--color-hmm-navy-deep)_90%,black)] focus-visible:outline-none',
+                        isContentPillarActive && 'hmm-nav-link--active',
+                      )}
+                    >
+                      <span>Content Pillar</span>
+                      <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-200 ${dropdownOpen && "rotate-180"}`} />
+                    </button>
+                  </DropdownMenuTrigger>
+
+                  <DropdownMenuContent
+                    align="start"
+                    className="min-w-[160px] bg-[color-mix(in_srgb,var(--color-hmm-navy-deep)_42%,transparent)] backdrop-blur-[18px]"
+                    onMouseEnter={() => setDropdownOpen(true)}
+                    onMouseLeave={() => setDropdownOpen(false)}
+                  >
+                    {CONTENT_PAGES.map((page) => {
+                      const isActive = pathname === page.href;
+                      return (
+                        <DropdownMenuItem key={page.href} asChild>
+                          <Link
+                            href={page.href}
+                            onClick={() => setDropdownOpen(false)}
+                            className={cn(
+                              'w-full cursor-pointer text-xs font-semibold tracking-wider',
+                              isActive && 'font-bold text-[var(--color-hmm-yellow)]',
+                            )}
+                          >
+                            {page.label}
+                          </Link>
+                        </DropdownMenuItem>
+                      );
+                    })}
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </li>
+
               {status === 'authenticated' && (
                 <li>
                   <Link
@@ -152,7 +180,7 @@ export function HmmExternalNavbar() {
               <button
                 onClick={handleSignOut}
                 disabled={isSigningOut}
-                className="hidden text-xs font-semibold text-red-600/80 hover:text-red-600 sm:block border rounded-lg p-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="hidden border rounded-lg p-2 text-xs font-semibold text-red-600/80 hover:text-red-600 disabled:cursor-not-allowed disabled:opacity-50 sm:block"
               >
                 <LogOut className="size-5" />
               </button>
@@ -189,51 +217,57 @@ export function HmmExternalNavbar() {
         )}
       >
         <nav className="hmm-sans" aria-label="External mobile pages">
-          <ul className="grid grid-cols-2 gap-2">
-            {EXTERNAL_PAGES.map((page) => {
-              const isActive = pathname === page.href;
-              return (
-                <li key={page.href}>
-                  <Link
-                    href={page.href}
-                    onClick={() => setMobileOpen(false)}
-                    className={cn(
-                      'hmm-nav-mobile-link block px-2 py-2.5 text-center text-xs font-semibold tracking-[0.12em] text-white/90',
-                      isActive && 'hmm-nav-link--active',
-                    )}
-                  >
-                    {page.label}
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
-          <ul className="grid grid-cols-2 gap-2">
-            {status === 'authenticated' && (
-              <li className="w-full my-2">
-                <Link
-                  href="/dashboard"
-                  onClick={() => setMobileOpen(false)}
-                  className={cn(
-                    'hmm-nav-mobile-link block px-2 py-2.5 text-center text-xs font-semibold tracking-[0.12em] text-white/90',
-                    pathname === '/dashboard' && 'hmm-nav-link--active',
-                  )}
-                >
-                  Dashboard
-                </Link>
-              </li>
-            )}
-            {status === 'authenticated' && (
-              <button
-                onClick={handleSignOut}
-                disabled={isSigningOut}
-                className="w-full py-2.5 text-center text-xs font-semibold tracking-[0.12em] text-red-600/80 hover:text-red-600 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {/* <LogOut className="size-5 shrink-0" /> */}
-                <span>{isSigningOut ? 'Signing out...' : 'Sign Out'}</span>
-              </button>
-            )}
-          </ul>
+          <div className="mt-2 border-white/10 pt-2">
+            <p className="px-2 pb-1 text-[10px] font-bold tracking-widest text-white/50 uppercase text-center">
+              HMM ITB
+            </p>
+            <ul className="grid grid-cols-2 gap-2">
+              {EXTERNAL_PAGES.map((page) => {
+                const isActive = pathname === page.href;
+                return (
+                  <li key={page.href}>
+                    <Link
+                      href={page.href}
+                      onClick={() => setMobileOpen(false)}
+                      className={cn(
+                        'hmm-nav-mobile-link block px-2 py-2.5 text-center text-xs font-semibold tracking-[0.12em] text-white/90',
+                        isActive && 'hmm-nav-link--active',
+                        !isActive && 'border-white/25!'
+                      )}
+                    >
+                      {page.label}
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+          <div className="mt-2 border-t border-white/10 pt-2">
+            <p className="px-2 pb-1 text-[10px] font-bold tracking-widest text-white/50 uppercase text-center">
+              Content Pillar
+            </p>
+            <ul className="grid grid-cols-2 gap-2">
+              {CONTENT_PAGES.map((page) => {
+                const isActive = pathname === page.href;
+                return (
+                  <li key={page.href}>
+                    <Link
+                      href={page.href}
+                      onClick={() => setMobileOpen(false)}
+                      className={cn(
+                        'hmm-nav-mobile-link block px-2 py-2.5 text-center text-xs font-semibold tracking-[0.12em] text-white/90',
+                        isActive && 'hmm-nav-link--active',
+                        !isActive && 'border-white/25!'
+                      )}
+                    >
+                      {page.label}
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+
           {status === 'loading' ? (
             <div className="mt-3 flex items-center justify-center gap-3 border-t border-white/10 pt-3">
               <div className="h-5 w-24 animate-pulse rounded bg-white/20" />
@@ -241,10 +275,10 @@ export function HmmExternalNavbar() {
             </div>
           ) : status === 'authenticated' && session?.user ? (
             <div className="mt-3 flex items-center justify-center gap-3 border-t border-white/10 pt-3">
-              <span className="text-sm font-medium text-white">{session.user.name}</span>
-              <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[var(--color-hmm-yellow)] text-sm font-bold text-[var(--color-hmm-navy-deep)]">
+              <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[var(--color-hmm-yellow)] text-sm font-bold text-[var(--color-hmm-navy-deep)] shrink-0">
                 {getInitials(session.user.name)}
               </div>
+              <span className="text-sm font-medium text-white">{session.user.name}</span>
             </div>
           ) : (
             <Link
@@ -255,6 +289,33 @@ export function HmmExternalNavbar() {
               Sign In
             </Link>
           )}
+
+          <ul className="grid grid-cols-2 gap-2">
+            {status === 'authenticated' && (
+              <li className="my-2 w-full">
+                <Link
+                  href="/dashboard"
+                  onClick={() => setMobileOpen(false)}
+                  className={cn(
+                    'hmm-nav-mobile-link block px-2 py-2.5 text-center text-xs font-semibold tracking-[0.12em] text-white/90',
+                    pathname === '/dashboard' && 'hmm-nav-link--active',
+                    pathname !== '/dashboard' && 'border-white/25!',
+                  )}
+                >
+                  Dashboard
+                </Link>
+              </li>
+            )}
+            {status === 'authenticated' && (
+              <button
+                onClick={handleSignOut}
+                disabled={isSigningOut}
+                className="flex w-full items-center justify-center gap-2 py-2.5 text-center text-xs font-semibold tracking-[0.12em] border-red-600/50! text-red-600 disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                <span>{isSigningOut ? 'Signing out...' : 'Sign Out'}</span>
+              </button>
+            )}
+          </ul>
         </nav>
       </div>
     </header>

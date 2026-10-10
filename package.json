@@ -105,6 +105,7 @@
     "caniuse-lite": "^1.0.30001790",
     "class-variance-authority": "^0.7.1",
     "cmdk": "^1.1.1",
+    "cn": "^0.4.0",
     "cnfast": "^0.1.0",
     "date-fns": "^4.1.0",
     "date-fns-tz": "^3.2.0",
@@ -139,6 +140,7 @@
     "recharts": "^2.15.4",
     "resend": "^6.18.1",
     "server-only": "^0.0.1",
+    "shadcn": "^4.21.4",
     "sonner": "^2.0.7",
     "superjson": "^2.2.2",
     "tippy.js": "^6.3.7",
@@ -186,7 +188,6 @@
       ""
     ]
   },
-  "packageManager": "pnpm@11.8.0",
   "ct3aMetadata": {
     "initVersion": "7.39.3"
   },
