@@ -49,7 +49,7 @@ export default async function AchievementsPage() {
             Pencapaian &amp; Penghargaan
           </h1>
           <p className="hmm-type-lede mt-3 max-w-[46ch] text-white/85">
-            Apresiasi prestasi mahasiswa Teknik Mesin ITB.
+            Apresiasi prestasi anggota HMM ITB.
           </p>
         </div>
       </section>
