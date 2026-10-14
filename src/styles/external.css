@@ -1360,13 +1360,13 @@
 }
 
 .hmm-external .hmm-organogram-modal__panel--image-only .hmm-organogram-modal__media {
-    min-height: 30rem;
-    aspect-ratio: 3 / 4;
+    min-height: auto;
+    aspect-ratio: auto;
 }
 
 .hmm-external .hmm-organogram-modal__media {
     position: relative;
-    min-height: 12rem;
+    min-height: auto;
 }
 
 .hmm-external .hmm-organogram-modal__content {
@@ -1415,11 +1415,12 @@
     }
 
     .hmm-external .hmm-organogram-modal__media {
-        min-height: 24rem;
+        min-height: auto;
     }
 
     .hmm-external .hmm-organogram-modal__panel--image-only .hmm-organogram-modal__media {
-        min-height: 35rem;
+        min-height: auto;
+        aspect-ratio: auto;
     }
 
     .hmm-external .hmm-organogram-modal__content {
@@ -1446,7 +1447,7 @@
     }
 
     .hmm-external .hmm-organogram-modal__media {
-        min-height: 10rem;
+        min-height: auto;
     }
 
     .hmm-external .hmm-organogram-modal__content {

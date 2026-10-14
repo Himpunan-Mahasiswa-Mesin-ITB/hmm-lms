@@ -1085,15 +1085,11 @@ export interface ExternalMisi {
         missions?:
           | {
               cardTitle: string;
-              /**
-               * Short one-line description
-               */
-              oneLiner: string;
               summary: string;
               /**
                * Detailed description of the mission
                */
-              body: string;
+              body?: string | null;
               /**
                * Only active missions will be displayed
                */
@@ -1192,7 +1188,7 @@ export interface ExternalOrganogram {
     tagline?: string | null;
     paragraphs?:
       | {
-          paragraph: string;
+          paragraph?: string | null;
           id?: string | null;
         }[]
       | null;
@@ -2161,7 +2157,6 @@ export interface ExternalMisiSelect<T extends boolean = true> {
           | T
           | {
               cardTitle?: T;
-              oneLiner?: T;
               summary?: T;
               body?: T;
               isActive?: T;

@@ -42,7 +42,7 @@ export default async function CoursesPage() {
                 id={course.id}
                 title={course.title}
                 type={course.type}
-                image={images[i % 4]!}
+                image={course.image ? course.image : images[i % 4]!}
                 subject={course.classCode}
                 numberOfMaterials={course._count.attachments}
                 numberOfVideos={course._count.videos}
@@ -65,7 +65,7 @@ export default async function CoursesPage() {
                 id={course.id}
                 title={course.title}
                 type={course.type}
-                image={images[i % 4]!}
+                image={course.image ? course.image : images[i % 4]!}
                 subject={course.classCode}
                 numberOfMembers={course._count.members}
                 numberOfTryouts={course._count.tryout}

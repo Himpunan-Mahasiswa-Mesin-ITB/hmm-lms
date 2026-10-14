@@ -1,14 +1,14 @@
-import { Role } from '@prisma/client';
 import { redirect } from 'next/navigation';
 import { Suspense } from 'react';
 
 import AdminNavbar from '~/components/admin/navbar';
+import { ADMIN_ACCESS_ROLES } from '~/constants/access';
 import { auth } from '~/server/auth';
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   const session = await auth();
   const isAdmin =
-    session?.user && (session.user.role === Role.ADMIN || session.user.role === Role.SUPERADMIN);
+    session?.user && (ADMIN_ACCESS_ROLES.includes(session?.user.role));
   // Redirect non-admin users
   if (!session || !isAdmin) {
     redirect('/dashboard');

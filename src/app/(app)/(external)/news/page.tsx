@@ -6,11 +6,10 @@ import Link from 'next/link';
 
 import { api } from '~/trpc/server';
 
-import { ExternalLandingFooter } from '../external-landing-footer';
 import PageClient from './page.client';
 
-export const dynamic = 'force-static';
-export const revalidate = 600;
+// export const dynamic = 'force-static';
+// export const revalidate = 600;
 
 async function getNews() {
   try {
@@ -41,7 +40,7 @@ export default async function NewsPage() {
             Kabar &amp; Pengumuman
           </h1>
           <p className="hmm-type-lede mt-3 max-w-[46ch] text-white/85">
-            Info terbaru seputar kegiatan, program kerja, dan pengumuman HMM ITB.
+            Informasi terbaru seputar berita HMM ITB.
           </p>
         </div>
       </section>
@@ -115,7 +114,6 @@ export default async function NewsPage() {
         </div>
       </section>
 
-      <ExternalLandingFooter />
     </main>
   );
 }

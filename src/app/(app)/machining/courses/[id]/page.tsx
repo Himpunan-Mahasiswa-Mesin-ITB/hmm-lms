@@ -5,13 +5,14 @@ import {
   Users,
   CheckCircle,
   Crown,
+  GraduationCap,
 } from 'lucide-react';
 import EnrollButton from '../enroll-button';
 import CoursePreview from '../course-preview';
 import UnenrollButton from './unenroll-button';
 import { notFound } from 'next/navigation';
 import { TRPCError } from '@trpc/server';
-import CourseContentClient from './client'; // Correct import path
+import CourseContentClient from './client';
 
 interface CoursePageProps {
   params: Promise<{
@@ -24,7 +25,6 @@ export default async function DetailedCoursePage({ params }: CoursePageProps) {
     const { id } = await params;
     const course = await api.course.getCourseById({ id });
 
-    // This guard clause is essential to prevent runtime errors for invalid IDs
     if (!course) {
       notFound();
     }
@@ -40,10 +40,18 @@ export default async function DetailedCoursePage({ params }: CoursePageProps) {
                 <h1 className="text-3xl font-bold text-foreground">
                   {course.title}
                 </h1>
-                <p className="text-muted-foreground mt-2">
-                  {course.description ?? 'No description available'}
-                </p>
-                <div className="flex items-center gap-4 mt-4">
+                {course.lecturers && (
+                  <p className="mt-2 flex items-center gap-1.5 text-sm font-medium text-muted-foreground">
+                    <GraduationCap className="h-4 w-4 text-foreground/70 shrink-0" />
+                    <span>{course.lecturers}</span>
+                  </p>
+                )}
+                {course.description && (
+                  <p className="text-muted-foreground mt-2">
+                    {course.description}
+                  </p>
+                )}
+                <div className="flex items-center gap-4 mt-4 flex-wrap">
                   <Badge variant="secondary" className="flex items-center gap-1">
                     <Users className="h-3 w-3" />
                     {course._count.members} students
@@ -60,7 +68,7 @@ export default async function DetailedCoursePage({ params }: CoursePageProps) {
                   </Badge>
                 </div>
               </div>
-              <div className="flex-shrink-0">
+              <div className="shrink-0">
                 <EnrollButton courseId={course.id} courseName={course.title} />
               </div>
             </div>
@@ -89,7 +97,15 @@ export default async function DetailedCoursePage({ params }: CoursePageProps) {
                 )}
               </div>
               <h1 className="text-3xl font-bold tracking-tight text-foreground md:text-4xl">{course.title}</h1>
-              <p className="mt-2 max-w-3xl text-foreground/80">{course.description ?? 'No description available'}</p>
+              {course.lecturers && (
+                <p className="mt-2 flex items-center gap-1.5 text-sm font-medium text-muted-foreground">
+                  <GraduationCap className="h-4 w-4 text-foreground/70 shrink-0" />
+                  <span>{course.lecturers}</span>
+                </p>
+              )}
+              {course.description && (
+                <p className="mt-2 max-w-3xl text-foreground/80">{course.description}</p>
+              )}
               <div className="mt-4 flex flex-wrap items-center gap-3">
                 <Badge variant="secondary" className="border border-primary/20 bg-primary/10 text-primary hover:bg-primary/15 flex items-center gap-1">
                   <Users className="h-3 w-3" />
@@ -103,7 +119,7 @@ export default async function DetailedCoursePage({ params }: CoursePageProps) {
                 <Badge variant="outline" className="border-border/80 bg-background/80 text-foreground"> {course.type.charAt(0) + course.type.slice(1).toLowerCase()}</Badge>
               </div>
             </div>
-            <div className="flex-shrink-0">
+            <div className="shrink-0">
               {course.isEnrolled && !course.isAdmin && (
                 <UnenrollButton courseId={course.id} courseName={course.title} />
               )}
@@ -111,7 +127,6 @@ export default async function DetailedCoursePage({ params }: CoursePageProps) {
           </div>
         </section>
 
-        {/* FIX: Passing the correct prop names: `initialCourseData` and `courseId` */}
         <CourseContentClient initialCourseData={course} courseId={id} />
       </div>
     );

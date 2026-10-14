@@ -1,12 +1,13 @@
-import { Role } from '@prisma/client';
+// import { Role } from '@prisma/client';
 import { Inter, Montserrat } from 'next/font/google';
-import { redirect } from 'next/navigation';
+// import { redirect } from 'next/navigation';
 
 import '~/styles/external.css';
 import type { ReactNode } from 'react';
 import { HmmExternalNavbar } from './hmm-external-navbar';
+import { ExternalLandingFooter } from './external-landing-footer';
 
-import { auth } from '~/server/auth';
+// import { auth } from '~/server/auth';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -20,17 +21,17 @@ const montserrat = Montserrat({
 });
 
 export default async function ExternalLayout({ children }: { children: ReactNode }) {
-  const session = await auth();
+  // const session = await auth();
 
-  if (!session) {
-    console.log("Redirected!")
-    redirect('/auth/sign-in');
-  }
+  // if (!session) {
+  //   console.log("Redirected!")
+  //   redirect('/auth/sign-in');
+  // }
 
-  if (session.user.role !== Role.SUPERADMIN) {
-    console.log("Redirected!")
-    redirect('/dashboard');
-  }
+  // if (session.user.role !== Role.SUPERADMIN) {
+  //   console.log("Redirected!")
+  //   redirect('/dashboard');
+  // }
 
   return (
     <div
@@ -38,6 +39,7 @@ export default async function ExternalLayout({ children }: { children: ReactNode
     >
       <HmmExternalNavbar />
       {children}
+      <ExternalLandingFooter />
     </div>
   );
 }
