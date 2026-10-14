@@ -9,11 +9,11 @@ import { getPayload } from 'payload';
 import { cache } from 'react';
 
 import { LivePreviewListener } from '~/payload/components/LivePreviewListener';
-import { PayloadRedirects } from '~/payload/components/PayloadRedirects';
 import RichText from '~/payload/components/RichText';
 import { generateMeta } from '~/payload/utilities/generateMeta';
 
 import PageClient from './page.client';
+import { redirect } from 'next/navigation';
 
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise });
@@ -37,10 +37,11 @@ export default async function Event({ params: paramsPromise }: Args) {
   const { isEnabled: draft } = await draftMode();
   const { slug = '' } = await paramsPromise;
   const decodedSlug = decodeURIComponent(slug);
-  const url = '/event/' + decodedSlug;
+  // const url = '/event/' + decodedSlug;
+  const url = '/event/';
   const event = await queryEventBySlug({ slug: decodedSlug });
 
-  if (!event) return <PayloadRedirects url={url} />;
+  if (!event) redirect(url);
 
   const authors = Array.isArray(event.authors)
     ? event.authors
@@ -59,7 +60,6 @@ export default async function Event({ params: paramsPromise }: Args) {
     <>
       <main className="hmm-sans text-[var(--color-hmm-navy)]">
         <PageClient />
-        <PayloadRedirects disableNotFound url={url} />
         {draft && <LivePreviewListener />}
 
         <article>
