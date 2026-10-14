@@ -6,11 +6,10 @@ import Link from 'next/link';
 
 import { api } from '~/trpc/server';
 
-import { ExternalLandingFooter } from '../external-landing-footer';
 import PageClient from './page.client';
 
-export const dynamic = 'force-static';
-export const revalidate = 600;
+// export const dynamic = 'force-static';
+// export const revalidate = 600;
 
 async function getAchievements() {
   try {
@@ -47,10 +46,10 @@ export default async function AchievementsPage() {
             </p>
           </div>
           <h1 className="hmm-type-section mt-3 max-w-2xl text-balance text-white">
-            Prestasi &amp; Penghargaan
+            Pencapaian &amp; Penghargaan
           </h1>
           <p className="hmm-type-lede mt-3 max-w-[46ch] text-white/85">
-            Merayakan capaian dan kemenangan kompetisi mahasiswa Teknik Mesin ITB.
+            Apresiasi prestasi anggota HMM ITB.
           </p>
         </div>
       </section>
@@ -134,7 +133,6 @@ export default async function AchievementsPage() {
         </div>
       </section>
 
-      <ExternalLandingFooter />
     </main>
   );
 }

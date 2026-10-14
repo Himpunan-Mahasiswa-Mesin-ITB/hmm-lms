@@ -6,11 +6,10 @@ import Link from 'next/link';
 
 import { api } from '~/trpc/server';
 
-import { ExternalLandingFooter } from '../external-landing-footer';
 import PageClient from './page.client';
 
-export const dynamic = 'force-static';
-export const revalidate = 600;
+// export const dynamic = 'force-static';
+// export const revalidate = 600;
 
 async function getEvents() {
   try {
@@ -42,7 +41,7 @@ export default async function EventsPage() {
             Agenda &amp; Kegiatan
           </h1>
           <p className="hmm-type-lede mt-3 max-w-[46ch] text-white/85">
-            Temukan agenda, workshop, dan kegiatan mendatang HMM ITB.
+            Kanal agenda dan kegiatan HMM ITB.
           </p>
         </div>
       </section>
@@ -135,7 +134,6 @@ export default async function EventsPage() {
         </div>
       </section>
 
-      <ExternalLandingFooter />
     </main>
   );
 }

@@ -2,7 +2,7 @@ import { Role } from '@prisma/client';
 import { redirect } from 'next/navigation';
 import { Suspense } from 'react';
 
-import { WeeklyPodiumPopup } from '~/components/hall-of-fame/weekly-podium-popup';
+// import { WeeklyPodiumPopup } from '~/components/hall-of-fame/weekly-podium-popup';
 // import { InstallPrompt } from '~/components/install-prompt';
 import MainNavbar from '~/components/main/navbar';
 // import { NotificationPromptModal } from '~/components/notif-prompt-modal';
@@ -27,7 +27,7 @@ export default async function Layout({ children }: Readonly<{ children: React.Re
         fallback={<div className="w-full h-full grid place-items-center">Fetching data...</div>}
       >
         {/*<InstallPrompt />*/}
-        <WeeklyPodiumPopup />
+        {/* <WeeklyPodiumPopup /> */}
         {/* <NotificationPromptModal /> */}
         {children}
       </Suspense>
