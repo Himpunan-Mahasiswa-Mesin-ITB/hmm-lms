@@ -50,7 +50,7 @@ export default buildConfig({
       beforeDashboard: ['~/payload/components/BeforeDashboard'],
       graphics: {
         Logo: '~/payload/components/Logo-HMM',
-        Icon: '~/payload/components/Icon',
+        Icon: '~/payload/components/Icon-HMM',
       },
     },
     meta: {

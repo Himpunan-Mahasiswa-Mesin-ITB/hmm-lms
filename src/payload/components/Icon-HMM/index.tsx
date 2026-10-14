@@ -9,7 +9,7 @@ interface Props {
   size?: number
 }
 
-export default function Logo(props: Props) {
+export default function Icon(props: Props) {
   const { loading: loadingFromProps, priority: priorityFromProps, className, showText = false, size = 40 } = props
 
   const loading = loadingFromProps || 'lazy'
