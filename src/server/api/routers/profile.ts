@@ -676,7 +676,22 @@ export const profileRouter = createTRPCRouter({
       include: {
         groupProfile: {
           include: {
-            profiles: true,
+            profiles: {
+              include: {
+                relatedEvents: {
+                  include: {
+                    event: {
+                      select: {
+                        title: true,
+                        start: true,
+                        end: true,
+                      }
+                    }
+                  },
+                },
+                userProgresses: true,
+              }
+            },
           },
         },
       },
@@ -688,6 +703,17 @@ export const profileRouter = createTRPCRouter({
         profile: {
           include: {
             group: true,
+            relatedEvents: {
+              include: {
+                event: {
+                  select: {
+                    title: true,
+                    start: true,
+                    end: true,
+                  }
+                }
+              },
+            },
           },
         },
       },
@@ -713,6 +739,7 @@ export const profileRouter = createTRPCRouter({
             description: profile.description,
             progress: progress?.progress || 0,
             updatedAt: progress?.updatedAt || null,
+            relatedEvents: progress?.profile.relatedEvents
           };
         }),
       };
@@ -734,6 +761,7 @@ export const profileRouter = createTRPCRouter({
           description: progress.profile.description,
           progress: progress.progress,
           updatedAt: progress.updatedAt,
+          relatedEvents: progress?.profile.relatedEvents
         })),
       });
     }
@@ -763,6 +791,7 @@ export const profileRouter = createTRPCRouter({
           description: progress.profile.description,
           progress: progress.progress,
           updatedAt: progress.updatedAt,
+          relatedEvents: progress?.profile.relatedEvents
         })),
       });
     }
