@@ -12,6 +12,7 @@ export const ExternalManifesto: CollectionConfig<'external-manifesto'> = {
     update: authenticated,
   },
   admin: {
+    group: 'External Home Page Contents',
     defaultColumns: ['punch', 'updatedAt'],
     useAsTitle: 'punch',
   },

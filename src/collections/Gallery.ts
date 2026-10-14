@@ -1,9 +1,9 @@
 import type { CollectionConfig } from 'payload';
 
-import { populateAuthors } from './Posts/hooks/populateAuthors';
+import { populateAuthors } from './hooks/populateAuthors';
 
-export const ExternalGallery: CollectionConfig<'externalGallery'> = {
-  slug: 'externalGallery',
+export const ExternalGallery: CollectionConfig<'gallery'> = {
+  slug: 'gallery',
   access: {
     read: () => true,
     create: ({ req }) => {
@@ -29,6 +29,7 @@ export const ExternalGallery: CollectionConfig<'externalGallery'> = {
     title: true,
   },
   admin: {
+    group: 'Content Pillar',
     defaultColumns: ['title', 'description', 'publishedAt', 'status'],
     useAsTitle: 'title',
   },

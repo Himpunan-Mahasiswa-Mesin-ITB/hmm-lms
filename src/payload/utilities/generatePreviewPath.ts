@@ -3,8 +3,6 @@ import type { PayloadRequest, CollectionSlug } from 'payload';
 import type { PreviewSearchParams } from '~/app/(app)/(payload-cms)/next/preview/route';
 
 const collectionPrefixMap: Partial<Record<CollectionSlug, string>> = {
-  posts: '/posts',
-  pages: '',
   news: '/news',
   achievements: '/achievements',
   events: '/event',

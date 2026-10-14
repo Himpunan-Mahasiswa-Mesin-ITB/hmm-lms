@@ -12,6 +12,7 @@ export const ExternalPillar: CollectionConfig<'external-pillar'> = {
     update: authenticated,
   },
   admin: {
+    group: 'External Home Page Contents',
     defaultColumns: ['key', 'title', 'kicker', 'updatedAt'],
     useAsTitle: 'title',
   },

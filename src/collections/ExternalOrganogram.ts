@@ -12,6 +12,7 @@ export const ExternalOrganogram: CollectionConfig<'external-organogram'> = {
     update: authenticated,
   },
   admin: {
+    group: 'External About Page Contents',
     defaultColumns: ['title', 'type', 'updatedAt'],
     useAsTitle: 'title',
   },

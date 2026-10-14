@@ -12,6 +12,7 @@ export const ExternalAbout: CollectionConfig<'external-about'> = {
     update: authenticated,
   },
   admin: {
+    group: 'External About Page Contents',
     defaultColumns: ['kabinetName', 'headingPrefix', 'updatedAt'],
     useAsTitle: 'kabinetName',
   },

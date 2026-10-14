@@ -5,6 +5,7 @@ export const Users: CollectionConfig = {
   auth: true,
   timestamps: true,
   admin: {
+    group: 'Content Collections',
     useAsTitle: 'email',
     defaultColumns: ['name', 'email', 'role', 'createdAt'],
   },

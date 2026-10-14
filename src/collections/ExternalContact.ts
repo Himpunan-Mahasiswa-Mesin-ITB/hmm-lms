@@ -12,6 +12,7 @@ export const ExternalContact: CollectionConfig<'external-contact'> = {
     update: authenticated,
   },
   admin: {
+    group: 'External Home Page Contents',
     defaultColumns: ['email', 'updatedAt'],
     useAsTitle: 'email',
   },

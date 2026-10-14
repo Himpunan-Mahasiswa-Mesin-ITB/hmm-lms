@@ -12,6 +12,7 @@ export const ExternalVisi: CollectionConfig<'external-visi'> = {
     update: authenticated,
   },
   admin: {
+    group: 'External About Page Contents',
     defaultColumns: ['heading', 'lead', 'updatedAt'],
     useAsTitle: 'heading',
   },

@@ -12,6 +12,7 @@ export const ExternalLogoMeaning: CollectionConfig<'external-logo-meaning'> = {
     update: authenticated,
   },
   admin: {
+    group: 'External About Page Contents',
     defaultColumns: ['key', 'title', 'updatedAt'],
     useAsTitle: 'title',
   },

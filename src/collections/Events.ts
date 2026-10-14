@@ -20,7 +20,7 @@ import { Banner } from '../payload/blocks/Banner/config';
 import { Code } from '../payload/blocks/Code/config';
 import { MediaBlock } from '../payload/blocks/MediaBlock/config';
 import { generatePreviewPath } from '../payload/utilities/generatePreviewPath';
-import { populateAuthors } from './Posts/hooks/populateAuthors';
+import { populateAuthors } from './hooks/populateAuthors';
 
 export const Events: CollectionConfig<'events'> = {
   slug: 'events',
@@ -50,6 +50,7 @@ export const Events: CollectionConfig<'events'> = {
     slug: true,
   },
   admin: {
+    group: 'Content Pillar',
     defaultColumns: ['title', 'category', 'eventDate', 'status', 'updatedAt'],
     livePreview: {
       url: ({ data, req }) =>
