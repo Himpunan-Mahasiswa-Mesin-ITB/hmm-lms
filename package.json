@@ -99,7 +99,6 @@
     "@types/mdx": "^2.0.14",
     "@types/mime-types": "^3.0.1",
     "@vercel/analytics": "^2.0.1",
-    "@vercel/speed-insights": "^1.2.0",
     "baseline-browser-mapping": "^2.10.21",
     "bcryptjs": "^3.0.2",
     "caniuse-lite": "^1.0.30001790",
