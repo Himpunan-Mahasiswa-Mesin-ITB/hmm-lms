@@ -363,7 +363,6 @@ export const eventRouter = createTRPCRouter({
 
       if (!event) throw new TRPCError({ code: 'NOT_FOUND' });
 
-      // Check if RSVP deadline has passed
       if (event.rsvpDeadline && new Date() > event.rsvpDeadline) {
         throw new TRPCError({
           code: 'BAD_REQUEST',
@@ -381,14 +380,14 @@ export const eventRouter = createTRPCRouter({
         update: {
           status: input.status,
           respondedAt: new Date(),
-          approvalStatus: ApprovalStatus.APPROVED, // Auto-approve
+          approvalStatus: ApprovalStatus.APPROVED,
           notes: input.notes,
         },
         create: {
           eventId: input.eventId,
           userId: ctx.session.user.id,
           status: input.status,
-          approvalStatus: ApprovalStatus.APPROVED, // Auto-approve
+          approvalStatus: ApprovalStatus.APPROVED,
           notes: input.notes,
         },
       });
@@ -453,7 +452,6 @@ export const eventRouter = createTRPCRouter({
       });
     }),
 
-  // Replace recordPresence mutation
   recordPresence: protectedProcedure
     .input(z.object({ eventId: z.string() }))
     .mutation(async ({ ctx, input }) => {
@@ -465,7 +463,7 @@ export const eventRouter = createTRPCRouter({
 
       const now = new Date();
 
-      // Allow check-in from 60 minutes before until event ends
+      // allow check-in from 60 minutes before until event ends
       const allowedStartTime = new Date(event.start.getTime() - 60 * 60 * 1000);
 
       if (now < allowedStartTime || now > event.end) {
@@ -486,16 +484,12 @@ export const eventRouter = createTRPCRouter({
         });
       }
 
-      // Determine if user is late
-      const isLate = now > event.start;
-
       return ctx.db.eventPresence.create({
         data: {
           eventId: input.eventId,
           userId: ctx.session.user.id,
-          status: isLate ? PresenceStatus.LATE : PresenceStatus.PRESENT,
+          status: PresenceStatus.PRESENT,
           checkedInAt: new Date(),
-          isLate,
         },
       });
     }),
