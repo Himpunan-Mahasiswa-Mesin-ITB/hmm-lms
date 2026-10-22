@@ -2,9 +2,9 @@ import { nitro } from 'nitro/vite';
 import vinext from 'vinext';
 import { defineConfig } from 'vite';
 import vinextPayload from 'vite-plugin-vinext-payload';
-
+import tailwindcss from '@tailwindcss/vite'
 export default defineConfig({
-  plugins: [nitro(), vinext({ prerender: undefined }), vinextPayload()],
+  plugins: [nitro(), vinext({ prerender: undefined }), vinextPayload(), tailwindcss(),],
   build: {
     rollupOptions: {
       external: [
