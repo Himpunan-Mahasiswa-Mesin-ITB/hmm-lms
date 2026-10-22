@@ -1,7 +1,7 @@
 "use client";
 
 import { api } from "~/trpc/react";
-import { Role } from "@prisma/client";
+import { Role } from "~/types/enums";
 import {
   Dialog,
   DialogContent,

@@ -41,7 +41,7 @@ import { format } from 'date-fns';
 import { api } from '~/trpc/react';
 import { toast } from 'sonner';
 import { type RouterOutputs } from '~/trpc/react';
-import { ResourceType } from '@prisma/client';
+import { ResourceType } from '~/types/enums';
 import DocumentViewer from '~/components/document-viewer'; // Import the new viewer
 
 type Course = RouterOutputs['course']['getCourseForAdmin'];

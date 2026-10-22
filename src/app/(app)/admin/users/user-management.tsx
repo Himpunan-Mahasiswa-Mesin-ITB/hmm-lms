@@ -2,7 +2,7 @@
 
 import { useState, Suspense } from "react";
 import { api } from "~/trpc/react";
-import { Role } from "@prisma/client";
+import { Role } from "~/types/enums";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import {

@@ -1,4 +1,13 @@
-import type { QuestionOption, QuestionType } from "@prisma/client";
+import type { QuestionType } from "~/types/enums";
+
+export interface QuestionOption {
+  id: string;
+  text: string;
+  isCorrect: boolean;
+  order: number;
+  explanation?: string | null;
+  images: string[];
+}
 
 export interface Question {
   id: string;

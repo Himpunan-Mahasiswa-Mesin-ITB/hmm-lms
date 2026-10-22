@@ -1,7 +1,7 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { PresenceStatus, RSVPStatus } from '@prisma/client';
+import { PresenceStatus, RSVPStatus } from '~/types/enums';
 import { type ColumnDef } from '@tanstack/react-table';
 import { formatInTimeZone } from 'date-fns-tz';
 import { Download, Users, CheckCircle, XCircle, Clock, FileText, TimerIcon } from 'lucide-react';

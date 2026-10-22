@@ -1,7 +1,7 @@
 // ~/app/admin/tryouts/_components/tryout-questions.tsx
 'use client';
 
-import { QuestionType } from '@prisma/client';
+import { QuestionType } from '~/types/enums';
 import { CheckCircle, Circle, FileText, MessageSquare } from 'lucide-react';
 
 import { Badge } from '~/components/ui/badge';

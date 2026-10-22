@@ -1,6 +1,6 @@
 // ~/lib/schema/tryout.ts
 
-import { QuestionType } from '@prisma/client';
+import { QuestionType } from '~/types/enums';
 import { z } from 'zod';
 
 // ⬇️ *** THIS IS THE CORRECTED VALIDATION LOGIC *** ⬇️

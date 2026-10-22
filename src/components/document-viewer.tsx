@@ -10,17 +10,37 @@ import {
 import { Button } from '~/components/ui/button';
 import { Link as LinkIcon, ExternalLink, FileText, X } from 'lucide-react';
 import { format } from 'date-fns';
-import { ResourceType, LinkSource, type Prisma } from '@prisma/client';
+import { ResourceType, LinkSource } from '~/types/enums';
 import { getCdnUrl } from '~/lib/utils';
 
 // Define the type for the resource
-type Resource = Prisma.ResourceGetPayload<{
-  include: {
-    attachment: true;
-    link: true;
-    uploadedBy: { select: { name: true } };
-  };
-}>;
+interface Attachment {
+  filename: string;
+  key: string;
+  mimeType: string;
+  size: number;
+}
+
+interface Link {
+  url: string;
+  source: string;
+}
+
+interface UploadedBy {
+  name: string;
+}
+
+interface Resource {
+  id: string;
+  title: string;
+  description: string | null;
+  type: ResourceType;
+  category: string | null;
+  attachment: Attachment | null;
+  link: Link | null;
+  uploadedBy: UploadedBy;
+  createdAt: Date;
+}
 
 interface DocumentViewerProps {
   resource: Resource;

@@ -30,7 +30,7 @@ import {
   LinkSource,
   ResourceCategory,
   ResourceType,
-} from '@prisma/client';
+} from '~/types/enums';
 import {
   AlertCircleIcon,
   FileArchiveIcon,

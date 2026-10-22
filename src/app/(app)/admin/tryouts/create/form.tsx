@@ -4,7 +4,7 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { QuestionType } from '@prisma/client';
+import { QuestionType } from '~/types/enums';
 import { Plus, Trash2, GripVertical } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';

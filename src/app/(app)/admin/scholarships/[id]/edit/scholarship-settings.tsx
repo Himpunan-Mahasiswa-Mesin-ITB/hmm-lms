@@ -24,7 +24,7 @@ import {
 import { toast } from "sonner";
 import { Loader2, Save, Trash2, Upload, X, ImageIcon, Plus } from "lucide-react";
 import { format } from "date-fns";
-import { ScholarshipType } from "@prisma/client";
+import { ScholarshipType } from "~/types/enums";
 import { useFileUpload } from "~/hooks/use-file-upload";
 import { uploadImages } from "~/server/action";
 import Image from "next/image";

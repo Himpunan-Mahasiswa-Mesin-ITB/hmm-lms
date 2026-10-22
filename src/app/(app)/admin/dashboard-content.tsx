@@ -27,7 +27,7 @@ import { Progress } from "~/components/ui/progress";
 // import { Separator } from "~/components/ui/separator";
 import { Alert, AlertDescription, AlertTitle } from "~/components/ui/alert";
 import Link from "next/link";
-import type { Role } from "@prisma/client";
+import type { Role } from "~/types/enums";
 import { useSession } from "next-auth/react";
 import { BP_ACCESS_ROLES } from "~/constants/access";
 

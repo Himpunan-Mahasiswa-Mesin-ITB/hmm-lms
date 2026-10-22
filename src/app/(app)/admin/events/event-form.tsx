@@ -9,6 +9,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import type { z } from 'zod';
 import { api, type RouterOutputs } from '~/trpc/react';
+import { EventMode } from '~/types/enums';
 import { Button } from '~/components/ui/button';
 import {
   Form,
@@ -30,7 +31,6 @@ import {
 } from '~/components/ui/select';
 import { Checkbox } from '~/components/ui/checkbox';
 import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card';
-import { EventMode } from '@prisma/client';
 import { toast } from 'sonner';
 import { Loader2, Plus, Trash2 } from 'lucide-react';
 import { useState } from 'react';

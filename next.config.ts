@@ -7,7 +7,6 @@ const isDev = env.NODE_ENV === 'development';
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   transpilePackages: ['fumadocs-ui'],
-  turbopack: {},
   images: {
     remotePatterns: [
       ...[process.env.NEXT_PUBLIC_APP_URL /* 'https://example.com' */].map((item) => {

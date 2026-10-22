@@ -1,6 +1,6 @@
 "use client";
 
-import type { Role } from "@prisma/client";
+import type { Role } from "~/types/enums";
 import { Bell, ChevronsUpDown, LogOut, User } from "lucide-react";
 import Link from "next/link";
 

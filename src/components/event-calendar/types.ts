@@ -1,4 +1,4 @@
-import type { EventColor as EventColorDB } from "@prisma/client"
+import type { EventColor } from "~/types/enums"
 
 export type CalendarView = "month" | "week" | "day" | "agenda"
 
@@ -22,12 +22,10 @@ export interface CalendarEvent {
   presenceCount?: number
 }
 
-export type EventColor = EventColorDB
-
 // Color mapping for different scopes
 export const SCOPE_COLORS: Record<EventScope, EventColor> = {
   personal: "EMERALD",
-  course: "VIOLET", 
+  course: "VIOLET",
   global: "SKY"
 }
 
