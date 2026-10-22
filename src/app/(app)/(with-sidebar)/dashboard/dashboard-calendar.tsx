@@ -1,6 +1,6 @@
 'use client';
 
-import { PresenceStatus, ApprovalStatus, type RSVPStatus } from '@prisma/client';
+import { PresenceStatus, ApprovalStatus, type RSVPStatus } from '~/lib/types/prisma';
 import cn from 'cnfast';
 import { isAfter, isBefore } from 'date-fns';
 import { formatInTimeZone, toZonedTime } from 'date-fns-tz';

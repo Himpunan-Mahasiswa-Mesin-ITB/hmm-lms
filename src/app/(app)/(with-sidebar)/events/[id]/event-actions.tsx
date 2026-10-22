@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card';
 import { Button } from '~/components/ui/button';
 import { api, type RouterOutputs } from '~/trpc/react';
-import { EventMode, type RSVPStatus, ApprovalStatus, PresenceStatus } from '@prisma/client';
+import { type RSVPStatus, ApprovalStatus, PresenceStatus, EventMode } from '~/lib/types/prisma';
 import { BellRing, Check, ThumbsUp, ThumbsDown, CircleEllipsis, Loader2, LogIn, CircleX, Clock, User, CheckCircle } from 'lucide-react';
 import { toast } from 'sonner';
 import { toZonedTime } from 'date-fns-tz';

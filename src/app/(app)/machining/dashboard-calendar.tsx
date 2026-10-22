@@ -1,6 +1,5 @@
 'use client';
 
-import { PresenceStatus, ApprovalStatus, type RSVPStatus } from '@prisma/client';
 import cn from 'cnfast';
 import { isAfter, isBefore } from 'date-fns';
 import { formatInTimeZone, toZonedTime } from 'date-fns-tz';
@@ -28,6 +27,7 @@ import { Card, CardContent, CardFooter } from '~/components/ui/card';
 import { Popover, PopoverContent, PopoverTrigger } from '~/components/ui/popover';
 import { Separator } from '~/components/ui/separator';
 import { TIMEZONE } from '~/constants/constants';
+import { PresenceStatus, ApprovalStatus, type RSVPStatus } from '~/lib/types/prisma';
 import { api } from '~/trpc/react';
 // import { Label } from '~/components/ui/label';
 // import { Textarea } from '~/components/ui/textarea';
@@ -249,7 +249,9 @@ export function DashboardCalendar() {
                         </div>
 
                         {event.description && (
-                          <p className="text-muted-foreground text-sm line-clamp-2">{event.description}</p>
+                          <p className="text-muted-foreground text-sm line-clamp-2">
+                            {event.description}
+                          </p>
                         )}
 
                         <div className="space-y-2 text-sm">
@@ -258,7 +260,11 @@ export function DashboardCalendar() {
                             <span>
                               {event.hideEventTime
                                 ? formatInTimeZone(eventStart, TIMEZONE, 'MMMM d yyyy')
-                                : formatInTimeZone(eventStart, TIMEZONE, 'MMMM d yyyy,  HH:mm')}{' '}
+                                : formatInTimeZone(
+                                    eventStart,
+                                    TIMEZONE,
+                                    'MMMM d yyyy,  HH:mm',
+                                  )}{' '}
                               (Start)
                             </span>
                           </div>
@@ -267,7 +273,8 @@ export function DashboardCalendar() {
                             <span>
                               {event.hideEventTime
                                 ? formatInTimeZone(eventEnd, TIMEZONE, 'MMMM d yyyy')
-                                : formatInTimeZone(eventEnd, TIMEZONE, 'MMMM d yyyy,  HH:mm')} (End)
+                                : formatInTimeZone(eventEnd, TIMEZONE, 'MMMM d yyyy,  HH:mm')}{' '}
+                              (End)
                             </span>
                           </div>
                           {event.location && (
@@ -303,7 +310,7 @@ export function DashboardCalendar() {
                         {/* RSVP Section */}
                         {event.eventMode !== 'BASIC' && event.eventMode !== 'ATTENDANCE_ONLY' && (
                           <div className="space-y-2">
-                             <p className="text-sm font-medium">RSVP Status:</p>
+                            <p className="text-sm font-medium">RSVP Status:</p>
                             {event.userRsvp && (
                               <div className="flex flex-col gap-1">
                                 <div className="p-3 bg-accent text-accent-foreground rounded-md text-sm font-medium">
@@ -398,7 +405,9 @@ export function DashboardCalendar() {
                         </div>
 
                         {form.description && (
-                          <p className="text-muted-foreground text-sm line-clamp-2">{form.description}</p>
+                          <p className="text-muted-foreground text-sm line-clamp-2">
+                            {form.description}
+                          </p>
                         )}
 
                         <div className="space-y-2 text-sm">

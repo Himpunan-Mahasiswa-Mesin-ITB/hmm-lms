@@ -1,6 +1,6 @@
 'use client';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { EventMode, type RSVPStatus, ApprovalStatus, PresenceStatus } from '@prisma/client';
+import { type RSVPStatus, ApprovalStatus, PresenceStatus, EventMode } from '~/lib/types/prisma';
 import { formatInTimeZone, toZonedTime } from 'date-fns-tz';
 import {
   BellRing,
