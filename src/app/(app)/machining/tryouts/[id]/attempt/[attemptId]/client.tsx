@@ -1,6 +1,6 @@
 'use client';
 
-import type { QuestionOption } from '@prisma/client';
+import type { QuestionOption } from '~/lib/types/tryout';
 import {
   Clock,
   ChevronLeft,

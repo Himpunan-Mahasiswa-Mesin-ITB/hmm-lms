@@ -5,7 +5,7 @@ export interface QuestionOption {
   text: string;
   isCorrect: boolean;
   order: number;
-  explanation?: string | null;
+  explanation: string | null;
   images: string[];
 }
 
@@ -21,6 +21,7 @@ export interface Question {
   shortAnswers?: Array<{
     value: string;
   }> | string[];
+  explanation: string | null;
 }
 
 export interface Course {
@@ -55,7 +56,7 @@ export interface UserAnswer {
     shortAnswers?: Array<{
       value: string;
     }> | string[];
-    explanation?: string | null;
+    explanation: string | null;
   };
 }
 
@@ -94,7 +95,7 @@ export interface ResultsUserAnswer {
     shortAnswers?: Array<{
       value: string;
     }> | string[];
-    explanation?: string | null;
+    explanation: string | null;
   };
 }
 

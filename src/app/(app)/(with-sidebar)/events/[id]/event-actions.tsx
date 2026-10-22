@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card';
 import { Button } from '~/components/ui/button';
 import { api, type RouterOutputs } from '~/trpc/react';
-import { type RSVPStatus, ApprovalStatus, PresenceStatus, EventMode } from '~/lib/types/prisma';
+import { RSVPStatus, ApprovalStatus, PresenceStatus, EventMode } from '~/lib/types/prisma';
 import { BellRing, Check, ThumbsUp, ThumbsDown, CircleEllipsis, Loader2, LogIn, CircleX, Clock, User, CheckCircle } from 'lucide-react';
 import { toast } from 'sonner';
 import { toZonedTime } from 'date-fns-tz';
@@ -78,10 +78,10 @@ export default function EventActions({ event }: { event: EventDetail }) {
               </div>
             ) : (
               <div className="flex flex-wrap gap-2">
-                <Button onClick={() => handleRsvp('YES')} disabled={isResponding || !isRsvpAvailable} className="flex-1">
+                <Button onClick={() => handleRsvp(RSVPStatus.YES)} disabled={isResponding || !isRsvpAvailable} className="flex-1">
                   <CheckCircle className="h-4 w-4 mr-2" /> Will Attend
                 </Button>
-                <Button onClick={() => handleRsvp('NO')} disabled={isResponding || !isRsvpAvailable} variant="outline" className="flex-1">
+                <Button onClick={() => handleRsvp(RSVPStatus.NO)} disabled={isResponding || !isRsvpAvailable} variant="outline" className="flex-1">
                   <CircleX className="h-4 w-4 mr-2" /> Won&apos;t Attend
                 </Button>
               </div>

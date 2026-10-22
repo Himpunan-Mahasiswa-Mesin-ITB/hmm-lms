@@ -1,5 +1,7 @@
 import type { EventColor } from "~/types/enums"
 
+export type { EventColor } from "~/types/enums"
+
 export type CalendarView = "month" | "week" | "day" | "agenda"
 
 export type EventScope = 'personal' | 'course' | 'global'

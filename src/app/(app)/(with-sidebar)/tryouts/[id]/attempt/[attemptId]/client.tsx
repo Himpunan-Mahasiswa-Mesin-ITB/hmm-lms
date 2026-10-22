@@ -1,6 +1,5 @@
 'use client';
 
-import type { QuestionOption } from '@prisma/client';
 import {
   Clock,
   ChevronLeft,
@@ -34,6 +33,7 @@ import { Label } from '~/components/ui/label';
 import { Progress } from '~/components/ui/progress';
 import { RadioGroup, RadioGroupItem } from '~/components/ui/radio-group';
 import { Textarea } from '~/components/ui/textarea';
+import type { QuestionOption } from '~/lib/types/tryout';
 import type { Tryout, UserAttempt, Question } from '~/lib/types/tryout';
 import { api } from '~/trpc/react';
 

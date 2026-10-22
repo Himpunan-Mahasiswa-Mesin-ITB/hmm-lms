@@ -1,34 +1,50 @@
-"use client"
+'use client';
 
-import React from 'react';
-import { useRouter } from 'next/navigation';
-import { motion } from 'framer-motion';
 import { formatDistanceToNow } from 'date-fns';
+import {
+  Plus,
+  Search,
+  MoreHorizontal,
+  Eye,
+  Edit,
+  Copy,
+  Trash2,
+  BarChart3,
+  Users,
+  Calendar,
+  Grid3X3,
+  List,
+  TrendingUp,
+  FileText,
+  Share,
+} from 'lucide-react';
+import { motion } from 'motion/react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import React from 'react';
 import { toast } from 'sonner';
 
-import { api, type RouterOutputs } from '~/trpc/react';
-
+import { Badge } from '~/components/ui/badge';
 import { Button } from '~/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card';
-import { Input } from '~/components/ui/input';
-import { Badge } from '~/components/ui/badge';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator } from '~/components/ui/dropdown-menu';
-import { Tabs, TabsList, TabsTrigger } from '~/components/ui/tabs';
-import { Skeleton } from '~/components/ui/skeleton';
-
 import {
-  Plus, Search, MoreHorizontal, Eye, Edit, Copy, Trash2,
-  BarChart3, Users, Calendar, Grid3X3, List, TrendingUp, FileText, Share,
-} from 'lucide-react';
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  DropdownMenuSeparator,
+} from '~/components/ui/dropdown-menu';
+import { Input } from '~/components/ui/input';
+import { Skeleton } from '~/components/ui/skeleton';
 import { Switch } from '~/components/ui/switch';
+import { Tabs, TabsList, TabsTrigger } from '~/components/ui/tabs';
+import { api, type RouterOutputs } from '~/trpc/react';
 
 // --- Type Definitions ---
 type ViewMode = 'grid' | 'list';
 type FilterType = 'all' | 'published' | 'draft' | 'archived';
 // Infer the type for a single form item from the tRPC router output
 type FormListItemType = RouterOutputs['form']['getForms']['forms'][number];
-
 
 // --- Main Page Component ---
 export default function FormsPage() {
@@ -44,10 +60,10 @@ export default function FormsPage() {
     data: formsData,
     isLoading,
     fetchNextPage,
-    hasNextPage
+    hasNextPage,
   } = api.form.getForms.useInfiniteQuery(
     { limit: 12 },
-    { getNextPageParam: (lastPage) => lastPage.nextCursor }
+    { getNextPageParam: (lastPage) => lastPage.nextCursor },
   );
 
   const utils = api.useContext();
@@ -73,38 +89,45 @@ export default function FormsPage() {
   });
 
   const forms = React.useMemo(() => {
-    return formsData?.pages.flatMap(page => page.forms) ?? [];
+    return formsData?.pages.flatMap((page) => page.forms) ?? [];
   }, [formsData]);
 
   const filteredForms = React.useMemo(() => {
     let filtered = forms;
 
     if (filter !== 'all') {
-      filtered = filtered.filter(form => {
+      filtered = filtered.filter((form) => {
         switch (filter) {
-          case 'published': return form.isPublished && form.isActive;
-          case 'draft': return !form.isPublished;
-          case 'archived': return !form.isActive;
-          default: return true;
+          case 'published':
+            return form.isPublished && form.isActive;
+          case 'draft':
+            return !form.isPublished;
+          case 'archived':
+            return !form.isActive;
+          default:
+            return true;
         }
       });
     }
 
     if (searchQuery.trim()) {
-      filtered = filtered.filter(form =>
-        form.title.toLowerCase().includes(searchQuery.toLowerCase())
+      filtered = filtered.filter((form) =>
+        form.title.toLowerCase().includes(searchQuery.toLowerCase()),
       );
     }
 
     return filtered;
   }, [forms, filter, searchQuery]);
 
-  const stats = React.useMemo(() => ({
-    total: forms.length,
-    published: forms.filter(f => f.isPublished && f.isActive).length,
-    draft: forms.filter(f => !f.isPublished).length,
-    responses: forms.reduce((sum, f) => sum + (f._count?.submissions ?? 0), 0),
-  }), [forms]);
+  const stats = React.useMemo(
+    () => ({
+      total: forms.length,
+      published: forms.filter((f) => f.isPublished && f.isActive).length,
+      draft: forms.filter((f) => !f.isPublished).length,
+      responses: forms.reduce((sum, f) => sum + (f._count?.submissions ?? 0), 0),
+    }),
+    [forms],
+  );
 
   const handleDeleteForm = (formId: string, title: string) => {
     if (confirm(`Are you sure you want to delete "${title}"? This action cannot be undone.`)) {
@@ -122,7 +145,6 @@ export default function FormsPage() {
     duplicateFormMutation.mutate({ formId });
   };
 
-
   return (
     <div className="container mx-auto max-w-5xl">
       {/* Header */}
@@ -132,7 +154,7 @@ export default function FormsPage() {
           <p className="text-muted-foreground">Create and manage your forms and surveys.</p>
         </div>
         <Button asChild>
-          <Link href='/admin/forms/create'>
+          <Link href="/admin/forms/create">
             <Plus className="w-4 h-4 mr-2" /> Create Form
           </Link>
         </Button>
@@ -141,9 +163,19 @@ export default function FormsPage() {
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         <StatCard icon={FileText} title="Total Forms" value={stats.total} color="text-primary" />
-        <StatCard icon={TrendingUp} title="Published" value={stats.published} color="text-green-500" />
+        <StatCard
+          icon={TrendingUp}
+          title="Published"
+          value={stats.published}
+          color="text-green-500"
+        />
         <StatCard icon={Edit} title="Drafts" value={stats.draft} color="text-amber-500" />
-        <StatCard icon={Users} title="Total Responses" value={stats.responses} color="text-violet-500" />
+        <StatCard
+          icon={Users}
+          title="Total Responses"
+          value={stats.responses}
+          color="text-violet-500"
+        />
       </div>
 
       {/* Filters and Search */}
@@ -167,8 +199,22 @@ export default function FormsPage() {
             </TabsList>
           </Tabs>
           <div className="flex border rounded-md">
-            <Button variant={viewMode === 'grid' ? 'secondary' : 'ghost'} size="icon" onClick={() => setViewMode('grid')} className="rounded-r-none"><Grid3X3 className="w-4 h-4" /></Button>
-            <Button variant={viewMode === 'list' ? 'secondary' : 'ghost'} size="icon" onClick={() => setViewMode('list')} className="rounded-l-none"><List className="w-4 h-4" /></Button>
+            <Button
+              variant={viewMode === 'grid' ? 'secondary' : 'ghost'}
+              size="icon"
+              onClick={() => setViewMode('grid')}
+              className="rounded-r-none"
+            >
+              <Grid3X3 className="w-4 h-4" />
+            </Button>
+            <Button
+              variant={viewMode === 'list' ? 'secondary' : 'ghost'}
+              size="icon"
+              onClick={() => setViewMode('list')}
+              className="rounded-l-none"
+            >
+              <List className="w-4 h-4" />
+            </Button>
           </div>
         </div>
       </div>
@@ -182,9 +228,10 @@ export default function FormsPage() {
           ) : (
             <motion.div
               layout
-              className={viewMode === 'grid'
-                ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-                : "space-y-4"
+              className={
+                viewMode === 'grid'
+                  ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'
+                  : 'space-y-4'
               }
             >
               {filteredForms.map((form) => {
@@ -197,12 +244,13 @@ export default function FormsPage() {
                   onViewResponses: () => router.push(`/admin/forms/responses/${form.id}`),
                 };
                 return (
-                  <motion.div key={form.id} layout initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-                    {viewMode === 'grid'
-                      ? <FormCard form={form} {...formActions} />
-                      : <FormListItem form={form} {...formActions} />
-                    }
-                  </motion.div>
+                  <div key={form.id}>
+                    {viewMode === 'grid' ? (
+                      <FormCard form={form} {...formActions} />
+                    ) : (
+                      <FormListItem form={form} {...formActions} />
+                    )}
+                  </div>
                 );
               })}
             </motion.div>
@@ -222,7 +270,17 @@ export default function FormsPage() {
 
 // --- Child Components ---
 
-const StatCard = ({ icon: Icon, title, value, color }: { icon: React.ElementType, title: string, value: number, color?: string }) => (
+const StatCard = ({
+  icon: Icon,
+  title,
+  value,
+  color,
+}: {
+  icon: React.ElementType;
+  title: string;
+  value: number;
+  color?: string;
+}) => (
   <Card>
     <CardContent className="p-6 flex items-center gap-4">
       <div className={`p-3 rounded-full bg-muted ${color ?? 'text-primary'}`}>
@@ -237,9 +295,20 @@ const StatCard = ({ icon: Icon, title, value, color }: { icon: React.ElementType
 );
 
 const LoadingState = ({ viewMode }: { viewMode: ViewMode }) => (
-  <div className={viewMode === 'grid' ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" : "space-y-4"}>
+  <div
+    className={
+      viewMode === 'grid' ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6' : 'space-y-4'
+    }
+  >
     {Array.from({ length: 6 }).map((_, i) => (
-      <Card key={i}><CardHeader><Skeleton className="h-6 w-3/4" /></CardHeader><CardContent><Skeleton className="h-4 w-1/2" /></CardContent></Card>
+      <Card key={i}>
+        <CardHeader>
+          <Skeleton className="h-6 w-3/4" />
+        </CardHeader>
+        <CardContent>
+          <Skeleton className="h-4 w-1/2" />
+        </CardContent>
+      </Card>
     ))}
   </div>
 );
@@ -252,10 +321,16 @@ const EmptyState = ({ hasSearch }: { hasSearch: boolean }) => (
         {hasSearch ? 'No forms found' : 'No forms yet'}
       </h3>
       <p className="text-muted-foreground mb-4">
-        {hasSearch ? 'Try adjusting your search terms or filters.' : 'Get started by creating your first form.'}
+        {hasSearch
+          ? 'Try adjusting your search terms or filters.'
+          : 'Get started by creating your first form.'}
       </p>
       {!hasSearch && (
-        <Button asChild><Link href='/admin/forms/create'><Plus className="w-4 h-4 mr-2" /> Create Your First Form</Link></Button>
+        <Button asChild>
+          <Link href="/admin/forms/create">
+            <Plus className="w-4 h-4 mr-2" /> Create Your First Form
+          </Link>
+        </Button>
       )}
     </CardContent>
   </Card>
@@ -290,13 +365,11 @@ const FormCard: React.FC<FormComponentProps> = ({ form, onEdit, ...actions }) =>
     <Card className="group hover:shadow-lg transition-shadow duration-300">
       <CardHeader className="cursor-pointer" onClick={onEdit}>
         <div className="flex items-start justify-between w-full overflow-hidden">
-          <CardTitle className="text-lg font-semibold truncate max-w-3xs">
-            {form.title}
-          </CardTitle>
+          <CardTitle className="text-lg font-semibold truncate max-w-3xs">{form.title}</CardTitle>
           <FormDropdownMenu actions={{ onEdit, ...actions }} />
         </div>
         <p className="text-sm text-muted-foreground pt-1 line-clamp-2">
-          {form.description ?? "No description"}
+          {form.description ?? 'No description'}
         </p>
       </CardHeader>
       <CardContent className="cursor-pointer" onClick={onEdit}>
@@ -307,15 +380,11 @@ const FormCard: React.FC<FormComponentProps> = ({ form, onEdit, ...actions }) =>
             onClick={(e) => e.stopPropagation()} // prevent triggering edit when toggling
           >
             <div className="flex items-center gap-2">
-              <Badge
-                variant={"outline"}
-              >
+              <Badge variant={'outline'}>
                 {form.type.charAt(0) + form.type.slice(1).toLowerCase()}
               </Badge>
-              <Badge
-                variant={form.isPublished ? "default" : "secondary"}
-              >
-                {form.isPublished ? "Published" : "Draft"}
+              <Badge variant={form.isPublished ? 'default' : 'secondary'}>
+                {form.isPublished ? 'Published' : 'Draft'}
               </Badge>
               {!form.isActive && <Badge variant="destructive">Archived</Badge>}
             </div>
@@ -332,7 +401,7 @@ const FormCard: React.FC<FormComponentProps> = ({ form, onEdit, ...actions }) =>
             <Users className="w-4 h-4" /> {form._count?.submissions ?? 0}
           </span>
           <span className="flex items-center gap-1.5">
-            <Calendar className="w-4 h-4" />{" "}
+            <Calendar className="w-4 h-4" />{' '}
             {formatDistanceToNow(new Date(form.updatedAt), { addSuffix: true })}
           </span>
         </div>
@@ -363,21 +432,30 @@ const FormListItem: React.FC<FormComponentProps> = ({ form, onEdit, ...actions }
           <FileText className="w-6 h-6 text-muted-foreground shrink-0" />
           <div className="flex-1 w-full overflow-hidden">
             <h3 className="font-semibold truncate">{form.title}</h3>
-            <p className="text-sm text-muted-foreground truncate">{form.description ?? 'No description'}</p>
+            <p className="text-sm text-muted-foreground truncate">
+              {form.description ?? 'No description'}
+            </p>
           </div>
         </div>
         <div className="flex items-center gap-4 text-sm text-muted-foreground ml-4">
-          <Badge variant={"outline"}>
+          <Badge variant={'outline'}>
             {form.type.charAt(0) + form.type.slice(1).toLowerCase()}
           </Badge>
-          <Badge variant={form.isPublished ? 'default' : 'secondary'} className="hidden md:flex">{form.isPublished ? 'Published' : 'Draft'}</Badge>
+          <Badge variant={form.isPublished ? 'default' : 'secondary'} className="hidden md:flex">
+            {form.isPublished ? 'Published' : 'Draft'}
+          </Badge>
           <Switch
             checked={form.isPublished}
             disabled={updatePublish.isPending}
             onCheckedChange={handlePublishToggle}
           />
-          <span className="hidden lg:flex items-center gap-1.5"><Users className="w-4 h-4" />{form._count?.submissions ?? 0}</span>
-          <span className="hidden md:flex">{formatDistanceToNow(new Date(form.updatedAt), { addSuffix: true })}</span>
+          <span className="hidden lg:flex items-center gap-1.5">
+            <Users className="w-4 h-4" />
+            {form._count?.submissions ?? 0}
+          </span>
+          <span className="hidden md:flex">
+            {formatDistanceToNow(new Date(form.updatedAt), { addSuffix: true })}
+          </span>
           <FormDropdownMenu actions={{ onEdit, ...actions }} />
         </div>
       </CardContent>
@@ -393,16 +471,57 @@ const FormDropdownMenu: React.FC<{ actions: Omit<FormComponentProps, 'form'> }> 
       </Button>
     </DropdownMenuTrigger>
     <DropdownMenuContent align="end">
-      <DropdownMenuItem onClick={(e) => { e.stopPropagation(); actions.onEdit(); }}><Edit className="w-4 h-4 mr-2" /> Edit</DropdownMenuItem>
-      <DropdownMenuItem onClick={(e) => { e.stopPropagation(); actions.onDuplicate(); }}>
+      <DropdownMenuItem
+        onClick={(e) => {
+          e.stopPropagation();
+          actions.onEdit();
+        }}
+      >
+        <Edit className="w-4 h-4 mr-2" /> Edit
+      </DropdownMenuItem>
+      <DropdownMenuItem
+        onClick={(e) => {
+          e.stopPropagation();
+          actions.onDuplicate();
+        }}
+      >
         <Copy className="w-4 h-4 mr-2" /> Duplicate
       </DropdownMenuItem>
-      <DropdownMenuItem onClick={(e) => { e.stopPropagation(); actions.onPreview(); }}><Eye className="w-4 h-4 mr-2" /> Preview</DropdownMenuItem>
-      <DropdownMenuItem onClick={(e) => { e.stopPropagation(); actions.onShare(); }}><Share className="w-4 h-4 mr-2" /> Share</DropdownMenuItem>
+      <DropdownMenuItem
+        onClick={(e) => {
+          e.stopPropagation();
+          actions.onPreview();
+        }}
+      >
+        <Eye className="w-4 h-4 mr-2" /> Preview
+      </DropdownMenuItem>
+      <DropdownMenuItem
+        onClick={(e) => {
+          e.stopPropagation();
+          actions.onShare();
+        }}
+      >
+        <Share className="w-4 h-4 mr-2" /> Share
+      </DropdownMenuItem>
       <DropdownMenuSeparator />
-      <DropdownMenuItem onClick={(e) => { e.stopPropagation(); actions.onViewResponses(); }}><BarChart3 className="w-4 h-4 mr-2" /> View Responses</DropdownMenuItem>
+      <DropdownMenuItem
+        onClick={(e) => {
+          e.stopPropagation();
+          actions.onViewResponses();
+        }}
+      >
+        <BarChart3 className="w-4 h-4 mr-2" /> View Responses
+      </DropdownMenuItem>
       <DropdownMenuSeparator />
-      <DropdownMenuItem onClick={(e) => { e.stopPropagation(); actions.onDelete(); }} className="text-destructive focus:text-destructive"><Trash2 className="w-4 h-4 mr-2" /> Delete</DropdownMenuItem>
+      <DropdownMenuItem
+        onClick={(e) => {
+          e.stopPropagation();
+          actions.onDelete();
+        }}
+        className="text-destructive focus:text-destructive"
+      >
+        <Trash2 className="w-4 h-4 mr-2" /> Delete
+      </DropdownMenuItem>
     </DropdownMenuContent>
   </DropdownMenu>
 );

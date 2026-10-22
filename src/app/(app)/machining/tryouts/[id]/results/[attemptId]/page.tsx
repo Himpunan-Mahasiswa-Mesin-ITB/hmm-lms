@@ -1,4 +1,4 @@
-import type { QuestionOption } from '@prisma/client';
+import type { QuestionOption } from '~/lib/types/tryout';
 import cn from 'cnfast';
 import { format } from 'date-fns';
 import {

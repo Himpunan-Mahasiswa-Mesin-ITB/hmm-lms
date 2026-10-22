@@ -1,14 +1,16 @@
+import { nitro } from 'nitro/vite';
 import vinext from 'vinext';
 import { defineConfig } from 'vite';
 import vinextPayload from 'vite-plugin-vinext-payload';
 
 export default defineConfig({
-  plugins: [vinext({ prerender: undefined }), vinextPayload()],
+  plugins: [nitro(), vinext({ prerender: undefined }), vinextPayload()],
   build: {
     rollupOptions: {
       external: [
         'nanoid',
         'framer-motion',
+        'motion',
         // externalize packages with React 18 shim issues
         '@tiptap/react',
         'recharts',

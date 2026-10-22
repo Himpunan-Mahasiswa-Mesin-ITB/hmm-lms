@@ -31,7 +31,18 @@ export enum Role {
 }
 
 export enum EventMode {
-  ONLINE = 'ONLINE',
-  OFFLINE = 'OFFLINE',
-  HYBRID = 'HYBRID',
+  BASIC = 'BASIC',
+  RSVP_ONLY = 'RSVP_ONLY',
+  ATTENDANCE_ONLY = 'ATTENDANCE_ONLY',
+  RSVP_AND_ATTENDANCE = 'RSVP_AND_ATTENDANCE',
+}
+
+// QuestionOption type for client components (without required questionId)
+export interface QuestionOption {
+  id: string;
+  text: string;
+  isCorrect: boolean;
+  order: number;
+  explanation: string | null;
+  images: string[];
 }
