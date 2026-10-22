@@ -4,8 +4,9 @@ import { Inter, Montserrat } from 'next/font/google';
 
 import '~/styles/external.css';
 import type { ReactNode } from 'react';
-import { HmmExternalNavbar } from './hmm-external-navbar';
+
 import { ExternalLandingFooter } from './external-landing-footer';
+import { HmmExternalNavbar } from './hmm-external-navbar';
 
 // import { auth } from '~/server/auth';
 

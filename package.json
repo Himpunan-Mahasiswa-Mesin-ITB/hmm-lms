@@ -28,7 +28,10 @@
     "prisma:generate": "bun run prisma:combine && prisma generate",
     "prisma:migrate": "bun run prisma:combine && prisma migrate dev",
     "prisma:studio": "bun run prisma:combine && prisma studio",
-    "db:push": "bun run prisma:combine && prisma db push"
+    "db:push": "bun run prisma:combine && prisma db push",
+    "dev:vinext": "vite dev --port 3000",
+    "build:vinext": "vite build",
+    "start:vinext": "vinext start"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.10.0",
@@ -38,7 +41,6 @@
     "@dnd-kit/core": "^6.3.1",
     "@dnd-kit/modifiers": "^9.0.0",
     "@dnd-kit/utilities": "^3.2.2",
-    "@ducanh2912/next-pwa": "^10.2.9",
     "@hello-pangea/dnd": "^18.0.1",
     "@hookform/resolvers": "^5.2.2",
     "@paralleldrive/cuid2": "^3.3.0",
@@ -130,12 +132,13 @@
     "prism-react-renderer": "^2.4.1",
     "qrcode": "^1.5.4",
     "radix-ui": "^1.6.7",
-    "react": "^19.1.1",
+    "react": "^19.3.1",
     "react-day-picker": "^9.11.0",
-    "react-dom": "^19.1.1",
+    "react-dom": "^19.3.1",
     "react-dropzone": "^14.3.8",
     "react-email": "^6.9.1",
     "react-hook-form": "^7.63.0",
+    "react-server-dom-webpack": "^19.3.1",
     "recharts": "^2.15.4",
     "resend": "^6.18.1",
     "server-only": "^0.0.1",
@@ -145,6 +148,7 @@
     "tippy.js": "^6.3.7",
     "tsx": "^4.20.6",
     "usehooks-ts": "^3.1.1",
+    "vinext": "^1.3.0",
     "web-push": "^3.6.7",
     "xlsx": "^0.18.5",
     "zod": "^3.25.76"
@@ -161,6 +165,8 @@
     "@types/react-dom": "^19.1.9",
     "@types/web-push": "^3.6.4",
     "@types/xlsx": "^0.0.35",
+    "@vitejs/plugin-react": "^6.1.2",
+    "@vitejs/plugin-rsc": "^0.5.38",
     "bcrypt": "^6.0.0",
     "lint-staged": "^16.4.0",
     "oxfmt": "^0.65.0",
@@ -173,8 +179,10 @@
     "ts-node": "^10.9.2",
     "tw-animate-css": "^1.4.0",
     "typescript": "^7.0.2",
+    "vite": "^8.3.5",
     "vitest": "^4.1.5",
-    "web-pack": "^1.0.0"
+    "web-pack": "^1.0.0",
+    "webpack": "^5.112.0"
   },
   "simple-git-hooks": {
     "pre-commit": "npx lint-staged"

@@ -1,5 +1,6 @@
 'use client';
 
+import { PresenceStatus, ApprovalStatus, type RSVPStatus } from '@prisma/client';
 import cn from 'cnfast';
 import { isAfter, isBefore } from 'date-fns';
 import { formatInTimeZone, toZonedTime } from 'date-fns-tz';
@@ -26,10 +27,8 @@ import { Calendar } from '~/components/ui/calendar';
 import { Card, CardContent, CardFooter } from '~/components/ui/card';
 import { Popover, PopoverContent, PopoverTrigger } from '~/components/ui/popover';
 import { Separator } from '~/components/ui/separator';
-import { api } from '~/trpc/react';
 import { TIMEZONE } from '~/constants/constants';
-import { PresenceStatus , ApprovalStatus ,type RSVPStatus } from '@prisma/client';
-
+import { api } from '~/trpc/react';
 
 const RSVP_RESPONSE_TEXT: Record<RSVPStatus, string> = {
   YES: 'Will Attend',
@@ -266,7 +265,9 @@ export function DashboardCalendar() {
                         </div>
 
                         {event.description && (
-                          <p className="text-muted-foreground text-sm line-clamp-2">{event.description}</p>
+                          <p className="text-muted-foreground text-sm line-clamp-2">
+                            {event.description}
+                          </p>
                         )}
 
                         <div className="space-y-2 text-sm">
@@ -328,26 +329,28 @@ export function DashboardCalendar() {
                                     ' (Not Approved)'}
                                 </div>
                               </div>
-                            ) : (<div className="flex flex-wrap gap-2">
-                              <Button
-                                size="sm"
-                                variant="default"
-                                onClick={() => handleRsvp(event.id, 'YES')}
-                                disabled={rsvpMutation.isPending || !isRsvpAvailable}
-                                className="flex-1"
-                              >
-                                Will Attend
-                              </Button>
-                              <Button
-                                size="sm"
-                                variant="secondary"
-                                onClick={() => handleRsvp(event.id, 'NO')}
-                                disabled={rsvpMutation.isPending || !isRsvpAvailable}
-                                className="flex-1"
-                              >
-                                Won&apos;t Attend
-                              </Button>
-                            </div>)}
+                            ) : (
+                              <div className="flex flex-wrap gap-2">
+                                <Button
+                                  size="sm"
+                                  variant="default"
+                                  onClick={() => handleRsvp(event.id, 'YES')}
+                                  disabled={rsvpMutation.isPending || !isRsvpAvailable}
+                                  className="flex-1"
+                                >
+                                  Will Attend
+                                </Button>
+                                <Button
+                                  size="sm"
+                                  variant="secondary"
+                                  onClick={() => handleRsvp(event.id, 'NO')}
+                                  disabled={rsvpMutation.isPending || !isRsvpAvailable}
+                                  className="flex-1"
+                                >
+                                  Won&apos;t Attend
+                                </Button>
+                              </div>
+                            )}
                           </div>
                         )}
 
@@ -430,7 +433,9 @@ export function DashboardCalendar() {
                         </div>
 
                         {form.description && (
-                          <p className="text-muted-foreground text-sm line-clamp-2">{form.description}</p>
+                          <p className="text-muted-foreground text-sm line-clamp-2">
+                            {form.description}
+                          </p>
                         )}
 
                         <div className="space-y-2 text-sm">
