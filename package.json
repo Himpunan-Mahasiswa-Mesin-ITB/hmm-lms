@@ -4,13 +4,10 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "next build --webpack",
     "check": "next lint && tsc --noEmit",
     "db:generate": "prisma migrate dev",
     "db:migrate": "prisma migrate deploy",
     "db:studio": "prisma studio",
-    "dev": "next dev --webpack",
-    "dev-turbo": "next dev",
     "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,md,mdx,json,yml,yaml}\" --cache",
     "format:write": "prettier --write \"**/*.{ts,tsx,js,jsx,md,mdx,json,yml,yaml}\" --cache",
     "postinstall": "prisma generate",
@@ -20,7 +17,6 @@
     "fmt:check": "oxfmt --check",
     "preview": "next build --webpack && next start",
     "prepare": "simple-git-hooks",
-    "start": "next start",
     "test": "vitest run",
     "test:watch": "vitest",
     "typecheck": "tsc --noEmit",
@@ -29,9 +25,9 @@
     "prisma:migrate": "bun run prisma:combine && prisma migrate dev",
     "prisma:studio": "bun run prisma:combine && prisma studio",
     "db:push": "bun run prisma:combine && prisma db push",
-    "dev:vinext": "vite dev --port 3000",
-    "build:vinext": "vite build",
-    "start:vinext": "vinext start"
+    "dev": "vite dev --port 3000",
+    "build": "vite build",
+    "start": "vinext start"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.10.0",

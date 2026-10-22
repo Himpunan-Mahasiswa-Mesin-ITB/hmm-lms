@@ -5,20 +5,17 @@ import '@payloadcms/next/css';
 import { RootLayout } from '@payloadcms/next/layouts';
 import { Role } from '@prisma/client';
 import { redirect } from 'next/navigation';
-
 import React, { Suspense } from 'react';
 
 import './custom.scss';
 import { auth } from '~/server/auth';
 
 import { importMap } from './admin-cms/importMap.js';
-import { serverFunction } from './serverFunction.js'
+import { serverFunction } from './serverFunction';
 
 type Args = {
   children: React.ReactNode;
 };
-
-
 
 const Layout = async ({ children }: Args) => {
   const session = await auth();
