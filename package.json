@@ -26,7 +26,8 @@
     "prisma:studio": "bun run prisma:combine && prisma studio",
     "db:push": "bun run prisma:combine && prisma db push",
     "dev": "vite dev --port 3000",
-    "build": "vite build",
+    "clean": "rimraf .nitro .output .vite node_modules/.vite node_modules/.nitro node_modules/.cache .next .vinext",
+    "build": "pnpm run clean && vite build",
     "start": "vinext start"
   },
   "dependencies": {
@@ -108,6 +109,7 @@
     "date-fns-tz": "^3.2.0",
     "embla-carousel-autoplay": "^8.6.0",
     "embla-carousel-react": "^8.6.0",
+    "framer-motion": "^14.5.0",
     "fumadocs-core": "^16.14.0",
     "fumadocs-mdx": "^15.2.1",
     "fumadocs-ui": "^16.14.0",
@@ -172,6 +174,7 @@
     "oxlint": "^1.80.0",
     "prisma": "^6.16.2",
     "react-icons": "^5.5.0",
+    "rimraf": "^6.1.3",
     "simple-git-hooks": "^2.13.1",
     "tailwindcss": "^4.3.3",
     "ts-node": "^10.9.2",

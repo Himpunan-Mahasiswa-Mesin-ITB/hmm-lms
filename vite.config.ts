@@ -4,7 +4,7 @@ import { defineConfig } from 'vite';
 import vinextPayload from 'vite-plugin-vinext-payload';
 import tailwindcss from '@tailwindcss/vite'
 export default defineConfig({
-  plugins: [nitro(), vinext({ prerender: undefined }), vinextPayload(), tailwindcss(),],
+  plugins: [vinext({ prerender: undefined }), nitro(), vinextPayload(), tailwindcss(),],
   build: {
     rollupOptions: {
       external: [
