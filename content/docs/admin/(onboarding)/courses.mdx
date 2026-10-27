@@ -1,257 +1,94 @@
 ---
-title: Course Management
-description: Comprehensive guide to creating, editing, and managing courses with full administrative control.
-icon: BookOpen
+title: Courses
+description: Create courses, upload resources, and manage members.
+icon: GraduationCap
 ---
 
 import { Callout } from 'fumadocs-ui/components/callout';
-import { Card, Cards } from 'fumadocs-ui/components/card';
+import { Step, Steps } from 'fumadocs-ui/components/steps';
 
-## Course Management
+## Managing Courses
 
-The course management system provides administrators with powerful tools to create, edit, and manage all aspects of courses on the HMM LMS platform. From content creation to analytics tracking, you have complete control over the learning experience.
+Open **Courses** in the sidebar (Content Management group) to see every course. Click a course to open it, or use the create button to add a new one.
 
-<Callout type="warning" title="Course Impact">
-  Changes to courses affect all enrolled students. Always review course content and settings before publishing modifications to ensure a positive learning experience.
+![Courses list](/images/docs/admin-guide/courses.png)
+
+## Creating a Course
+
+<Steps>
+<Step>
+
+### Open the form
+
+Click **Create Course** on the Courses page.
+
+![Create course](/images/docs/admin-guide/courses-create.png)
+
+</Step>
+<Step>
+
+### Fill in the basics
+
+- **Course Title** and **Class Code** (the unique identifier students see).
+- **Lecturers** — for example *Abdul Hakim Masyhur, Yunendar Handoko*.
+- **Description**.
+- **Cover Image** — upload an image; a success message confirms the upload.
+
+</Step>
+<Step>
+
+### Choose the type and scope
+
+- **Course type**: **Mandatory**, **Optional** or **Machining**.
+- **Scope**: who the course is meant for (for example Global or Machining).
+
+</Step>
+<Step>
+
+### Create
+
+Save the course. You are taken to the course page where you can add resources.
+
+</Step>
+</Steps>
+
+## The Course Page
+
+A course has six tabs along the top:
+
+| Tab | What it does |
+| --- | --- |
+| **Overview** | Summary of the course and quick statistics |
+| **Members** | Enrolled students. Search with *Search members...* and remove members individually or with **Remove All** |
+| **Resources** | Files and links students can open |
+| **Tryouts** | Tryouts attached to this course |
+| **Analytics** | Resource views, downloads and average score |
+| **Settings** | Edit course details, and the **Danger Zone** |
+
+### Adding resources
+
+In the **Resources** tab, choose **File** or **Link**.
+
+<Steps>
+<Step>
+
+**Files** — select one or more files. Give each a **title** and a **category** (E-Book, Presentation, Notes, Problems, Video, Syllabus or Other).
+
+</Step>
+<Step>
+
+**Links** — enter a **Link title**, the **URL**, the **Source** (YouTube or Google Drive) and a **category**.
+
+</Step>
+<Step>
+
+Use **Common Description (Optional)** to apply one description to everything you upload at once, then confirm the upload.
+
+</Step>
+</Steps>
+
+Use *Search resources...* to find an existing resource. The Analytics tab shows how often each is viewed or downloaded.
+
+<Callout type="error" title="Danger Zone">
+  In **Settings → Danger Zone** you can delete a course. This also removes its resources and member enrollments and cannot be undone.
 </Callout>
-
-## Course Creation
-
-### 🎯 **Creating New Courses**
-Build comprehensive learning experiences from scratch:
-
-#### **Basic Course Information**
-- **Title**: Clear, descriptive course name
-- **Description**: Detailed course overview and objectives
-- **Class Code**: Unique identifier for the course
-- **Course Type**: Category classification (e.g., Core, Elective, Workshop)
-- **Cover Image**: Visual representation for the course
-
-#### **Course Structure**
-- **Modules/Sections**: Organize content into logical units
-- **Lesson Planning**: Structure learning materials sequentially
-- **Resource Organization**: Upload and categorize learning materials
-- **Assessment Integration**: Embed tryouts and evaluations
-
-### 📝 **Course Content Management**
-
-#### **Resource Types**
-- **Documents**: PDFs, slides, and text materials
-- **Videos**: Video lessons and multimedia content
-- **Links**: External resources and references
-- **Interactive Elements**: Quizzes, exercises, and activities
-- **Assessments**: Tryouts and evaluations
-
-#### **Content Upload**
-- **Bulk Upload**: Upload multiple files simultaneously
-- **Drag & Drop**: Intuitive file upload interface
-- **File Organization**: Structured folder system
-- **Metadata Management**: Add descriptions and tags
-- **Access Control**: Set visibility and access permissions
-
-## Course Editing & Management
-
-### ✏️ **Course Settings**
-Configure course parameters and behavior:
-
-#### **General Settings**
-- **Course Availability**: Control enrollment and access
-- **Enrollment Limits**: Set maximum student capacity
-- **Prerequisites**: Define required courses or skills
-- **Duration**: Set course timeline and deadlines
-- **Visibility**: Control course visibility in catalog
-
-#### **Advanced Settings**
-- **Grading Policies**: Configure scoring and completion criteria
-- **Progress Tracking**: Enable/disable progress monitoring
-- **Certificate Options**: Set completion certificate parameters
-- **Notification Settings**: Configure automated communications
-- **Integration Settings**: Connect with other platform features
-
-### 👥 **Member Management**
-Control course enrollment and access:
-
-#### **Student Enrollment**
-- **Manual Enrollment**: Add students individually
-- **Bulk Enrollment**: Import students from lists
-- **Self-Enrollment**: Allow students to join automatically
-- **Approval Process**: Require admin approval for enrollment
-- **Waitlist Management**: Manage enrollment queues
-
-#### **Instructor Assignment**
-- **Primary Instructor**: Assign main course instructor
-- **Multiple Instructors**: Add teaching assistants
-- **Role Permissions**: Set instructor access levels
-- **Contact Information**: Instructor profile and availability
-
-#### **Member Actions**
-- **Remove Students**: Unenroll students when necessary
-- **Bulk Operations**: Perform actions on multiple members
-- **Communication**: Send announcements to enrolled students
-- **Progress Monitoring**: Track individual student progress
-
-### 📊 **Course Analytics**
-Monitor course performance and engagement:
-
-#### **Engagement Metrics**
-- **Enrollment Trends**: Track course popularity over time
-- **Active Users**: Monitor currently engaged students
-- **Completion Rates**: Track course completion percentages
-- **Time Spent**: Average time students spend on course content
-
-#### **Content Performance**
-- **Resource Views**: Track which materials are most accessed
-- **Download Statistics**: Monitor resource downloads
-- **Video Engagement**: Video watch time and completion rates
-- **Assessment Performance**: Tryout scores and completion rates
-
-#### **Student Analytics**
-- **Individual Progress**: Track each student's journey
-- **Performance Comparison**: Compare student performance
-- **At-Risk Identification**: Identify students needing intervention
-- **Engagement Patterns**: Analyze student behavior patterns
-
-## Course Administration
-
-### 🎯 **Course Administration Workflow**
-
-#### **Course Lifecycle**
-1. **Planning**: Define course objectives and structure
-2. **Creation**: Build course content and resources
-3. **Testing**: Review and test all course elements
-4. **Publication**: Make course available to students
-5. **Monitoring**: Track engagement and performance
-6. **Maintenance**: Update content and address issues
-7. **Archival**: Archive or retire outdated courses
-
-#### **Quality Assurance**
-- **Content Review**: Ensure all materials are accurate and current
-- **Link Validation**: Verify all external links work properly
-- **Accessibility Check**: Ensure content meets accessibility standards
-- **Mobile Testing**: Verify mobile compatibility
-- **Performance Testing**: Check load times and responsiveness
-
-### 🔧 **Advanced Course Features**
-
-#### **Tryout Integration**
-- **Assessment Creation**: Build comprehensive tryouts
-- **Question Banks**: Create reusable question repositories
-- **Randomization**: Configure question and answer randomization
-- **Time Limits**: Set assessment time constraints
-- **Automatic Grading**: Enable automated scoring
-
-#### **Communication Tools**
-- **Course Announcements**: Send updates to enrolled students
-- **Discussion Forums**: Enable student-instructor communication
-- **Messaging System**: Direct communication channels
-- **Notification Systems**: Automated reminders and updates
-
-#### **Collaboration Features**
-- **Group Projects**: Enable student collaboration
-- **Peer Review**: Implement peer assessment systems
-- **Shared Resources**: Allow resource sharing among students
-- **Live Sessions**: Integrate virtual classroom functionality
-
-## Course Management Best Practices
-
-### 🎯 **Content Strategy**
-- **Clear Objectives**: Define measurable learning outcomes
-- **Structured Progression**: Build content logically and sequentially
-- **Engaging Materials**: Use diverse content types to maintain interest
-- **Regular Updates**: Keep content current and relevant
-- **Accessibility**: Ensure all students can access materials
-
-### 👥 **Student Engagement**
-- **Active Monitoring**: Regularly check student progress
-- **Timely Feedback**: Provide prompt responses to student inquiries
-- **Intervention**: Support struggling students proactively
-- **Community Building**: Foster collaborative learning environments
-- **Recognition**: Acknowledge student achievements
-
-### 📊 **Data-Driven Improvements**
-- **Analytics Review**: Regularly analyze course performance data
-- **Student Feedback**: Collect and act on student input
-- **A/B Testing**: Experiment with different approaches
-- **Continuous Improvement**: Iteratively enhance course quality
-- **Benchmarking**: Compare performance against standards
-
-## Troubleshooting
-
-### 🐛 **Common Course Issues**
-- **Content Not Loading**: Check file formats and sizes
-- **Enrollment Problems**: Verify course availability settings
-- **Analytics Discrepancies**: Allow time for data processing
-- **Performance Issues**: Optimize large media files
-- **Access Denied**: Check user permissions and course settings
-
-### 🔧 **Technical Solutions**
-- **File Format Issues**: Convert to supported formats
-- **Upload Failures**: Check file size limits and internet connection
-- **Display Problems**: Test on different browsers and devices
-- **Integration Issues**: Verify API connections and settings
-- **Data Sync Problems**: Force manual refresh of course data
-
-## Integration with Platform Features
-
-Courses connect with various platform systems:
-
-### 📅 **Calendar Integration**
-- **Course Events**: Course schedules appear in student calendars
-- **Deadline Management**: Important dates synced automatically
-- **Reminder Systems**: Automated deadline reminders
-- **Schedule Conflicts**: Detection of scheduling conflicts
-
-### 👤 **Profile Integration**
-- **Academic Records**: Course completion reflected in profiles
-- **Achievement Tracking**: Course accomplishments displayed
-- **Skill Development**: Skills and competencies updated
-- **Portfolio Integration**: Coursework added to student portfolios
-
-### 🏆 **Engagement Integration**
-- **Hall of Fame**: Course engagement contributes to rankings
-- **Learning Streaks**: Course activity affects streak calculations
-- **Badges**: Course completion can unlock achievements
-- **Recognition**: Outstanding performance highlighted
-
-## Security & Access Control
-
-### 🔒 **Course Security**
-- **Access Permissions**: Role-based access to course features
-- **Content Protection**: Prevent unauthorized content access
-- **Data Privacy**: Protect student performance data
-- **Audit Logging**: Track all course administrative actions
-- **Backup Systems**: Regular backups of course content
-
-### ⚠️ **Content Moderation**
-- **Quality Standards**: Ensure content meets platform guidelines
-- **Copyright Compliance**: Verify all materials have proper permissions
-- **Appropriate Content**: Review materials for appropriateness
-- **Regular Audits**: Periodic content quality reviews
-- **User Reports**: Address student-reported content issues
-
-## Advanced Features
-
-### 🔄 **Course Templates**
-- **Template Creation**: Build reusable course structures
-- **Standardization**: Maintain consistency across courses
-- **Quick Setup**: Rapid course deployment using templates
-- **Customization**: Adapt templates for specific needs
-
-### 📊 **Reporting**
-- **Custom Reports**: Generate specialized course reports
-- **Data Export**: Export course data for analysis
-- **Trend Analysis**: Long-term performance tracking
-- **Comparative Analysis**: Compare course performance metrics
-
-## Getting Started
-
-### 🚀 **Course Creation Quick Start**
-1. **Plan Course**: Define objectives, structure, and content needs
-2. **Create Course**: Use course creation wizard to set up basic information
-3. **Add Content**: Upload and organize learning materials
-4. **Configure Settings**: Set course parameters and policies
-5. **Test Course**: Review all functionality before publication
-6. **Publish Course**: Make course available to students
-7. **Monitor Performance**: Track engagement and make improvements
-
-Effective course management requires attention to detail, regular monitoring, and continuous improvement. Use these tools and best practices to create engaging learning experiences that drive student success.

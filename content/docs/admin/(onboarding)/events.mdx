@@ -1,0 +1,85 @@
+---
+title: Events
+description: Schedule events and manage RSVPs and attendance.
+icon: Calendar
+---
+
+import { Callout } from 'fumadocs-ui/components/callout';
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+
+## Managing Events
+
+Open **Events** in the sidebar (Content Management group). Events show on the student **Events** and **Schedule** pages.
+
+![Events list](/images/docs/admin-guide/events.png)
+
+## Creating an Event
+
+<Steps>
+<Step>
+
+### Open the form
+
+Click the create button on the Events page.
+
+![Create event](/images/docs/admin-guide/events-create.png)
+
+</Step>
+<Step>
+
+### Basic Information
+
+- **Title**, **Description** and **Location**.
+- **Start / End Date & Time**, or tick **All day event**.
+- **Hide Event Time** — show only the date to students.
+- **Event Scope**: **Global**, **Machining**, **Course** (pick the course) or **Personal**.
+
+</Step>
+<Step>
+
+### Choose the Event Mode
+
+| Mode | Behaviour |
+| --- | --- |
+| **Basic (No tracking)** | Just shown on the calendar |
+| **RSVP Only** | Students reply whether they will come |
+| **Attendance Only** | Presence is recorded at the event |
+| **RSVP & Attendance** | Both |
+
+Depending on the mode you can set:
+
+- **RSVP Deadline** and **Require approval for RSVPs**.
+- **Require approval for attendance**.
+
+</Step>
+<Step>
+
+### Optional timeline
+
+Switch on **Enable timeline** to add a schedule of time slots (for example `09:00` with a title and description) for the day.
+
+</Step>
+<Step>
+
+### Save
+
+Submit the form to publish the event.
+
+</Step>
+</Steps>
+
+## Managing RSVPs and Attendance
+
+Open an event from the list to see its detail page:
+
+- **RSVPs** tab — each reply: **Confirmed**, **Attending with Notice**, or declined. When approval is required, review them under **Pending Approvals** and set the status to **Approved**, **Rejected** or **Pending**.
+- **Check-ins** tab — attendance records, with status such as **Present**. Approve or reject where approval is required.
+- Add **Notes** to any record for internal tracking.
+
+## Editing or Deleting
+
+Use the edit option on the event to change it, or the delete button to remove it. Deleting an event also removes its RSVPs and attendance records.
+
+<Callout type="info" title="Tip">
+  Choose the simplest mode that fits. Use **RSVP & Attendance** for events where you need both a headcount before and a record after.
+</Callout>

@@ -1,326 +1,65 @@
 ---
-title: Database Administration
-description: Comprehensive guide to direct database access, table management, and advanced data operations.
+title: Database
+description: Browse, edit, and export raw records from the admin panel.
 icon: Database
 ---
 
 import { Callout } from 'fumadocs-ui/components/callout';
-import { Card, Cards } from 'fumadocs-ui/components/card';
+import { Step, Steps } from 'fumadocs-ui/components/steps';
 
-## Database Administration
-
-The database administration system provides SUPERADMIN users with direct access to the platform's database for advanced operations, data management, and troubleshooting. This powerful tool enables complete control over platform data while maintaining security and integrity.
-
-<Callout type="error" title="Critical Access">
-  Database administration requires SUPERADMIN privileges and involves direct database operations. Incorrect actions can affect platform stability and data integrity. Always exercise extreme caution and backup data before making changes.
+<Callout type="error" title="Use with extreme care">
+  The Database page edits live production records directly. There is no undo, and changes bypass the normal forms and validation. Use the dedicated admin pages (Courses, Users, Events, …) whenever possible.
 </Callout>
 
-## Database Access Overview
+## Database Admin
 
-### 🔐 **Access Requirements**
-- **SUPERADMIN Role**: Only SUPERADMIN users can access database administration
-- **Authentication**: Requires full authentication and authorization
-- **Session Security**: Enhanced session security for database operations
-- **Audit Logging**: All database actions are logged for security
-- **IP Restrictions**: Optional IP-based access restrictions
+Open **Database** from the sidebar (System group).
 
-### 🗄️ **Database Structure**
-The platform database contains multiple interconnected tables:
+![Database page](/images/docs/admin-guide/database.png)
 
-#### **Core Tables**
-- **Users**: User accounts, profiles, and authentication data
-- **Courses**: Course information, content, and settings
-- **Enrollments**: Student course enrollments and progress
-- **Resources**: Course materials, documents, and media
-- **Tryouts**: Assessments, questions, and student attempts
+## Overview Statistics
 
-#### **Supporting Tables**
-- **Announcements**: Platform announcements and notifications
-- **Events**: Platform events and schedules
-- **Forms**: Custom forms and survey data
-- **Scholarships**: Scholarship opportunities and applications
-- **Responses**: Form submissions and survey responses
+The top of the page summarises the data: **Total Records**, the **Largest Model**, the **Active Model** you are viewing, and **Last Updated**.
 
-## Table Management
+## Browsing a Table
 
-### 📋 **Table Operations**
-Complete control over database tables:
+1. Pick a model (table) such as users, courses or events from the model selector.
+2. Records load in a table with **Page** controls at the bottom.
+3. Turn on **auto refresh** to keep the table up to date while others are working.
 
-#### **Table Navigation**
-- **Table Browser**: Navigate through all database tables
-- **Table Search**: Quickly find specific tables
-- **Table Information**: View table structure and metadata
-- **Relationships**: Understand table relationships and dependencies
-- **Table Statistics**: View row counts and storage information
+## Creating a Record
 
-#### **Data Viewing**
-- **Browse Records**: View table contents with pagination
-- **Filter Records**: Apply filters to find specific data
-- **Sort Records**: Sort by any column
-- **Search Records**: Full-text search across table data
-- **Column Selection**: Choose which columns to display
+Click the create button to open the dialog, fill in the fields (for list fields, enter *comma-separated values*), and save.
 
-### ✏️ **CRUD Operations**
+## Editing a Record
 
-#### **Create Records**
-- **Record Creation**: Add new records to any table
-- **Form-Based Entry**: User-friendly forms for data entry
-- **Validation**: Data validation and constraint checking
-- **Default Values**: Automatic default value assignment
-- **Bulk Creation**: Create multiple records simultaneously
+Use the **Actions** column on a row and choose edit, change the fields, then save. *Successfully updated* confirms.
 
-#### **Read Operations**
-- **Record Retrieval**: Fetch individual or multiple records
-- **Advanced Filtering**: Complex filter conditions
-- **Join Queries**: Query across related tables
-- **Custom Queries**: Write custom SQL queries
-- **Export Results**: Export query results in various formats
+## Deleting Records
 
-#### **Update Operations**
-- **Record Editing**: Modify existing records
-- **Bulk Updates**: Update multiple records at once
-- **Conditional Updates**: Update based on specific conditions
-- **Field Updates**: Update specific fields only
-- **Validation**: Data integrity checks during updates
+- **Single record** — use delete in the row's **Actions** and confirm.
+- **Bulk** — tick several rows, then use **Bulk Edit** or **Bulk Delete** in the bulk actions bar.
 
-#### **Delete Operations**
-- **Record Deletion**: Remove individual records
-- **Bulk Deletion**: Delete multiple records
-- **Conditional Deletion**: Delete based on criteria
-- **Soft Delete**: Mark records as deleted without removal
-- **Cascade Deletion**: Handle related record deletion
+## Exporting
 
-## Advanced Database Features
+<Steps>
+<Step>
 
-### 🔍 **Query Interface**
+Click the export button.
 
-#### **Custom Queries**
-- **SQL Editor**: Write and execute custom SQL queries
-- **Query Builder**: Visual query building interface
-- **Saved Queries**: Save frequently used queries
-- **Query History**: Track query execution history
-- **Performance Analysis**: Analyze query performance
+</Step>
+<Step>
 
-#### **Query Optimization**
-- **Execution Plans**: View query execution plans
-- **Index Suggestions**: Get index optimization recommendations
-- **Performance Metrics**: Track query performance over time
-- **Slow Query Detection**: Identify inefficient queries
-- **Query Caching**: Benefit from automatic query caching
+Choose the options in the dialog. The format is **Excel (.xlsx)** and up to **10,000 records** can be exported at once.
 
-### 📊 **Data Analysis**
+</Step>
+<Step>
 
-#### **Statistical Operations**
-- **Aggregation**: Sum, count, average, and other aggregations
-- **Grouping**: Group data by various criteria
-- **Trend Analysis**: Analyze data trends over time
-- **Comparative Analysis**: Compare data across periods
-- **Custom Calculations**: Perform custom data calculations
+Confirm and the file downloads, with a message showing the number of exported records.
 
-#### **Data Mining**
-- **Pattern Recognition**: Identify patterns in data
-- **Anomaly Detection**: Find unusual data points
-- **Correlation Analysis**: Discover relationships between data
-- **Predictive Analysis**: Basic predictive modeling
-- **Reporting**: Generate custom reports
+</Step>
+</Steps>
 
-### 🔄 **Bulk Operations**
-
-#### **Bulk Data Management**
-- **Bulk Import**: Import data from various sources
-- **Bulk Export**: Export data in multiple formats
-- **Bulk Updates**: Mass update operations
-- **Bulk Deletion**: Mass deletion operations
-- **Data Transformation**: Transform data during import/export
-
-#### **Data Migration**
-- **Table Migration**: Move data between tables
-- **Schema Changes**: Modify table structures
-- **Data Validation**: Ensure data integrity during migration
-- **Rollback Capabilities**: Revert changes if needed
-- **Migration Logging**: Track all migration activities
-
-## Data Export & Import
-
-### 📤 **Export Capabilities**
-
-#### **Export Formats**
-- **CSV Export**: Standard CSV format for spreadsheet compatibility
-- **JSON Export**: Structured JSON for application integration
-- **Excel Export**: Native Excel format with formatting
-- **PDF Export**: Formatted PDF reports
-- **Custom Export**: Custom export formats and templates
-
-#### **Export Options**
-- **Selective Export**: Choose specific columns and rows
-- **Filtered Export**: Export based on filter criteria
-- **Scheduled Exports**: Automate regular data exports
-- **Compression**: Compress large export files
-- **Encryption**: Encrypt sensitive export data
-
-### 📥 **Import Capabilities**
-
-#### **Import Sources**
-- **File Import**: Import from CSV, JSON, Excel files
-- **Database Import**: Import from other databases
-- **API Import**: Import from external APIs
-- **Clipboard Import**: Paste data directly
-- **Stream Import**: Real-time data streaming
-
-#### **Import Processing**
-- **Data Validation**: Validate imported data
-- **Transformation**: Transform data during import
-- **Deduplication**: Handle duplicate records
-- **Error Handling**: Manage import errors gracefully
-- **Progress Tracking**: Monitor import progress
-
-## Database Maintenance
-
-### 🔧 **Maintenance Operations**
-
-#### **Routine Maintenance**
-- **Index Optimization**: Rebuild and optimize indexes
-- **Statistics Update**: Update database statistics
-- **Vacuum Operations**: Clean up database storage
-- **Backup Coordination**: Coordinate with backup systems
-- **Performance Tuning**: Optimize database performance
-
-#### **Data Integrity**
-- **Constraint Checking**: Verify data integrity constraints
-- **Referential Integrity**: Ensure relationship integrity
-- **Data Validation**: Validate data quality
-- **Consistency Checks**: Check data consistency
-- **Repair Operations**: Repair corrupted data
-
-### 💾 **Backup & Recovery**
-
-#### **Backup Operations**
-- **Manual Backups**: Create on-demand backups
-- **Scheduled Backups**: Automate regular backups
-- **Incremental Backups**: Backup only changed data
-- **Backup Verification**: Verify backup integrity
-- **Backup Encryption**: Encrypt backup files
-
-#### **Recovery Operations**
-- **Point-in-Time Recovery**: Recover to specific time points
-- **Selective Recovery**: Recover specific tables or data
-- **Rollback Operations**: Revert to previous states
-- **Disaster Recovery**: Plan for major failures
-- **Recovery Testing**: Regular recovery testing
-
-## Security & Compliance
-
-### 🔒 **Security Measures**
-
-#### **Access Control**
-- **Role-Based Access**: Strict role-based access control
-- **Authentication**: Multi-factor authentication options
-- **Session Management**: Secure session handling
-- **IP Whitelisting**: Restrict access by IP address
-- **Time-Based Access**: Limit access to specific times
-
-#### **Data Protection**
-- **Encryption**: Data encryption at rest and in transit
-- **Masking**: Sensitive data masking in displays
-- **Audit Logging**: Comprehensive audit trail
-- **Change Tracking**: Track all data modifications
-- **Compliance Monitoring**: Monitor for compliance violations
-
-### ⚖️ **Compliance Requirements**
-
-#### **Data Privacy**
-- **GDPR Compliance**: Adhere to data protection regulations
-- **Data Retention**: Manage data retention policies
-- **Right to Deletion**: Process data deletion requests
-- **Data Portability**: Provide data export capabilities
-- **Consent Management**: Track user consents
-
-#### **Audit Requirements**
-- **Access Logs**: Track all database access
-- **Change Logs**: Record all data modifications
-- **Query Logs**: Log all executed queries
-- **Security Events**: Monitor security-related events
-- **Compliance Reports**: Generate compliance reports
-
-## Best Practices
-
-### 🎯 **Operational Excellence**
-- **Backup First**: Always backup before making changes
-- **Test Environment**: Test changes in non-production first
-- **Incremental Changes**: Make small, reversible changes
-- **Documentation**: Document all database changes
-- **Review Process**: Implement peer review for changes
-
-### 🔒 **Security Best Practices**
-- **Principle of Least Privilege**: Grant minimum necessary access
-- **Regular Audits**: Conduct regular security audits
-- **Session Management**: Proper session handling
-- **Strong Authentication**: Use strong authentication methods
-- **Incident Response**: Have security incident response plans
-
-### 📊 **Performance Optimization**
-- **Index Strategy**: Proper indexing for performance
-- **Query Optimization**: Optimize frequently used queries
-- **Regular Maintenance**: Perform regular database maintenance
-- **Monitoring**: Continuous performance monitoring
-- **Capacity Planning**: Plan for future growth
-
-## Troubleshooting
-
-### 🐛 **Common Database Issues**
-- **Connection Problems**: Check database connectivity and credentials
-- **Performance Issues**: Analyze slow queries and optimize
-- **Lock Issues**: Identify and resolve database locks
-- **Data Corruption**: Use repair operations for corrupted data
-- **Space Issues**: Manage database storage and cleanup
-
-### 🔧 **Technical Solutions**
-- **Query Optimization**: Improve query performance
-- **Index Management**: Add or modify indexes
-- **Statistics Update**: Update database statistics
-- **Cache Clearing**: Clear query and data caches
-- **Resource Allocation**: Adjust database resource allocation
-
-## Integration with Platform Features
-
-Database administration connects with platform systems:
-
-### 📊 **Analytics Integration**
-- **Data Source**: Database as analytics data source
-- **Real-Time Data**: Direct database access for analytics
-- **Custom Reports**: Database-powered custom reports
-- **Data Warehousing**: ETL processes for analytics
-
-### 🔔 **Notification Integration**
-- **Trigger-Based Actions**: Database triggers for notifications
-- **Data Change Alerts**: Alerts for significant data changes
-- **System Health Monitoring**: Database health monitoring
-- **Performance Alerts**: Performance degradation alerts
-
-## Advanced Features
-
-### 🤖 **Automation**
-- **Scheduled Tasks**: Automate routine database operations
-- **Triggered Actions**: Actions based on database events
-- **Workflow Automation**: Complex database workflows
-- **Monitoring Automation**: Automated health checks
-- **Maintenance Automation**: Automated maintenance tasks
-
-### 📈 **Advanced Analytics**
-- **Real-Time Analytics**: Real-time data processing
-- **Machine Learning**: Integration with ML tools
-- **Predictive Analytics**: Advanced predictive modeling
-- **Stream Processing**: Real-time data stream processing
-- **Advanced Visualization**: Complex data visualization
-
-## Getting Started
-
-### 🚀 **Database Administration Quick Start**
-1. **Understand Structure**: Familiarize yourself with database schema
-2. **Start Simple**: Begin with simple read operations
-3. **Test Environment**: Practice in test environment first
-4. **Backup Regularly**: Establish regular backup routines
-5. **Monitor Performance**: Continuously monitor database performance
-6. **Document Changes**: Keep detailed records of all changes
-
-Database administration is a powerful capability that requires expertise and caution. Use these tools responsibly and always prioritize data integrity and system stability.
+<Callout type="warn" title="Sensitive data">
+  Exports contain personal data (names, emails, NIM). Store them securely and delete them when no longer needed.
+</Callout>

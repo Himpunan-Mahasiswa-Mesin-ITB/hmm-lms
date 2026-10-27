@@ -1,283 +1,70 @@
 ---
-title: User Management
-description: Comprehensive guide to managing user accounts, roles, permissions, and administrative oversight.
+title: Users
+description: Find members, edit roles and academic info, and reset passwords.
 icon: Users
 ---
 
 import { Callout } from 'fumadocs-ui/components/callout';
-import { Card, Cards } from 'fumadocs-ui/components/card';
+import { Step, Steps } from 'fumadocs-ui/components/steps';
 
-## User Management
+## Managing Users
 
-The user management system provides administrators with comprehensive tools to oversee all user accounts, manage permissions, and maintain platform security. From individual user management to bulk operations, you have complete control over the user ecosystem.
+Open **Users** from the sidebar (User Management group).
 
-<Callout type="warning" title="Access Control">
-  User management involves sensitive data and access controls. Always follow proper authentication procedures and adhere to data privacy regulations when managing user accounts.
+![Users page](/images/docs/admin-guide/users.png)
+
+The table shows each member's **User** (name and email), **NIM**, **Role**, number of **Courses** and **Attempts**, the date they **Joined**, and an **Actions** menu.
+
+## Finding Users
+
+- Type in *Search users by name, email, or NIM...*.
+- Use the **Role** dropdown (**All Roles**, **Admin**, **Student**) to filter.
+- Use the pagination controls at the bottom for more results.
+
+## Viewing Details
+
+Open the actions menu on a row and choose **User Details** to see:
+
+- **Academic Information** — Faculty, Program, NIM.
+- **Enrolled Courses**.
+- **Recent Learning Sessions**.
+- **Recent Tryout Attempts**.
+
+## Editing a User
+
+<Steps>
+<Step>
+
+Open the actions menu on the user's row and choose **Edit User**.
+
+</Step>
+<Step>
+
+Update the name, **Role**, and academic fields such as NIM, Faculty, Program and Position.
+
+</Step>
+<Step>
+
+Save. *User updated successfully* confirms the change.
+
+</Step>
+</Steps>
+
+## Extra Actions
+
+Under **Extra Actions** in the row menu:
+
+- **Reset password** — generates a new password and shows it once in a message (*Password reset. New password: ...*). Share it securely with the member and ask them to change it.
+- **Hash password** — re-hashes a legacy password.
+
+## Deleting a User
+
+Choose **Delete User** from the row menu and confirm in the dialog.
+
+<Callout type="error" title="Deleting is permanent">
+  Deleting a user removes their enrollments, attempts and activity. Ask the user to confirm first, and prefer editing the account if you only need to change access.
 </Callout>
 
-## User Account Management
-
-### 👤 **User Account Operations**
-Complete control over user lifecycles:
-
-#### **Account Creation**
-- **Manual Creation**: Create individual user accounts
-- **Bulk Import**: Import users from CSV or spreadsheet files
-- **Self-Registration**: Manage user self-registration processes
-- **Account Verification**: oversee email verification workflows
-- **Default Settings**: Configure initial user configurations
-
-#### **Account Information**
-- **Personal Details**: Name, email, contact information
-- **Academic Information**: NIM, faculty, program, position
-- **Profile Data**: Avatar, cover image, bio
-- **Account Status**: Active, inactive, suspended
-- **Role Assignment**: User role and permission levels
-
-#### **Account Modifications**
-- **Profile Updates**: Edit user information and profiles
-- **Status Changes**: Activate, deactivate, or suspend accounts
-- **Role Changes**: Modify user roles and permissions
-- **Password Resets**: Initiate password reset processes
-- **Account Merging**: Combine duplicate accounts when necessary
-
-### 🔐 **Role & Permission Management**
-
-#### **User Roles**
-- **STUDENT**: Standard user with learning capabilities
-- **ADMIN**: Administrative access to most features
-- **SUPERADMIN**: Full system access including database administration
-- **Custom Roles**: Create specialized roles for specific needs
-
-#### **Permission Configuration**
-- **Role-Based Access**: Control feature access by role
-- **Granular Permissions**: Fine-tuned control over specific actions
-- **Permission Groups**: Bundle related permissions for easier management
-- **Temporary Access**: Grant time-limited elevated permissions
-- **Audit Trails**: Track all permission changes
-
-### 📊 **User Analytics & Monitoring**
-
-#### **User Activity Tracking**
-- **Login History**: Track user login patterns and locations
-- **Activity Logs**: Monitor user actions and engagement
-- **Session Management**: View and manage active sessions
-- **Behavioral Analysis**: Identify usage patterns and anomalies
-- **Performance Metrics**: Track user engagement and success
-
-#### **User Statistics**
-- **Total Users**: Overall user count and growth trends
-- **Active Users**: Currently active and engaged users
-- **New Registrations**: Daily, weekly, monthly signup rates
-- **User Retention**: Track user engagement over time
-- **Demographic Data**: Analyze user population characteristics
-
-## Advanced User Management
-
-### 🔍 **User Search & Filtering**
-Efficiently locate and manage specific users:
-
-#### **Search Capabilities**
-- **Name Search**: Find users by name or partial matches
-- **Email Search**: Locate users by email address
-- **NIM Search**: Find students by student ID
-- **Advanced Filters**: Combine multiple search criteria
-- **Bulk Selection**: Select multiple users for batch operations
-
-#### **Filtering Options**
-- **Role Filter**: Display users by role
-- **Status Filter**: Show active, inactive, or suspended users
-- **Activity Filter**: Filter by engagement level
-- **Date Range**: Filter by registration or activity dates
-- **Custom Filters**: Create and save custom filter combinations
-
-### 📋 **Bulk Operations**
-Perform actions on multiple users simultaneously:
-
-#### **Bulk Actions**
-- **Bulk Activation**: Activate multiple inactive accounts
-- **Bulk Deactivation**: Suspend multiple users at once
-- **Role Assignment**: Change roles for multiple users
-- **Bulk Email**: Send communications to user groups
-- **Data Export**: Export user data for analysis
-
-#### **Bulk Import/Export**
-- **CSV Import**: Import users from spreadsheet files
-- **Data Validation**: Verify imported data integrity
-- **Error Handling**: Manage import errors and duplicates
-- **Export Formats**: Export data in various formats
-- **Scheduled Exports**: Automate regular data exports
-
-### 🎯 **User Groups & Segmentation**
-
-#### **Group Management**
-- **Manual Grouping**: Create custom user groups
-- **Automatic Grouping**: Rule-based group assignment
-- **Dynamic Groups**: Groups that update automatically
-- **Group Communication**: Send group-specific announcements
-- **Group Analytics**: Track group performance metrics
-
-#### **User Segmentation**
-- **Behavioral Segments**: Group users by engagement patterns
-- **Demographic Segments**: Organize by academic information
-- **Performance Segments**: Group by achievement levels
-- **Custom Segments**: Create specialized user segments
-- **Segment Actions**: Perform actions on specific segments
-
-## User Support & Communication
-
-### 📧 **User Communication**
-Tools for effective user communication:
-
-#### **Direct Messaging**
-- **Individual Messages**: Send direct messages to users
-- **Bulk Messaging**: Communicate with user groups
-- **Announcement System**: Platform-wide announcements
-- **Automated Messages**: Triggered communications based on events
-- **Message Templates**: Reusable message templates
-
-#### **Notification Management**
-- **Email Notifications**: Configure email communication preferences
-- **In-App Notifications**: Manage platform notifications
-- **Push Notifications**: Control mobile app notifications
-- **Notification Scheduling**: Time communications strategically
-- **Response Tracking**: Monitor message engagement
-
-### 🛠️ **User Support Tools**
-
-#### **Account Recovery**
-- **Password Reset**: Initiate password reset processes
-- **Account Recovery**: Help users recover access
-- **Verification Management**: oversee identity verification
-- **Security Questions**: Manage security question systems
-- **Multi-Factor Authentication**: Configure MFA requirements
-
-#### **Troubleshooting Tools**
-- **Session Management**: View and terminate user sessions
-- **Login Issues**: Diagnose and resolve access problems
-- **Profile Issues**: Fix profile and account problems
-- **Technical Support**: Access user technical support history
-- **Escalation**: Escalate complex issues to appropriate teams
-
-## Security & Compliance
-
-### 🔒 **Security Management**
-
-#### **Account Security**
-- **Password Policies**: Enforce strong password requirements
-- **Session Security**: Configure session timeout and security
-- **Login Monitoring**: Track and analyze login patterns
-- **Suspicious Activity**: Detect and respond to anomalies
-- **Security Alerts**: Receive security-related notifications
-
-#### **Access Control**
-- **IP Restrictions**: Limit access by IP address
-- **Time-Based Access**: Restrict access to specific times
-- **Location-Based Access**: Control access by geographic location
-- **Device Management**: Manage allowed devices
-- **Access Revocation**: Immediately revoke access when needed
-
-### ⚖️ **Compliance & Privacy**
-
-#### **Data Privacy**
-- **GDPR Compliance**: Adhere to data protection regulations
-- **Data Retention**: Manage data retention policies
-- **Right to Deletion**: Process user data deletion requests
-- **Data Portability**: Provide user data export capabilities
-- **Consent Management**: Track and manage user consents
-
-#### **Audit Requirements**
-- **Action Logging**: Record all administrative actions
-- **Access Logs**: Track who accessed what data and when
-- **Change History**: Maintain history of all modifications
-- **Compliance Reporting**: Generate required compliance reports
-- **Security Audits**: Regular security and access audits
-
-## User Management Best Practices
-
-### 🎯 **Administrative Excellence**
-- **Regular Reviews**: Periodically review user accounts and access
-- **Principle of Least Privilege**: Grant minimum necessary access
-- **Documentation**: Document all user management decisions
-- **Consistency**: Apply policies consistently across all users
-- **Transparency**: Communicate policy changes clearly
-
-### 👥 **User Experience**
-- **Clear Communication**: Provide clear instructions and expectations
-- **Timely Support**: Respond promptly to user issues
-- **Fair Treatment**: Apply policies fairly and consistently
-- **User Feedback**: Collect and act on user input
-- **Continuous Improvement**: Regularly improve user management processes
-
-### 🔒 **Security Best Practices**
-- **Regular Audits**: Conduct periodic security audits
-- **Access Reviews**: Regularly review and update access permissions
-- **Incident Response**: Have plans for security incidents
-- **Employee Training**: Train staff on security best practices
-- **Stay Current**: Keep up with security trends and threats
-
-## Troubleshooting
-
-### 🐛 **Common User Issues**
-- **Login Problems**: Reset credentials or check account status
-- **Profile Issues**: Verify data integrity and permissions
-- **Role Problems**: Check role assignments and permissions
-- **Sync Issues**: Force data refresh for user information
-- **Performance Issues**: Optimize for large user datasets
-
-### 🔧 **Technical Solutions**
-- **Database Issues**: Check database connectivity and integrity
-- **API Problems**: Verify API connections and endpoints
-- **Cache Issues**: Clear cache if data appears stale
-- **Network Issues**: Verify network connectivity and performance
-- **Integration Issues**: Check third-party service connections
-
-## Integration with Platform Features
-
-User management connects with various platform systems:
-
-### 📚 **Course Integration**
-- **Enrollment Management**: Course enrollment and access
-- **Progress Tracking**: Monitor learning progress
-- **Performance Data**: Track academic performance
-- **Communication**: Course-specific user communications
-
-### 📊 **Analytics Integration**
-- **User Analytics**: Platform-wide user metrics
-- **Behavioral Data**: User engagement patterns
-- **Performance Metrics**: Achievement and progress data
-- **Predictive Analytics**: Identify at-risk users
-
-### 🔔 **Notification Integration**
-- **User Preferences**: Individual notification settings
-- **Communication History**: Track all user communications
-- **Response Tracking**: Monitor message engagement
-- **Automation**: Triggered communications based on events
-
-## Advanced Features
-
-### 🤖 **Automation**
-- **Automated Workflows**: Create automated user management processes
-- **Triggered Actions**: Actions based on specific events
-- **Scheduled Tasks**: Regular maintenance and review tasks
-- **Smart Assignments**: Intelligent role and group assignments
-- **Predictive Actions**: Anticipatory user management
-
-### 📊 **Advanced Analytics**
-- **Predictive Modeling**: Predict user behavior and outcomes
-- **Cohort Analysis**: Analyze user groups over time
-- **Funnel Analysis**: Track user journey through platform
-- **Churn Prediction**: Identify users at risk of leaving
-- **Lifetime Value**: Calculate user lifetime value metrics
-
-## Getting Started
-
-### 🚀 **User Management Quick Start**
-1. **Review User Base**: Understand current user population
-2. **Configure Settings**: Set up user management preferences
-3. **Establish Policies**: Define user management policies and procedures
-4. **Train Staff**: Ensure administrators understand proper procedures
-5. **Monitor Activity**: Begin regular user activity monitoring
-6. **Refine Processes**: Continuously improve based on experience
-
-Effective user management requires attention to security, user experience, and operational efficiency. Use these tools and best practices to maintain a secure, efficient, and user-friendly platform environment.
+<Callout type="warn" title="Granting admin access">
+  Only give the **Admin** role to trusted members. Roles such as BP and Superadmin are described in [Special Roles](/docs/admin/special-roles).
+</Callout>

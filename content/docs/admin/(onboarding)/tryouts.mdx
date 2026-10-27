@@ -1,0 +1,73 @@
+---
+title: Tryouts
+description: Create tryouts, write questions, and review student attempts.
+icon: TestTube
+---
+
+import { Callout } from 'fumadocs-ui/components/callout';
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+
+## Managing Tryouts
+
+Tryouts are timed quizzes attached to a course. Open **Tryouts** in the sidebar (Content Management group).
+
+![Tryouts list](/images/docs/admin-guide/tryouts.png)
+
+## Creating a Tryout
+
+<Steps>
+<Step>
+
+### Open the form
+
+Click the create button on the Tryouts page.
+
+![Create tryout](/images/docs/admin-guide/tryouts-create.png)
+
+</Step>
+<Step>
+
+### Basic Information
+
+- **Title** and **Description (Optional)**.
+- **Course** — pick the course the tryout belongs to.
+- **Duration** — in minutes (e.g. `60`).
+- **Multiple Attempt** — allow students to retake the tryout.
+
+</Step>
+<Step>
+
+### Add questions
+
+Click to add a question, then fill in:
+
+- **Question Type**: multiple choice (single answer), multiple choice (multiple answers), short answer or long answer.
+- **Question** text, plus optional **Question Images**.
+- **Answer Options** — mark the correct one(s). Options can have images too.
+- **Points** for the question.
+- **Explanation** — shown after the student finishes. You can also write an **Overall Explanation (Optional)** with images.
+
+You can reorder with the shuffle control and remove a question or option at any time.
+
+</Step>
+<Step>
+
+### Save
+
+Save the tryout to publish it to the course.
+
+</Step>
+</Steps>
+
+## Reviewing Results
+
+Open a tryout from the list to see:
+
+- **Statistics** — average score and overall performance.
+- **Recent Attempts** — student, score, duration, start time and status.
+
+Use this to find questions most students get wrong.
+
+<Callout type="warn" title="Editing after attempts">
+  Changing questions or points after students have attempted the tryout can make earlier scores inconsistent with the new version.
+</Callout>

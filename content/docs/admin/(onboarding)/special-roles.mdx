@@ -1,0 +1,61 @@
+---
+title: Special Roles
+description: BP profiles, Machining batch, Payload CMS and the Superadmin area.
+icon: ShieldCheck
+---
+
+import { Callout } from 'fumadocs-ui/components/callout';
+
+## Roles and Access
+
+| Role | Admin panel | Extra pages |
+| --- | --- | --- |
+| **Student / Machining** | No | — |
+| **Admin** | Yes | — |
+| **BP** | Yes | Profiles, Event Profiles |
+| **Superadmin** | Yes | Everything, plus Superadmin Area |
+
+Pages you cannot access redirect you away.
+
+## BP: Profiles and Event Profiles
+
+BP (Badan Pengurus) members manage **Profiles**, which are used to track points or progress for events.
+
+![Profiles](/images/docs/admin-guide/profiles.png)
+
+On **Manage Profiles** you can:
+
+- **Create Profile** with a name and description, and **Edit** or **Delete** it.
+- **Create Group Profile** and **Link Profile to Group** to organise profiles into groups, with *Search profiles...* and *Search group profiles...* boxes to find them.
+- View **Members** and their **Joined Date**, searchable by name, email or NIM.
+
+On **Event Profiles** you link profiles to events:
+
+![Event profiles](/images/docs/admin-guide/event-profiles.png)
+
+- Select an **Event**, a **Profile** and a **Member**.
+- Enter **Points/Progress (%)** to add (*Input how many points/progress to add*).
+- **Edit Event Profile** or **Delete/Unlink Event Profile** to correct entries.
+
+## Machining Batch
+
+**Machining Batch** (sidebar → Machining Management) holds the **Batch Configuration**: enter the **Batch Number** (e.g. `13125`) and save. *Batch created successfully* or *Batch updated successfully* confirms it.
+
+![Machining batch](/images/docs/admin-guide/machining-batch.png)
+
+## Payload CMS Content Panel
+
+**Content Panel** (sidebar → Payload CMS) opens `/admin-cms`, a separate editor for the public website content (news, achievements, gallery and similar). It uses its own login screen and layout.
+
+## Superadmin Area
+
+Only Superadmins see **Superadmin Area**. It contains bulk user operations:
+
+![Superadmin area](/images/docs/admin-guide/superadmin-area.png)
+
+- **Convert all users with MACHINING role to STUDENT role** — used when a machining batch graduates.
+- **Revoke all users with BP role** — removes the BP role from everyone.
+
+<Callout type="error" title="Bulk actions affect many accounts">
+  Each action asks for confirmation. Revoking BP cannot be undone in one step — roles can only be restored by editing users individually.
+</Callout>

@@ -1,241 +1,48 @@
 ---
-title: Admin Dashboard
-description: Comprehensive guide to the admin dashboard, statistics, and platform monitoring.
+title: Dashboard
+description: Understand the admin dashboard, pending actions, and recent activity.
 icon: LayoutDashboard
 ---
 
 import { Callout } from 'fumadocs-ui/components/callout';
-import { Card, Cards } from 'fumadocs-ui/components/card';
 
 ## Admin Dashboard
 
-The admin dashboard serves as your central command center for monitoring and managing the HMM LMS platform. It provides real-time insights, pending actions, and quick access to critical administrative functions.
+The dashboard is the first page you see in the admin panel. Open it any time by clicking **Dashboard** at the top of the sidebar.
 
-<Callout type="info" title="Real-Time Updates">
-  The dashboard automatically refreshes every 30 seconds to ensure you have the most current information about platform status and activities.
+![Admin dashboard](/images/docs/admin-guide/dashboard.png)
+
+## What You See
+
+### Summary cards
+
+Four cards at the top give a quick health check:
+
+- **Total Users** — all registered members.
+- **Active Courses** — courses currently available to students.
+- **Today's Activity** — learning activity recorded today.
+- **Pending Actions** — items that need your attention.
+
+### Alerts
+
+Important notices (for example, something that needs review) appear as colored alert banners above the cards.
+
+### Pending Actions
+
+Lists the items that need attention right now. Click the arrow button on any row to jump straight to the page where you can resolve it.
+
+### Upcoming Events
+
+Events scheduled in the **next 7 days**, so you can confirm details before they start.
+
+### Recent Activity
+
+A feed of the latest actions across the platform.
+
+## Quick Navigation
+
+To see more detail, press the **Analytics** button at the top-right of the dashboard. It opens the [Analytics](/docs/admin/analytics) page.
+
+<Callout type="info" title="Tip">
+  Use the search in the top bar to jump directly to a course, announcement, scholarship, tryout or event without going through the sidebar.
 </Callout>
-
-## Dashboard Overview
-
-### 📊 **Key Statistics**
-The dashboard displays essential platform metrics at a glance:
-
-#### **Total Users**
-- Current user count across the platform
-- New user registrations today
-- User growth trends over time
-
-#### **Active Courses**
-- Number of currently active courses
-- Total courses in the system
-- Course engagement metrics
-
-#### **Today's Activity**
-- Learning sessions completed today
-- User engagement levels
-- Platform utilization rates
-
-#### **Pending Actions**
-- Items requiring immediate attention
-- Priority tasks and alerts
-- Actionable recommendations
-
-### ⚠️ **System Alerts**
-Critical notifications and warnings:
-- **Error Alerts**: System errors requiring immediate attention
-- **Warning Alerts**: Issues that need monitoring
-- **Info Alerts**: Important announcements and updates
-- **Success Alerts**: Confirmation of completed actions
-
-## Dashboard Features
-
-### 🎯 **Pending Actions**
-Items that require your immediate attention:
-
-#### **Action Types**
-- **High Priority**: Urgent items marked for immediate action
-- **Medium Priority**: Important but not time-critical
-- **Low Priority**: Routine administrative tasks
-
-#### **Action Categories**
-- User account issues
-- Course content problems
-- System performance alerts
-- Security concerns
-- Content moderation
-
-#### **Action Management**
-- View detailed information about each action item
-- Direct links to relevant admin pages
-- Time stamps for urgency assessment
-- Priority-based sorting
-
-### 📅 **Upcoming Events**
-Preview of events scheduled for the next 7 days:
-- Event titles and descriptions
-- Date and time information
-- Location details
-- Registration status
-- Quick access to event management
-
-### 📈 **Recent Activity**
-Latest platform activities and changes:
-- User registrations and profile updates
-- Course enrollments and completions
-- Content modifications
-- System changes
-- Administrative actions
-
-## Navigation & Quick Access
-
-### 🔗 **Quick Links**
-Direct access to key administrative areas:
-
-<Cards>
-  <Card
-    title="Full Analytics"
-    href="/admin/analytics"
-    description="Comprehensive analytics and detailed platform insights."
-  />
-  <Card
-    title="Manage Courses"
-    href="/admin/courses"
-    description="Course creation, editing, and management tools."
-  />
-  <Card
-    title="User Management"
-    href="/admin/users"
-    description="User administration and role management."
-  />
-  <Card
-    title="Database Admin"
-    href="/admin/database"
-    description="Direct database access and advanced operations."
-  />
-</Cards>
-
-## Dashboard Best Practices
-
-### 🎯 **Daily Dashboard Review**
-1. **Check System Alerts**: Address any critical issues first
-2. **Review Pending Actions**: Handle priority items
-3. **Monitor Statistics**: Track key metrics and trends
-4. **Review Activity**: Stay informed about recent changes
-5. **Plan Ahead**: Use upcoming events information for planning
-
-### 📊 **Performance Monitoring**
-- **Regular Checks**: Review dashboard multiple times daily
-- **Trend Analysis**: Look for patterns in the statistics
-- **Proactive Response**: Address issues before they escalate
-- **Documentation**: Note any unusual patterns or concerns
-
-### ⚠️ **Alert Management**
-- **Immediate Response**: Treat high-priority alerts urgently
-- **Investigation**: Understand the root cause of alerts
-- **Resolution**: Take appropriate action to resolve issues
-- **Follow-up**: Verify that issues are fully resolved
-
-## Dashboard Customization
-
-### 🎨 **Display Options**
-- **Statistic Cards**: Key metrics displayed prominently
-- **Activity Feeds**: Customizable activity displays
-- **Alert Configuration**: Adjust alert thresholds and preferences
-- **Layout Options**: Personalize dashboard arrangement
-
-### ⏰ **Refresh Settings**
-- **Auto-Refresh**: Default 30-second refresh interval
-- **Manual Refresh**: Force immediate data refresh
-- **Refresh Frequency**: Adjust based on your needs
-- **Real-Time Mode**: Enable for critical monitoring periods
-
-## Troubleshooting
-
-### 🐛 **Common Dashboard Issues**
-- **Data Not Loading**: Check internet connection and refresh
-- **Stale Data**: Force manual refresh or check auto-refresh settings
-- **Missing Alerts**: Verify alert configuration and permissions
-- **Slow Performance**: Check system resources and browser performance
-
-### 🔧 **Technical Solutions**
-- **Clear Cache**: Clear browser cache if display issues persist
-- **Browser Compatibility**: Use supported browsers (Chrome, Firefox, Safari, Edge)
-- **Session Issues**: Log out and back in if session problems occur
-- **Network Issues**: Verify stable internet connection
-
-## Integration with Other Admin Features
-
-The dashboard connects with all major admin areas:
-
-### 📚 **Course Analytics**
-- Course performance data
-- Enrollment statistics
-- Engagement metrics
-- Completion rates
-
-### 👥 **User Insights**
-- User activity patterns
-- Registration trends
-- Engagement levels
-- Account status
-
-### 🎯 **System Health**
-- Platform performance metrics
-- Error rates and issues
-- System uptime
-- Resource utilization
-
-## Advanced Features
-
-### 📊 **Data Export**
-- **Statistic Export**: Download dashboard statistics
-- **Activity Logs**: Export recent activity data
-- **Alert History**: Download alert history
-- **Custom Reports**: Generate custom reports from dashboard data
-
-### 🔔 **Notification Configuration**
-- **Alert Preferences**: Configure which alerts to receive
-- **Notification Methods**: Email, in-app, or push notifications
-- **Priority Thresholds**: Set custom priority levels
-- **Quiet Hours**: Configure times for reduced notifications
-
-## Security Considerations
-
-### 🔒 **Dashboard Security**
-- **Access Control**: Only authorized admin roles can access
-- **Session Management**: Automatic session timeout for security
-- **Audit Logging**: All dashboard actions are logged
-- **Data Protection**: Sensitive data is protected and masked
-
-### ⚠️ **Privacy Considerations**
-- **User Data**: Dashboard data anonymized where appropriate
-- **Compliance**: Adheres to data protection regulations
-- **Access Logs**: Monitor dashboard access for security
-- **Data Retention**: Follow data retention policies
-
-## Mobile Access
-
-### 📱 **Dashboard on Mobile**
-- **Responsive Design**: Optimized for tablet and smartphone access
-- **Key Metrics**: Essential statistics available on mobile
-- **Critical Alerts**: High-priority alerts pushed to mobile
-- **Quick Actions**: Perform urgent tasks from mobile devices
-
-## Performance Optimization
-
-### ⚡ **Dashboard Performance**
-- **Efficient Loading**: Optimized for fast data retrieval
-- **Caching**: Smart caching reduces server load
-- **Incremental Updates**: Only changed data is refreshed
-- **Resource Management**: Minimal impact on system performance
-
-## Getting Started
-
-### 🚀 **First-Time Dashboard Setup**
-1. **Review Defaults**: Familiarize yourself with default dashboard layout
-2. **Configure Alerts**: Set up alert preferences and thresholds
-3. **Customize View**: Arrange dashboard elements to your preference
-4. **Set Refresh Interval**: Choose appropriate refresh frequency
-5. **Create Routine**: Establish regular dashboard review schedule
-
-The admin dashboard is your primary tool for platform oversight. Mastering its features and establishing regular review routines will help you maintain platform health and respond quickly to issues.

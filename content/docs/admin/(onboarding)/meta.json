@@ -7,10 +7,17 @@
     "index",
     "dashboard",
     "analytics",
-    "content-management",
+    "forms",
+    "short-links",
     "courses",
+    "scholarships",
+    "tryouts",
+    "announcements",
+    "events",
+    "job-vacancies",
     "users",
     "database",
+    "special-roles",
     "faq"
   ]
 }

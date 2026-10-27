@@ -1,300 +1,67 @@
 ---
 title: Admin FAQ
-description: Comprehensive frequently asked questions for platform administrators covering all admin features and common issues.
-icon: CircleQuestionMark
+description: Answers to common admin questions and troubleshooting tips.
+icon: HelpCircle
 ---
 
 import { Callout } from 'fumadocs-ui/components/callout';
 
-## Admin Frequently Asked Questions
+## Access
 
-Find answers to common questions about platform administration, features, and troubleshooting. Can't find what you're looking for? Contact technical support for specialized assistance.
+### I get redirected to the dashboard when I open /admin
 
-<Callout type="info" title="Quick Search">
-  Use `Ctrl + K` (or `Cmd + K` on Mac) to quickly search through all admin documentation and FAQ
-  answers.
-</Callout>
+Your account does not have the **Admin**, **BP** or **Superadmin** role. Ask a Superadmin to update your role in [Users](/docs/admin/users).
 
-## Access & Permissions
+### I am sent to a "not verified" page
 
-### What are the different admin roles?
+Your email is not verified yet. Open the verification email and click the link, then sign in again.
 
-The platform has two main administrative roles:
+### I cannot see Profiles or the Superadmin Area
 
-- **ADMIN**: Access to most administrative features including course management, user management, content creation, and analytics
-- **SUPERADMIN**: Full system access including database administration, role management, and system configuration
+Those pages are limited to BP and Superadmin roles. See [Special Roles](/docs/admin/special-roles).
 
-### How do I get admin access?
+## Content
 
-Admin access is granted by existing SUPERADMIN users or through institutional procedures. Contact your platform administrator or IT department if you need administrative access for your role.
+### Who sees my announcement?
 
-### Can I have multiple admin roles?
+**Global** announcements are shown to everyone. **Course** announcements are shown only to members of that course.
 
-Each user has a single primary role. If you need different access levels, your role should be set to the highest level of access required for your responsibilities.
+### Why can't I upload images to an announcement?
 
-### What should I do if I lose admin access?
+Save the announcement first, then upload images.
 
-Contact your institution's IT department or the primary platform administrator. They can verify your identity and restore appropriate access levels.
+### A student says they cannot see a new course or tryout
 
-## Dashboard & Analytics
+Check that the course is created with the right **type** and **scope**, and that the tryout is attached to the correct course.
 
-### How often does the dashboard refresh?
+### How do I share a long link on a poster?
 
-The admin dashboard automatically refreshes every 30 seconds to ensure current information. You can also manually refresh using the refresh button.
+Create a [Short Link](/docs/admin/short-links) and print its **QR Code**.
 
-### What do the dashboard statistics mean?
+### How do I make an event with attendance?
 
-- **Total Users**: All registered user accounts on the platform
-- **Active Courses**: Courses currently available and accessible to students
-- **Today's Activity**: Learning sessions and user engagement in the last 24 hours
-- **Pending Actions**: Items requiring immediate administrative attention
+Choose **Attendance Only** or **RSVP & Attendance** as the Event Mode. See [Events](/docs/admin/events).
 
-### How do I interpret system alerts?
+## Users
 
-System alerts are categorized by severity:
+### How do I reset a member's password?
 
-- **Error (Red)**: Critical issues requiring immediate attention
-- **Warning (Yellow)**: Important issues that should be addressed soon
-- **Info (Blue)**: Informational updates and notifications
+Open **Users**, open the row menu, and choose the reset password action under **Extra Actions**. The new password is shown once — share it securely.
 
-### Can I customize the dashboard display?
+### How do I make someone an admin?
 
-While the basic dashboard layout is standardized, you can configure refresh intervals, notification preferences, and create custom analytics dashboards for specific monitoring needs.
-
-## Course Management
-
-### How do I create a new course?
-
-Navigate to the Courses section and click "Create Course." Follow the wizard to set up basic information, add content, configure settings, and publish when ready.
-
-### What types of content can I add to courses?
-
-You can add documents (PDFs, slides), videos, external links, interactive elements, and assessments (tryouts). Content can be organized into modules and lessons.
-
-### How do I enroll students in a course?
-
-Students can self-enroll if the course allows it, or you can manually enroll students through the course's member management section. Bulk enrollment is also available via CSV import.
-
-### Can I edit a course after students have enrolled?
-
-Yes, you can edit course content and settings at any time. However, major changes should be communicated to enrolled students, and it's best practice to avoid disruptive changes during active learning periods.
-
-### How do I track student progress in a course?
-
-Each course has an analytics section showing enrollment numbers, engagement metrics, completion rates, and individual student progress. You can also view detailed performance data through the platform analytics.
-
-### What happens if I delete a course?
-
-Deleting a course removes all content, enrollments, and associated data permanently. This action cannot be undone. Consider archiving courses instead of deleting if you might need the data later.
-
-## User Management
-
-### How do I create a new user account?
-
-You can create user accounts manually through the User Management section, or users can self-register if self-registration is enabled. Manual creation requires filling in required user information.
-
-### How do I change a user's role?
-
-Role changes require appropriate permissions. ADMIN users can modify STUDENT roles, while SUPERADMIN users can change any role. Navigate to the user's profile and use the role modification options.
-
-### What should I do if a user forgets their password?
-
-Users can use the "Forgot Password" function on the sign-in page. As an admin, you can also initiate password resets through the User Management section if needed.
-
-### Can I deactivate a user account?
-
-Yes, you can deactivate user accounts through User Management. Deactivated accounts cannot log in or access the platform but their data is preserved. This is useful for temporary suspensions.
-
-### How do I handle duplicate user accounts?
-
-If a user has multiple accounts, you can merge them through the User Management section. This consolidates their data, enrollments, and progress into a single account.
-
-### What user data can I see and edit?
-
-As an admin, you can view and edit profile information, academic details, account status, and role assignments. You cannot view sensitive data like passwords (only reset them).
-
-## Database Administration
-
-### Who can access database administration?
-
-Only SUPERADMIN users have access to database administration features. This is restricted to prevent accidental data corruption and maintain security.
-
-### What operations can I perform in database administration?
-
-You can view all database tables, create/edit/delete records, run custom SQL queries, export data, and perform bulk operations. All actions are logged for security.
-
-### Is it safe to directly edit database records?
-
-Direct database editing should be done with extreme caution. Always backup data before making changes, test in non-production environments first, and understand the relationships between tables.
-
-### How do I backup the database?
-
-Database backups are typically handled automatically by your IT infrastructure. You can also export specific data through the database administration interface for additional backup copies.
-
-### What should I do if I accidentally delete important data?
-
-If you have database access, check if the data can be recovered from backups or transaction logs. Otherwise, contact your database administrator or IT department immediately for data recovery assistance.
-
-### Can I create custom database queries?
-
-Yes, SUPERADMIN users can write and execute custom SQL queries through the database administration interface. This is useful for complex data analysis and reporting.
-
-## Content Management
-
-### How do I create an announcement?
-
-Navigate to the Announcements section and click "New Announcement." Use the rich text editor to create your message, set targeting options, and schedule publication if desired.
-
-### Can I schedule announcements for future publication?
-
-Yes, you can schedule announcements to be published at specific dates and times. This is useful for planning communications in advance.
-
-### How do I create events?
-
-Use the Events section to create events with details like title, description, date, time, location, and registration requirements. Events are automatically added to the platform calendar.
-
-### What types of forms can I create?
-
-The form builder supports various question types including multiple choice, text input, file upload, rating scales, and more. You can create surveys, applications, feedback forms, and data collection tools.
-
-### How do I manage scholarship applications?
-
-Scholarship applications can be reviewed through the Scholarships section. You can track application status, review submissions, communicate with applicants, and manage selection processes.
-
-### What are shortlinks used for?
-
-Shortlinks are abbreviated URLs that redirect to longer destination URLs. They're useful for sharing links in print materials, social media, or anywhere short URLs are preferred. Analytics track click-through rates.
-
-## Analytics & Reporting
-
-### How current is the analytics data?
-
-Most analytics data is updated in near real-time, with some aggregations updated hourly or daily depending on the complexity of the calculations.
-
-### Can I export analytics data?
-
-Yes, you can export analytics data in various formats including CSV, Excel, and PDF. Custom exports can be configured through the analytics interface.
-
-### How do I create custom reports?
-
-Use the report builder to create custom reports by selecting data sources, choosing metrics, adding filters, and formatting the output. Reports can be scheduled for automatic generation and delivery.
-
-### What metrics should I monitor regularly?
-
-Key metrics to monitor include user engagement rates, course completion rates, system performance indicators, and user growth trends. The specific metrics depend on your administrative responsibilities.
-
-### How do I interpret engagement metrics?
-
-Engagement metrics typically include session duration, page views, interaction frequency, and return visits. Higher engagement generally indicates more effective content and user experience.
-
-### Can I compare performance across different time periods?
-
-Yes, analytics tools allow period-over-period comparisons, year-over-year analysis, and custom date range comparisons to identify trends and patterns.
+Edit the user and change the **Role**. Only grant it to trusted members.
 
 ## Troubleshooting
 
-### What should I do if the admin panel is slow?
+### Analytics is slow
 
-Check your internet connection, clear your browser cache, and try a different browser. If the issue persists, it may be a platform performance issue that should be reported to technical support.
+Analytics reads a lot of data. Choose a shorter date range.
 
-### Why can't I see certain admin features?
+### I deleted something by mistake
 
-Access to features depends on your role and permissions. If you believe you should have access to a feature you can't see, contact your administrator to verify your role assignment.
+Deleting is permanent and there is no undo from the panel. Contact a developer immediately, as the database may have backups.
 
-### What if I encounter an error while performing an action?
-
-Note the error message and what you were trying to do. Try refreshing the page and attempting the action again. If the error persists, report it to technical support with the error details.
-
-### How do I clear cached data?
-
-Most data refreshes automatically, but you can force a refresh using the refresh buttons available throughout the admin interface. Browser cache can be cleared through your browser's settings.
-
-### What if changes I made aren't appearing?
-
-Allow a few minutes for data to propagate through the system. Force refresh the page, and if changes still don't appear, check if there are any error messages or system alerts.
-
-## Security & Best Practices
-
-### How should I manage my admin account security?
-
-Use strong, unique passwords, enable two-factor authentication if available, and never share your credentials. Log out when finished and avoid using admin accounts on shared devices.
-
-### What are the best practices for course creation?
-
-Plan your course structure before creating it, use diverse content types to maintain engagement, test all functionality before publishing, and regularly update content to keep it current.
-
-### How should I handle sensitive user data?
-
-Always follow data privacy regulations, limit access to sensitive information to only those who need it, and maintain proper documentation of data handling procedures.
-
-### What should I do if I detect suspicious activity?
-
-Immediately report suspicious activity to your security team or platform administrator. If you have appropriate access, you can investigate further or take immediate action to protect the platform.
-
-### How often should I review analytics?
-
-Establish a regular review schedule based on your needs. Daily reviews are appropriate for operational metrics, while weekly or monthly reviews are better for strategic analysis and planning.
-
-## System Issues
-
-### What if the platform goes down?
-
-Check the system status page if available, report the outage to technical support, and communicate with users about the situation and expected resolution time.
-
-### How do I handle increased platform load?
-
-Monitor system performance metrics during high-traffic periods, consider temporary restrictions on non-essential features, and plan capacity upgrades if increased load is expected to continue.
-
-### What if users report issues I can't reproduce?
-
-Gather detailed information about the issue including browser, device, and steps to reproduce. Check if it's affecting multiple users or isolated to specific configurations.
-
-### How do I stay informed about platform updates?
-
-Regularly check announcements, subscribe to update notifications, and participate in admin training sessions when offered to stay current with platform changes.
-
-## Getting Help
-
-### Where can I find additional documentation?
-
-This admin documentation covers all major features. For specific technical details, refer to the platform's technical documentation or API documentation if available.
-
-### How do I contact technical support?
-
-Use the platform's support channels, which may include help desk email, support ticket systems, or direct contact with technical staff. Contact information should be available in your institutional resources.
-
-### What information should I include when reporting issues?
-
-Include your role, what you were trying to do, any error messages, steps to reproduce the issue, browser and device information, and screenshots if applicable.
-
-### Is there training available for administrators?
-
-Many institutions offer training programs for platform administrators. Check with your IT department or learning resources for available training opportunities.
-
-### How can I provide feedback on the admin interface?
-
-Use the platform's feedback channels or contact the development team directly with constructive suggestions for improving the admin experience.
-
-## Still Need Help?
-
-If you couldn't find the answer to your question in this FAQ, don't worry! There are several ways to get assistance:
-
-### 📞 **Contact Options**
-
-- **Technical Support**: Contact your institution's technical support team
-- **Platform Administrator**: Reach out to your primary platform administrator
-- **IT Department**: Contact your IT department for access and account issues
-- **Development Team**: Reach out for platform improvement suggestions
-
-### 🔍 **Additional Resources**
-
-- **Admin Documentation**: Browse through detailed admin documentation sections
-- **Platform Search**: Use the search function (`Ctrl + K`) to find relevant content
-- **Training Materials**: Check for available training guides and tutorials
-- **Community Forums**: Connect with other administrators for best practices
-
-### 📱 **Escalation**
-
-For critical issues affecting platform operations or user access, use emergency contact channels or escalation procedures established by your institution.
-
-Remember, effective platform administration requires continuous learning and adaptation. Stay curious, ask questions, and use available resources to enhance your administrative capabilities.
+<Callout type="info" title="Still stuck?">
+  Contact the HMM LMS development team with a description of the problem and a screenshot.
+</Callout>
