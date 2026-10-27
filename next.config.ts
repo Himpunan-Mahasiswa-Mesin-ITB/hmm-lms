@@ -1,5 +1,6 @@
 import withPWA from '@ducanh2912/next-pwa';
 import { withPayload } from '@payloadcms/next/withPayload';
+import { withRedact } from '@tanstack/redact/next'
 import { createMDX } from 'fumadocs-mdx/next';
 import type { NextConfig } from 'next';
 
@@ -158,4 +159,4 @@ const pwaConfig = withPWA({
 
 const withMDX = createMDX();
 
-export default withPayload(pwaConfig(withMDX(nextConfig)));
+export default withRedact(withPayload(pwaConfig(withMDX(nextConfig))))
