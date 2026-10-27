@@ -1,0 +1,8 @@
+allowBuilds:
+  '@prisma/client': true
+  '@prisma/engines': true
+  bcrypt: true
+  core-js: true
+  esbuild: true
+  prisma: true
+  simple-git-hooks: true

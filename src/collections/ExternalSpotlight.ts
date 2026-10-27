@@ -12,6 +12,7 @@ export const ExternalSpotlight: CollectionConfig<'external-spotlight'> = {
     update: authenticated,
   },
   admin: {
+    group: 'External Home Page Contents',
     defaultColumns: ['title', 'caption', 'updatedAt'],
     useAsTitle: 'title',
   },

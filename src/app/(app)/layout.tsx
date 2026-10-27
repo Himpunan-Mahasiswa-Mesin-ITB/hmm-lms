@@ -1,5 +1,4 @@
 import { Analytics } from '@vercel/analytics/next';
-import { SpeedInsights } from '@vercel/speed-insights/next';
 import { type Metadata } from 'next';
 import { SessionProvider } from 'next-auth/react';
 import {
@@ -181,7 +180,6 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
                   <ThemeProvider attribute="class" defaultTheme="light">
                     <TooltipProvider>
                       {/* <RegisterSW /> */}
-                      <SpeedInsights />
                       <Analytics />
                       <ServiceWorkerUpdate />
                       {children}

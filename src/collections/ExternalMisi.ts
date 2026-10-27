@@ -12,6 +12,7 @@ export const ExternalMisi: CollectionConfig<'external-misi'> = {
     update: authenticated,
   },
   admin: {
+    group: 'External About Page Contents',
     defaultColumns: ['title', 'updatedAt'],
     useAsTitle: 'title',
   },

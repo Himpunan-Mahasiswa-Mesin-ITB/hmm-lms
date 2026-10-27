@@ -7,13 +7,13 @@ import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight';
 import Placeholder from '@tiptap/extension-placeholder';
 import Subscript from '@tiptap/extension-subscript';
 import Superscript from '@tiptap/extension-superscript';
-import {Table} from '@tiptap/extension-table';
+import { Table } from '@tiptap/extension-table';
 import TableCell from '@tiptap/extension-table-cell';
 import TableHeader from '@tiptap/extension-table-header';
 import TableRow from '@tiptap/extension-table-row';
 import { TaskItem } from '@tiptap/extension-task-item';
 import { TaskList } from '@tiptap/extension-task-list';
-import {TextStyle} from '@tiptap/extension-text-style';
+import { TextStyle } from '@tiptap/extension-text-style';
 import Typography from '@tiptap/extension-typography';
 import type { DOMOutputSpec, Node as ProseMirrorNode } from '@tiptap/pm/model';
 import { PluginKey } from '@tiptap/pm/state';
@@ -333,7 +333,7 @@ const Slash = Node.create<SlashOptions>({
       id: {
         default: null,
         parseHTML: (element) => element.getAttribute('data-id'),
-        renderHTML: (attributes: {id: string, label: string}) => {
+        renderHTML: (attributes: { id: string, label: string }) => {
           if (!attributes.id) {
             return {};
           }
@@ -347,7 +347,7 @@ const Slash = Node.create<SlashOptions>({
       label: {
         default: null,
         parseHTML: (element) => element.getAttribute('data-label'),
-        renderHTML: (attributes: {label: string}) => {
+        renderHTML: (attributes: { label: string }) => {
           if (!attributes.label) {
             return {};
           }
@@ -595,8 +595,8 @@ export const EditorProvider = ({
     Subscript,
     Slash.configure({
       suggestion: {
-        items: async ({ editor, query }) => {
-          const items = await defaultSlashSuggestions({ editor, query });
+        items: async ({ editor, query, signal }) => {
+          const items = await defaultSlashSuggestions({ editor, query, signal });
 
           if (!query) {
             return items;

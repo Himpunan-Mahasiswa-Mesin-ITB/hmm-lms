@@ -12,6 +12,7 @@ export const ExternalHeritageTimeline: CollectionConfig<'external-heritage-timel
     update: authenticated,
   },
   admin: {
+    group: 'External Home Page Contents',
     defaultColumns: ['year', 'title', 'updatedAt'],
     useAsTitle: 'year',
   },

@@ -11,7 +11,7 @@ import { Categories } from './collections/Categories';
 import { Events } from './collections/Events';
 import { ExternalAbout } from './collections/ExternalAbout';
 import { ExternalContact } from './collections/ExternalContact';
-import { ExternalGallery } from './collections/ExternalGallery';
+import { ExternalGallery } from './collections/Gallery';
 import { ExternalHeritageTimeline } from './collections/ExternalHeritageTimeline';
 import { ExternalHighlight } from './collections/ExternalHighlight';
 import { ExternalImage } from './collections/ExternalImage';
@@ -24,12 +24,8 @@ import { ExternalSpotlight } from './collections/ExternalSpotlight';
 import { ExternalVisi } from './collections/ExternalVisi';
 import { Media } from './collections/Media';
 import { News } from './collections/News';
-import { Pages } from './collections/Pages';
-import { Posts } from './collections/Posts';
 import { Users } from './collections/Users';
 import { env } from './env';
-import { Footer } from './payload/Footer/config';
-import { Header } from './payload/Header/config';
 import { getServerSideURL } from './payload/utilities/getURL';
 import { plugins } from './plugins';
 
@@ -52,9 +48,13 @@ export default buildConfig({
       // The `BeforeDashboard` component renders the 'welcome' block that you see after logging into your admin panel.
       // Feel free to delete this at any time. Simply remove the line below.
       beforeDashboard: ['~/payload/components/BeforeDashboard'],
+      graphics: {
+        Logo: '~/payload/components/Logo-HMM',
+        Icon: '~/payload/components/Icon-HMM',
+      },
     },
     meta: {
-      title: 'Admin Payload CMS',
+      title: 'CMS Panel',
       titleSuffix: ' | HMM ITB',
       icons: [
         {
@@ -90,12 +90,10 @@ export default buildConfig({
   collections: [
     Users,
     Media,
-    Posts,
     Events,
     Achievements,
     News,
     Categories,
-    Pages,
     ExternalManifesto,
     ExternalAbout,
     ExternalVisi,
@@ -124,7 +122,6 @@ export default buildConfig({
     // push: false,
   }),
   cors: [getServerSideURL()].filter(Boolean),
-  globals: [Header, Footer],
   sharp,
   plugins,
 });

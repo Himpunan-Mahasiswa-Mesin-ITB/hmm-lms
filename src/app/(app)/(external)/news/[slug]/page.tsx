@@ -7,12 +7,10 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { getPayload } from 'payload';
 import { cache } from 'react';
-
 import { LivePreviewListener } from '~/payload/components/LivePreviewListener';
-import { PayloadRedirects } from '~/payload/components/PayloadRedirects';
 import RichText from '~/payload/components/RichText';
 import { generateMeta } from '~/payload/utilities/generateMeta';
-
+import { redirect } from 'next/navigation';
 import PageClient from './page.client';
 
 export async function generateStaticParams() {
@@ -37,10 +35,11 @@ export default async function News({ params: paramsPromise }: Args) {
   const { isEnabled: draft } = await draftMode();
   const { slug = '' } = await paramsPromise;
   const decodedSlug = decodeURIComponent(slug);
-  const url = '/news/' + decodedSlug;
+  // const url = '/news/' + decodedSlug;
+  const url = '/news/';
   const newsItem = await queryNewsBySlug({ slug: decodedSlug });
 
-  if (!newsItem) return <PayloadRedirects url={url} />;
+  if (!newsItem) redirect(url);
 
   const authors = Array.isArray(newsItem.authors)
     ? newsItem.authors
@@ -58,7 +57,6 @@ export default async function News({ params: paramsPromise }: Args) {
   return (
     <main className="hmm-sans text-[var(--color-hmm-navy)]">
       <PageClient />
-      <PayloadRedirects disableNotFound url={url} />
       {draft && <LivePreviewListener />}
 
       <article>

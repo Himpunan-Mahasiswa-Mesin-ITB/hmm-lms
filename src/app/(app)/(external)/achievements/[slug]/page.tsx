@@ -9,11 +9,11 @@ import { getPayload } from 'payload';
 import { cache } from 'react';
 
 import { LivePreviewListener } from '~/payload/components/LivePreviewListener';
-import { PayloadRedirects } from '~/payload/components/PayloadRedirects';
 import RichText from '~/payload/components/RichText';
 import { generateMeta } from '~/payload/utilities/generateMeta';
 
 import PageClient from './page.client';
+import { redirect } from 'next/navigation';
 
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise });
@@ -46,10 +46,11 @@ export default async function Achievement({ params: paramsPromise }: Args) {
   const { isEnabled: draft } = await draftMode();
   const { slug = '' } = await paramsPromise;
   const decodedSlug = decodeURIComponent(slug);
-  const url = '/achievements/' + decodedSlug;
+  // const url = '/achievements/' + decodedSlug;
+  const url = '/achievements/';
   const achievement = await queryAchievementBySlug({ slug: decodedSlug });
 
-  if (!achievement) return <PayloadRedirects url={url} />;
+  if (!achievement) redirect(url);
 
   const authors = Array.isArray(achievement.authors)
     ? achievement.authors
@@ -74,7 +75,6 @@ export default async function Achievement({ params: paramsPromise }: Args) {
     <>
       <main className="hmm-sans text-[var(--color-hmm-navy)]">
         <PageClient />
-        <PayloadRedirects disableNotFound url={url} />
         {draft && <LivePreviewListener />}
 
         <article>

@@ -1,7 +1,6 @@
 import { Banner } from '@payloadcms/ui/elements/Banner';
 import React from 'react';
 
-import { SeedButton } from './SeedButton';
 
 import './index.scss';
 
@@ -85,14 +84,6 @@ const BeforeDashboard: React.FC = () => {
 
         <h5>Getting Started:</h5>
         <ul className={`${baseClass}__instructions`}>
-          <li>
-            <SeedButton />
-            {' with sample content to explore the dashboard features, then '}
-            <a href="/" target="_blank">
-              visit your website
-            </a>
-            {' to see the results.'}
-          </li>
           <li>
             Navigate to the <strong>Media</strong> collection to upload your first images and
             documents

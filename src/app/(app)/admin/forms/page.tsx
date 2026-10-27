@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { useRouter } from 'next/navigation';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 import { formatDistanceToNow } from 'date-fns';
 import Link from 'next/link';
 import { toast } from 'sonner';

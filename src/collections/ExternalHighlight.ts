@@ -12,6 +12,7 @@ export const ExternalHighlight: CollectionConfig<'external-highlight'> = {
     update: authenticated,
   },
   admin: {
+    group: 'External Home Page Contents',
     defaultColumns: ['tag', 'caption', 'bento', 'updatedAt'],
     useAsTitle: 'caption',
   },

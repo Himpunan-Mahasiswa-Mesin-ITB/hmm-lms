@@ -12,6 +12,7 @@ export const ExternalImage: CollectionConfig<'external-image'> = {
     update: authenticated,
   },
   admin: {
+    group: 'External Images',
     defaultColumns: ['key', 'updatedAt'],
     useAsTitle: 'key',
   },

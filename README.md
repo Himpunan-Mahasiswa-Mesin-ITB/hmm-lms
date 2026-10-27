@@ -133,7 +133,6 @@ HMM-LMS is a modern web application built to serve the academic and community ne
 ### **Monitoring & Tracking**
 
 - **[Better Stack](https://betterstack.com)** - System Uptime monitoring
-- **[Sentry](https://sentry.io/welcome/)** - Error Monitoring and Tracking
 
 ### **Database \& ORM**
 

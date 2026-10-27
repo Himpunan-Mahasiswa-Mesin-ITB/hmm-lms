@@ -34,6 +34,19 @@ interface Profile {
   description: string | null;
   progress: number;
   updatedAt: Date | null;
+  relatedEvents?: {
+    updatedAt: Date;
+    createdAt: Date;
+    id: string;
+    eventId: string;
+    profileId: string;
+    progressToAdd: number;
+    event: {
+      title: string;
+      start: Date;
+      end: Date;
+    };
+  }[]
 }
 
 interface GroupProfile {
@@ -253,6 +266,34 @@ export function ProfileProgressCard({ profileProgress, refetch }: ProfileProgres
                       {profile.updatedAt && (
                         <div className="text-muted-foreground text-xs">
                           Last updated: {new Date(profile.updatedAt).toLocaleDateString()}
+                        </div>
+                      )}
+                      {profile.relatedEvents && profile.relatedEvents.length > 0 && (
+                        <div className="mt-3 space-y-1.5 pt-2 border-t border-border/40">
+                          <div className="text-xs font-medium text-muted-foreground">Recommended events to participate</div>
+                          <div className="space-y-1">
+                            {profile.relatedEvents.map((related) => (
+                              <div
+                                key={related.id}
+                                className="flex items-center justify-between text-xs rounded bg-muted/40 px-2 py-1.5"
+                              >
+                                <div className="flex flex-col min-w-0 pr-2">
+                                  <span className="font-medium text-foreground truncate">
+                                    {related.event.title}
+                                  </span>
+                                  <span className="text-[10px] text-muted-foreground">
+                                    {new Date(related.event.start).toLocaleDateString(undefined, {
+                                      month: 'short',
+                                      day: 'numeric',
+                                    })}
+                                  </span>
+                                </div>
+                                {/*<Badge variant="outline" className="text-[10px] shrink-0 font-normal">
+                                  +{related.progressToAdd}%
+                                </Badge>*/}
+                              </div>
+                            ))}
+                          </div>
                         </div>
                       )}
                     </div>

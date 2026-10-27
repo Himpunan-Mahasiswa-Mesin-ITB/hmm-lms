@@ -29,14 +29,12 @@ import { MetaImageComponent as MetaImageComponent_a8a977ebc872c5d5ea7ee689724c08
 import { MetaDescriptionComponent as MetaDescriptionComponent_a8a977ebc872c5d5ea7ee689724c0860 } from '@payloadcms/plugin-seo/client'
 import { PreviewComponent as PreviewComponent_a8a977ebc872c5d5ea7ee689724c0860 } from '@payloadcms/plugin-seo/client'
 import { SlugField as SlugField_2b8867833a34864a02ddf429b0728a40 } from '@payloadcms/next/client'
-import { LinkToDoc as LinkToDoc_aead06e4cbf6b2620c5c51c9ab283634 } from '@payloadcms/plugin-search/client'
-import { ReindexButton as ReindexButton_aead06e4cbf6b2620c5c51c9ab283634 } from '@payloadcms/plugin-search/client'
-import { RowLabel as RowLabel_1d4c74ef8f99000b2611f455ceb700de } from '~/payload/Header/RowLabel'
-import { RowLabel as RowLabel_0ac8f8e344f41702f07c0442941f378a } from '~/payload/Footer/RowLabel'
+import { default as default_54acc2a198b8133d9c8f1dd556284d3e } from '~/payload/components/Icon-HMM'
+import { default as default_8ca6f6f82258a2b4bf8f969a6a74c1ac } from '~/payload/components/Logo-HMM'
 import { default as default_e77a8d60a962b4a24b1eb18c00497dc2 } from '~/payload/components/BeforeDashboard'
 import { default as default_7f098d36c5f260729b84bf718c46748e } from '~/payload/components/BeforeLogin'
-import { S3ClientUploadHandler as S3ClientUploadHandler_f97aa6c64367fa259c5bc0567239ef24 } from '@payloadcms/storage-s3/client'
 import { CollectionCards as CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1 } from '@payloadcms/next/rsc'
+import { S3ClientUploadHandler as S3ClientUploadHandler_f97aa6c64367fa259c5bc0567239ef24 } from '@payloadcms/storage-s3/client'
 
 /** @type import('payload').ImportMap */
 export const importMap = {
@@ -71,12 +69,10 @@ export const importMap = {
   "@payloadcms/plugin-seo/client#MetaDescriptionComponent": MetaDescriptionComponent_a8a977ebc872c5d5ea7ee689724c0860,
   "@payloadcms/plugin-seo/client#PreviewComponent": PreviewComponent_a8a977ebc872c5d5ea7ee689724c0860,
   "@payloadcms/next/client#SlugField": SlugField_2b8867833a34864a02ddf429b0728a40,
-  "@payloadcms/plugin-search/client#LinkToDoc": LinkToDoc_aead06e4cbf6b2620c5c51c9ab283634,
-  "@payloadcms/plugin-search/client#ReindexButton": ReindexButton_aead06e4cbf6b2620c5c51c9ab283634,
-  "~/payload/Header/RowLabel#RowLabel": RowLabel_1d4c74ef8f99000b2611f455ceb700de,
-  "~/payload/Footer/RowLabel#RowLabel": RowLabel_0ac8f8e344f41702f07c0442941f378a,
+  "~/payload/components/Icon-HMM#default": default_54acc2a198b8133d9c8f1dd556284d3e,
+  "~/payload/components/Logo-HMM#default": default_8ca6f6f82258a2b4bf8f969a6a74c1ac,
   "~/payload/components/BeforeDashboard#default": default_e77a8d60a962b4a24b1eb18c00497dc2,
   "~/payload/components/BeforeLogin#default": default_7f098d36c5f260729b84bf718c46748e,
-  "@payloadcms/storage-s3/client#S3ClientUploadHandler": S3ClientUploadHandler_f97aa6c64367fa259c5bc0567239ef24,
-  "@payloadcms/next/rsc#CollectionCards": CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1
+  "@payloadcms/next/rsc#CollectionCards": CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1,
+  "@payloadcms/storage-s3/client#S3ClientUploadHandler": S3ClientUploadHandler_f97aa6c64367fa259c5bc0567239ef24
 }
