@@ -1,219 +1,94 @@
 ---
 title: Admin Overview
-description: Comprehensive overview of all admin features and capabilities on HMM LMS.
+description: Get started with the HMM LMS admin panel, its sidebar, and the roles that can access it.
 icon: Shield
 ---
 
 import { Callout } from 'fumadocs-ui/components/callout';
 import { Card, Cards } from 'fumadocs-ui/components/card';
-import { Shield, BookOpen, Users, Database } from 'lucide-react';
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+import { BarChart3, FormInput, GraduationCap, Users, Database, Calendar } from 'lucide-react';
 
-## Welcome to HMM LMS Admin Documentation
+## Welcome to the Admin Panel
 
-Welcome to the comprehensive admin guide for the HMM LMS platform. This documentation covers all administrative features, tools, and capabilities available to manage and optimize the learning management system.
+The admin panel is where HMM LMS content and members are managed. Everything students see on the platform — courses, tryouts, scholarships, announcements, events, job vacancies — is created and maintained here.
 
-<Callout type="info" title="Admin Access">
-  Administrative features require appropriate permissions (ADMIN or SUPERADMIN roles). Ensure you
-  have the necessary access before attempting to use these features.
+<Callout type="info" title="Who can access it?">
+  Only accounts with the **Admin**, **BP**, or **Superadmin** role can open `/admin`. Other users are redirected to their dashboard. Your email must also be verified.
 </Callout>
 
-## Admin Capabilities Overview
+## Opening the Admin Panel
 
-As an administrator, you have access to powerful tools to manage the entire platform:
+<Steps>
+<Step>
 
-### 📊 **Dashboard & Analytics**
+### Sign in
 
-- **Admin Dashboard**: Central hub with platform statistics, pending actions, and system alerts
-- **Analytics**: Comprehensive insights into user behavior, course performance, and platform usage
-- **Real-time Monitoring**: Track active users, learning sessions, and system health
-- **Data Visualization**: Charts and graphs for trend analysis and decision-making
+Go to the sign-in page and log in with your admin account.
 
-### 📚 **Course Management**
+![Sign in](/images/docs/admin-guide/sign-in.png)
 
-- **Course Creation**: Build and structure courses with various content types
-- **Course Editing**: Update course content, settings, and configurations
-- **Member Management**: Enroll students, manage instructors, and control access
-- **Resource Management**: Upload documents, videos, and learning materials
-- **Course Analytics**: Track engagement, completion rates, and performance
-- **Tryout Integration**: Create and manage assessments within courses
+</Step>
+<Step>
 
-### 👥 **User Management**
+### Go to the admin panel
 
-- **User Administration**: Create, edit, and deactivate user accounts
-- **Role Management**: Assign and modify user roles (STUDENT, ADMIN, SUPERADMIN)
-- **Profile Management**: Update user information and academic details
-- **Activity Monitoring**: Track user engagement and platform usage
-- **Bulk Operations**: Perform actions on multiple users simultaneously
+Open `/admin` in your browser, or use the admin link from your profile menu in the top-right corner.
 
-### 🗄️ **Database Administration**
+</Step>
+<Step>
 
-- **Direct Database Access**: View and manipulate database records
-- **Table Management**: Access all platform tables and relationships
-- **CRUD Operations**: Create, read, update, and delete records
-- **Bulk Actions**: Perform operations on multiple records
-- **Data Export**: Export data for analysis and backup
-- **Query Interface**: Execute custom database queries
+### Use the sidebar
 
-### 📢 **Content Management**
+The sidebar on the left lists every admin section, grouped by purpose. Click the **sidebar toggle** (the panel icon next to *Admin* at the top) to collapse or expand it. Your name and role are shown at the bottom of the sidebar.
 
-- **Announcements**: Create and manage platform-wide announcements
-- **Events**: Schedule and manage platform events and activities
-- **Forms**: Build custom forms and surveys for data collection
-- **Scholarships**: Manage scholarship opportunities and applications
-- **Job Vacancies**: Post and manage job opportunities (Loker)
-- **Shortlinks**: Create and manage shortened URLs with analytics
+![Admin dashboard with sidebar](/images/docs/admin-guide/dashboard.png)
 
-### 🎯 **Assessment Management**
+</Step>
+</Steps>
 
-- **Tryout Creation**: Build comprehensive assessments with various question types
-- **Question Banks**: Create and manage question repositories
-- **Attempt Management**: Monitor student attempts and performance
-- **Analytics**: Detailed analysis of assessment results and trends
-- **Grading**: Review scores and provide feedback
+## Sidebar Map
 
-### 🔧 **System Administration**
+| Group | Menu item | What it is for |
+| --- | --- | --- |
+| SUPERADMIN Area | **SUPERADMIN Panel** | Bulk user operations (Superadmin only) |
+| Badan Pengurus | **Profiles Management**, **Event Profiles** | Track points/progress (BP and Superadmin only) |
+| General | **Dashboard** | Platform summary, pending actions, recent activity |
+| General | **Analytics** | Detailed charts and reports |
+| General | **Forms** | Build forms and read responses |
+| General | **Short Links** | Create short, trackable links and QR codes |
+| Content Management | **Courses** | Courses, resources and members |
+| Content Management | **Scholarships** | Scholarship listings |
+| Content Management | **Tryouts** | Quizzes and exams |
+| Content Management | **Announcements** | Global or course announcements |
+| Content Management | **Events** | Events, RSVPs and attendance |
+| Content Management | **M-Opportunity** | Job vacancies |
+| User Management | **Users** | Members, roles and passwords |
+| Machining Management | **Machining Batch** | Machining batch settings |
+| Payload CMS | **Content Panel** | Public website content (opens `/admin-cms`) |
+| System | **Database** | Browse and edit raw records |
 
-- **System Alerts**: Monitor and respond to system issues
-- **Performance Monitoring**: Track platform performance and uptime
-- **Security Management**: oversee platform security and access controls
-- **Configuration**: Manage platform settings and configurations
+<Callout type="warn" title="Some items depend on your role">
+  Machining, BP profile and Superadmin pages are only available to the roles described in [Special Roles](/docs/admin/special-roles).
+</Callout>
 
-## Navigation Guide
+## Top Bar Tools
 
-Access admin features through the admin dashboard:
+- **Search** — open the command search to jump to courses, announcements, scholarships, tryouts and events quickly.
+- **Theme switch** — toggle light and dark mode.
+- **Profile menu** — account options and sign out.
+
+## Guides
 
 <Cards>
-  <Card
-    icon={<Shield className="text-blue-500" />}
-    title="Dashboard"
-    href="/docs/admin/dashboard"
-    description="Overview of platform statistics, pending actions, and system alerts."
-  />
-  <Card
-    icon={<BookOpen className="text-emerald-500" />}
-    title="Courses"
-    href="/docs/admin/courses"
-    description="Create, edit, and manage courses with comprehensive analytics."
-  />
-  <Card
-    icon={<Users className="text-amber-500" />}
-    title="Users"
-    href="/docs/admin/users"
-    description="Manage user accounts, roles, and permissions."
-  />
-  <Card
-    icon={<Database className="text-purple-500" />}
-    title="Database"
-    href="/docs/admin/database"
-    description="Direct database access for advanced administration."
-  />
+  <Card icon={<BarChart3 className="text-blue-500" />} title="Dashboard & Analytics" href="/docs/admin/dashboard" description="Read the platform summary and dive into detailed reports." />
+  <Card icon={<FormInput className="text-emerald-500" />} title="Forms" href="/docs/admin/forms" description="Build registration forms, hotline forms and read responses." />
+  <Card icon={<GraduationCap className="text-amber-500" />} title="Courses & Tryouts" href="/docs/admin/courses" description="Create courses, upload resources and write tryouts." />
+  <Card icon={<Calendar className="text-pink-500" />} title="Events" href="/docs/admin/events" description="Schedule events and manage RSVPs and attendance." />
+  <Card icon={<Users className="text-purple-500" />} title="Users" href="/docs/admin/users" description="Search members, edit roles and reset passwords." />
+  <Card icon={<Database className="text-red-500" />} title="Database" href="/docs/admin/database" description="Browse, edit and export raw records — with care." />
 </Cards>
 
-## Admin Roles & Permissions
-
-### 🔐 **SUPERADMIN**
-
-- Full access to all administrative features
-- Database administration capabilities
-- User role management
-- System configuration access
-- Platform security oversight
-
-### 👨‍💼 **ADMIN**
-
-- Course and content management
-- User management (except role changes)
-- Analytics and reporting
-- Most administrative features
-- Limited database access
-
-## Key Admin Workflows
-
-### 📋 **Daily Operations**
-
-1. **Check Dashboard**: Review platform statistics and pending actions
-2. **Monitor System Alerts**: Address any critical issues
-3. **Review Analytics**: Analyze platform performance and trends
-4. **Manage Content**: Update announcements, events, and courses
-5. **User Support**: Address user issues and requests
-
-### 🔄 **Weekly Tasks**
-
-- **Course Performance Review**: Analyze engagement and completion rates
-- **User Activity Analysis**: Monitor user engagement and identify inactive users
-- **Content Updates**: Refresh announcements and manage events
-- **System Maintenance**: Perform routine maintenance and updates
-- **Report Generation**: Create reports for stakeholders
-
-### 📊 **Monthly Reviews**
-
-- **Platform Analytics**: Comprehensive analysis of platform usage
-- **User Growth**: Track user acquisition and retention
-- **Course Optimization**: Improve underperforming courses
-- **Security Audit**: Review security logs and access patterns
-- **Strategic Planning**: Plan platform improvements and features
-
-## Best Practices
-
-### 🎯 **Administrative Excellence**
-
-- **Regular Monitoring**: Check dashboard and analytics regularly
-- **Proactive Management**: Address issues before they become problems
-- **Data-Driven Decisions**: Use analytics to inform decisions
-- **User Communication**: Keep users informed about changes and updates
-- **Security First**: Prioritize security and access controls
-
-### 📋 **Content Management**
-
-- **Quality Control**: Ensure all content meets quality standards
-- **Consistency**: Maintain consistent formatting and structure
-- **Accessibility**: Ensure content is accessible to all users
-- **Regular Updates**: Keep content current and relevant
-- **Backup Important Data**: Regular backups of critical information
-
-### 👥 **User Management**
-
-- **Fair Treatment**: Apply policies consistently across all users
-- **Clear Communication**: Communicate changes and policies clearly
-- **Support Resources**: Provide adequate support and resources
-- **Privacy Respect**: Protect user privacy and data
-- **Feedback Collection**: Gather and act on user feedback
-
-## Security Considerations
-
-### 🔒 **Admin Security**
-
-- **Strong Passwords**: Use complex, unique passwords for admin accounts
-- **Two-Factor Authentication**: Enable 2FA when available
-- **Access Logging**: Monitor admin access and activities
-- **Regular Audits**: Conduct security audits regularly
-- **Privilege Review**: Periodically review and update permissions
-
-### ⚠️ **Risk Management**
-
-- **Backup Strategies**: Implement comprehensive backup procedures
-- **Incident Response**: Have plans for security incidents
-- **Change Management**: Follow proper change management procedures
-- **Testing**: Test changes in non-production environments first
-- **Documentation**: Document all administrative procedures
-
-## Getting Started
-
-### 🚀 **Quick Start Guide**
-
-1. **Familiarize Yourself**: Explore the admin dashboard and features
-2. **Review Analytics**: Understand current platform performance
-3. **Check Pending Actions**: Address any immediate items requiring attention
-4. **Review Users**: Understand your user base and their activities
-5. **Plan Your Approach**: Develop a strategy for administrative tasks
-
-## Support & Resources
-
-### 📞 **Getting Help**
-
-- **Documentation**: Refer to this comprehensive admin guide
-- **Technical Support**: Contact platform support for technical issues
-- **Community**: Connect with other administrators for best practices
-- **Training**: Take advantage of available training resources
-
-This admin documentation provides detailed guidance for all administrative functions. Use the navigation to explore specific features and capabilities in depth.
+<Callout type="idea" title="Need help?">
+  See the [Admin FAQ](/docs/admin/faq) for common questions and troubleshooting.
+</Callout>
