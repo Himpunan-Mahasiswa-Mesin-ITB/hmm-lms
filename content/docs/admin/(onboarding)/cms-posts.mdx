@@ -1,0 +1,186 @@
+---
+title: Posting News (Payload CMS)
+description: Write and publish news posts for the public HMM ITB website with the Payload CMS Content Panel.
+icon: Newspaper
+---
+
+import { Callout } from 'fumadocs-ui/components/callout';
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+
+## What is the Content Panel?
+
+The public HMM ITB website (the pages outside the LMS, such as `/news`, `/event` and `/achievements`) is managed with **Payload CMS**. Its admin area, the **Content Panel**, lives at `/admin-cms` and is separate from the LMS admin panel at `/admin`.
+
+Posts on the website are stored in the **News** collection. Each published news item appears on the `/news` page and gets its own page at `/news/<slug>`.
+
+<Callout type="info" title="Who can post?">
+  Only LMS accounts with the **Admin** or **Superadmin** role get a Content Panel account. Each time you sign in to the LMS, your account is copied to the CMS with the same email and password. Admins can create, edit and delete content. Only Superadmins can manage other CMS users.
+</Callout>
+
+## Opening the Content Panel
+
+<Steps>
+<Step>
+
+### Sign in to the LMS
+
+Sign in to the LMS with your admin account first. This creates or updates your CMS account. If you changed your LMS password, sign in to the LMS once so the CMS gets the new password.
+
+</Step>
+<Step>
+
+### Open Content Panel
+
+In the admin sidebar, open **Content Panel** under the **Payload CMS** group, or go to `/admin-cms` directly.
+
+![Content Panel in the admin sidebar](/images/docs/admin-guide/cms-lms-sidebar.png)
+
+</Step>
+<Step>
+
+### Log in to the CMS
+
+The CMS has its own login screen. Use the **same email and password** you use for the LMS, then click **Login**.
+
+![Payload CMS login](/images/docs/admin-guide/cms-login.png)
+
+</Step>
+<Step>
+
+### Find the News collection
+
+The dashboard lists every collection. News is under **Content Pillar**, together with **Events**, **Achievements** and **Galleries**. You can also open it from the menu button (☰) at the top-left.
+
+![CMS dashboard](/images/docs/admin-guide/cms-dashboard.png)
+
+</Step>
+</Steps>
+
+## Creating a News Post
+
+<Steps>
+<Step>
+
+### Start a new post
+
+Open **News** and click **Create New** next to the page title. The list shows every post with its slug, publish date and status.
+
+![News list](/images/docs/admin-guide/cms-news-list.png)
+
+<Callout type="warn" title="Drafts are saved automatically">
+  The editor autosaves, so a draft is created as soon as you open **Create New**, before you type anything. If you change your mind, delete the draft (see [Editing or Deleting a Post](#editing-or-deleting-a-post)) so the News list stays clean.
+</Callout>
+
+</Step>
+<Step>
+
+### Write the title and article
+
+On the **Content** tab:
+
+- **News Title** (required): the headline. The **Slug** in the right sidebar is generated from it automatically.
+- **Full Article Body** (required): the article itself. Use the toolbar to add headings, lists, alignment, bold/italic, links and more.
+
+![News editor](/images/docs/admin-guide/cms-editor.png)
+
+Type `/` on an empty line to open the command menu. Besides headings and lists, you can insert three blocks:
+
+| Block | Use it for |
+| --- | --- |
+| **Banner** | A highlighted notice inside the article |
+| **Code** | A formatted code snippet with a copy button |
+| **Media Block** | An image from the Media library placed inside the article |
+
+![Slash command menu](/images/docs/admin-guide/cms-slash-menu.png)
+
+</Step>
+<Step>
+
+### Add a cover image
+
+Under **Cover Image** you can:
+
+- Click **Create New** to upload a new image (or drag and drop a file onto the field), or
+- Click **Choose from existing** to pick an image already in the **Media** library.
+
+When you upload a new image, fill in **Alt** (required). This is a short description of the image for screen readers and search engines. Click **Save** to upload it and attach it to the post.
+
+![Uploading a cover image](/images/docs/admin-guide/cms-cover-upload.png)
+
+<Callout type="info" title="Where images are stored">
+  Uploaded images go to the shared **Media** collection, which is stored on DigitalOcean Spaces. You can reuse them in other posts.
+</Callout>
+
+</Step>
+<Step>
+
+### Fill in the News Details
+
+Open the **News Details** tab:
+
+- **Executive Summary** (required): one or two sentences shown on news cards and in social media previews.
+- **Tags** (optional): click **Add Tag** for each keyword, for example *Event*, *Achievement* or *Akademik*.
+
+![News Details tab](/images/docs/admin-guide/cms-news-details.png)
+
+</Step>
+<Step>
+
+### Optimise for search (optional)
+
+The **SEO** tab controls how the post looks in Google results and link previews:
+
+- **Title**: 50–60 characters. Click **Auto-generate** to use *News Title | HMM ITB*.
+- **Meta Image**: the image shown when the link is shared. Usually the same as the cover image.
+- **Description**: 100–150 characters.
+
+The checklist at the top (*0/3 checks are passing*) and the **Preview** at the bottom show what is still missing.
+
+![SEO tab](/images/docs/admin-guide/cms-seo.png)
+
+</Step>
+<Step>
+
+### Set the sidebar fields
+
+In the right sidebar:
+
+- **Published At**: the date shown on the post. If you leave it empty, it is set when you publish.
+- **Authors**: choose one or more CMS users as authors.
+- **Publishing Status**: change it from **Draft** to **Published**.
+- **Slug**: the URL of the post (`/news/<slug>`). It follows the title. Click **Unlock** to edit it manually.
+
+![Publishing Status](/images/docs/admin-guide/cms-status.png)
+
+</Step>
+<Step>
+
+### Publish
+
+Click **Publish changes** at the top-right. The status at the top of the page changes from **Draft** to **Published**, and the post appears on the `/news` page.
+
+To publish later, click the arrow next to **Publish changes** and choose **Schedule Publish**, then pick a date and time.
+
+![Publish and schedule](/images/docs/admin-guide/cms-publish-menu.png)
+
+<Callout type="warn" title="Two settings must both be published">
+  A post only appears on the website when **Publishing Status** is set to **Published** *and* you click **Publish changes**. Autosaved drafts are never shown publicly. If a post doesn't appear, check both settings.
+</Callout>
+
+</Step>
+</Steps>
+
+## Editing or Deleting a Post
+
+- **Edit**: open the post from the News list, make your changes, and click **Publish changes** again. Until you do, your edits are only a draft and the live page keeps showing the previous version.
+- **Unpublish**: set **Publishing Status** back to **Draft** and click **Publish changes**. The post disappears from `/news`.
+- **Versions**: the **Versions** tab at the top of a post lists earlier saves. Open one to compare it or restore it.
+- **Delete**: open the post, click the **⋮** menu at the top-right and choose **Delete**. You can also tick posts in the News list and delete them in bulk. Deleting cannot be undone.
+
+## Tips
+
+<Callout type="idea" title="Writing good posts">
+  - Keep titles short and specific. The title also becomes the URL.
+  - Always add a cover image and an executive summary, because the news cards use both.
+  - Use the eye icon next to **Publish changes** to open **Live Preview** and check the post as readers will see it before you publish.
+</Callout>

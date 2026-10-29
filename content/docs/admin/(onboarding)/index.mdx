@@ -7,7 +7,7 @@ icon: Shield
 import { Callout } from 'fumadocs-ui/components/callout';
 import { Card, Cards } from 'fumadocs-ui/components/card';
 import { Step, Steps } from 'fumadocs-ui/components/steps';
-import { BarChart3, FormInput, GraduationCap, Users, Database, Calendar } from 'lucide-react';
+import { BarChart3, FormInput, GraduationCap, Users, Database, Calendar, Newspaper } from 'lucide-react';
 
 ## Welcome to the Admin Panel
 
@@ -65,7 +65,7 @@ The sidebar on the left lists every admin section, grouped by purpose. Click the
 | Content Management | **M-Opportunity** | Job vacancies |
 | User Management | **Users** | Members, roles and passwords |
 | Machining Management | **Machining Batch** | Machining batch settings |
-| Payload CMS | **Content Panel** | Public website content (opens `/admin-cms`) |
+| Payload CMS | **Content Panel** | Public website content (opens `/admin-cms`, see [Posting News](/docs/admin/cms-posts)) |
 | System | **Database** | Browse and edit raw records |
 
 <Callout type="warn" title="Some items depend on your role">
@@ -85,6 +85,7 @@ The sidebar on the left lists every admin section, grouped by purpose. Click the
   <Card icon={<FormInput className="text-emerald-500" />} title="Forms" href="/docs/admin/forms" description="Build registration forms, hotline forms and read responses." />
   <Card icon={<GraduationCap className="text-amber-500" />} title="Courses & Tryouts" href="/docs/admin/courses" description="Create courses, upload resources and write tryouts." />
   <Card icon={<Calendar className="text-pink-500" />} title="Events" href="/docs/admin/events" description="Schedule events and manage RSVPs and attendance." />
+  <Card icon={<Newspaper className="text-sky-500" />} title="Posting News (CMS)" href="/docs/admin/cms-posts" description="Write and publish news for the public website in Payload CMS." />
   <Card icon={<Users className="text-purple-500" />} title="Users" href="/docs/admin/users" description="Search members, edit roles and reset passwords." />
   <Card icon={<Database className="text-red-500" />} title="Database" href="/docs/admin/database" description="Browse, edit and export raw records — with care." />
 </Cards>
