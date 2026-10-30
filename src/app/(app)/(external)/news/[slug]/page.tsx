@@ -20,9 +20,15 @@ export async function generateStaticParams() {
     draft: false,
     limit: 1000,
     pagination: false,
+    overrideAccess: false,
+    where: {
+      _status: { equals: 'published' },
+      slug: { exists: true },
+    },
+    select: { slug: true },
   });
 
-  return news.docs.map(({ slug }) => ({ slug }));
+  return news.docs.filter((doc): doc is typeof doc & { slug: string } => typeof doc.slug === "string" && doc.slug.length > 0).map(({ slug }) => ({ slug }));
 }
 
 type Args = {

@@ -22,9 +22,15 @@ export async function generateStaticParams() {
     draft: false,
     limit: 1000,
     pagination: false,
+    overrideAccess: false,
+    where: {
+      _status: { equals: 'published' },
+      slug: { exists: true },
+    },
+    select: { slug: true },
   });
 
-  return achievements.docs.map(({ slug }) => ({ slug }));
+  return achievements.docs.filter((doc): doc is typeof doc & { slug: string } => typeof doc.slug === "string" && doc.slug.length > 0).map(({ slug }) => ({ slug }));
 }
 
 const awardLevelLabels: Record<string, string> = {
