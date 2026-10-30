@@ -73,6 +73,27 @@ export const ExternalGallery: CollectionConfig<'gallery'> = {
               },
             },
             {
+              name: 'eventDate',
+              label: "Event Date",
+              type: 'date',
+              admin: {
+                date: {
+                  pickerAppearance: 'dayAndTime',
+                },
+                position: 'sidebar',
+              },
+              hooks: {
+                beforeChange: [
+                  ({ siblingData, value }) => {
+                    if (siblingData._status === 'published' && !value) {
+                      return new Date();
+                    }
+                    return value;
+                  },
+                ],
+              },
+            },
+            {
               name: 'tags',
               type: 'array',
               label: 'Tags',
@@ -104,6 +125,7 @@ export const ExternalGallery: CollectionConfig<'gallery'> = {
     },
     {
       name: 'publishedAt',
+      label: "Published Date",
       type: 'date',
       admin: {
         date: {

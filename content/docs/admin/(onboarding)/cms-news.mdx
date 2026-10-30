@@ -1,5 +1,5 @@
 ---
-title: Posting News (Payload CMS)
+title: Posting News (CMS)
 description: Write and publish news posts for the public HMM ITB website with the Payload CMS Content Panel.
 icon: Newspaper
 ---
@@ -14,7 +14,9 @@ The public HMM ITB website (the pages outside the LMS, such as `/news`, `/event`
 Posts on the website are stored in the **News** collection. Each published news item appears on the `/news` page and gets its own page at `/news/<slug>`.
 
 <Callout type="info" title="Who can post?">
-  Only LMS accounts with the **Admin** or **Superadmin** role get a Content Panel account. Each time you sign in to the LMS, your account is copied to the CMS with the same email and password. Admins can create, edit and delete content. Only Superadmins can manage other CMS users.
+  Only LMS accounts with the **Admin** or **Superadmin** role get a Content Panel account. Each time
+  you sign in to the LMS, your account is copied to the CMS with the same email and password. Admins
+  can create, edit and delete content. Only Superadmins can manage other CMS users.
 </Callout>
 
 ## Opening the Content Panel
@@ -68,7 +70,9 @@ Open **News** and click **Create New** next to the page title. The list shows ev
 ![News list](/images/docs/admin-guide/cms-news-list.png)
 
 <Callout type="warn" title="Drafts are saved automatically">
-  The editor autosaves, so a draft is created as soon as you open **Create New**, before you type anything. If you change your mind, delete the draft (see [Editing or Deleting a Post](#editing-or-deleting-a-post)) so the News list stays clean.
+  The editor autosaves, so a draft is created as soon as you open **Create New**, before you type
+  anything. If you change your mind, delete the draft (see [Editing or Deleting a
+  Post](#editing-or-deleting-a-post)) so the News list stays clean.
 </Callout>
 
 </Step>
@@ -85,10 +89,10 @@ On the **Content** tab:
 
 Type `/` on an empty line to open the command menu. Besides headings and lists, you can insert three blocks:
 
-| Block | Use it for |
-| --- | --- |
-| **Banner** | A highlighted notice inside the article |
-| **Code** | A formatted code snippet with a copy button |
+| Block           | Use it for                                                |
+| --------------- | --------------------------------------------------------- |
+| **Banner**      | A highlighted notice inside the article                   |
+| **Code**        | A formatted code snippet with a copy button               |
 | **Media Block** | An image from the Media library placed inside the article |
 
 ![Slash command menu](/images/docs/admin-guide/cms-slash-menu.png)
@@ -108,7 +112,8 @@ When you upload a new image, fill in **Alt** (required). This is a short descrip
 ![Uploading a cover image](/images/docs/admin-guide/cms-cover-upload.png)
 
 <Callout type="info" title="Where images are stored">
-  Uploaded images go to the shared **Media** collection, which is stored on DigitalOcean Spaces. You can reuse them in other posts.
+  Uploaded images go to the shared **Media** collection, which is stored on DigitalOcean Spaces. You
+  can reuse them in other posts.
 </Callout>
 
 </Step>
@@ -119,7 +124,7 @@ When you upload a new image, fill in **Alt** (required). This is a short descrip
 Open the **News Details** tab:
 
 - **Executive Summary** (required): one or two sentences shown on news cards and in social media previews.
-- **Tags** (optional): click **Add Tag** for each keyword, for example *Event*, *Achievement* or *Akademik*.
+- **Tags** (optional): click **Add Tag** for each keyword, for example _Event_, _Achievement_ or _Akademik_.
 
 ![News Details tab](/images/docs/admin-guide/cms-news-details.png)
 
@@ -130,11 +135,11 @@ Open the **News Details** tab:
 
 The **SEO** tab controls how the post looks in Google results and link previews:
 
-- **Title**: 50–60 characters. Click **Auto-generate** to use *News Title | HMM ITB*.
+- **Title**: 50–60 characters. Click **Auto-generate** to use _News Title | HMM ITB_.
 - **Meta Image**: the image shown when the link is shared. Usually the same as the cover image.
 - **Description**: 100–150 characters.
 
-The checklist at the top (*0/3 checks are passing*) and the **Preview** at the bottom show what is still missing.
+The checklist at the top (_0/3 checks are passing_) and the **Preview** at the bottom show what is still missing.
 
 ![SEO tab](/images/docs/admin-guide/cms-seo.png)
 
@@ -164,7 +169,9 @@ To publish later, click the arrow next to **Publish changes** and choose **Sched
 ![Publish and schedule](/images/docs/admin-guide/cms-publish-menu.png)
 
 <Callout type="warn" title="Two settings must both be published">
-  A post only appears on the website when **Publishing Status** is set to **Published** *and* you click **Publish changes**. Autosaved drafts are never shown publicly. If a post doesn't appear, check both settings.
+  A post only appears on the website when **Publishing Status** is set to **Published** *and* you
+  click **Publish changes**. Autosaved drafts are never shown publicly. If a post doesn't appear,
+  check both settings.
 </Callout>
 
 </Step>
@@ -180,7 +187,7 @@ To publish later, click the arrow next to **Publish changes** and choose **Sched
 ## Tips
 
 <Callout type="idea" title="Writing good posts">
-  - Keep titles short and specific. The title also becomes the URL.
-  - Always add a cover image and an executive summary, because the news cards use both.
-  - Use the eye icon next to **Publish changes** to open **Live Preview** and check the post as readers will see it before you publish.
+  - Keep titles short and specific. The title also becomes the URL. - Always add a cover image and
+  an executive summary, because the news cards use both. - Use the eye icon next to **Publish
+  changes** to open **Live Preview** and check the post as readers will see it before you publish.
 </Callout>

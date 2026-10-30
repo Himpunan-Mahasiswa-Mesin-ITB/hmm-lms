@@ -15,10 +15,13 @@
     "announcements",
     "events",
     "job-vacancies",
-    "cms-posts",
     "users",
     "database",
     "special-roles",
+    "cms-news",
+    "cms-events",
+    "cms-achievements",
+    "cms-gallery",
     "faq"
   ]
 }

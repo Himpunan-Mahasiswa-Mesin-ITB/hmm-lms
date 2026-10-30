@@ -1,0 +1,159 @@
+---
+title: Posting Galleries (CMS)
+description: Add photo albums to the public HMM ITB website gallery with the Payload CMS Content Panel.
+icon: Images
+---
+
+import { Callout } from 'fumadocs-ui/components/callout';
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+
+## What is the Galleries collection?
+
+The `/gallery` page on the public HMM ITB website shows photo albums from HMM activities. Albums are stored in the **Galleries** collection of the **Content Panel** (Payload CMS) at `/admin-cms`.
+
+Unlike news, events and achievements, an album has **no page of its own on the website**. Each album is a card with a cover image, description and tags. Clicking the card opens the album's **Google Drive folder**, where the full set of photos lives. The `/gallery` page lists the most recently published album first.
+
+<Callout type="info" title="Who can post?">
+  Only LMS accounts with the **Admin** or **Superadmin** role get a Content Panel account. Each time
+  you sign in to the LMS, your account is copied to the CMS with the same email and password. Admins
+  can create, edit and delete content.
+</Callout>
+
+## Before You Start
+
+Upload the photos to a Google Drive folder first, then share the folder:
+
+1. In Google Drive, right-click the folder and choose **Share** → **Share**.
+2. Under **General access**, choose **Anyone with the link** with the **Viewer** role.
+3. Click **Copy link**. You will paste this link into the CMS.
+
+![Sharing a Google Drive folder](/images/docs/admin-guide/cms-gallery-drive-share.png)
+
+<Callout type="warn" title="Check the sharing setting">
+  If the folder is restricted, visitors who click the album will see a "You need access" page
+  instead of the photos.
+</Callout>
+
+## Opening the Content Panel
+
+<Steps>
+<Step>
+
+### Sign in to the CMS
+
+Sign in to the LMS with your admin account, open **Content Panel** under the **Payload CMS** group in the admin sidebar (or go to `/admin-cms`), and log in with the **same email and password**. See [Posting News](/docs/admin/cms-news#opening-the-content-panel) for the full walkthrough.
+
+![CMS dashboard](/images/docs/admin-guide/cms-dashboard.png)
+
+</Step>
+<Step>
+
+### Find the Galleries collection
+
+On the dashboard, open **Galleries** under **Content Pillar**. You can also open it from the menu button (☰) at the top-left.
+
+![CMS Navbar](/images/docs/admin-guide/cms-navbar.png)
+
+</Step>
+</Steps>
+
+## Creating an Album
+
+<Steps>
+<Step>
+
+### Start a new album
+
+Open **Galleries** and click **Create New** next to the page title. The list shows every album with its description, publish date and status.
+
+![Galleries list](/images/docs/admin-guide/cms-gallery-list.png)
+
+<Callout type="warn" title="Drafts are saved automatically">
+  The editor autosaves, so a draft is created as soon as you open **Create New**, before you type
+  anything. If you change your mind, delete the draft (see [Editing or Deleting an
+  Album](#editing-or-deleting-an-album)) so the Galleries list stays clean.
+</Callout>
+
+</Step>
+<Step>
+
+### Add the title and cover image
+
+On the **Content** tab:
+
+![Album Content tab](/images/docs/admin-guide/cms-gallery-content.png)
+
+- **Album Title** (required): the name of the activity, for example _Malam Keakraban 2026_.
+- **Album Image** (required): the cover image shown on the gallery card. Click **Create New** to upload a new image (or drag and drop a file onto the field), or click **Choose from existing** to pick one from the **Media** library.
+
+When you upload a new image, fill in **Alt** (required). This is a short description of the image for screen readers and search engines. Click **Save** to upload it and attach it to the album.
+
+![Album Content tab](/images/docs/admin-guide/cms-photo-upload.png)
+
+<Callout type="info" title="Upload only the cover">
+  Only the cover image is uploaded to the CMS. The rest of the photos stay in Google Drive, so you
+  don't need to upload the whole album here.
+</Callout>
+
+</Step>
+<Step>
+
+### Fill in the Album Details
+
+Open the **Album Details** tab:
+
+- **Description** (required): a single line describing the album, shown on the gallery card.
+- **Event Date** (optional): when the activity took place. If you leave it empty, it is set to the publish time.
+- **Tags** (optional): click **Add Tag** for each keyword. The gallery card shows up to three tags.
+- **Google Drive Link** (required): paste the folder link you copied in [Before You Start](#before-you-start).
+
+![Album Details tab](/images/docs/admin-guide/cms-gallery-details.png)
+
+</Step>
+<Step>
+
+### Set the sidebar fields
+
+In the right sidebar:
+
+- **Published Date**: the date shown on the gallery card. It also decides the order on `/gallery`. If you leave it empty, it is set when you publish.
+- **Authors**: choose one or more CMS users as authors.
+- **Publishing Status**: change it from **Draft** to **Published**.
+
+![Album sidebar fields](/images/docs/admin-guide/cms-gallery-sidebar.png)
+
+</Step>
+<Step>
+
+### Publish
+
+Click **Publish changes** at the top-right. The status at the top of the page changes from **Draft** to **Published**, and the album appears on the `/gallery` page.
+
+To publish later, click the arrow next to **Publish changes** and choose **Schedule Publish**, then pick a date and time.
+
+![Publish and schedule](/images/docs/admin-guide/cms-publish-menu.png)
+
+<Callout type="warn" title="Two settings must both be published">
+  An album only appears on the website when **Publishing Status** is set to **Published** *and* you
+  click **Publish changes**. Autosaved drafts are never shown publicly. If an album doesn't appear,
+  check both settings.
+</Callout>
+
+</Step>
+</Steps>
+
+## Editing or Deleting an Album
+
+- **Edit**: open the album from the Galleries list, make your changes, and click **Publish changes** again. Until you do, your edits are only a draft and the website keeps showing the previous version.
+- **Unpublish**: set **Publishing Status** back to **Draft** and click **Publish changes**. The album disappears from `/gallery`.
+- **Versions**: the **Versions** tab at the top of an album lists earlier saves. Open one to compare it or restore it.
+- **Delete**: open the album, click the **⋮** menu at the top-right and choose **Delete**. You can also tick albums in the Galleries list and delete them in bulk. Deleting cannot be undone. The photos in Google Drive are not affected.
+
+## Tips
+
+<Callout type="idea" title="Making good albums">
+  - Pick a clear, landscape cover image, since it is the only photo visitors see before opening the
+  album. - Keep the description to one short sentence. Mention the activity and when it happened. -
+  Open the Google Drive link in a private/incognito window before publishing to make sure it works
+  for visitors who aren't signed in.
+</Callout>

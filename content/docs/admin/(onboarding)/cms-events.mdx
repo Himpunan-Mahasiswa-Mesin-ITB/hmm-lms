@@ -1,0 +1,186 @@
+---
+title: Posting Events (CMS)
+description: Write and publish event pages for the public HMM ITB website with the Payload CMS Content Panel.
+icon: CalendarDays
+---
+
+import { Callout } from 'fumadocs-ui/components/callout';
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+
+## What is the Events collection?
+
+Events on the public HMM ITB website are stored in the **Events** collection of the **Content Panel** (Payload CMS) at `/admin-cms`. Each published event appears on the `/event` page and gets its own page at `/event/<slug>`. The `/event` page lists events by start date, earliest first.
+
+<Callout type="warn" title="Not the same as LMS Events">
+  This collection is for public event pages on the website. To schedule events with RSVPs and
+  attendance for LMS members, use [Events](/docs/admin/events) in the LMS admin panel instead.
+</Callout>
+
+<Callout type="info" title="Who can post?">
+  Only LMS accounts with the **Admin** or **Superadmin** role get a Content Panel account. Each time
+  you sign in to the LMS, your account is copied to the CMS with the same email and password. Admins
+  can create, edit and delete content.
+</Callout>
+
+## Opening the Content Panel
+
+<Steps>
+<Step>
+
+### Sign in to the CMS
+
+Sign in to the LMS with your admin account, open **Content Panel** under the **Payload CMS** group in the admin sidebar (or go to `/admin-cms`), and log in with the **same email and password**. See [Posting News](/docs/admin/cms-news#opening-the-content-panel) for the full walkthrough.
+
+![CMS dashboard](/images/docs/admin-guide/cms-dashboard.png)
+
+</Step>
+<Step>
+
+### Find the Events collection
+
+On the dashboard, open **Events** under **Content Pillar**. You can also open it from the menu button (☰) at the top-left.
+
+![CMS Navbar](/images/docs/admin-guide/cms-navbar.png)
+
+</Step>
+</Steps>
+
+## Creating an Event
+
+<Steps>
+<Step>
+
+### Start a new event
+
+Open **Events** and click **Create New** next to the page title. The list shows every event with its category, event date and status.
+
+![Events list](/images/docs/admin-guide/cms-events-list.png)
+
+<Callout type="warn" title="Drafts are saved automatically">
+  The editor autosaves, so a draft is created as soon as you open **Create New**, before you type
+  anything. If you change your mind, delete the draft (see [Editing or Deleting an
+  Event](#editing-or-deleting-an-event)) so the Events list stays clean.
+</Callout>
+
+</Step>
+<Step>
+
+### Write the title and description
+
+At the top of the page and on the **Content** tab:
+
+- **Event Title** (required): the name of the event. The **Slug** in the right sidebar is generated from it automatically.
+- **Full Event Description & Agenda** (required): what the event is about, the rundown, speakers, registration info and so on. Use the toolbar to add headings, lists, alignment, bold/italic, links and more.
+
+![Event editor](/images/docs/admin-guide/cms-events-editor.png)
+
+Type `/` on an empty line to open the command menu. Besides headings and lists, you can insert three blocks:
+
+| Block           | Use it for                                                    |
+| --------------- | ------------------------------------------------------------- |
+| **Banner**      | A highlighted notice, for example a registration deadline     |
+| **Code**        | A formatted code snippet with a copy button                   |
+| **Media Block** | An image from the Media library placed inside the description |
+
+![Slash command menu](/images/docs/admin-guide/cms-slash-menu.png)
+
+</Step>
+<Step>
+
+### Add the banner or poster
+
+Under **Event Banner / Poster** you can:
+
+- Click **Create New** to upload a new image (or drag and drop a file onto the field), or
+- Click **Choose from existing** to pick an image already in the **Media** library.
+
+When you upload a new image, fill in **Alt** (required). This is a short description of the image for screen readers and search engines. Click **Save** to upload it and attach it to the event.
+
+![Uploading an event poster](/images/docs/admin-guide/cms-photo-upload.png)
+
+<Callout type="info" title="Where images are stored">
+  Uploaded images go to the shared **Media** collection, which is stored on DigitalOcean Spaces. You
+  can reuse them in other posts.
+</Callout>
+
+</Step>
+<Step>
+
+### Fill in the Event Details
+
+Open the **Event Details** tab:
+
+- **Event Start Date & Time** (required): when the event begins. This date is shown on the event card and decides the order on `/event`.
+- **Event End Date & Time** (optional): when the event ends. Fill it in for multi-day events or to show a time range.
+- **Event Category** (required): for example _Seminar_, _Workshop_ or _Competition_. It defaults to _General_.
+- **Location / Venue** (optional): a room or building, for example _Gedung Labtek II ITB_, or an online platform such as _Zoom Meeting_.
+- **Short Summary** (optional): one or two sentences shown on event cards.
+- **Tags** (optional): click **Add Tag** for each keyword.
+
+![Event Details tab](/images/docs/admin-guide/cms-events-details.png)
+
+</Step>
+<Step>
+
+### Optimise for search (optional)
+
+The **SEO** tab controls how the event looks in Google results and link previews:
+
+- **Title**: 50–60 characters. Click **Auto-generate** to use _Event Title | HMM ITB_.
+- **Meta Image**: the image shown when the link is shared. Usually the same as the poster.
+- **Description**: 100–150 characters.
+
+The checklist at the top (_0/3 checks are passing_) and the **Preview** at the bottom show what is still missing.
+
+![SEO tab](/images/docs/admin-guide/cms-seo.png)
+
+</Step>
+<Step>
+
+### Set the sidebar fields
+
+In the right sidebar:
+
+- **Published At**: the date the event page was posted. If you leave it empty, it is set when you publish.
+- **Organizer / Posted By**: choose one or more CMS users.
+- **Publishing Status**: change it from **Draft** to **Published**.
+- **Slug**: the URL of the event (`/event/<slug>`). It follows the title. Click **Unlock** to edit it manually.
+
+![Event sidebar fields](/images/docs/admin-guide/cms-events-sidebar.png)
+
+</Step>
+<Step>
+
+### Publish
+
+Click **Publish changes** at the top-right. The status at the top of the page changes from **Draft** to **Published**, and the event appears on the `/event` page.
+
+To publish later, click the arrow next to **Publish changes** and choose **Schedule Publish**, then pick a date and time.
+
+![Publish and schedule](/images/docs/admin-guide/cms-publish-menu.png)
+
+<Callout type="warn" title="Two settings must both be published">
+  An event only appears on the website when **Publishing Status** is set to **Published** *and* you
+  click **Publish changes**. Autosaved drafts are never shown publicly. If an event doesn't appear,
+  check both settings.
+</Callout>
+
+</Step>
+</Steps>
+
+## Editing or Deleting an Event
+
+- **Edit**: open the event from the Events list, make your changes, and click **Publish changes** again. Until you do, your edits are only a draft and the live page keeps showing the previous version.
+- **Unpublish**: set **Publishing Status** back to **Draft** and click **Publish changes**. The event disappears from `/event`.
+- **Versions**: the **Versions** tab at the top of an event lists earlier saves. Open one to compare it or restore it.
+- **Delete**: open the event, click the **⋮** menu at the top-right and choose **Delete**. You can also tick events in the Events list and delete them in bulk. Deleting cannot be undone.
+
+## Tips
+
+<Callout type="idea" title="Writing good event pages">
+  - Always fill in the start date, location and a short summary, because the event cards show all
+  three. - Use a poster or banner image, so the event card isn't empty. - If the schedule changes,
+  update **Event Start Date & Time** and publish again so the event list stays in the right order. -
+  Use the eye icon next to **Publish changes** to open **Live Preview** and check the page as
+  readers will see it before you publish.
+</Callout>
