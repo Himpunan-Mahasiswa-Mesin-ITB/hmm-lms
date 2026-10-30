@@ -1,0 +1,67 @@
+---
+title: Short Links
+description: Create short links and QR codes for sharing.
+icon: Link2
+---
+
+import { Callout } from 'fumadocs-ui/components/callout';
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+
+## Short Links
+
+Short links turn long URLs into easy-to-share links such as `/s/my-custom-slug`, and every link has a **QR Code** you can print on posters.
+
+![Short links list](/images/docs/admin-guide/shortlinks.png)
+
+## Reading the Page
+
+Four cards at the top summarise your links: **Total Links**, **Active Links**, **Total Clicks** and **Links Today**. Below them, the **All Links** card lists every short link.
+
+## Finding Links
+
+- Search by slug, URL or description with the search box (*Search by slug, URL, or description...*).
+- Filter by status with the dropdown: **All Status**, **Active** or **Inactive**.
+
+## Creating a Short Link
+
+<Steps>
+<Step>
+
+### Open the create page
+
+Click **Create** at the top-right of the **Manage Links** page.
+
+![Create short link](/images/docs/admin-guide/shortlinks-create.png)
+
+</Step>
+<Step>
+
+### Fill in the details
+
+- **Original URL** — the full address to redirect to (e.g. `https://example.com/very-long-url`).
+- **Custom Slug (Optional)** — your own ending, such as `my-custom-slug`. Leave it blank to get a random one.
+- **Description (Optional)** — a note so you remember what the link is for.
+
+</Step>
+<Step>
+
+### Save
+
+Click the create button. A success message confirms the link.
+
+</Step>
+</Steps>
+
+## Managing a Link
+
+Each link in the list has actions to:
+
+- **Copy** the short link to your clipboard.
+- View or download its **QR Code**.
+- **Edit** the destination, slug or description.
+- Toggle it **Active / Inactive** — inactive links stop redirecting.
+- **Delete** it permanently.
+
+<Callout type="warn" title="Slugs are unique">
+  If a custom slug is already taken, choose a different one. Deleting a link frees the slug but breaks any place the old link was shared.
+</Callout>

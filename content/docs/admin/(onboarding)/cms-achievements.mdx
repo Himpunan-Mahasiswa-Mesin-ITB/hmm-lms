@@ -1,0 +1,181 @@
+---
+title: Posting Achievements (CMS)
+description: Write and publish student achievements for the public HMM ITB website with the Payload CMS Content Panel.
+icon: Trophy
+---
+
+import { Callout } from 'fumadocs-ui/components/callout';
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+
+## What is the Achievements collection?
+
+Achievements on the public HMM ITB website (competition wins, awards and other recognitions earned by members) are stored in the **Achievements** collection of the **Content Panel** (Payload CMS) at `/admin-cms`. Each published achievement appears on the `/achievements` page and gets its own page at `/achievements/<slug>`. The `/achievements` page lists the most recent award first.
+
+<Callout type="info" title="Who can post?">
+  Only LMS accounts with the **Admin** or **Superadmin** role get a Content Panel account. Each time
+  you sign in to the LMS, your account is copied to the CMS with the same email and password. Admins
+  can create, edit and delete content.
+</Callout>
+
+## Opening the Content Panel
+
+<Steps>
+<Step>
+
+### Sign in to the CMS
+
+Sign in to the LMS with your admin account, open **Content Panel** under the **Payload CMS** group in the admin sidebar (or go to `/admin-cms`), and log in with the **same email and password**. See [Posting News](/docs/admin/cms-news#opening-the-content-panel) for the full walkthrough.
+
+![CMS dashboard](/images/docs/admin-guide/cms-dashboard.png)
+
+</Step>
+<Step>
+
+### Find the Achievements collection
+
+On the dashboard, open **Achievements** under **Content Pillar**. You can also open it from the menu button (☰) at the top-left.
+
+![CMS Navbar](/images/docs/admin-guide/cms-navbar.png)
+
+</Step>
+</Steps>
+
+## Creating an Achievement
+
+<Steps>
+<Step>
+
+### Start a new achievement
+
+Open **Achievements** and click **Create New** next to the page title. The list shows every achievement with its competition, award level and date.
+
+![Achievements list](/images/docs/admin-guide/cms-achievements-list.png)
+
+<Callout type="warn" title="Drafts are saved automatically">
+  The editor autosaves, so a draft is created as soon as you open **Create New**, before you type
+  anything. If you change your mind, delete the draft (see [Editing or Deleting an
+  Achievement](#editing-or-deleting-an-achievement)) so the Achievements list stays clean.
+</Callout>
+
+</Step>
+<Step>
+
+### Write the title and story
+
+At the top of the page and on the **Content** tab:
+
+- **Achievement Title** (required): the headline, for example _1st Place at Indonesian Rocket Competition 2026_. The **Slug** in the right sidebar is generated from it automatically.
+- **Full Story & Project Description** (required): the story behind the award: the competition, the team's project, and how they won. Use the toolbar to add headings, lists, alignment, bold/italic, links and more.
+
+![Achievement editor](/images/docs/admin-guide/cms-achievements-editor.png)
+
+Type `/` on an empty line to open the command menu. Besides headings and lists, you can insert three blocks:
+
+| Block           | Use it for                                                                                    |
+| --------------- | --------------------------------------------------------------------------------------------- |
+| **Banner**      | A highlighted notice inside the story                                                         |
+| **Code**        | A formatted code snippet with a copy button                                                   |
+| **Media Block** | An image from the Media library placed inside the story, for example a photo of the prototype |
+
+![Slash command menu](/images/docs/admin-guide/cms-slash-menu.png)
+
+</Step>
+<Step>
+
+### Add a trophy or team photo
+
+Under **Trophy / Team Photo** you can:
+
+- Click **Create New** to upload a new image (or drag and drop a file onto the field), or
+- Click **Choose from existing** to pick an image already in the **Media** library.
+
+When you upload a new image, fill in **Alt** (required). This is a short description of the image for screen readers and search engines. Click **Save** to upload it and attach it to the achievement.
+
+![Uploading a team photo](/images/docs/admin-guide/cms-photo-upload.png)
+
+<Callout type="info" title="Where images are stored">
+  Uploaded images go to the shared **Media** collection, which is stored on DigitalOcean Spaces. You
+  can reuse them in other posts.
+</Callout>
+
+</Step>
+<Step>
+
+### Fill in the Achievement Details
+
+Open the **Achievement Details** tab:
+
+- **Competition / Contest Name** (required): for example _Shell Eco-marathon_, _KMHE_ or _KTI Nasional_.
+- **Award Level** (required): choose _1st Place_, _2nd Place_, _3rd Place_, _Honorable Mention_, _Finalist_, _Special Award_ or _Other_.
+- **Specify Award Level**: appears only when you choose **Other**. Type the award name, for example _Best Design_. This text is shown on the website instead of "Other".
+- **Date Awarded** (required): when the award was received. It decides the order on `/achievements`.
+- **Team Members & NIMs** (optional): click the add button below the field for each winner and fill in **Student Name** (required) and **NIM**.
+- **Tags** (optional): click **Add Tag** for each keyword.
+
+![Achievement Details tab](/images/docs/admin-guide/cms-achievements-details.png)
+
+</Step>
+<Step>
+
+### Optimise for search (optional)
+
+The **SEO** tab controls how the achievement looks in Google results and link previews:
+
+- **Title**: 50–60 characters. Click **Auto-generate** to use _Achievement Title | HMM ITB_.
+- **Meta Image**: the image shown when the link is shared. Usually the same as the trophy or team photo.
+- **Description**: 100–150 characters.
+
+The checklist at the top (_0/3 checks are passing_) and the **Preview** at the bottom show what is still missing.
+
+![SEO tab](/images/docs/admin-guide/cms-seo.png)
+
+</Step>
+<Step>
+
+### Set the sidebar fields
+
+In the right sidebar:
+
+- **Published At**: the date the achievement was posted. If you leave it empty, it is set when you publish.
+- **Authors**: choose one or more CMS users as authors.
+- **Publishing Status**: change it from **Draft** to **Published**.
+- **Slug**: the URL of the achievement (`/achievements/<slug>`). It follows the title. Click **Unlock** to edit it manually.
+
+![Achievement sidebar fields](/images/docs/admin-guide/cms-achievements-sidebar.png)
+
+</Step>
+<Step>
+
+### Publish
+
+Click **Publish changes** at the top-right. The status at the top of the page changes from **Draft** to **Published**, and the achievement appears on the `/achievements` page.
+
+To publish later, click the arrow next to **Publish changes** and choose **Schedule Publish**, then pick a date and time.
+
+![Publish and schedule](/images/docs/admin-guide/cms-publish-menu.png)
+
+<Callout type="warn" title="Two settings must both be published">
+  An achievement only appears on the website when **Publishing Status** is set to **Published**
+  *and* you click **Publish changes**. Autosaved drafts are never shown publicly. If an achievement
+  doesn't appear, check both settings.
+</Callout>
+
+</Step>
+</Steps>
+
+## Editing or Deleting an Achievement
+
+- **Edit**: open the achievement from the Achievements list, make your changes, and click **Publish changes** again. Until you do, your edits are only a draft and the live page keeps showing the previous version.
+- **Unpublish**: set **Publishing Status** back to **Draft** and click **Publish changes**. The achievement disappears from `/achievements`.
+- **Versions**: the **Versions** tab at the top of an achievement lists earlier saves. Open one to compare it or restore it.
+- **Delete**: open the achievement, click the **⋮** menu at the top-right and choose **Delete**. You can also tick achievements in the Achievements list and delete them in bulk. Deleting cannot be undone.
+
+## Tips
+
+<Callout type="idea" title="Writing good achievement posts">
+  - Put the award and the competition in the title, for example *2nd Place at KMHE 2026*. The title
+  also becomes the URL. - Always add a trophy or team photo, because the achievement cards use it. -
+  Double-check team members' names and NIMs with the team before publishing. - Use the eye icon next
+  to **Publish changes** to open **Live Preview** and check the page as readers will see it before
+  you publish.
+</Callout>

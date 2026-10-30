@@ -35,6 +35,7 @@ export default function BreadcrumbItemResolver({
     edit: "Edit",
     attempt: "Attempt",
     results: "Results",
+    competition: "Competition"
   };
 
   const toTitleCase = (value: string) =>

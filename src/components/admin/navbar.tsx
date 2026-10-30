@@ -62,115 +62,115 @@ const adminSidebarTabs: {
     dev?: boolean;
   }[];
 }[] = [
-  {
-    group: 'General',
-    items: [
-      { label: 'Dashboard', href: '/admin', icon: Home, tooltip: 'Admin Dashboard' },
-      {
-        label: 'Analytics',
-        href: '/admin/analytics',
-        icon: BarChart3,
-        tooltip: 'Analytics & Reports',
-        dev: false,
-      },
-      {
-        label: 'Forms',
-        href: '/admin/forms',
-        icon: FormInput,
-        tooltip: 'Manage Forms',
-        dev: false,
-      },
-      { label: 'Short Links', href: '/admin/shortlinks', icon: Link2, tooltip: 'Shorten Links' },
-    ],
-  },
-  {
-    group: 'Content Management',
-    items: [
-      { label: 'Courses', href: '/admin/courses', icon: GraduationCap, tooltip: 'Manage Courses' },
-      {
-        label: 'Scholarships',
-        href: '/admin/scholarships',
-        icon: Banknote,
-        tooltip: 'Manage Scholarships',
-      },
-      { label: 'Tryouts', href: '/admin/tryouts', icon: TestTube, tooltip: 'Manage Tryouts' },
-      {
-        label: 'Announcements',
-        href: '/admin/announcements',
-        icon: Megaphone,
-        tooltip: 'Manage Announcements',
-      },
-      { label: 'Events', href: '/admin/events', icon: Calendar, tooltip: 'Manage Events' },
-      {
-        label: 'M-Opportunity',
-        href: '/admin/loker',
-        icon: Briefcase,
-        tooltip: 'Manage M-Opportunity',
-      },
-    ],
-  },
-  {
-    group: 'User Management',
-    items: [
-      { label: 'Users', href: '/admin/users', icon: Users, tooltip: 'Manage Users', dev: false },
-    ],
-  },
-  {
-    group: 'Machining Management',
-    items: [
-      {
-        label: 'Machining Batch',
-        href: '/admin/machining-batch',
-        icon: Settings,
-        tooltip: 'Machining Batch',
-        dev: false,
-      },
-    ],
-  },
-  {
-    group: 'Payload CMS',
-    items: [
-      {
-        label: 'Content Panel',
-        href: '/admin-cms',
-        icon: FileText,
-        tooltip: 'Content Management System',
-        dev: false,
-      },
-    ],
-  },
-  {
-    group: 'System',
-    items: [
-      {
-        label: 'Database',
-        href: '/admin/database',
-        icon: Database,
-        tooltip: 'Database Management',
-        dev: false,
-      },
-      // { label: 'Logs', href: '/admin/logs', icon: FileText, tooltip: 'System Logs', dev: false },
-    ],
-  },
-  {
-    group: 'Quick Access',
-    items: [
-      // {
-      //   label: 'Admin Guidebook',
-      //   href: '/docs/admin',
-      //   icon: BookOpen,
-      //   tooltip: 'Admin Guidebook',
-      // },
-      { label: 'Back to App', href: '/dashboard', icon: BookOpen, tooltip: 'Back to Main App' },
-      {
-        label: 'Back to Machining',
-        href: '/machining',
-        icon: BookOpen,
-        tooltip: 'Back to Machining App',
-      },
-    ],
-  },
-];
+    {
+      group: 'General',
+      items: [
+        { label: 'Dashboard', href: '/admin', icon: Home, tooltip: 'Admin Dashboard' },
+        {
+          label: 'Analytics',
+          href: '/admin/analytics',
+          icon: BarChart3,
+          tooltip: 'Analytics & Reports',
+          dev: false,
+        },
+        {
+          label: 'Forms',
+          href: '/admin/forms',
+          icon: FormInput,
+          tooltip: 'Manage Forms',
+          dev: false,
+        },
+        { label: 'Short Links', href: '/admin/shortlinks', icon: Link2, tooltip: 'Shorten Links' },
+      ],
+    },
+    {
+      group: 'Content Management',
+      items: [
+        { label: 'Courses', href: '/admin/courses', icon: GraduationCap, tooltip: 'Manage Courses' },
+        {
+          label: 'Scholarships',
+          href: '/admin/scholarships',
+          icon: Banknote,
+          tooltip: 'Manage Scholarships',
+        },
+        { label: 'Tryouts', href: '/admin/tryouts', icon: TestTube, tooltip: 'Manage Tryouts' },
+        {
+          label: 'Announcements',
+          href: '/admin/announcements',
+          icon: Megaphone,
+          tooltip: 'Manage Announcements',
+        },
+        { label: 'Events', href: '/admin/events', icon: Calendar, tooltip: 'Manage Events' },
+        {
+          label: 'M-Opportunity',
+          href: '/admin/loker',
+          icon: Briefcase,
+          tooltip: 'Manage M-Opportunity',
+        },
+      ],
+    },
+    {
+      group: 'User Management',
+      items: [
+        { label: 'Users', href: '/admin/users', icon: Users, tooltip: 'Manage Users', dev: false },
+      ],
+    },
+    {
+      group: 'Machining Management',
+      items: [
+        {
+          label: 'Machining Batch',
+          href: '/admin/machining-batch',
+          icon: Settings,
+          tooltip: 'Machining Batch',
+          dev: false,
+        },
+      ],
+    },
+    {
+      group: 'Payload CMS',
+      items: [
+        {
+          label: 'Content Panel',
+          href: '/admin-cms',
+          icon: FileText,
+          tooltip: 'Content Management System',
+          dev: false,
+        },
+      ],
+    },
+    {
+      group: 'System',
+      items: [
+        {
+          label: 'Database',
+          href: '/admin/database',
+          icon: Database,
+          tooltip: 'Database Management',
+          dev: false,
+        },
+        // { label: 'Logs', href: '/admin/logs', icon: FileText, tooltip: 'System Logs', dev: false },
+      ],
+    },
+    {
+      group: 'Quick Access',
+      items: [
+        {
+          label: 'Admin Guidebook',
+          href: '/docs/admin',
+          icon: BookOpen,
+          tooltip: 'Admin Guidebook',
+        },
+        { label: 'Back to App', href: '/dashboard', icon: BookOpen, tooltip: 'Back to Main App' },
+        {
+          label: 'Back to Machining',
+          href: '/machining',
+          icon: BookOpen,
+          tooltip: 'Back to Machining App',
+        },
+      ],
+    },
+  ];
 
 const bpSidebarTabs: {
   group: string;
@@ -182,26 +182,26 @@ const bpSidebarTabs: {
     dev?: boolean;
   }[];
 }[] = [
-  {
-    group: 'Badan Pengurus',
-    items: [
-      {
-        label: 'Profiles Management',
-        href: '/admin/profiles',
-        icon: Users,
-        tooltip: 'Profiles Management',
-        dev: false,
-      },
-      {
-        label: 'Event Profiles',
-        href: '/admin/event-profiles',
-        icon: CalendarFoldIcon,
-        tooltip: 'Event Profiles Management',
-        dev: false,
-      },
-    ],
-  },
-];
+    {
+      group: 'Badan Pengurus',
+      items: [
+        {
+          label: 'Profiles Management',
+          href: '/admin/profiles',
+          icon: Users,
+          tooltip: 'Profiles Management',
+          dev: false,
+        },
+        {
+          label: 'Event Profiles',
+          href: '/admin/event-profiles',
+          icon: CalendarFoldIcon,
+          tooltip: 'Event Profiles Management',
+          dev: false,
+        },
+      ],
+    },
+  ];
 
 const superadminSidebarTabs: {
   group: string;
@@ -213,19 +213,19 @@ const superadminSidebarTabs: {
     dev?: boolean;
   }[];
 }[] = [
-  {
-    group: 'SUPERADMIN Area',
-    items: [
-      {
-        label: 'SUPERADMIN Panel',
-        href: '/admin/superadmin-area',
-        icon: Users,
-        tooltip: 'SUPERADMIN Panel',
-        dev: false,
-      },
-    ],
-  },
-];
+    {
+      group: 'SUPERADMIN Area',
+      items: [
+        {
+          label: 'SUPERADMIN Panel',
+          href: '/admin/superadmin-area',
+          icon: Users,
+          tooltip: 'SUPERADMIN Panel',
+          dev: false,
+        },
+      ],
+    },
+  ];
 
 export default async function AdminNavbar({ children }: Readonly<{ children: React.ReactNode }>) {
   const SIDEBAR_COOKIE_NAME = 'admin_sidebar_state';

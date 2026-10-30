@@ -6,3 +6,7 @@ allowBuilds:
   esbuild: true
   prisma: true
   simple-git-hooks: true
+minimumReleaseAgeExclude:
+  - fumadocs-core@16.17.9
+  - fumadocs-ui@16.17.9
+  - lucide-react@1.63.0

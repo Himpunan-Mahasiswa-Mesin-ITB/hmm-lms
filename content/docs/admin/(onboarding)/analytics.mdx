@@ -1,332 +1,56 @@
 ---
-title: Analytics & Insights
-description: Comprehensive guide to platform analytics, reporting, and data-driven decision making.
-icon: ChartArea
+title: Analytics
+description: Read platform reports on users, learning activity, tryouts, events and forms.
+icon: ChartColumn
 ---
 
 import { Callout } from 'fumadocs-ui/components/callout';
-import { Card, Cards } from 'fumadocs-ui/components/card';
 
-## Analytics & Insights
+## Analytics & Reports
 
-The analytics system provides administrators with comprehensive insights into platform performance, user behavior, and learning outcomes. Transform raw data into actionable intelligence to drive platform improvements and strategic decisions.
+Open **Analytics** from the sidebar (General group) to see detailed charts about how the platform is used.
 
-<Callout type="info" title="Data-Driven Decisions">
-  Analytics enable evidence-based decision making. Regular review of analytics data helps identify
-  trends, opportunities, and areas for improvement across the platform.
+![Analytics page](/images/docs/admin-guide/analytics.png)
+
+## Tabs
+
+The page is split into tabs: **Overview**, **Users**, **Courses**, **Tryouts**, **Resources**, **Events** and **Health**. **Overview** shows headline cards (**Total Users**, **Active Courses**, **Platform Health**, **Avg Session**), totals for events, scholarships and resources, and the **Platform Activity Trends** chart. The other tabs hold the detailed reports below.
+
+## Report Sections
+
+### Users
+
+- **User Registration Trend** and **User Growth Rate** — how fast the membership grows.
+- **Role Distribution**, **Faculty Distribution** and **Program Distribution** — who your members are.
+- **Active Users Breakdown** — **Daily Active Users (DAU)**, **Monthly Active Users (MAU)** and the **DAU/MAU ratio** (platform stickiness).
+- **Retention Rate** — the share of users who come back.
+
+### Learning
+
+- **Learning Activity** and **Platform Activity Trends** over time.
+- **Course Performance Ranking** and **Course Satisfaction** (average rating and testimonials).
+- **Most Accessed Resources** — views and downloads per resource.
+- **Leaderboard - Top Performers** and **Most Active Users**.
+
+### Tryouts
+
+- **Tryout Attempts Over Time**.
+- **Top Performing Tryouts** and **Tryout Completion** rate.
+
+### Events & Forms
+
+- **Event Attendance**, **Event Performance**, **RSVP Status Breakdown** and **Attendance Status Breakdown**.
+- **Form Submissions** per form.
+
+## Changing the Time Range
+
+By default the page shows the **last 30 days**; the subtitle under the title shows the exact range. Use the **date range picker** at the top-right of the page to choose a different period (presets: Last 24 hours, 3 days, 7 days, 2 weeks, month, 3 months, or a **Custom range**). All charts reload for the new range, and comparison cards show the change against the previous period.
+
+## Exporting
+
+Press the **Export** button next to the date range picker to download the analytics for the selected period.
+
+<Callout type="info" title="Loading time">
+  Analytics reads a lot of data, so it may show a loading screen for a few seconds the first time
+  you open it.
 </Callout>
-
-## Analytics Overview
-
-### 📊 **Platform Analytics**
-
-High-level platform performance metrics:
-
-#### **User Analytics**
-
-- **User Growth**: Track user acquisition and retention over time
-- **Active Users**: Monitor daily, weekly, monthly active users
-- **User Demographics**: Analyze user population characteristics
-- **Engagement Patterns**: Understand how users interact with the platform
-- **Retention Rates**: Track user return and engagement over time
-
-#### **Course Analytics**
-
-- **Course Performance**: Analyze course completion rates and engagement
-- **Enrollment Trends**: Track course popularity and enrollment patterns
-- **Content Performance**: Identify which materials are most effective
-- **Learning Outcomes**: Measure learning achievement and success
-- **Instructor Performance**: Evaluate instructor effectiveness
-
-#### **System Analytics**
-
-- **Platform Performance**: Monitor system health and responsiveness
-- **Error Rates**: Track technical issues and error patterns
-- **Resource Utilization**: Monitor server and database performance
-- **Uptime Statistics**: Track platform availability and reliability
-- **Capacity Planning**: Plan for future growth and resource needs
-
-## Analytics Features
-
-### 📈 **Data Visualization**
-
-#### **Interactive Charts**
-
-- **Line Charts**: Track trends over time
-- **Bar Charts**: Compare categories and groups
-- **Pie Charts**: Show proportional distributions
-- **Heat Maps**: Visualize complex data patterns
-- **Scatter Plots**: Identify correlations and relationships
-
-#### **Custom Dashboards**
-
-- **Widget Configuration**: Create personalized dashboard layouts
-- **Real-Time Updates**: Live data streaming to dashboards
-- **Drag & Drop Interface**: Easy dashboard customization
-- **Multiple Dashboards**: Create specialized dashboards for different needs
-- **Dashboard Sharing**: Share dashboards with team members
-
-### 🔍 **Advanced Analytics**
-
-#### **Behavioral Analytics**
-
-- **User Journey Mapping**: Track user paths through the platform
-- **Funnel Analysis**: Identify drop-off points in processes
-- **Session Recording**: Review user sessions for insights
-- **Cohort Analysis**: Analyze user group behavior over time
-- **Segmentation**: Analyze specific user segments
-
-#### **Predictive Analytics**
-
-- **Churn Prediction**: Identify users at risk of leaving
-- **Performance Prediction**: Predict course completion likelihood
-- **Engagement Scoring**: Score users by engagement level
-- **Success Prediction**: Predict learning outcomes
-- **Resource Optimization**: Optimize resource allocation
-
-## Reporting
-
-### 📋 **Standard Reports**
-
-#### **Platform Reports**
-
-- **Daily Summary**: Daily platform performance overview
-- **Weekly Reports**: Weekly performance and trends
-- **Monthly Reports**: Comprehensive monthly analysis
-- **Quarterly Reviews**: Strategic quarterly assessments
-- **Annual Reports**: Yearly performance summaries
-
-#### **Specialized Reports**
-
-- **Course Performance**: Detailed course analytics
-- **User Engagement**: User behavior and engagement reports
-- **Content Effectiveness**: Learning material performance
-- **System Health**: Technical performance reports
-- **Compliance Reports**: Regulatory and compliance reporting
-
-### 📊 **Custom Reports**
-
-#### **Report Builder**
-
-- **Drag & Drop Interface**: Create reports without coding
-- **Data Source Selection**: Choose from multiple data sources
-- **Custom Calculations**: Add custom metrics and calculations
-- **Formatting Options**: Style reports for presentations
-- **Scheduling**: Automate report generation and delivery
-
-#### **Report Distribution**
-
-- **Email Delivery**: Automatically email reports to stakeholders
-- **Dashboard Publishing**: Publish reports to dashboards
-- **API Access**: Access reports programmatically
-- **Export Options**: Export in various formats (PDF, Excel, CSV)
-- **Subscription Management**: Manage report subscriptions
-
-## Key Metrics
-
-### 🎯 **Performance Indicators**
-
-#### **Engagement Metrics**
-
-- **Daily Active Users (DAU)**: Users engaging daily
-- **Monthly Active Users (MAU)**: Users engaging monthly
-- **Session Duration**: Average time spent per session
-- **Page Views**: Total content views and interactions
-- **Bounce Rate**: Users who leave after single interaction
-
-#### **Learning Metrics**
-
-- **Course Completion Rate**: Percentage of completed courses
-- **Average Score**: Mean performance across assessments
-- **Time to Completion**: Average time to complete courses
-- **Progress Rate**: Speed of course progression
-- **Achievement Rate**: Badge and milestone completion
-
-#### **System Metrics**
-
-- **Response Time**: Average system response time
-- **Error Rate**: Percentage of failed requests
-- **Uptime Percentage**: Platform availability percentage
-- **Server Load**: Average server resource utilization
-- **Database Performance**: Database query performance
-
-## Analytics Tools
-
-### 🔧 **Analysis Tools**
-
-#### **Segmentation Tools**
-
-- **User Segmentation**: Group users by behavior or demographics
-- **Cohort Analysis**: Track groups over time
-- **Custom Segments**: Create specialized user segments
-- **Dynamic Segments**: Auto-updating segment definitions
-- **Segment Comparison**: Compare performance across segments
-
-#### **Funnel Analysis**
-
-- **Conversion Funnels**: Track user conversion through processes
-- **Drop-off Analysis**: Identify where users abandon processes
-- **Bottleneck Detection**: Find process inefficiencies
-- **A/B Testing**: Compare different process variations
-- **Optimization Recommendations**: Get improvement suggestions
-
-### 📊 **Comparative Analysis**
-
-#### **Time Comparison**
-
-- **Period-over-Period**: Compare performance across time periods
-- **Year-over-Year**: Annual performance comparisons
-- **Seasonal Analysis**: Identify seasonal patterns
-- **Trend Analysis**: Long-term trend identification
-- **Forecasting**: Predict future performance
-
-#### **Group Comparison**
-
-- **Cohort Comparison**: Compare different user groups
-- **Course Comparison**: Compare course performance
-- **Instructor Comparison**: Compare instructor effectiveness
-- **Demographic Comparison**: Compare across user demographics
-- **Geographic Analysis**: Compare performance by location
-
-## Data Export & Integration
-
-### 📤 **Export Capabilities**
-
-#### **Data Export**
-
-- **Raw Data Export**: Export raw analytics data
-- **Summary Export**: Export summarized analytics
-- **Custom Export**: Create custom export configurations
-- **Scheduled Exports**: Automate regular data exports
-- **API Access**: Programmatic data access
-
-#### **Integration Options**
-
-- **Business Intelligence**: Connect to BI tools (Tableau, Power BI)
-- **Data Warehousing**: Export to data warehouses
-- **Custom Applications**: Build custom analytics applications
-- **Third-Party Tools**: Integrate with external analytics platforms
-- **Webhooks**: Real-time data push to external systems
-
-## Privacy & Compliance
-
-### 🔒 **Data Privacy**
-
-#### **User Privacy**
-
-- **Anonymization**: Anonymize individual user data
-- **Aggregation**: Use aggregated data where possible
-- **Consent Management**: Respect user data preferences
-- **Data Minimization**: Collect only necessary data
-- **Retention Policies**: Follow data retention schedules
-
-#### **Compliance**
-
-- **GDPR Compliance**: Adhere to data protection regulations
-- **Data Governance**: Follow data governance policies
-- **Audit Trails**: Maintain comprehensive audit logs
-- **Access Control**: Restrict analytics data access
-- **Security Measures**: Protect analytics data appropriately
-
-## Analytics Best Practices
-
-### 🎯 **Strategic Analytics**
-
-- **Clear Objectives**: Define analytics goals and questions
-- **Regular Review**: Establish regular analytics review schedule
-- **Actionable Insights**: Focus on actionable findings
-- **Context Understanding**: Consider broader context in analysis
-- **Continuous Improvement**: Use analytics to drive improvements
-
-### 📊 **Data Quality**
-
-- **Data Validation**: Ensure data accuracy and completeness
-- **Regular Audits**: Periodically validate analytics data
-- **Consistent Definitions**: Use consistent metric definitions
-- **Documentation**: Document metrics and methodologies
-- **Quality Monitoring**: Continuously monitor data quality
-
-### 🔧 **Technical Excellence**
-
-- **Performance Optimization**: Ensure analytics queries perform well
-- **Scalability**: Design for growing data volumes
-- **Reliability**: Ensure analytics systems are dependable
-- **Maintenance**: Regular system maintenance and updates
-- **Monitoring**: Monitor analytics system health
-
-## Troubleshooting
-
-### 🐛 **Common Analytics Issues**
-
-- **Data Discrepancies**: Verify data sources and calculations
-- **Performance Issues**: Optimize queries and data processing
-- **Missing Data**: Investigate data collection processes
-- **Display Problems**: Check visualization configurations
-- **Export Failures**: Verify export permissions and formats
-
-### 🔧 **Technical Solutions**
-
-- **Data Refresh**: Force data refresh if appears stale
-- **Query Optimization**: Improve slow-performing queries
-- **Cache Clearing**: Clear analytics cache if needed
-- **Reconciliation**: Compare data across sources for accuracy
-- **Support Escalation**: Escalate complex technical issues
-
-## Integration with Platform Features
-
-Analytics connects with platform systems:
-
-### 📚 **Course Analytics**
-
-- **Enrollment Data**: Track course registration trends
-- **Performance Data**: Monitor course completion rates
-- **Engagement Metrics**: Analyze student engagement
-- **Content Analytics**: Evaluate learning material effectiveness
-- **Instructor Analytics**: Assess teaching effectiveness
-
-### 👥 **User Analytics**
-
-- **Behavioral Data**: Track user behavior patterns
-- **Engagement Data**: Monitor user engagement levels
-- **Retention Data**: Analyze user retention and churn
-- **Demographic Data**: Understand user population
-- **Performance Data**: Track user achievement
-
-### 🎯 **System Analytics**
-
-- **Performance Data**: Monitor system performance
-- **Usage Data**: Track platform utilization
-- **Error Data**: Identify technical issues
-- **Capacity Data**: Plan for resource needs
-- **Security Data**: Monitor security events
-
-## Advanced Features
-
-### 🤖 **Machine Learning**
-
-- **Pattern Recognition**: Identify complex data patterns
-- **Anomaly Detection**: Find unusual data points
-- **Predictive Modeling**: Build predictive models
-- **Clustering**: Group similar data points
-- **Classification**: Categorize data automatically
-
-### 📈 **Real-Time Analytics**
-
-- **Live Dashboards**: Real-time data visualization
-- **Stream Processing**: Process data in real-time
-- **Instant Alerts**: Immediate notification of significant events
-- **Live Monitoring**: Continuous system monitoring
-- **Real-Time Decisions**: Make decisions based on live data
-
-## Getting Started
-
-### 🚀 **Analytics Quick Start**
-
-1. **Define Objectives**: Determine what you want to measure
-2. **Identify Metrics**: Choose relevant key performance indicators
-3. **Set Up Dashboards**: Create customized analytics dashboards
-4. **Establish Baselines**: Understand current performance levels
-5. **Regular Review**: Schedule regular analytics review sessions
-6. **Take Action**: Use insights to drive improvements
-
-Analytics transform raw data into actionable intelligence. By regularly reviewing and acting on analytics insights, administrators can make data-driven decisions that improve platform performance, user experience, and learning outcomes.

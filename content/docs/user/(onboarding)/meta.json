@@ -1,6 +1,29 @@
 {
   "title": "Onboarding",
-  "description": "Introduction to docs",
+  "description": "User Documentation",
   "root": true,
-  "icon": "Rocket"
+  "icon": "Rocket",
+  "pages": [
+    "index",
+    "---General---",
+    "dashboard",
+    "hall-of-fame",
+    "schedule",
+    "---Academics---",
+    "courses",
+    "tryouts",
+    "scholarships",
+    "---Himpunan---",
+    "events",
+    "announcements",
+    "m-opportunity",
+    "hotline",
+    "competition",
+    "---Preferences---",
+    "settings",
+    "---Account---",
+    "profile",
+    "---Help---",
+    "faq"
+  ]
 }

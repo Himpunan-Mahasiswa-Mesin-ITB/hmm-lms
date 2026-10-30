@@ -1,58 +1,110 @@
 ---
-title: Onboarding
-description: Welcome to the HMM LMS documentation guide.
+title: Introduction
+description: Guide to using the hmmitb.com website, by Sub-Bureau ITD of BP Eksplorasi Potensi 2026/2027.
+icon: BookOpen
 ---
 
-import { Card, Cards } from 'fumadocs-ui/components/card';
 import { Callout } from 'fumadocs-ui/components/callout';
-import { BookOpen, ShieldCheck, UserCheck, Rocket, HelpCircle, Footprints, GraduationCap } from 'lucide-react';
+import { Card, Cards } from 'fumadocs-ui/components/card';
+import {
+  Briefcase,
+  CalendarDays,
+  GraduationCap,
+  LayoutDashboard,
+  Megaphone,
+  Settings,
+  Trophy,
+  UserRound,
+} from 'lucide-react';
 
-# Welcome to HMM LMS Docs
+## Introduction
 
-Welcome! This documentation platform is your central hub for navigating, managing, and getting the most out of the **HMM LMS** platform. Whether you are a student, instructor, or administrator, these guides are designed to help you quickly understand workflows and features.
+This guide covers every feature you can reach from the user dashboard of hmmitb.com.
 
-<Callout type="info" title="Quick Tip">
-  Use the sidebar on the left to browse topics sequentially, or press <kbd>Ctrl</kbd> + <kbd>K</kbd> (or <kbd>Cmd</kbd> + <kbd>K</kbd> on Mac) anytime to open the instant search dialog.
+<Callout>
+  You must be signed in with a verified account to use the dashboard. If your account has not been
+  verified yet, you will be redirected to a verification notice page after signing in.
 </Callout>
 
----
+## Getting Around
 
-## What You Can Find Here
+When you open the hmmitb.com website, you will see a display like this:
 
-This documentation is split into tailored sections depending on your role and goals:
+![Image 4](/images/docs/user-guide/image4.png)
 
-* **User Guides:** Learn how to access courses, submit assignments, track learning progress, and manage your account settings.
-* **Walkthroughs & FAQs:** Step-by-step solutions to common account issues, enrollment questions, and platform navigation.
+The header at the top of every page contains:
 
----
+- **Sidebar toggle** (the panel icon at the top left). Press it to show or hide the sidebar. The sidebar remembers whether you left it open or closed.
+- **Breadcrumb**, which shows the page you are currently on (for example, _Dashboard_ or _Courses / Getaran Mekanik_).
+- **Search** (`Ctrl K`, or `⌘ K` on Mac). Opens a quick search window where you can jump to any page, or search directly for a course, tryout, announcement, event, or scholarship by name. Use the arrow keys to move between results, `Enter` to open one, and `Esc` to close the window.
+- **Theme switch** (the sun/moon toggle at the top right). Switches the website between light and dark mode.
 
-## Quick Actions & Navigation
+![Image 23](/images/docs/user-guide/image23.png)
 
-Select where you want to go next based on your role or immediate task:
+The sidebar lists all the pages you can access, grouped into sections:
+
+| Section     | Pages                                                                                                                                                                                   |
+| ----------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| General     | [Dashboard](/docs/user/dashboard), [Hall of Fame](/docs/user/hall-of-fame), [Schedule](/docs/user/schedule)                                                                             |
+| Academics   | [Courses](/docs/user/courses), [Tryouts](/docs/user/tryouts), [Scholarships](/docs/user/scholarships)                                                                                   |
+| Himpunan    | [Events](/docs/user/events), [Announcements](/docs/user/announcements), [M-Opportunity](/docs/user/m-opportunity), [Hotline](/docs/user/hotline), [Competition](/docs/user/competition) |
+| Preferences | [Settings](/docs/user/settings)                                                                                                                                                         |
+
+At the bottom of the sidebar is your **profile menu**, showing your name and role. Click it to open your [Profile](/docs/user/profile) page or to **Sign Out**.
+
+## Guides
 
 <Cards>
   <Card
-    icon={<UserCheck className="text-blue-500" />}
-    title="User & Student Guide"
-    href="/docs/user/overview"
-    description="Explore how to navigate courses, track your learning progress, and update profile settings."
-  />
-  <Card
-    icon={<Footprints className="text-emerald-500" />}
-    title="Himpunan"
-    href="/docs/user/himpunan"
-    description="Learn how to participate in events, apply for job opportunities, and view latest announcements."
+    icon={<LayoutDashboard className="text-blue-500" />}
+    title="Dashboard"
+    href="/docs/user/dashboard"
+    description="Your learning activity, courses, and upcoming events at a glance."
   />
   <Card
     icon={<GraduationCap className="text-amber-500" />}
-    title="Academics"
-    href="/docs/user/academics"
-    description="Learn how to access academic resources, take tryouts, and track your learning progress."
+    title="Courses"
+    href="/docs/user/courses"
+    description="Enroll in a course to open its materials, videos, and problems."
   />
   <Card
-    icon={<HelpCircle className="text-purple-500" />}
-    title="Need Help?"
-    href="/docs/user/faq"
-    description="Find answers to frequently asked questions and learn how to contact LMS support."
+    icon={<Trophy className="text-yellow-500" />}
+    title="Tryouts"
+    href="/docs/user/tryouts"
+    description="Practice with timed questions that simulate college exams."
+  />
+  <Card
+    icon={<CalendarDays className="text-pink-500" />}
+    title="Events"
+    href="/docs/user/events"
+    description="RSVP and check in to HMM ITB events."
+  />
+  <Card
+    icon={<Megaphone className="text-red-500" />}
+    title="Announcements"
+    href="/docs/user/announcements"
+    description="Read and reply to the latest HMM ITB news."
+  />
+  <Card
+    icon={<Briefcase className="text-emerald-500" />}
+    title="M-Opportunity"
+    href="/docs/user/m-opportunity"
+    description="Find job and internship openings."
+  />
+  <Card
+    icon={<Settings className="text-purple-500" />}
+    title="Settings"
+    href="/docs/user/settings"
+    description="Change the theme, fonts, spacing, and accessibility options."
+  />
+  <Card
+    icon={<UserRound className="text-cyan-500" />}
+    title="Profile"
+    href="/docs/user/profile"
+    description="Edit your photos, name, position, and password."
   />
 </Cards>
+
+<Callout type="idea" title="Need help?">
+  See the [FAQ](/docs/user/faq) for common questions and troubleshooting.
+</Callout>
