@@ -661,6 +661,7 @@ export interface Gallery {
    * Description of the album
    */
   description: string;
+  eventDate?: string | null;
   /**
    * Add tags or categories for this news
    */
@@ -1446,6 +1447,7 @@ export interface GallerySelect<T extends boolean = true> {
   title?: T;
   albumImage?: T;
   description?: T;
+  eventDate?: T;
   tags?:
     | T
     | {
