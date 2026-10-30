@@ -59,6 +59,7 @@ export default async function GalleryPage() {
                     ? galleryItem.albumImage.url
                     : null;
                 const tags = Array.isArray(galleryItem.tags) ? galleryItem.tags : [];
+                const dateValue = galleryItem.eventDate ?? galleryItem.publishedAt;
 
                 return (
                   <a
@@ -66,61 +67,62 @@ export default async function GalleryPage() {
                     href={galleryItem.googleDriveLink}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group relative flex aspect-4/3 w-full overflow-hidden rounded-2xl border border-white/15 bg-[color-mix(in_srgb,var(--color-hmm-navy-deep)_55%,var(--color-hmm-navy))] shadow-[0_6px_28px_color-mix(in_srgb,var(--color-hmm-black)_28%,transparent)] transition-all duration-300 ease-out hover:-translate-y-1 hover:border-white/30"
+                    className="group flex h-full w-full flex-col overflow-hidden rounded-2xl border border-white/15 bg-[color-mix(in_srgb,var(--color-hmm-navy-deep)_55%,var(--color-hmm-navy))] shadow-[0_6px_28px_color-mix(in_srgb,var(--color-hmm-black)_28%,transparent)] transition-all duration-300 ease-out hover:-translate-y-1 hover:border-white/30 focus-visible:-translate-y-1 focus-visible:border-white/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-300/70"
                   >
-                    {imageUrl && (
-                      <Image
-                        src={imageUrl}
-                        alt={galleryItem.title}
-                        fill
-                        className="object-cover transition-transform duration-500 ease-out group-hover:scale-105"
-                        sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                      />
-                    )}
+                    <div className="relative aspect-4/3 w-full overflow-hidden bg-black/30">
+                      {imageUrl && (
+                        <Image
+                          src={imageUrl}
+                          alt={galleryItem.title}
+                          fill
+                          className="object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+                          sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                        />
+                      )}
 
-                    <div className="absolute inset-0 bg-linear-to-t from-black/90 via-black/40 to-transparent transition-opacity duration-300 group-hover:from-black/95 group-hover:via-black/70" />
+                      <div className="absolute inset-0 bg-linear-to-t from-black/50 via-transparent to-transparent" />
 
-                    <div className="absolute top-4 right-4 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-black/40 backdrop-blur-md border border-white/20 text-white/80 transition-transform duration-300 group-hover:scale-110 group-hover:bg-white group-hover:text-black">
-                      <ExternalLink className="h-4 w-4" />
+                      {dateValue && (
+                        <span className="hmm-sans absolute bottom-3 left-3 z-10 inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-black/50 px-2.5 py-1 text-[0.65rem] font-bold tracking-[0.14em] text-white/90 uppercase backdrop-blur-md">
+                          <Calendar className="h-3.5 w-3.5 text-white/60" />
+                          {format(new Date(dateValue), 'MMM d, yyyy')}
+                        </span>
+                      )}
+
+                      <div className="absolute top-3 right-3 z-10 flex h-8 w-8 items-center justify-center rounded-full border border-white/20 bg-black/40 text-white/80 backdrop-blur-md transition-transform duration-300 group-hover:scale-110 group-hover:bg-white group-hover:text-black">
+                        <ExternalLink className="h-4 w-4" />
+                      </div>
                     </div>
 
-                    <div className="relative z-10 mt-auto flex w-full flex-col p-5 text-white">
-                      <h3 className="hmm-type-subsection text-lg font-bold text-white transition-colors duration-300 group-hover:text-amber-300">
+                    <div className="flex flex-1 flex-col gap-3 p-5 text-white">
+                      <h3 className="hmm-type-subsection line-clamp-2 text-lg font-bold text-white transition-colors duration-300 group-hover:text-amber-300">
                         {galleryItem.title}
                       </h3>
 
-                      <div className="grid grid-rows-[0fr] transition-[grid-template-rows] duration-300 ease-out group-hover:grid-rows-[1fr] group-focus-within:grid-rows-[1fr]">
-                        <div className="overflow-hidden">
-                          <div className="flex flex-col gap-2.5 pt-3">
-                            {galleryItem.publishedAt && (
-                              <span className="hmm-sans inline-flex items-center gap-1.5 text-[0.65rem] font-bold tracking-[0.14em] text-white/70 uppercase">
-                                <Calendar className="h-3.5 w-3.5 text-white/50" />
-                                {format(new Date(galleryItem.publishedAt), 'MMM d, yyyy')}
-                              </span>
-                            )}
+                      {galleryItem.description && (
+                        <p className="hmm-type-prose line-clamp-3 text-sm leading-relaxed text-white/75">
+                          {galleryItem.description}
+                        </p>
+                      )}
 
-                            {galleryItem.description && (
-                              <p className="hmm-type-prose line-clamp-3 text-xs leading-relaxed text-white/80">
-                                {galleryItem.description}
-                              </p>
-                            )}
-
-                            {tags.length > 0 && (
-                              <div className="flex flex-wrap items-center gap-1.5 pt-1">
-                                <Tag className="h-3 w-3 text-white/50" />
-                                {tags.slice(0, 3).map((tag, index) => (
-                                  <span
-                                    key={index}
-                                    className="hmm-sans rounded-full border border-white/20 bg-white/10 px-2 py-0.5 text-[0.6rem] font-bold tracking-widest text-white/80 uppercase backdrop-blur-sm"
-                                  >
-                                    {tag.tag}
-                                  </span>
-                                ))}
-                              </div>
-                            )}
-                          </div>
+                      {tags.length > 0 && (
+                        <div className="flex flex-wrap items-center gap-1.5">
+                          <Tag className="h-3 w-3 text-white/50" />
+                          {tags.slice(0, 3).map((tag, index) => (
+                            <span
+                              key={index}
+                              className="hmm-sans rounded-full border border-white/20 bg-white/10 px-2 py-0.5 text-[0.6rem] font-bold tracking-widest text-white/80 uppercase"
+                            >
+                              {tag.tag}
+                            </span>
+                          ))}
                         </div>
-                      </div>
+                      )}
+
+                      <span className="hmm-sans mt-auto inline-flex items-center gap-1.5 border-t border-white/10 pt-3 text-[0.7rem] font-bold tracking-[0.14em] text-amber-300/90 uppercase">
+                        Lihat Album
+                        <ExternalLink className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5" />
+                      </span>
                     </div>
                   </a>
                 );

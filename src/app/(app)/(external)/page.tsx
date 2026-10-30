@@ -29,17 +29,23 @@ export default async function ExternalLandingPage() {
   const pillars = await getActivePillars();
   const spotlight = await getActiveSpotlight();
   const heroImage = await getExternalImageByKey('hero');
-  const pillarStudyImage = await getExternalImageByKey('pillarStudy');
-  const pillarSocietyImage = await getExternalImageByKey('pillarSociety');
-  const pillarSolidarityImage = await getExternalImageByKey('pillarSolidarity');
+  const studyImage = pillars[0]?.image && typeof pillars[0].image === 'object' &&
+    pillars[0].image.url
+    ? pillars[0].image.url
+    : null;
+  const societyImage = pillars[1]?.image && typeof pillars[1].image === 'object' &&
+    pillars[1].image.url
+    ? pillars[1].image.url
+    : null;
+  const solidarityImage = pillars[2]?.image && typeof pillars[2].image === 'object' &&
+    pillars[2].image.url
+    ? pillars[2].image.url
+    : null;
   const heritageImage = await getExternalImageByKey('heritage');
   const ctaImage = await getExternalImageByKey('cta');
 
   const im = {
     hero: resolveMediaUrl(heroImage?.image),
-    pillarStudy: resolveMediaUrl(pillarStudyImage?.image),
-    pillarSociety: resolveMediaUrl(pillarSocietyImage?.image),
-    pillarSolidarity: resolveMediaUrl(pillarSolidarityImage?.image),
     heritage: resolveMediaUrl(heritageImage?.image),
     cta: resolveMediaUrl(ctaImage?.image),
     logoKabinet: resolveMediaUrl(manifesto?.logoKabinet),
@@ -181,9 +187,9 @@ export default async function ExternalLandingPage() {
         <section className="hmm-chapter-dark relative min-h-0 overflow-hidden lg:min-h-[85svh]">
           <div className="grid min-h-0 lg:min-h-[85svh] lg:grid-cols-2">
             <div className="relative min-h-[40svh] sm:min-h-[48svh] lg:min-h-full">
-              {im.pillarStudy ? (
+              {studyImage ? (
                 <Image
-                  src={im.pillarStudy}
+                  src={studyImage}
                   alt=""
                   fill
                   className="object-cover"
@@ -211,9 +217,9 @@ export default async function ExternalLandingPage() {
         </section>
 
         <section className="relative min-h-[min(88svh,40rem)] overflow-hidden sm:min-h-[80svh]">
-          {im.pillarSociety ? (
+          {societyImage ? (
             <Image
-              src={im.pillarSociety}
+              src={societyImage}
               alt=""
               fill
               className="object-cover"
@@ -259,9 +265,9 @@ export default async function ExternalLandingPage() {
               </p>
             </div>
             <div className="relative order-1 min-h-[44svh] sm:min-h-[52svh] lg:order-2 lg:min-h-full">
-              {im.pillarSolidarity ? (
+              {solidarityImage ? (
                 <Image
-                  src={im.pillarSolidarity}
+                  src={solidarityImage}
                   alt=""
                   fill
                   className="object-cover"
