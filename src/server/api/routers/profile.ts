@@ -1,8 +1,56 @@
+import { type Prisma } from '@prisma/client';
 import { TRPCError } from '@trpc/server';
 import z from 'zod';
 
 import { createTRPCRouter, bpProcedure, protectedProcedure } from '~/server/api/trpc';
 import { db } from '~/server/db';
+
+const recommendedEventSelect = {
+  id: true,
+  title: true,
+  start: true,
+  end: true,
+} satisfies Prisma.EventSelect;
+
+// Programs linked to a profile, with only their upcoming events
+const profileRecommendationInclude = (now: Date) =>
+  ({
+    relatedPrograms: {
+      include: {
+        program: {
+          select: {
+            id: true,
+            name: true,
+            description: true,
+            relatedEvents: {
+              where: { event: { end: { gte: now } } },
+              include: { event: { select: recommendedEventSelect } },
+            },
+          },
+        },
+      },
+    },
+  }) satisfies Prisma.ProfileInclude;
+
+type ProfileWithRecommendations = Prisma.ProfileGetPayload<{
+  include: ReturnType<typeof profileRecommendationInclude>;
+}>;
+
+// Only programs with an upcoming event are recommended, sorted by their next event
+function getRecommendedPrograms(profile: ProfileWithRecommendations) {
+  return profile.relatedPrograms
+    .filter(({ program }) => program.relatedEvents.length > 0)
+    .map(({ program, progressToAdd }) => ({
+      programId: program.id,
+      name: program.name,
+      description: program.description,
+      progressToAdd,
+      upcomingEvents: program.relatedEvents
+        .map((relation) => relation.event)
+        .sort((a, b) => a.start.getTime() - b.start.getTime()),
+    }))
+    .sort((a, b) => a.upcomingEvents[0]!.start.getTime() - b.upcomingEvents[0]!.start.getTime());
+}
 
 export const profileRouter = createTRPCRouter({
   createGroupProfile: bpProcedure
@@ -231,100 +279,6 @@ export const profileRouter = createTRPCRouter({
           message: 'No Profile record found.',
         });
       }
-    }),
-  linkProfileToEvent: bpProcedure
-    .input(
-      z.object({
-        profileId: z.string(),
-        eventId: z.string(),
-        progressToAdd: z.number(),
-      }),
-    )
-    .mutation(async ({ input }) => {
-      const existing = await db.eventProfileRelation.findUnique({
-        where: {
-          profileId_eventId: {
-            profileId: input.profileId,
-            eventId: input.eventId,
-          },
-        },
-      });
-      if (existing)
-        throw new TRPCError({
-          code: 'BAD_REQUEST',
-          message: 'This event is already linked with this Profile',
-        });
-      return await db.eventProfileRelation.create({
-        data: {
-          profileId: input.profileId,
-          eventId: input.eventId,
-          progressToAdd: input.progressToAdd,
-        },
-      });
-    }),
-  unlinkProfileFromEvent: bpProcedure
-    .input(
-      z.object({
-        profileId: z.string(),
-        eventId: z.string(),
-      }),
-    )
-    .mutation(async ({ input }) => {
-      const existing = await db.eventProfileRelation.findUnique({
-        where: {
-          profileId_eventId: {
-            profileId: input.profileId,
-            eventId: input.eventId,
-          },
-        },
-      });
-      if (!existing)
-        throw new TRPCError({
-          code: 'BAD_REQUEST',
-          message: 'This event linked with this Profile is not found',
-        });
-      return await db.eventProfileRelation.delete({
-        where: {
-          profileId_eventId: {
-            profileId: input.profileId,
-            eventId: input.eventId,
-          },
-        },
-      });
-    }),
-  updateEventProfileRelation: bpProcedure
-    .input(
-      z.object({
-        profileId: z.string(),
-        eventId: z.string(),
-        progressToAdd: z.number().min(0).max(100),
-      }),
-    )
-    .mutation(async ({ input }) => {
-      const existing = await db.eventProfileRelation.findUnique({
-        where: {
-          profileId_eventId: {
-            profileId: input.profileId,
-            eventId: input.eventId,
-          },
-        },
-      });
-      if (!existing)
-        throw new TRPCError({
-          code: 'BAD_REQUEST',
-          message: 'This event linked with this Profile is not found',
-        });
-      return await db.eventProfileRelation.update({
-        where: {
-          profileId_eventId: {
-            profileId: input.profileId,
-            eventId: input.eventId,
-          },
-        },
-        data: {
-          progressToAdd: input.progressToAdd,
-        },
-      });
     }),
   createProfileProgress: bpProcedure
     .input(
@@ -609,7 +563,7 @@ export const profileRouter = createTRPCRouter({
       include: {
         group: true,
         userProgresses: true,
-        relatedEvents: true,
+        relatedPrograms: true,
       },
     });
   }),
@@ -670,6 +624,7 @@ export const profileRouter = createTRPCRouter({
   }),
   getCurrentUserProfileProgress: protectedProcedure.query(async ({ ctx }) => {
     const userId = ctx.session.user.id;
+    const now = new Date();
 
     const userGroupProfiles = await db.userGroupProfile.findMany({
       where: { userId },
@@ -678,17 +633,7 @@ export const profileRouter = createTRPCRouter({
           include: {
             profiles: {
               include: {
-                relatedEvents: {
-                  include: {
-                    event: {
-                      select: {
-                        title: true,
-                        start: true,
-                        end: true,
-                      }
-                    }
-                  },
-                },
+                ...profileRecommendationInclude(now),
                 userProgresses: true,
               }
             },
@@ -703,17 +648,7 @@ export const profileRouter = createTRPCRouter({
         profile: {
           include: {
             group: true,
-            relatedEvents: {
-              include: {
-                event: {
-                  select: {
-                    title: true,
-                    start: true,
-                    end: true,
-                  }
-                }
-              },
-            },
+            ...profileRecommendationInclude(now),
           },
         },
       },
@@ -739,7 +674,7 @@ export const profileRouter = createTRPCRouter({
             description: profile.description,
             progress: progress?.progress || 0,
             updatedAt: progress?.updatedAt || null,
-            relatedEvents: progress?.profile.relatedEvents
+            recommendedPrograms: getRecommendedPrograms(profile),
           };
         }),
       };
@@ -761,7 +696,7 @@ export const profileRouter = createTRPCRouter({
           description: progress.profile.description,
           progress: progress.progress,
           updatedAt: progress.updatedAt,
-          relatedEvents: progress?.profile.relatedEvents
+          recommendedPrograms: getRecommendedPrograms(progress.profile),
         })),
       });
     }
@@ -791,7 +726,7 @@ export const profileRouter = createTRPCRouter({
           description: progress.profile.description,
           progress: progress.progress,
           updatedAt: progress.updatedAt,
-          relatedEvents: progress?.profile.relatedEvents
+          recommendedPrograms: getRecommendedPrograms(progress.profile),
         })),
       });
     }
@@ -801,12 +736,10 @@ export const profileRouter = createTRPCRouter({
   getAllEvents: bpProcedure.query(async () => {
     return await db.event.findMany({
       include: {
-        relatedProfiles: {
-          include: {
-            event: true,
-            profile: true,
-          },
-        },
+        relatedPrograms: true,
+      },
+      orderBy: {
+        start: 'desc',
       },
     });
   }),

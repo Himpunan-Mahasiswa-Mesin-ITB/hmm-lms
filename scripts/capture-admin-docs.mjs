@@ -55,7 +55,7 @@ const shots = [
   ['users', '/admin/users'],
   ['database', '/admin/database'],
   ['profiles', '/admin/profiles'],
-  ['event-profiles', '/admin/event-profiles'],
+  ['programs', '/admin/programs'],
   ['machining-batch', '/admin/machining-batch'],
   ['superadmin-area', '/admin/superadmin-area'],
 ];

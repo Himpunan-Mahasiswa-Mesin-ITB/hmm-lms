@@ -251,7 +251,7 @@ model Event {
   courseId        String?
   course          Course?             @relation("CourseEvents", fields: [courseId], references: [id])
   scope           EventScope          @default(GLOBAL)
-  relatedProfiles EventProfileRelation[]
+  relatedPrograms ProgramEventRelation[]
   rsvpForm        EventRSVPForm?
   rsvpResponses   EventRSVPResponse[]
   presenceRecords EventPresence[]
@@ -569,8 +569,8 @@ group       GroupProfile?   @relation(fields: [groupId], references: [id], onDel
 name        String
 description String?
 
-userProgresses UserProfileProgress[]
-relatedEvents  EventProfileRelation[]
+userProgresses  UserProfileProgress[]
+relatedPrograms ProgramProfileRelation[]
 
 updatedAt       DateTime        @updatedAt
 createdAt       DateTime        @default(now())
@@ -607,20 +607,47 @@ createdAt       DateTime        @default(now())
 @@index([userId])
 }
 
-model EventProfileRelation{
+model Program{
 id              String          @id @default(cuid())
+name            String          @unique
+description     String?
+
+relatedProfiles ProgramProfileRelation[]
+relatedEvents   ProgramEventRelation[]
+
+updatedAt       DateTime        @updatedAt
+createdAt       DateTime        @default(now())
+}
+
+model ProgramProfileRelation{
+id              String          @id @default(cuid())
+programId       String
+program         Program         @relation(fields: [programId], references: [id], onDelete: Cascade)
 profileId       String
 profile         Profile         @relation(fields: [profileId], references: [id], onDelete: Cascade)
-eventId         String
-event           Event           @relation(fields: [eventId], references: [id], onDelete: Cascade)
 
 progressToAdd   Int             @default(0)
 
 updatedAt       DateTime        @updatedAt
 createdAt       DateTime        @default(now())
 
-@@unique([profileId, eventId])
+@@unique([programId, profileId])
+@@index([programId])
 @@index([profileId])
+}
+
+model ProgramEventRelation{
+id              String          @id @default(cuid())
+programId       String
+program         Program         @relation(fields: [programId], references: [id], onDelete: Cascade)
+eventId         String
+event           Event           @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+updatedAt       DateTime        @updatedAt
+createdAt       DateTime        @default(now())
+
+@@unique([programId, eventId])
+@@index([programId])
 @@index([eventId])
 }
 

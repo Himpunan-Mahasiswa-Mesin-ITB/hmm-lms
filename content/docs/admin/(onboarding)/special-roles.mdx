@@ -12,14 +12,14 @@ import { Callout } from 'fumadocs-ui/components/callout';
 | --- | --- | --- |
 | **Student / Machining** | No | — |
 | **Admin** | Yes | — |
-| **BP** | Yes | Profiles, Event Profiles |
+| **BP** | Yes | Profiles, Programs |
 | **Superadmin** | Yes | Everything, plus Superadmin Area |
 
 Pages you cannot access redirect you away.
 
-## BP: Profiles and Event Profiles
+## BP: Profiles and Programs
 
-BP (Badan Pengurus) members manage **Profiles**, which are used to track points or progress for events. In the sidebar, these live under **Badan Pengurus → Profiles Management** and **Event Profiles**.
+BP (Badan Pengurus) members manage **Profiles**, which are used to track points or progress, and **Programs** (program kerja), which are recommended to members for each profile. In the sidebar, these live under **Badan Pengurus → Profiles Management** and **Programs**.
 
 ![Profiles](/images/docs/admin-guide/profiles.png)
 
@@ -29,13 +29,13 @@ On **Manage Profiles** you can:
 - **Create Group Profile** and **Link Profile to Group** to organise profiles into groups, with *Search profiles...* and *Search group profiles...* boxes to find them.
 - View **Members** and their **Joined Date**, searchable by name, email or NIM.
 
-On **Event Profiles** you link profiles to events:
+On **Programs** you manage programs and what they link to:
 
-![Event profiles](/images/docs/admin-guide/event-profiles.png)
+- **Create Program** with a name and an optional description, or **Delete** it (this also removes its links).
+- **Link Profile** to choose the profiles a program counts toward, with the **Points/Progress (%)** it adds to each profile. Already linked profiles are listed in the same dialog, where you can change a weight and save it with ✓, or unlink the profile with ×.
+- **Link Event** to attach the program's events, if it has any. Not every program is an event.
 
-- Select an **Event**, a **Profile** and a **Member**.
-- Enter **Points/Progress (%)** to add (*Input how many points/progress to add*).
-- **Edit Event Profile** or **Delete/Unlink Event Profile** to correct entries.
+Members see the names of the upcoming events from a profile's linked programs under **Recommended events to participate** on their dashboard. Programs without upcoming events add nothing to that list. Progress itself is still updated manually by BP on **Manage Profiles**.
 
 ## Machining Batch
 
