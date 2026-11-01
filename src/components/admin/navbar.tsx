@@ -193,7 +193,7 @@ const bpSidebarTabs: {
           dev: false,
         },
         {
-          label: 'Programs',
+          label: 'Programs Management',
           href: '/admin/programs',
           icon: ClipboardList,
           tooltip: 'Programs Management',

@@ -46,6 +46,18 @@ interface Profile {
       end: Date;
     }[];
   }[];
+  relatedPrograms?: {
+    programId: string;
+    name: string;
+    description: string | null;
+    progressToAdd: number;
+    upcomingEvents: {
+      id: string;
+      title: string;
+      start: Date;
+      end: Date;
+    }[];
+  }[];
 }
 
 interface GroupProfile {
@@ -63,7 +75,7 @@ interface ProfileProgressCardProps {
 }
 
 export function ProfileProgressCard({ profileProgress, refetch }: ProfileProgressCardProps) {
-  const [openGroups, setOpenGroups] = useState<Set<string>>(new Set());
+  const [closedGroups, setClosedGroups] = useState<Set<string>>(new Set());
   const [openAddDialog, setOpenAddDialog] = useState(false);
   const [openRemoveDialog, setOpenRemoveDialog] = useState(false);
   const [search, setSearch] = useState<string>('');
@@ -110,7 +122,7 @@ export function ProfileProgressCard({ profileProgress, refetch }: ProfileProgres
       setSelectedProfileId('');
       setSearch('');
       if (refetch) {
-        void refetch();
+        refetch();
       }
     },
     onError: (error) => {
@@ -124,7 +136,7 @@ export function ProfileProgressCard({ profileProgress, refetch }: ProfileProgres
       setSelectedProfileId('');
       setSearch('');
       if (refetch) {
-        void refetch();
+        refetch();
       }
     },
     onError: (error) => {
@@ -133,13 +145,13 @@ export function ProfileProgressCard({ profileProgress, refetch }: ProfileProgres
   });
 
   const toggleGroup = (groupId: string) => {
-    const newOpenGroups = new Set(openGroups);
-    if (newOpenGroups.has(groupId)) {
-      newOpenGroups.delete(groupId);
+    const newClosedGroups = new Set(closedGroups);
+    if (newClosedGroups.has(groupId)) {
+      newClosedGroups.delete(groupId);
     } else {
-      newOpenGroups.add(groupId);
+      newClosedGroups.add(groupId);
     }
-    setOpenGroups(newOpenGroups);
+    setClosedGroups(newClosedGroups);
   };
 
   const totalProfiles = profileProgress.reduce((sum, group) => sum + group.profiles.length, 0);
@@ -181,7 +193,7 @@ export function ProfileProgressCard({ profileProgress, refetch }: ProfileProgres
       </CardHeader>
       <CardContent className="space-y-3">
         {profileProgress.map((group) => {
-          const isOpen = openGroups.has(group.groupProfile.id);
+          const isOpen = !closedGroups.has(group.groupProfile.id);
           const groupProgress =
             group.profiles.length > 0
               ? Math.round(
@@ -267,9 +279,24 @@ export function ProfileProgressCard({ profileProgress, refetch }: ProfileProgres
                           Last updated: {new Date(profile.updatedAt).toLocaleDateString()}
                         </div>
                       )}
+                      {profile.relatedPrograms && profile.relatedPrograms.length > 0 && (
+                        <div className="mt-3 space-y-1.5 pt-2 border-t border-border/40">
+                          <div className="text-xs font-medium text-primary">Recommended programs</div>
+                          <div className="space-y-1">
+                            {profile.relatedPrograms.map((program) => (
+                              <div
+                                key={program.programId}
+                                className="text-xs font-medium text-foreground truncate rounded bg-muted/40 px-2 py-1.5"
+                              >
+                                {program.name}
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
                       {profile.recommendedPrograms && profile.recommendedPrograms.length > 0 && (
                         <div className="mt-3 space-y-1.5 pt-2 border-t border-border/40">
-                          <div className="text-xs font-medium text-muted-foreground">Recommended events to participate</div>
+                          <div className="text-xs font-medium text-primary">Recommended events to participate</div>
                           <div className="space-y-1">
                             {[
                               ...new Map(

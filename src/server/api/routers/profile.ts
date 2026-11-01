@@ -52,6 +52,19 @@ function getRecommendedPrograms(profile: ProfileWithRecommendations) {
     .sort((a, b) => a.upcomingEvents[0]!.start.getTime() - b.upcomingEvents[0]!.start.getTime());
 }
 
+function getRelatedPrograms(profile: ProfileWithRecommendations) {
+  return profile.relatedPrograms
+    .map(({ program, progressToAdd }) => ({
+      programId: program.id,
+      name: program.name,
+      description: program.description,
+      progressToAdd,
+      upcomingEvents: program.relatedEvents
+        .map((relation) => relation.event)
+        .sort((a, b) => a.start.getTime() - b.start.getTime()),
+    }))
+}
+
 export const profileRouter = createTRPCRouter({
   createGroupProfile: bpProcedure
     .input(
@@ -675,6 +688,7 @@ export const profileRouter = createTRPCRouter({
             progress: progress?.progress || 0,
             updatedAt: progress?.updatedAt || null,
             recommendedPrograms: getRecommendedPrograms(profile),
+            relatedPrograms: getRelatedPrograms(profile),
           };
         }),
       };
@@ -697,6 +711,7 @@ export const profileRouter = createTRPCRouter({
           progress: progress.progress,
           updatedAt: progress.updatedAt,
           recommendedPrograms: getRecommendedPrograms(progress.profile),
+          relatedPrograms: getRelatedPrograms(progress.profile),
         })),
       });
     }
@@ -727,6 +742,7 @@ export const profileRouter = createTRPCRouter({
           progress: progress.progress,
           updatedAt: progress.updatedAt,
           recommendedPrograms: getRecommendedPrograms(progress.profile),
+          relatedPrograms: getRelatedPrograms(progress.profile),
         })),
       });
     }

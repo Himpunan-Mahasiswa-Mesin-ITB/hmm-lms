@@ -158,15 +158,15 @@ export default function ProgramsClient() {
     const options =
       linkDialog.mode === 'profile'
         ? (profiles ?? []).map((profile) => ({
-            id: profile.id,
-            name: profile.name,
-            description: profile.description,
-          }))
+          id: profile.id,
+          name: profile.name,
+          description: profile.description,
+        }))
         : (events ?? []).map((event) => ({
-            id: event.id,
-            name: event.title,
-            description: event.description,
-          }));
+          id: event.id,
+          name: event.title,
+          description: event.description,
+        }));
     const searchLower = searchOption.toLowerCase();
     return options.filter(
       (option) =>
@@ -194,9 +194,9 @@ export default function ProgramsClient() {
 
   return (
     <div className="space-y-6 pb-6">
-      <div className="flex justify-between items-center gap-4">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Programs</h1>
+          <h1 className="text-3xl font-bold tracking-tight">Programs Management</h1>
           <p className="text-muted-foreground mt-1">
             Manage profiles, progress weights, and events for programs
           </p>
@@ -330,8 +330,8 @@ export default function ProgramsClient() {
       </div>
 
       <Dialog open={!!linkDialog} onOpenChange={closeLinkDialog}>
-        <DialogContent>
-          <DialogHeader>
+        <DialogContent className="w-full flex flex-col">
+          <DialogHeader className="flex flex-col justify-center">
             <DialogTitle>
               {linkDialog?.mode === 'event' ? 'Link Event to Program' : 'Link Profile to Program'}
             </DialogTitle>
