@@ -15,7 +15,7 @@ import {
   FormInput,
   Link2,
   Settings,
-  CalendarFoldIcon,
+  ClipboardList,
 } from 'lucide-react';
 import { cookies } from 'next/headers';
 import Image from 'next/image';
@@ -193,10 +193,10 @@ const bpSidebarTabs: {
           dev: false,
         },
         {
-          label: 'Event Profiles',
-          href: '/admin/event-profiles',
-          icon: CalendarFoldIcon,
-          tooltip: 'Event Profiles Management',
+          label: 'Programs Management',
+          href: '/admin/programs',
+          icon: ClipboardList,
+          tooltip: 'Programs Management',
           dev: false,
         },
       ],

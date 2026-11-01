@@ -8,38 +8,40 @@ import { Callout } from 'fumadocs-ui/components/callout';
 
 ## Roles and Access
 
-| Role | Admin panel | Extra pages |
-| --- | --- | --- |
-| **Student / Machining** | No | — |
-| **Admin** | Yes | — |
-| **BP** | Yes | Profiles, Event Profiles |
-| **Superadmin** | Yes | Everything, plus Superadmin Area |
+| Role                    | Admin panel | Extra pages                      |
+| ----------------------- | ----------- | -------------------------------- |
+| **Student / Machining** | No          | —                                |
+| **Admin**               | Yes         | —                                |
+| **BP**                  | Yes         | Profiles, Programs               |
+| **Superadmin**          | Yes         | Everything, plus Superadmin Area |
 
 Pages you cannot access redirect you away.
 
-## BP: Profiles and Event Profiles
+## BP: Profiles and Programs
 
-BP (Badan Pengurus) members manage **Profiles**, which are used to track points or progress for events. In the sidebar, these live under **Badan Pengurus → Profiles Management** and **Event Profiles**.
+BP (Badan Pengurus) members manage **Profiles**, which are used to track points or progress, and **Programs** (program kerja), which are recommended to members for each profile. In the sidebar, these live under **Badan Pengurus → Profiles Management** and **Programs**.
 
 ![Profiles](/images/docs/admin-guide/profiles.png)
 
 On **Manage Profiles** you can:
 
 - **Create Profile** with a name and description, and **Edit** or **Delete** it.
-- **Create Group Profile** and **Link Profile to Group** to organise profiles into groups, with *Search profiles...* and *Search group profiles...* boxes to find them.
+- **Create Group Profile** and **Link Profile to Group** to organise profiles into groups, with _Search profiles..._ and _Search group profiles..._ boxes to find them.
 - View **Members** and their **Joined Date**, searchable by name, email or NIM.
 
-On **Event Profiles** you link profiles to events:
+On **Programs** you manage programs and what they link to:
 
-![Event profiles](/images/docs/admin-guide/event-profiles.png)
+![Programs](/images/docs/admin-guide/programs.png)
 
-- Select an **Event**, a **Profile** and a **Member**.
-- Enter **Points/Progress (%)** to add (*Input how many points/progress to add*).
-- **Edit Event Profile** or **Delete/Unlink Event Profile** to correct entries.
+- **Create Program** with a name and an optional description, or **Delete** it (this also removes its links).
+- **Link Profile** to choose the profiles a program counts toward, with the **Points/Progress (%)** it adds to each profile. Already linked profiles are listed in the same dialog, where you can change a weight and save it with ✓, or unlink the profile with ×.
+- **Link Event** to attach the program's events, if it has any. Not every program is an event.
+
+Members see the names of the upcoming events from a profile's linked programs under **Recommended events to participate** on their dashboard. Programs without upcoming events still added to that list. Progress itself is still updated manually by BP on **Manage Profiles**.
 
 ## Machining Batch
 
-**Machining Batch** (sidebar → Machining Management) holds the **Batch Configuration**: enter the **Batch Number** (e.g. `13125`) and save. *Batch created successfully* or *Batch updated successfully* confirms it.
+**Machining Batch** (sidebar → Machining Management) holds the **Batch Configuration**: enter the **Batch Number** (e.g. `13125`) and save. _Batch created successfully_ or _Batch updated successfully_ confirms it.
 
 ![Machining batch](/images/docs/admin-guide/machining-batch.png)
 
@@ -57,5 +59,6 @@ Only Superadmins see the **SUPERADMIN Area → SUPERADMIN Panel** link at the to
 - **Revoke all users with BP role** — removes the BP role from everyone.
 
 <Callout type="error" title="Bulk actions affect many accounts">
-  Each action asks for confirmation. Revoking BP cannot be undone in one step — roles can only be restored by editing users individually.
+  Each action asks for confirmation. Revoking BP cannot be undone in one step — roles can only be
+  restored by editing users individually.
 </Callout>
